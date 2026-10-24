@@ -85,11 +85,16 @@ This release does not port the original full studio hierarchy or all workflows.
 
 ## Framework checks
 
-Run from the root of a clean, uninitialized template checkout:
+Run from the repository root:
 
     python -m unittest discover -s studio-tests/codex -v
 
-The checks use Python's standard library and Bash. On Windows, if Bash is not
+The checks use Python's standard library and Bash. They validate both a fresh
+template and the valid post-start configuration containing only
+`modes.rigor: minimal` and `modes.automation: guided`; ignored scratch files
+and known third-party addon instructions (addons/gdUnit4) are excluded from first-party resource
+checks, while first-party legacy Claude instructions and seeded expanded rigor
+keys remain failures. On Windows, if Bash is not
 on PATH, set CCGS_BASH to the Git Bash executable for that process, for example:
 
     $env:CCGS_BASH = 'C:/Program Files/Git/bin/bash.exe'
@@ -97,6 +102,5 @@ on PATH, set CCGS_BASH to the Git Bash executable for that process, for example:
 
 Windows and Linux CI run the same checks. Stub engine tests verify runner
 interpretation only; they are not evidence of real Godot/Unity/Unreal gameplay.
-The structure checks assert the shipped template defaults; an initialized game
-with project configuration or third-party addons is not a fresh-template fixture.
-Run that game's configured tests and runtime checks separately.
+The structure checks do not replace a game's configured tests or runtime checks.
+Run those separately.
