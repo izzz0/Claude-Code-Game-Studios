@@ -19,6 +19,11 @@ available in Git history, not installed by this version.
 4. Choose your engine and version. An installed Godot, Unity or Unreal editor is
    needed for actual engine execution; configuration alone does not install one.
 
+In the desktop app, add this checkout as a local project and start the chat in
+that project with the checkout as its primary folder. Starting a new chat in
+another project does not switch its working directory or load this repository's
+skills. If `$ccgs-start` is not found, check the selected project folder first.
+
 The template does not require a separate model API key, prescribe a model,
 change global Codex settings, or start agents/hooks automatically.
 
@@ -80,7 +85,7 @@ This release does not port the original full studio hierarchy or all workflows.
 
 ## Framework checks
 
-Run from the repository root:
+Run from the root of a clean, uninitialized template checkout:
 
     python -m unittest discover -s studio-tests/codex -v
 
@@ -92,3 +97,6 @@ on PATH, set CCGS_BASH to the Git Bash executable for that process, for example:
 
 Windows and Linux CI run the same checks. Stub engine tests verify runner
 interpretation only; they are not evidence of real Godot/Unity/Unreal gameplay.
+The structure checks assert the shipped template defaults; an initialized game
+with project configuration or third-party addons is not a fresh-template fixture.
+Run that game's configured tests and runtime checks separately.
