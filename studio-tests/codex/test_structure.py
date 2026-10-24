@@ -45,6 +45,7 @@ class StructureTests(unittest.TestCase):
         for document in documents:
             text = document.read_text(encoding="utf-8")
             for reference in re.findall(r"\.agents/[A-Za-z0-9_./-]+", text):
+                reference = reference.rstrip(".")
                 if reference.endswith("/"):
                     reference = reference.rstrip("/")
                 with self.subTest(document=document.relative_to(ROOT), reference=reference):
