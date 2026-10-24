@@ -1,9 +1,12 @@
 # Unreal Engine — Version Reference
 
+> Inherited reference snapshot, not an installation or new-project pin.
+> Resolve the actual engine/version from project.yaml and verify with its editor.
+
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Unreal Engine 5.8 |
-| **Installed at pin time** | NOT DETERMINED — `/setup-engine` §3 probes the installed editor and records the result here. |
+| **Installed at pin time** | NOT DETERMINED — `$ccgs-setup-engine` §3 probes the installed editor and records the result here. |
 | **Release Date** | June 2026 (5.8.0); latest hotfix 5.8.3, September 2026 |
 | **Project Pinned** | 2026-10-17 |
 | **Last Docs Verified** | 2026-10-17 (release timeline, 5.8 release notes, and the 5.8 changes recorded in this directory); 2026-02-13 (rest of directory, written against 5.7) |
@@ -19,7 +22,7 @@ cross-reference this directory before suggesting Unreal API calls.
 ## Installed-Version Gap Warning
 
 The warning above is one-directional — it covers the **model** knowing less than
-this pin. The reverse gap is real and `/setup-engine` §3 creates it deliberately
+this pin. The reverse gap is real and `$ccgs-setup-engine` §3 creates it deliberately
 ("pin the newer one and upgrade later"): this reference can sit **ahead of the
 installed editor**, and an agent citing it correctly then emits APIs that do not
 compile locally. **Check `Installed at pin time` above before trusting a
