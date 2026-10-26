@@ -347,11 +347,13 @@ def main(argv=None):
         state["source_branch"] = subprocess.check_output(["git", "branch", "--show-current"], cwd=project, text=True).strip()
         state["source_dirty"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=project, text=True).strip())
         state["codex_version"] = codex_version
-        write_json(state_path, state)
+        if not args.inspect:
+            write_json(state_path, state)
         pending_summary = {"selected_result": "NOT ASSESSED", "selected": len(selected),
                            "authored_cases": len(cases), "full_port_acceptance": "NOT ASSESSED",
                            "note": "Current invocation has not completed its preflight and selected cases."}
-        write_json(output / "summary.json", pending_summary)
+        summary_path = output / ("inspection.json" if args.inspect else "summary.json")
+        write_json(summary_path, pending_summary)
         client = Client(args.codex, project, output)
         try:
             client.request("initialize", {"clientInfo": {"name": "ccgs-native-acceptance", "version": "1"},
@@ -361,11 +363,14 @@ def main(argv=None):
             write_json(output / "hooks.json", listing)
             reasons = check_hooks(listing, project)
             if reasons:
-                write_json(output / "summary.json", {**pending_summary, "reasons": reasons})
+                write_json(summary_path, {**pending_summary, "reasons": reasons})
                 print(json.dumps({"status": "NOT ASSESSED", "reasons": reasons}, ensure_ascii=True))
                 return 2
             if args.inspect:
-                print(json.dumps({"hooks": "trusted", "project": str(project)}, ensure_ascii=True))
+                inspection = {"hooks": "trusted", "project": str(project),
+                              "full_port_acceptance": "NOT ASSESSED"}
+                write_json(summary_path, inspection)
+                print(json.dumps(inspection, ensure_ascii=True))
                 return 0
             for case in selected:
                 old = state["cases"].get(case["id"], {})
@@ -384,13 +389,14 @@ def main(argv=None):
             summary = {"selected_result": overall, "selected": len(selected),
                        "authored_cases": len(cases), "full_port_acceptance": "NOT ASSESSED",
                        "note": "Selected native cases do not establish full engine/team/workflow acceptance."}
-            write_json(output / "summary.json", summary)
+            write_json(summary_path, summary)
             print(json.dumps(summary, ensure_ascii=True))
             return 0 if overall == "PASS" else 1 if overall == "FAIL" else 2
         except (Attention, queue.Empty) as exc:
             reason = str(exc) or "Native host response timed out."
-            write_json(output / "summary.json", {**pending_summary, "reason": reason})
-            write_json(output / "attention.json", {"status": "NOT ASSESSED", "reason": reason})
+            write_json(summary_path, {**pending_summary, "reason": reason})
+            write_json(output / ("inspection-attention.json" if args.inspect else "attention.json"),
+                       {"status": "NOT ASSESSED", "reason": reason})
             print(json.dumps({"status": "NOT ASSESSED", "reason": reason}, ensure_ascii=True))
             return 2
         finally:

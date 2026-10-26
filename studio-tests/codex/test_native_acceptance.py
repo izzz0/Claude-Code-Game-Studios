@@ -197,6 +197,41 @@ class NativeAcceptanceTests(unittest.TestCase):
             summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
             self.assertEqual(summary["selected_result"], "NOT ASSESSED")
 
+    def test_inspection_preserves_existing_batch_state_and_acceptance_summary(self):
+        (self.root / ".git").mkdir()
+        (self.root / ".codex").mkdir()
+        source = self.root / ".codex/hooks.json"
+        source.write_text('{"hooks":{"Stop":[]}}', encoding="utf-8")
+        output = self.root / ".scratch/driver"
+        output.mkdir(parents=True)
+        saved = {"state.json": '{"cases":{"earlier":{"status":"PASS"}}}',
+                 "summary.json": '{"selected_result":"PASS"}'}
+        for name, text in saved.items():
+            (output / name).write_text(text, encoding="utf-8")
+        for trusted in (True, False):
+            class FixtureClient:
+                def __init__(self, *args):
+                    pass
+                def request(self, method, params):
+                    if method == "hooks/list":
+                        return {"data": [{"hooks": [{"sourcePath": str(source), "eventName": "stop",
+                                  "enabled": True, "trustStatus": "trusted" if trusted else "modified"}]}]}
+                    return {}
+                def notify(self, method):
+                    pass
+                def close(self):
+                    pass
+            with patch.object(driver, "Client", FixtureClient), patch.object(
+                    driver.subprocess, "check_output", return_value="fixture-version"), contextlib.redirect_stdout(io.StringIO()):
+                code = driver.main(["--project", str(self.root), "--codex", sys.executable,
+                                    "--output", str(output), "--inspect"])
+            self.assertEqual(code, 0 if trusted else 2)
+            for name, text in saved.items():
+                self.assertEqual((output / name).read_text(encoding="utf-8"), text)
+            self.assertTrue((output / "inspection.json").is_file())
+            inspection = json.loads((output / "inspection.json").read_text(encoding="utf-8"))
+            self.assertEqual(inspection.get("hooks") == "trusted", trusted)
+
 
 if __name__ == "__main__":
     unittest.main()

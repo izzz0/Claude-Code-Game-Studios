@@ -65,6 +65,9 @@ to inspect current project hook discovery/trust without a model turn, and
 cases. Unwritten cases and the overall full-port acceptance remain unassessed.
 
 Evidence is retained under `.scratch/native-acceptance`. Resume reuses a PASS
+only with intact native event/thread receipts. `--inspect` writes a separate
+`inspection.json` and preserves existing batch state and acceptance summary.
+Resume otherwise reuses a PASS
 only while source, fixture, host version/binary, response and sandbox hashes
 match. Failed or interrupted cases retain their attempt directory and are
 retried in a separate fresh attempt. Story-level recovery is a separate case.
