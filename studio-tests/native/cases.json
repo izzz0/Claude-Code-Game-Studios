@@ -79,7 +79,10 @@
         ],
         "response_contains": [
           "$ccgs-setup-engine",
-          "Velocity Courier"
+          "minimal",
+          "guided",
+          "Concept",
+          "unset"
         ],
         "response_not_contains": [
           "project.yaml was written",
@@ -91,11 +94,15 @@
           "project.stage": "Concept",
           "modes.rigor": "minimal",
           "modes.automation": "guided"
-        }
+        },
+        "response_commands": [
+          "ccgs-setup-engine"
+        ]
       },
       "expected_native_until_run": true,
       "fixture_stdout": null,
-      "actual_result_stub": null
+      "actual_result_stub": null,
+      "scope": "Returning-user navigation and preserved project identity/settings via original parser; no mandatory project-name presentation literal."
     },
     {
       "id": "native-003-ccgs-setup-engine",

@@ -141,6 +141,37 @@ class NativeAcceptanceTests(unittest.TestCase):
         (self.root / "code.gd").write_text("renumbered old story", encoding="utf-8")
         self.assertEqual(self.assess()["status"], "FAIL")
 
+    def test_start_checks_preserved_identity_in_config_without_a_display_name_literal(self):
+        catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
+        self.case = next(row for row in catalog["cases"] if row["skill"] == "ccgs-start")
+        fixture = ROOT / "studio-tests/native/fixtures/start/project.yaml"
+        original = fixture.read_text(encoding="utf-8")
+        target = self.root / "project.yaml"
+        target.write_text(original, encoding="utf-8")
+        self.before = driver.tree_hashes(self.root)
+        response = (ROOT / "studio-tests/codex/fixtures/native-start-preserved-settings.md").read_text(encoding="utf-8")
+        self.assertNotIn("Velocity Courier", response)
+        self.assertEqual(self.assess(response=response)["status"], "PASS")
+        for wrong in (response.replace("$ccgs-setup-engine", "$ccgs-dev-story"),
+                      response.replace("minimal", "full"), response.replace("guided", "autonomous"),
+                      response.replace("Concept", "Production"), response + " The engine selected successfully.",
+                      response + " Also run `$ccgs-dev-story` now."):
+            self.assertEqual(self.assess(response=wrong)["status"], "FAIL")
+        for old, new in (("Velocity Courier Start", "Another Project"), ("stage: Concept", "stage: Production"),
+                         ("rigor: minimal", "rigor: full"), ("automation: guided", "automation: autonomous")):
+            target.write_text(original.replace(old, new), encoding="utf-8")
+            # Even if a caller supplied a fresh snapshot, exact config readback
+            # must reject the wrong project or changed settings independently.
+            self.before = driver.tree_hashes(self.root)
+            result = self.assess(response=response)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertTrue(any("Configuration mismatch" in row for row in result["findings"]))
+        target.write_text(original, encoding="utf-8")
+        self.before = driver.tree_hashes(self.root)
+        self.assertEqual(self.assess(response=response, items=[])["status"], "NOT ASSESSED")
+        (self.root / "code.gd").write_text("unexpected write", encoding="utf-8")
+        self.assertEqual(self.assess(response=response)["status"], "FAIL")
+
     def test_setup_cannot_pass_after_losing_stage_or_unrelated_owner(self):
         (self.root / "project.yaml").write_text("project:\n  stage: Concept\nnotes:\n  owner: native-smoke\n", encoding="utf-8")
         self.case["expected"]["config"] = {"project.stage": "Concept", "notes.owner": "native-smoke"}

@@ -7,7 +7,9 @@ This directory currently contains **thirty-one authored native cases**:
   configuration facts and a single workflow command outside inventory bullets;
   it does not attest every catalog-enumeration or formatting responsibility.
 - `ccgs-start`: returning-user onboarding with the same unconfigured-engine
-  handoff; it must not write stage/configuration or start the next skill.
+  handoff; it must not write stage/configuration or start the next skill. Exact
+  project identity and settings are checked through the original YAML parser,
+  without requiring the project name to be repeated in the response prose.
 - `ccgs-setup-engine`: explicit Godot 4.6.1 + GDScript configuration using the
   real config tool, with readback checks and preservation of unrelated project
   values.
