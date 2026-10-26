@@ -46,8 +46,8 @@ Collect these for the output in Step 7 — show them as a footer block:
 
 ```
 ### Also installed (not in workflow)
-- `/skill-name` — [description from SKILL.md frontmatter]
-- `/skill-name` — [description]
+- `$ccgs-onboard` — [example: use its actual SKILL.md description if uncataloged]
+- `$ccgs-settings` — [example: use its actual description if uncataloged]
 ```
 
 Only show this block if at least one uncataloged skill exists. Limit to the 10
@@ -190,14 +190,14 @@ step is the first of these that applies:
    brief), which on a built game would start a new idea.
 3. `create-stories` not PRESENT → `$ccgs-create-stories` with no argument (at
    `minimal` it builds the stories straight from the brief's MVP list)
-4. Stories exist → the list below was printed by `.agents/studio/scripts/story-status.sh`
-   before you read this skill: one line per unfinished story, **already in
+4. Stories exist → run `bash .agents/studio/scripts/story-status.sh` from the
+   active project and read its actual output: one line per unfinished story, **already in
    the route's order** — `IN_REVIEW`, then `IN_PROGRESS`, then `TODO` (a
    `Ready` or `Not Started` story) in build order — then `BLOCKED`, `OTHER`,
    `NO_STATUS` and the `COMPLETE` count:
 
    **Next up is the story on the first `IN_REVIEW`, `IN_PROGRESS` or `TODO`
-   line.** The list is already current; do not run the script again, and do
+   line.** Use that invocation's current result; do not repeatedly run it or
    not re-read or re-rank the story files:
    an `In Review` story is closed before an `In Progress` one continues — its
    work is written, and `$ccgs-story-done` is quick.
@@ -248,8 +248,9 @@ From the completion data, determine:
 4. **Upcoming required steps** — required steps after the current blocker
    (show as "coming up" so user can plan ahead)
 
-If the user provided an argument (e.g. "just finished design-review"), use that
-to advance past the step they named even if the artifact check is ambiguous.
+If the user names a recently finished step, use it to target the next inspection.
+It does not replace required test, engine or independent-review evidence. An
+ambiguous required check stays unassessed rather than being marked complete.
 
 ---
 
@@ -264,6 +265,9 @@ If `active.md` shows an active task or epic:
 ## Step 7: Present Output
 
 Keep it **short and direct**. This is a quick orientation, not a report.
+The headings below are presentation examples, not required English literals.
+A concise or localized answer is valid when it preserves the actual workflow,
+state, blocker and exactly one actionable next step, without false completion.
 
 ```
 ## Where You Are: [Phase Label]
@@ -312,6 +316,9 @@ Command: `$ccgs-story-done [story-path]` for an In Review story, or an In Progre
 ```
 
 **Formatting rules:**
+- Before engine setup or story creation, adapt the minimal example to the
+  observed prerequisite. An ABSENT engine is a blocker, never a ✓ Done item;
+  do not invent story totals when the story listing has not run.
 - `✓` for confirmed complete
 - `→` for the current required next step (only one — the first blocker)
 - `~` for optional steps available now

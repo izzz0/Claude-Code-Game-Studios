@@ -56,6 +56,29 @@ class NativeAcceptanceTests(unittest.TestCase):
         self.case["required_evidence"] = ["independent_review", "rendered_input"]
         self.assertEqual(self.assess(response="Target index 2 is rejected. independent_review rendered_input PASS")["status"], "NOT ASSESSED")
 
+    def test_help_checks_actual_state_and_next_step_without_requiring_a_heading(self):
+        catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
+        self.case = next(row for row in catalog["cases"] if row["skill"] == "ccgs-help")
+        fixture = ROOT / "studio-tests/native/fixtures/help/project.yaml"
+        (self.root / "project.yaml").write_bytes(fixture.read_bytes())
+        driver.copy_case_resources(ROOT, self.root)
+        self.before = driver.tree_hashes(self.root)
+        response = ("Next step: $ccgs-setup-engine. The configuration is minimal, guided, "
+                    "stage Concept; engine ABSENT. COMPLETE — navigation identified.")
+        self.assertEqual(self.assess(response=response)["status"], "PASS")
+        inventory = "\n### Also installed (not in workflow)\n- `$ccgs-onboard` — Project orientation notes\n"
+        self.assertEqual(self.assess(response=response + inventory)["status"], "PASS")
+        for wrong in (response.replace("$ccgs-setup-engine", "$ccgs-dev-story"),
+                      response.replace("minimal", "full"),
+                      response.replace("Concept", "Production"),
+                      response.replace("ABSENT", "PRESENT"),
+                      response + " The engine configured successfully.",
+                      response + " Also run `$ccgs-dev-story` now.",
+                      response + inventory + "Also run `$ccgs-dev-story` now."):
+            with self.subTest(response=wrong):
+                self.assertEqual(self.assess(response=wrong)["status"], "FAIL")
+        self.assertEqual(self.assess(response=response, items=[])["status"], "NOT ASSESSED")
+
     def test_repeated_story_creation_preserves_existing_file_and_total_count(self):
         self.case["readonly"] = False
         self.case["expected"]["files"] = [{"path": "code.gd", "changed": False}]
@@ -136,6 +159,8 @@ class NativeAcceptanceTests(unittest.TestCase):
         sandbox = self.root / "sandbox"
         (project / ".agents/studio").mkdir(parents=True)
         (project / ".agents/studio/runtime.py").write_text("framework", encoding="utf-8")
+        (project / ".agents/skills/ccgs-help").mkdir(parents=True)
+        (project / ".agents/skills/ccgs-help/SKILL.md").write_text("skill", encoding="utf-8")
         (project / ".codex/agents").mkdir(parents=True)
         (project / ".codex/agents/ccgs-test.toml").write_text("role", encoding="utf-8")
         (project / ".codex/hooks.json").parent.mkdir(exist_ok=True)
@@ -143,6 +168,7 @@ class NativeAcceptanceTests(unittest.TestCase):
         sandbox.mkdir()
         driver.copy_case_resources(project, sandbox)
         self.assertTrue((sandbox / ".codex/agents/ccgs-test.toml").is_file())
+        self.assertEqual((sandbox / ".agents/skills/ccgs-help/SKILL.md").read_text(encoding="utf-8"), "skill")
         self.assertFalse((sandbox / ".codex/hooks.json").exists())
 
     def test_catalog_coverage_reports_missing_cases_and_all_authored_cases_have_tools(self):

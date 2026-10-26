@@ -11,7 +11,7 @@ preserve existing minimal, standard or full settings and independent overrides.
 - Read .agents/studio/docs/core-workflow.md at studio skill entry. Resolve fresh
   configuration using the existing yaml-helper.sh; do not replace its parser.
 - Read applicable shared guidance from .agents/studio/rules/ explicitly, using
-  rules-reference.md and the actual engine/files. These resource files are not
+  .agents/studio/docs/rules-reference.md and the actual engine/files. These resource files are not
   claimed to be automatically discovered host rules.
 - Keep model, provider and permissions inherited. Normal authorized edits/checks
   do not require per-file prompts. Ask about material missing requirements or

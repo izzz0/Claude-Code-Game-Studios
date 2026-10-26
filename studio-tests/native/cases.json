@@ -13,7 +13,7 @@
       "fixture": "help",
       "readonly": true,
       "required_tools": true,
-      "prompt": "Run $ccgs-help in the supplied Velocity Courier Concept fixture. Read actual project configuration, state and artifact layout, then explain the single actionable next step in English and why it is next. This is read-only; do not start the next skill or claim unobserved setup/runtime results.",
+      "prompt": "Run $ccgs-help in the supplied Velocity Courier Concept fixture. Read actual project configuration, state and artifact layout, then explain the single actionable next step in English and why it is next. This is read-only; do not start the next skill or claim unobserved setup/runtime results. Outside any Also installed inventory, name only the single recommended native workflow command.",
       "expected": {
         "files": [
           {
@@ -29,7 +29,10 @@
           }
         ],
         "response_contains": [
-          "Where You Are",
+          "minimal",
+          "guided",
+          "Concept",
+          "ABSENT",
           "$ccgs-setup-engine",
           "COMPLETE"
         ],
@@ -37,11 +40,21 @@
           "engine configured",
           "created project.yaml"
         ],
-        "required_tools": true
+        "required_tools": true,
+        "counts": [
+          {
+            "glob": ".agents/skills/ccgs-*/SKILL.md",
+            "count": 74
+          }
+        ],
+        "response_commands": [
+          "ccgs-setup-engine"
+        ]
       },
       "expected_native_until_run": true,
       "fixture_stdout": null,
-      "actual_result_stub": null
+      "actual_result_stub": null,
+      "scope": "Minimal navigation, prerequisite state and read-only behavior; skill-file count checks fixture availability, not actual catalog enumeration."
     },
     {
       "id": "native-002-ccgs-start",

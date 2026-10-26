@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import queue
+import re
 import shutil
 import subprocess
 import sys
@@ -79,6 +80,9 @@ def check_hooks(listing, project):
 def copy_case_resources(project, sandbox):
     """Copy framework resources and role profiles, never project hook/config files."""
     shutil.copytree(project / ".agents/studio", sandbox / ".agents/studio")
+    skills = project / ".agents/skills"
+    if skills.is_dir():
+        shutil.copytree(skills, sandbox / ".agents/skills")
     roles = project / ".codex/agents"
     if roles.is_dir():
         shutil.copytree(roles, sandbox / ".codex/agents")
@@ -113,6 +117,20 @@ def assess(case, sandbox, before, response, items, hooks, transport_status):
     for text in expected.get("response_not_contains", []):
         if text.casefold() in response.casefold():
             fail.append("Forbidden response claim: " + text)
+    if "response_commands" in expected:
+        navigation, inventory = [], False
+        for line in response.splitlines():
+            heading = re.match(r"\s*#{1,6}\s+(.+)", line)
+            if heading:
+                inventory = heading.group(1).casefold().startswith("also installed")
+            # Exclude only the documented non-action inventory bullet shape.
+            # Instructions appended below that footer remain navigation text.
+            if inventory and re.match(r"\s*[-*]\s+`?\$ccgs-[a-z0-9-]+`?\s*[—–:-]", line, re.I):
+                continue
+            navigation.append(line)
+        commands = set(re.findall(r"\$(ccgs-[a-z0-9-]+)", "\n".join(navigation), re.I))
+        if {name.casefold() for name in commands} != set(expected["response_commands"]):
+            fail.append("Workflow command set differs from the required single handoff: " + ", ".join(sorted(commands)))
     artifacts = {}
     for spec in expected.get("files", []):
         path = safe_path(sandbox, spec["path"])
@@ -381,7 +399,9 @@ def main(argv=None):
                 result["source_fingerprint"] = fingerprint
                 state["cases"][case["id"]] = result
                 write_json(state_path, state)
-                print(json.dumps(result, ensure_ascii=True), flush=True)
+                print(json.dumps({key: value for key, value in result.items()
+                                  if key not in {"protected_hashes", "artifacts"}},
+                                 ensure_ascii=True), flush=True)
                 if result["status"] != "PASS":
                     break
             statuses = [state["cases"].get(c["id"], {}).get("status", "NOT ASSESSED") for c in selected]

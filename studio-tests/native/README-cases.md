@@ -3,7 +3,9 @@
 This directory currently contains **twenty-seven authored native cases**:
 
 - `ccgs-help`: read-only navigation from a minimal project with no engine;
-  expected handoff is `$ccgs-setup-engine`.
+  expected handoff is `$ccgs-setup-engine`. The case checks navigation, actual
+  configuration facts and a single workflow command outside inventory bullets;
+  it does not attest every catalog-enumeration or formatting responsibility.
 - `ccgs-start`: returning-user onboarding with the same unconfigured-engine
   handoff; it must not write stage/configuration or start the next skill.
 - `ccgs-setup-engine`: explicit Godot 4.6.1 + GDScript configuration using the
@@ -74,3 +76,7 @@ retried in a separate fresh attempt. Story-level recovery is a separate case.
 Host interaction requests stop the batch for human attention; this driver does
 not approve them. Additional visual or independent-review evidence cannot be
 satisfied by a claim in the returned text.
+
+The console prints compact case results. Full protected-file and artifact hashes
+remain in state.json and each attempt/result.json. Historical failed attempts
+are retained; a changed fixture or assertion requires a fresh native attempt.
