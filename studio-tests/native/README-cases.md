@@ -1,6 +1,6 @@
 # Native acceptance smoke catalog
 
-This directory currently contains **twenty-seven authored native cases**:
+This directory currently contains **thirty-one authored native cases**:
 
 - `ccgs-help`: read-only navigation from a minimal project with no engine;
   expected handoff is `$ccgs-setup-engine`. The case checks navigation, actual
@@ -31,16 +31,22 @@ This directory currently contains **twenty-seven authored native cases**:
 - Teams: combat timing, HUD/accessibility and a QA smoke-failure stop. These
   require actual native-agent and recovery evidence, currently unassessed.
 
-`coverage.unauthored_manifest_skills` records the remaining 47 skills from
+`coverage.unauthored_manifest_skills` records the remaining 43 skills from
 `studio-tests/migration-manifest.json` that intentionally have no placeholder
 case yet.
 
+Utility/context cases add local-override inspection, programmer onboarding,
+record-based retrospective analysis and read-only stage-gap detection. They
+remain authored and unexecuted.
+
 Each case uses the full `ccgs-*` skill name and an independent fixture under
-`fixtures/<name>/`. Fixtures contain schema-1 `project.yaml` with
-`modes.rigor: minimal` and `modes.automation: guided`, plus the relevant
+`fixtures/<name>/`. Fixtures contain schema-1 `project.yaml` with test-specific workflow modes,
+usually minimal/guided, plus the relevant
 `production/epics/<slug>/story-*.md` and QA evidence layout. The setup fixture
 leaves `engine` unset before the explicit request; the review fixture pins
-Godot/GDScript and its specialist.
+Godot/GDScript and its specialist. Utility fixtures also cover standard/full
+projects and an explicitly preserved autonomous local override; the runner
+does not coerce those settings to the new-project defaults.
 
 `fixture_stdout`, `actual_result_stub`, and `expected_native_until_run` make
 execution status explicit: no fixture pretends to be a native result. The

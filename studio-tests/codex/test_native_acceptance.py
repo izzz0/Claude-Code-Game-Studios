@@ -216,7 +216,12 @@ class NativeAcceptanceTests(unittest.TestCase):
         self.assertTrue(authored <= required)
         for case in catalog["cases"]:
             self.assertTrue(case["expected"]["required_tools"])
-            self.assertTrue((ROOT / "studio-tests/native/fixtures" / case["fixture"] / "project.yaml").is_file())
+            fixture = ROOT / "studio-tests/native/fixtures" / case["fixture"]
+            self.assertTrue((fixture / "project.yaml").is_file())
+            for spec in case["expected"].get("files", []):
+                if spec.get("changed") is False:
+                    self.assertTrue(driver.safe_path(fixture, spec["path"]).is_file(),
+                                    f"{case['id']}: preserved fixture input is missing: {spec['path']}")
         self.assertEqual(len(required), 74)
 
     def test_only_exact_project_source_and_trusted_current_hooks_pass_preflight(self):
