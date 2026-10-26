@@ -1,0 +1,4 @@
+Godot test run: wall_movement
+passed: 0
+failed: 1
+error: boundary assertion was not executed; test function has no assertions

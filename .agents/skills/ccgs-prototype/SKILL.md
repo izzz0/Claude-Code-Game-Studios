@@ -2,6 +2,8 @@
 name: ccgs-prototype
 description: Test one uncertain game hypothesis with the smallest throwaway prototype and record an evidence-based decision.
 ---
+Run `bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,workflow` from the repository root and use its output.
+
 
 # Prototype
 
@@ -23,3 +25,7 @@ One brief hypothesis, pinned engine/version/commands, and an explicit time box. 
 ## Output
 
 Return decision, hypothesis evidence, paths, and blocker. Only `PROCEED` routes to `ccgs-create-stories`; all other outcomes leave implementation incomplete.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.

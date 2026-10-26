@@ -1,0 +1,134 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell|Shell|exec_command|Read|Write|Edit|apply_patch|ApplyPatch|Agent|spawn_agent|code",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|PowerShell|Shell|exec_command|Read|Write|Edit|apply_patch|ApplyPatch|Agent|spawn_agent|code",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Interrupt": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -X utf8 \"$(git rev-parse --show-toplevel)/.agents/studio/runtime/hooks.py\"",
+            "commandWindows": "python -X utf8 -c \"import runpy,subprocess,sys; r=subprocess.run(['git','rev-parse','--show-toplevel'],capture_output=True,encoding='utf-8',check=True).stdout.strip(); p=r+'/.agents/studio/runtime'; sys.path.insert(0,p); runpy.run_path(p+'/hooks.py',run_name='__main__')\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

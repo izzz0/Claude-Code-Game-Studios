@@ -26,8 +26,9 @@
 #   -h, --help  this text
 # Stdin may include or leave out the two CHECKPOINT marker lines; blank lines
 # at its start and end are dropped. The file's line endings (LF or CRLF) are
-# kept for every line written. The new file is made in full first, then copied
-# over active.md in place, so it keeps its mode and a symlink stays one.
+# kept for every line written. The new file is committed atomically with a
+# digest precondition. Symlinks resolve within the project; hard links are not
+# updated together. Conflicting writers must reload rather than overwrite.
 #
 # Output (checkpoint, append): TSV
 #   file   production/session-state/active.md   <created|replaced|inserted|appended|unchanged>
@@ -41,7 +42,7 @@
 # 4 `show` found no active.md. Never prompts. Observations only: what goes in
 # the checkpoint is the skill's to write.
 #
-# bash 3.2 and BWK awk safe, no Python.
+# bash 3.2, BWK awk and Python 3.
 
 set -u
 # Byte semantics for awk: the CR tests below compare bytes.
@@ -49,7 +50,8 @@ LC_ALL=C
 export LC_ALL
 
 STATE="production/session-state/active.md"
-TEMPLATE=".agents/studio/docs/templates/session-state.md"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+TEMPLATE="$HERE/../docs/templates/session-state.md"
 # Keep recovery concise; longer is allowed but warned about.
 MAX_LINES=25
 
@@ -106,6 +108,18 @@ if [ "$CMD" = "show" ]; then
 fi
 
 # --- checkpoint / append: read stdin -----------------------------------------
+. "$HERE/../hooks/yaml-helper.sh"
+_ss_setting=$(resolve_setting features.session_state)
+case "${_ss_setting%%	*}" in
+  off|false) printf 'file\t%s\tdisabled\n' "$STATE"; exit 0 ;;
+esac
+_yaml_helper_resolve_python || { echo "session-state: Python 3 is required for atomic state updates" >&2; exit 1; }
+EXPECTED=$("$_yaml_helper_python" - "$STATE" <<'PY'
+import hashlib, pathlib, sys
+p = pathlib.Path(sys.argv[1])
+print(hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else 'MISSING')
+PY
+) || exit 1
 STATE_DIR=$(dirname "$STATE")
 mkdir -p "$STATE_DIR" 2>/dev/null || { echo "session-state: cannot create $STATE_DIR" >&2; exit 1; }
 BODY=$(mktemp "$STATE_DIR/.ccgs-body-XXXXXX" 2>/dev/null) || { echo "session-state: cannot create a temporary file in $STATE_DIR" >&2; exit 1; }
@@ -199,9 +213,10 @@ fi
 if [ -f "$STATE" ] && cmp -s "$NEW" "$STATE"; then
   ACTION="unchanged"
 else
-  # Copied over the file in place, not moved: the file keeps its mode, a
-  # symlink stays a symlink and a hard link sees the change.
-  cat "$NEW" > "$STATE" 2>/dev/null || { echo "session-state: could not write $STATE" >&2; exit 1; }
+  "$_yaml_helper_python" "$HERE/../runtime/state.py" --root "$PWD" --path "$STATE" \
+    --source "$NEW" --expected-sha256 "$EXPECTED" --operation "session-$CMD" >/dev/null
+  _ss_rc=$?
+  [ "$_ss_rc" = 0 ] || { echo "session-state: state update failed; reload before retrying" >&2; exit "$_ss_rc"; }
 fi
 printf 'file\t%s\t%s\nlines\t%s\t-\n' "$STATE" "$ACTION" "$NBODY"
 exit 0

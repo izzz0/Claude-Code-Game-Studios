@@ -13,7 +13,7 @@
 # /smoke-check, which also decides what an unmatched exit code means.
 #
 # Usage: bash .agents/studio/scripts/test-run.sh <engine> [options]
-#   <engine>            godot, unity or unreal (any case)
+#   <engine>            godot, unity, unreal or cocos (any case)
 #   --cmd COMMAND       override the built-in framework's test command
 #                       (gdUnit4, Unity Test Framework, Unreal Automation).
 #                       Other runners must be run and interpreted separately.
@@ -123,7 +123,8 @@ case "$(printf '%s' "$ENGINE_ARG" | tr 'A-Z' 'a-z')" in
   godot) ENGINE=godot; ENAME=Godot ;;
   unity) ENGINE=unity; ENAME=Unity ;;
   unreal) ENGINE=unreal; ENAME=Unreal ;;
-  *) echo "test-run: '$ENGINE_ARG' is not an engine this knows (godot, unity, unreal)" >&2; exit 3 ;;
+  cocos) ENGINE=cocos; ENAME=Cocos ;;
+  *) echo "test-run: '$ENGINE_ARG' is not an engine this knows (godot, unity, unreal, cocos)" >&2; exit 3 ;;
 esac
 case "$PLATFORM" in editmode|playmode) ;; *) usage "--platform is editmode or playmode" ;; esac
 case "$OS_ARG" in ""|windows|linux|macos) ;; *) usage "--os is windows, linux or macos" ;; esac
@@ -330,6 +331,26 @@ if [ -z "$EXE" ] && [ "$CMD_SRC" = default ]; then
   ran_no runner-unavailable "no editor executable (commands.test, engine.path, PATH)" "the engine executable was not found, so the tests could not be run here"
 fi
 if [ "$DRY" = 1 ]; then printf 'ran\tno\tdry run\n'; exit 0; fi
+
+# Cocos Creator has no universal editor test executable.  Run only the
+# configured/explicit command through the stdlib TAP adapter; a zero helper
+# exit means observations were emitted, not that the game passed.
+if [ "$ENGINE" = cocos ]; then
+  if [ -z "$CMD" ]; then
+    ran_no runner-unavailable "no explicit Cocos test command (commands.test or --cmd)" "Cocos requires an explicit Node/TAP command; no command was started"
+  fi
+  COCOS_PY=""
+  for _py in python python3 py; do command -v "$_py" >/dev/null 2>&1 && { COCOS_PY="$_py"; break; }; done
+  [ -n "$COCOS_PY" ] || ran_no runner-unavailable "no Python interpreter for the Cocos adapter" "the stdlib adapter could not be started"
+  if [ -z "$LOG" ]; then
+    LOG=$(mktemp "${TMPDIR:-/tmp}/test-run-XXXXXX" 2>/dev/null) || { echo "test-run: cannot create a log file" >&2; exit 1; }
+  fi
+  mkdir -p "$(dirname "$LOG")" 2>/dev/null || { echo "test-run: cannot create the log directory for $LOG" >&2; exit 1; }
+  : > "$LOG" 2>/dev/null || { echo "test-run: cannot write the log $LOG" >&2; exit 1; }
+  printf 'ran\tyes\t-\n'
+  "$COCOS_PY" -X utf8 "$HERE/cocos-run.py" test --root "$ABS" --cmd "$CMD" --timeout "$TIMEOUT" --log "$LOG"
+  exit 0
+fi
 
 # --- run ----------------------------------------------------------------------
 if [ -z "$LOG" ]; then

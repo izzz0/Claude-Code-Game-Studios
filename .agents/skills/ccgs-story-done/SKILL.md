@@ -22,3 +22,7 @@ An In Review story, changed files, review receipt, test output, parse result, ru
 ## Output
 
 Return criterion matrix, review receipt, evidence paths, verdict (COMPLETE, COMPLETE WITH NOTES, NOT ASSESSED, or BLOCKED), and next story. Do not close incomplete work.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.

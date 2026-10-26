@@ -4,20 +4,17 @@ Schema remains version 1. Scripts preserve the upstream YAML subset and
 per-key resolution behavior. Existing keys are not reset during migration.
 The root project.yaml template deliberately does not seed rigor's six knobs.
 New onboarding writes only missing modes.rigor=minimal and
-modes.automation=guided. Core skills support minimal workflows only.
+modes.automation=guided. The studio supports minimal, standard and full workflows; see workflow-modes.md for their exact artifact contracts.
 
 ## modes.rigor
 
 minimal expands to workflow minimal, terse docs, minimal QA, coarse stories,
-solo review and a team size of 1. standard/full values are understood by the
-resolver for compatibility but their workflows are not implemented in this
-release. Existing explicit knobs or legacy mirrors win over this expansion.
+solo review and a team size of 1. standard/full values select the implemented design, QA and gate contracts. Existing explicit knobs or legacy mirrors win over this expansion.
 
 ## modes.workflow and system_overrides
 
 The workflow chooses the required design artifacts. Resolve system overrides
-by the system slug; never infer workflow from QA level. Stop on an effective
-non-minimal workflow instead of silently downgrading.
+by the system slug; never infer workflow from QA level. Apply the effective tier and report missing prerequisites instead of silently downgrading.
 
 ## modes.automation
 
@@ -34,7 +31,10 @@ not need separate prompts.
 ## modes.review_mode and team.size
 
 Review depth and team preferences do not force unavailable agents to run.
-Report self-review honestly. These settings are locally overridable.
+Report self-review honestly. `team.size` is an enum with the values
+`individual`, `small`, and `studio`; it is not a numeric worker count. The
+rigor expansion supplies `individual` for `minimal` and `standard`, and
+`studio` for `full`, unless an existing explicit value wins.
 
 ## modes.story_granularity and docs.density
 
@@ -69,14 +69,37 @@ performance.enforce is a locally overridable warn/block/off preference.
 
 ## features.session_state
 
-Default on. Checkpoints are explicitly read/written by skills; there are no
-automatic session hooks. Set off to disable checkpoint updates.
+Default on. Checkpoints are explicitly read/written by skills; native hooks read
+recovery context; coordinator skills alone update checkpoints. `off` disables
+checkpoint updates. Native lifecycle receipts remain observational.
 
-## features.read_guard and features.token_budget_warn_at and updates.check
+## features.read_guard
 
-> ### RESERVED
-> Retained configuration compatibility only. This release installs no automatic
-> read guard, token meter or remote update hook. These keys do not enable one.
+`on` (the default) is implemented only for native `Read` PreToolUse events and
+the explicit read-guard CLI helper. It checks bounded versus whole-file reads
+under the configured design/architecture/session-state roots. It is not an
+arbitrary Bash or PowerShell security boundary; direct helper use remains
+explicit and separate.
+
+## features.token_budget_warn_at
+
+Reserved compatibility key. No current runtime reports context or cost usage,
+so changing this key has no effect and must remain `NOT IMPLEMENTED`.
+
+## updates.check
+
+When enabled, native session-start code may schedule a once-per-day GitHub
+release notice in the ignored `.scratch/runtime/update-status.json` cache. It
+respects `CI` and `CCGS_OFFLINE`, and `off` suppresses the check. It never
+auto-upgrades or changes project files. Network failure stays `NOT ASSESSED`.
+
+## Reserved keys
+
+`strict_gate_checks`, `accessibility.target`, `cadence.sprint_length`,
+`cadence.milestone_length`, `project.kind`, and
+`features.token_budget_warn_at` remain compatibility keys with no invented
+runtime effect. Keep their resolution and values intact while they are
+`NOT IMPLEMENTED`.
 
 ## Local overrides
 
@@ -128,3 +151,7 @@ testing:
 features:
   session_state: on
 ```
+
+## Full configuration reference
+
+Read the relevant section of config-reference.md for preserved schema-1 fields. The Codex automation and evidence contracts in core-workflow.md take precedence over source-host examples. strict_gate_checks remains reserved.

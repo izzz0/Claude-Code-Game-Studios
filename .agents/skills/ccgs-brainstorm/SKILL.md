@@ -21,3 +21,7 @@ User seed, audience/platform/constraints, existing `design/game-brief.md`, and r
 ## Output
 
 Return the brief path and MVP/build-order summary. Route to `ccgs-prototype` when the central hypothesis is uncertain; otherwise route to `ccgs-create-stories`.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.

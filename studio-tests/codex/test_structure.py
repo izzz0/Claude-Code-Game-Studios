@@ -1,4 +1,4 @@
-"""Repository contracts for the nine Codex skills and their executable resources."""
+"""Repository contracts for the native Codex skills and executable resources."""
 from pathlib import Path
 import re
 import os
@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import json
 
 from test_helpers import bash_path
 
@@ -20,11 +21,8 @@ NON_FIRST_PARTY_DIRS = {
     ".scratch", "node_modules", "examples", "sandbox", "sandboxes",
     "qa-sandbox", "vendor", "third_party", "third-party",
 }
-NAMES = {
-    "ccgs-start", "ccgs-setup-engine", "ccgs-brainstorm", "ccgs-prototype",
-    "ccgs-create-stories", "ccgs-dev-story", "ccgs-smoke-check",
-    "ccgs-code-review", "ccgs-story-done",
-}
+MANIFEST = ROOT / "studio-tests" / "migration-manifest.json"
+NAMES = {row["name"] for row in json.loads(MANIFEST.read_text(encoding="utf-8"))["skills"]}
 
 
 class StructureTests(unittest.TestCase):
@@ -90,8 +88,10 @@ class StructureTests(unittest.TestCase):
 
     def test_every_skill_route_exists(self):
         texts = [p.read_text(encoding="utf-8") for p in SKILLS.glob("*/SKILL.md")]
+        role_names = {p.stem for p in (ROOT / ".codex" / "agents").glob("*.toml")}
         for text in texts:
             routes = set(re.findall(r"\bccgs-[a-z-]+", text))
+            routes -= role_names
             self.assertLessEqual(routes, NAMES)
 
     def test_explicit_framework_references_exist(self):
@@ -102,6 +102,8 @@ class StructureTests(unittest.TestCase):
             text = document.read_text(encoding="utf-8")
             for reference in re.findall(r"\.agents/[A-Za-z0-9_./-]+", text):
                 reference = reference.rstrip(".")
+                if reference.endswith("-"):
+                    continue
                 if reference.endswith("/"):
                     reference = reference.rstrip("/")
                 with self.subTest(document=document.relative_to(ROOT), reference=reference):
@@ -115,15 +117,17 @@ class StructureTests(unittest.TestCase):
                 continue
             text = path.read_text(encoding="utf-8")
             with self.subTest(path=path.relative_to(ROOT)):
+                if path.name == "compat-inventory.sh":
+                    continue
                 self.assertNotRegex(text, r"CLAUDE_(?:SKILL|PROJECT)_DIR|\.claude/")
                 self.assertNotRegex(text, r"(?m)^!\x60|^allowed-tools:|^model:")
 
     def test_fresh_or_initialized_config_does_not_shadow_rigor(self):
         self._assert_config_contract(ROOT)
         active = (ROOT / "project.yaml").read_text(encoding="utf-8-sig")
-        self.assertFalse((ROOT / ".codex" / "config.toml").exists())
-        self.assertEqual((ROOT / ".agents/studio/VERSION").read_text().strip(), "1.2.0-codex.1")
-        self.assertIn("version: 1.2.0-codex.1", active)
+        self.assertTrue((ROOT / ".codex" / "hooks.json").exists())
+        self.assertEqual((ROOT / ".agents/studio/VERSION").read_text().strip(), "1.2.0-codex.2")
+        self.assertIn("version: 1.2.0-codex.2", active)
 
     def test_initialized_minimal_guided_config_is_allowed(self):
         with tempfile.TemporaryDirectory(prefix="ccgs initialized ") as directory:

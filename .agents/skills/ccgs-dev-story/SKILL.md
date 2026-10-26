@@ -24,3 +24,7 @@ bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,
 ## Output and route
 
 Report Files, commands/results, evidence paths, and stamp. Then invoke ccgs-smoke-check, followed by ccgs-code-review, followed by ccgs-story-done; do not jump directly to closure. Missing runtime is NOT ASSESSED, never a pass.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.

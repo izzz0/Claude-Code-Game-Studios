@@ -1,0 +1,9 @@
+sprint: 1
+goal: "Verify movement and three-target collection"
+stories:
+  - id: 1-1
+    file: production/epics/courier/story-001-movement.md
+    status: ready-for-dev
+  - id: 1-2
+    file: production/epics/courier/story-002-collection.md
+    status: ready-for-dev

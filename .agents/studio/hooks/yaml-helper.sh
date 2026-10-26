@@ -543,7 +543,7 @@ team.size::individual|small|studio
 performance.enforce::warn|block|off
 platform.cert_tier::none|itch|steam|console
 accessibility.target::none|standard|aaa
-engine.name::Godot|Unity|Unreal
+engine.name::Godot|Unity|Unreal|Cocos
 project.stage::Concept|Systems Design|Technical Setup|Pre-Production|Production|Polish|Release
 testing.strict.logic::true|false
 testing.strict.integration::true|false
@@ -1445,15 +1445,12 @@ resolve_code_root() {
   _yaml_helper_set_root
   local ename="" src="" root="" legacy="" found="" d n=0
 
-  # 1. The configured engine, through the normal chain.
-  if [ -f "$_YH_ROOT/project.local.yaml" ]; then
-    ename=$(get_yaml_key "$_YH_ROOT/project.local.yaml" engine.name 2>/dev/null)
-    [ -n "$ename" ] && src="project.local.yaml"
-  fi
-  if [ -z "$ename" ] && [ -f "$_YH_ROOT/project.yaml" ]; then
-    ename=$(get_yaml_key "$_YH_ROOT/project.yaml" engine.name 2>/dev/null)
-    [ -n "$ename" ] && src="engine.name"
-  fi
+  # Follow the normal whitelist and precedence; engine.name is not a local override.
+  local resolved
+  resolved=$(resolve_setting engine.name)
+  ename=${resolved%%	*}
+  src=${resolved#*	}
+  [ -z "$ename" ] && src=""
 
   # 2. The legacy mirror. `/setup-engine` wrote an `Engine:` line here before
   #    project.yaml existed, and workflow-catalog's `engine-setup` step still
@@ -1474,6 +1471,7 @@ resolve_code_root() {
     godot)   root="src" ;;
     unity)   root="Assets" ;;
     unreal*) root="Source" ;;
+    cocos)   root="" ;;
     *)       root="" ;;
   esac
 
@@ -1490,8 +1488,82 @@ resolve_code_root() {
     if [ "$n" = 1 ]; then root="$found"; src="detected"; else root=""; src=""; fi
   fi
 
+  # Cocos keeps scripts below the Creator package root.  Prefer the package
+  # location recorded by its project metadata; do not infer a write root from
+  # an unset engine or from a merely similarly named directory.
+  if [ "$(printf '%s' "$ename" | tr '[:upper:]' '[:lower:]')" = cocos ]; then
+    local cocos_roots
+    cocos_roots=$(resolve_code_roots)
+    root=$(printf '%s\n' "$cocos_roots" | awk -F '\t' 'NR==1 {print $1}')
+    src=$(printf '%s\n' "$cocos_roots" | awk -F '\t' 'NR==1 {print $2}')
+  fi
   [ -z "$src" ] && src="unset"
   printf '%s\t%s' "$root" "$src"
+}
+
+# Resolve all authoritative Cocos code roots.  Each row is a relative path
+# followed by a source label.  The primary root comes from the actual Creator
+# package metadata (project.json/package.json creator.version); monorepo roots
+# are added only when they exist.  The plural interface is intentionally
+# additive so existing consumers can continue using resolve_code_root.
+resolve_code_roots() {
+  _yaml_helper_set_root
+  local resolved ename root src
+  resolved=$(resolve_setting engine.name)
+  ename=${resolved%%$(printf '\t')*}
+  src=${resolved#*$(printf '\t')}
+  [ "$ename" = "$resolved" ] && src=""
+  case "$(printf '%s' "$ename" | tr '[:upper:]' '[:lower:]')" in
+    cocos) ;;
+    *) return 0 ;;
+  esac
+  local py
+  _yaml_helper_resolve_python || return 0
+  py="$_yaml_helper_python"
+  "$py" - "$_YH_ROOT" "$src" <<'PYEOF'
+import json, os, sys
+root, source = sys.argv[1:]
+
+def creator_version(path):
+    try:
+        with open(path, encoding='utf-8-sig') as f:
+            data = json.load(f)
+    except (OSError, ValueError, TypeError):
+        return None
+    creator = data.get('creator') if isinstance(data, dict) else None
+    if isinstance(creator, dict) and creator.get('version'):
+        return str(creator['version'])
+    # package.json projects may use a top-level package creator entry.
+    if isinstance(data, dict) and data.get('creator.version'):
+        return str(data['creator.version'])
+    return None
+
+def package_root(base):
+    candidates = []
+    for name in ('project.json', 'package.json'):
+        p = os.path.join(base, name)
+        if os.path.isfile(p) and creator_version(p):
+            candidates.append(p)
+    return base if candidates else None
+
+# A client package wins only when its own metadata proves it is a Cocos
+# package.  Root metadata is the normal single-project layout.
+package = package_root(root)
+client = package_root(os.path.join(root, 'client'))
+primary = None
+if client:
+    primary = os.path.join('client', 'assets', 'scripts')
+elif package:
+    primary = os.path.join('assets', 'scripts')
+if primary and os.path.isdir(os.path.join(root, primary)):
+    print(primary.replace(os.sep, '/') + '\t' + (source or 'engine.name'))
+
+# These are the only additional authoritative monorepo roots.  Generated,
+# shared and client asset trees are deliberately excluded.
+for rel in ('packages/core/src', 'packages/protocol/src', 'server/src'):
+    if os.path.isdir(os.path.join(root, rel)):
+        print(rel.replace(os.sep, '/') + '\tmonorepo')
+PYEOF
 }
 
 # List the child key names of a mapping node (one per line). get_yaml_key
@@ -2102,7 +2174,7 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
       fi
       resolve_config "$@"
       ;;
-    resolve_setting|get_yaml_key|get_effective_yaml_key|validate_yaml_enum|validate_enum_value|is_locally_overridable)
+    resolve_code_root|resolve_code_roots|resolve_setting|get_yaml_key|get_effective_yaml_key|validate_yaml_enum|validate_enum_value|is_locally_overridable)
       # Preserve a nested project's cwd when it contains project.yaml or
       # project.local.yaml; otherwise anchor lookups at this helper's root.
       _yh_fn="$1"; shift
@@ -2122,7 +2194,8 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
       ;;
     *)
       echo "yaml-helper.sh: usage: bash yaml-helper.sh resolve_config [--keys k1,k2,...] [<system>]"
-      echo "                       bash yaml-helper.sh resolve_setting|get_yaml_key|get_effective_yaml_key|validate_yaml_enum|validate_enum_value|is_locally_overridable <args>"
+      echo "                       bash yaml-helper.sh resolve_code_root|resolve_code_roots|resolve_setting|get_yaml_key|get_effective_yaml_key|validate_yaml_enum|validate_enum_value|is_locally_overridable <args>" >&2
+      exit 2
       ;;
   esac
   exit 0

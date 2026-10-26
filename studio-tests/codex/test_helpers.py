@@ -38,10 +38,7 @@ def bash_path():
             return str(candidate)
     if found:
         return found
-    raise unittest.SkipTest("Bash is required (set CCGS_BASH)")
-    if fallback.exists():
-        return str(fallback)
-    raise unittest.SkipTest("Bash is required (set CCGS_BASH)")
+    raise RuntimeError("Bash is required for framework validation (set CCGS_BASH)")
 
 
 class HelperTests(unittest.TestCase):

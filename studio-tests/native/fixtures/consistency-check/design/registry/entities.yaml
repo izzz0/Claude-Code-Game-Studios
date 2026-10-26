@@ -1,0 +1,8 @@
+# Registry layout: entities
+entities:
+  - name: Player
+    status: active
+    source: design/gdd/player.md
+    health: 120
+    referenced_by:
+      - design/gdd/combat.md

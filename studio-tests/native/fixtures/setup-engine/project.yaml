@@ -1,0 +1,11 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Preserve This Project Name
+  stage: Concept
+modes:
+  rigor: minimal
+  automation: guided
+notes:
+  owner: native-smoke

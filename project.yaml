@@ -4,7 +4,7 @@
 schema_version: 1
 
 framework:
-  version: 1.2.0-codex.1
+  version: 1.2.0-codex.2
   last_upgraded: 2026-10-19
 
 # NOTE: this template ships with no `modes:` block, and the six knobs below must

@@ -23,3 +23,7 @@ bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,
 ## Output
 
 Return findings, evidence hashes/paths, and verdict. No blocking findings route to ccgs-story-done; findings route to ccgs-dev-story.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.

@@ -22,3 +22,7 @@ The brief's MVP list and Build order, existing production/epics/**/EPIC.md, stor
 ## Output
 
 Return created/preserved paths, IDs, build order, and first actionable story. Route only that story to ccgs-dev-story.
+
+## Standard/full workflow
+
+Resolve workflow with the command above. For standard or full, read references/full-workflow.md and apply its artifact, review, and evidence phases, subject to .agents/studio/docs/core-workflow.md; minimal remains the default and stops at the minimal contract.
