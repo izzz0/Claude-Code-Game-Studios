@@ -80,3 +80,9 @@ satisfied by a claim in the returned text.
 The console prints compact case results. Full protected-file and artifact hashes
 remain in state.json and each attempt/result.json. Historical failed attempts
 are retained; a changed fixture or assertion requires a fresh native attempt.
+
+An incomplete native turn does not grade response/artifact expectations. It
+remains NOT ASSESSED, with the actual terminal host error retained in the result
+and compact console output. Observed hook or read-only protection failures still
+fail, even when the host turn fails. A host capacity error never switches models
+or turns an unexecuted case into a skill failure or PASS.

@@ -44,6 +44,41 @@ class NativeAcceptanceTests(unittest.TestCase):
                    "aggregatedOutput": "sandbox provisioning failed"}]
         self.assertEqual(self.assess(response="NOT ASSESSED", items=failed)["status"], "NOT ASSESSED")
 
+    def test_failed_turn_skips_unassessed_content_but_keeps_protection_failures(self):
+        result = driver.assess(self.case, self.root, self.before, "", [], self.hooks, "failed")
+        self.assertEqual(result["status"], "NOT ASSESSED")
+        self.assertEqual(result["findings"], [])
+        self.assertTrue(result["missing"])
+        (self.root / "code.gd").write_text("unexpected write", encoding="utf-8")
+        result = driver.assess(self.case, self.root, self.before, "", [], self.hooks, "failed")
+        self.assertEqual(result["status"], "FAIL")
+        self.assertIn("Read-only case changed protected sandbox files.", result["findings"])
+
+    def test_failed_native_run_retains_terminal_host_error(self):
+        error = {"message": "Selected model is at capacity. Please try a different model.",
+                 "codexErrorInfo": "serverOverloaded"}
+        class FixtureClient:
+            def __init__(self):
+                self.events = []
+            def request(self, method, params):
+                if method == "thread/start":
+                    return {"thread": {"id": "fixture-capacity"}, "model": "fixture"}
+                self.completed = {"method": "turn/completed", "params": {"threadId": "fixture-capacity",
+                                  "turn": {"status": "failed", "error": error}}}
+                self.events.append(self.completed)
+                return {}
+            def receive(self, timeout):
+                return self.completed
+        catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
+        case = next(row for row in catalog["cases"] if row["skill"] == "ccgs-help")
+        result = driver.run_case(FixtureClient(), ROOT, self.root / "output", case, 10)
+        self.assertEqual(result["status"], "NOT ASSESSED")
+        self.assertEqual(result["native_error"], error)
+        self.assertEqual(result["findings"], [])
+        self.assertTrue(any(error["message"] in line for line in result["missing"]))
+        saved = json.loads((Path(result["attempt"]) / "result.json").read_text(encoding="utf-8"))
+        self.assertEqual(saved["native_error"]["codexErrorInfo"], "serverOverloaded")
+
     def test_readonly_and_fresh_authoring_are_enforced(self):
         (self.root / "code.gd").write_text("changed", encoding="utf-8")
         self.assertEqual(self.assess()["status"], "FAIL")

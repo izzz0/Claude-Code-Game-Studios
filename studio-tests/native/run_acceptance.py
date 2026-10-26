@@ -110,6 +110,9 @@ def assess(case, sandbox, before, response, items, hooks, transport_status):
     after = tree_hashes(sandbox)
     if case.get("readonly") and before != after:
         fail.append("Read-only case changed protected sandbox files.")
+    if transport_status != "completed":
+        return {"status": "FAIL" if fail else "NOT ASSESSED", "findings": fail,
+                "missing": missing, "artifacts": {}, "protected_hashes": after}
     expected = case["expected"]
     for text in expected.get("response_contains", []):
         if text.casefold() not in response.casefold():
@@ -269,6 +272,7 @@ def run_case(client, project, output, case, timeout):
         {"type": "text", "text": instruction}]})
     deadline = time.monotonic() + timeout
     transport_status = "timeout"
+    native_error = None
     while time.monotonic() < deadline:
         try:
             value = client.receive(min(10, max(.01, deadline - time.monotonic())))
@@ -276,6 +280,7 @@ def run_case(client, project, output, case, timeout):
             continue
         if value.get("method") == "turn/completed" and value.get("params", {}).get("threadId") == tid:
             transport_status = value["params"]["turn"]["status"]
+            native_error = value["params"]["turn"].get("error")
             break
     if transport_status == "timeout":
         # Stop the batch; do not start more work while a timed-out turn is live.
@@ -289,6 +294,9 @@ def run_case(client, project, output, case, timeout):
     (attempt / "response.txt").write_text(response, encoding="utf-8")
     write_json(attempt / "events.json", events)
     result = assess(case, sandbox, before, response, items, hooks, transport_status)
+    if native_error:
+        result["native_error"] = native_error
+        result["missing"].append("Native host: " + native_error.get("message", "unspecified error"))
     result.update(id=case["id"], skill=case["skill"], thread_id=tid,
                   transport_status=transport_status, sandbox=str(sandbox),
                   attempt=str(attempt), response_sha256=sha(attempt / "response.txt"),
