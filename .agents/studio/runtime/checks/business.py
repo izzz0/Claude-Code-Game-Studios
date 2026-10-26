@@ -105,7 +105,8 @@ def meaningful(result):
 
 
 def check(root, data, paths=(), after=False, budget=6):
-    root = Path(root)
+    root = Path(root).resolve()
+    paths = [((root / target).resolve(), relative) for target, relative in paths]
     notes = []
     deadline = time.monotonic() + budget
     def run(*args):

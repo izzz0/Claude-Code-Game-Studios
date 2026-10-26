@@ -44,6 +44,17 @@ class BusinessFixture(unittest.TestCase):
 
 
 class BusinessCheckTests(BusinessFixture):
+    def test_lexical_path_alias_matches_reconstructed_patch_target(self):
+        target = self.root / "src/main.gd"
+        target.parent.mkdir()
+        target.write_text("extends Node\nold\n", encoding="utf-8")
+        alias = self.root / "src/../src/main.gd"
+        patch = "*** Update File: src/main.gd\n@@\n extends Node\n-old\n+new\n"
+        rows = check(self.root, {"tool_name": "apply_patch", "cwd": str(self.root),
+                                "tool_input": {"command": patch}}, [(alias, "src/main.gd")])
+        self.assertEqual(rows, [])
+        self.assertEqual(target.read_text(encoding="utf-8"), "extends Node\nold\n")
+
     def test_ambiguous_native_context_never_checks_old_config_as_proposed(self):
         target = self.root / "project.yaml"
         target.write_text("project:\n  name: Godot\nengine:\n  name: Godot\n", encoding="utf-8")

@@ -123,7 +123,7 @@ class NativeAcceptanceTests(unittest.TestCase):
         project = self.root / "project"
         project.mkdir()
         instructions = driver.instruction_hashes(project)
-        project_agents = str(project / "AGENTS.md")
+        project_agents = str((project / "AGENTS.md").resolve())
         self.assertIn(project_agents, instructions)
         self.assertIsNone(instructions[project_agents])
         (project / "AGENTS.md").write_text("project rule", encoding="utf-8")
