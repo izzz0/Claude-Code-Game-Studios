@@ -87,6 +87,13 @@ The console prints compact case results. Full protected-file and artifact hashes
 remain in state.json and each attempt/result.json. Historical failed attempts
 are retained; a changed fixture or assertion requires a fresh native attempt.
 
+The help command check recognizes ATX and standalone bold inventory headings.
+It excludes inventory skill names only; command references in descriptions stay
+checked. A subsequent heading or non-list body ends the inventory region.
+The captured bold-heading response is a parser regression fixture, not a new
+native execution. Offline reassessments retain the original FAIL and are stored
+separately from native attempts and resume state.
+
 An incomplete native turn does not grade response/artifact expectations. It
 remains NOT ASSESSED, with the actual terminal host error retained in the result
 and compact console output. Observed hook or read-only protection failures still

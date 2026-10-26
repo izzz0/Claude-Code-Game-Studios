@@ -123,13 +123,22 @@ def assess(case, sandbox, before, response, items, hooks, transport_status):
     if "response_commands" in expected:
         navigation, inventory = [], False
         for line in response.splitlines():
-            heading = re.match(r"\s*#{1,6}\s+(.+)", line)
-            if heading:
-                inventory = heading.group(1).casefold().startswith("also installed")
-            # Exclude only the documented non-action inventory bullet shape.
-            # Instructions appended below that footer remain navigation text.
-            if inventory and re.match(r"\s*[-*]\s+`?\$ccgs-[a-z0-9-]+`?\s*[—–:-]", line, re.I):
-                continue
+            text = line.strip()
+            heading = re.fullmatch(r"#{1,6}\s+(.+?)(?:\s+#+)?", text)
+            title = heading.group(1) if heading else text
+            bold = re.fullmatch(r"(\*\*|__)(.+?)\1:?", title)
+            if heading or bold:
+                title = (bold.group(2) if bold else title).strip().rstrip(":").strip()
+                inventory = bool(re.fullmatch(r"also installed(?:\s+\(not in workflow\))?", title, re.I))
+            elif inventory and text:
+                # Only contiguous name-description bullets are inventory.
+                # Any following body text ends the section before more commands.
+                entry = re.match(r"[-*]\s+`?\$ccgs-[a-z0-9-]+`?\s*[—–:-]\s*(.*)$", text, re.I)
+                if entry:
+                    # Hide only the inventory name, never another command in its description.
+                    navigation.append(entry.group(1))
+                    continue
+                inventory = False
             navigation.append(line)
         commands = set(re.findall(r"\$(ccgs-[a-z0-9-]+)", "\n".join(navigation), re.I))
         if {name.casefold() for name in commands} != set(expected["response_commands"]):

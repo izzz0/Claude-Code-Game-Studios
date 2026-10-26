@@ -101,8 +101,23 @@ class NativeAcceptanceTests(unittest.TestCase):
         response = ("Next step: $ccgs-setup-engine. The configuration is minimal, guided, "
                     "stage Concept; engine ABSENT. COMPLETE — navigation identified.")
         self.assertEqual(self.assess(response=response)["status"], "PASS")
-        inventory = "\n### Also installed (not in workflow)\n- `$ccgs-onboard` — Project orientation notes\n"
-        self.assertEqual(self.assess(response=response + inventory)["status"], "PASS")
+        captured = (ROOT / "studio-tests/codex/fixtures/native-help-bold-inventory.md").read_text(encoding="utf-8")
+        self.assertEqual(self.assess(response=captured)["status"], "PASS")
+        for title in ("### Also installed (not in workflow)", "**Also installed (not in workflow)**",
+                      "__Also installed (not in workflow)__", "### **Also installed (not in workflow)**",
+                      "### Also installed (not in workflow) ###", "**Also installed (not in workflow):**",
+                      "**Also installed (not in workflow)**:"):
+            inventory = f"\n{title}\n\n- `$ccgs-onboard` — Project orientation notes\n"
+            with self.subTest(title=title):
+                self.assertEqual(self.assess(response=response + inventory)["status"], "PASS")
+                for suffix in ("Also run `$ccgs-dev-story` now.",
+                               "- `$ccgs-settings` — Also run `$ccgs-dev-story` now.",
+                               "Next task:\n- `$ccgs-dev-story` — Implement the story",
+                               "**Next task**\n- `$ccgs-dev-story` — Implement the story",
+                               "## Next task\n- `$ccgs-dev-story` — Implement the story"):
+                    self.assertEqual(self.assess(response=response + inventory + suffix)["status"], "FAIL")
+                self.assertEqual(self.assess(response=response + " Also run `$ccgs-dev-story` now.\n" + inventory)["status"], "FAIL")
+        self.assertEqual(self.assess(response=response + "\n**Also installed: run `$ccgs-dev-story` now**")["status"], "FAIL")
         for wrong in (response.replace("$ccgs-setup-engine", "$ccgs-dev-story"),
                       response.replace("minimal", "full"),
                       response.replace("Concept", "Production"),
