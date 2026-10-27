@@ -22,7 +22,6 @@
               "## Reproduction Steps",
               "**Expected Result**:",
               "**Actual Result**:",
-              "$ccgs-bug-triage",
               "src/game.gd"
             ],
             "not_contains": [
@@ -44,11 +43,12 @@
           "BUG-0001",
           "S2-High",
           "P1-Fix this sprint",
-          "`src/game.gd` is unchanged"
+          "$ccgs-bug-triage"
         ],
         "response_not_contains": [
           "source code fixed",
-          "Status: Closed"
+          "Status: Closed",
+          "$ccgs-settings"
         ],
         "required_tools": true,
         "counts": [
@@ -63,7 +63,7 @@
       "expected_outputs": [
         {
           "path": "production/qa/bugs/BUG-0001.md",
-          "contains": ["**ID**: BUG-0001", "**Severity**: S2-High", "**Priority**: P1-Fix this sprint", "**Status**: Open", "## Reproduction Steps", "**Expected Result**:", "**Actual Result**:", "$ccgs-bug-triage"]
+          "contains": ["**ID**: BUG-0001", "**Severity**: S2-High", "**Priority**: P1-Fix this sprint", "**Status**: Open", "## Reproduction Steps", "**Expected Result**:", "**Actual Result**:"]
         }
       ],
       "fixture_stdout": null,

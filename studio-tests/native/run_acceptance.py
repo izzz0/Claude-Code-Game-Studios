@@ -284,6 +284,24 @@ def read_child_history(client, child_id):
     return thread, pages
 
 
+def collect_child_thread_ids(items):
+    """Collect child IDs only from app-server collaboration receipts."""
+    child_ids = set()
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        if item.get("type") == "collabAgentToolCall":
+            candidates = item.get("receiverThreadIds", [])
+            if isinstance(candidates, list):
+                child_ids.update(child for child in candidates
+                                 if isinstance(child, str) and child and child == child.strip())
+        elif item.get("type") == "subAgentActivity":
+            child = item.get("agentThreadId")
+            if isinstance(child, str) and child and child == child.strip():
+                child_ids.add(child)
+    return sorted(child_ids)
+
+
 class Client:
     def __init__(self, executable, project, output):
         self.events, self.serial, self.queue = [], 0, queue.Queue()
@@ -426,10 +444,9 @@ def run_case(client, project, output, case, timeout):
             break
     events = [e for e in client.events[start_index:] if e.get("params", {}).get("threadId") == tid]
     items = [e["params"]["item"] for e in events if e.get("method") == "item/completed"]
-    child_ids = sorted({child for item in items if item.get("type") == "collabAgentToolCall"
-                        for child in item.get("receiverThreadIds", [])})
+    child_ids = collect_child_thread_ids(items)
     child_threads, child_errors, child_pages = {}, {}, {}
-    for child_id in child_ids if transport_status == "completed" else []:
+    for child_id in child_ids:
         try:
             child_threads[child_id], child_pages[child_id] = read_child_history(client, child_id)
         except Attention as exc:
@@ -479,8 +496,7 @@ def run_case(client, project, output, case, timeout):
                   engine_observation=engine_observation,
                   native_evidence=evidence, child_read_errors=child_errors,
                   observation_hashes=tree_hashes(sandbox / ".scratch/team-observations"),
-                  native_agent_ids=sorted({child for i in items if i.get("type") == "collabAgentToolCall"
-                                           for child in i.get("receiverThreadIds", [])}))
+                  native_agent_ids=child_ids)
     write_json(attempt / "result.json", result)
     if transport_status == "timeout" and started.get("turn", {}).get("id"):
         # Persist evidence first: even an interruption RPC failure must leave a verdict.

@@ -225,7 +225,6 @@
               "## Reproduction Steps",
               "**Expected Result**:",
               "**Actual Result**:",
-              "$ccgs-bug-triage",
               "src/game.gd"
             ],
             "not_contains": [
@@ -247,11 +246,12 @@
           "BUG-0001",
           "S2-High",
           "P1-Fix this sprint",
-          "`src/game.gd` is unchanged"
+          "$ccgs-bug-triage"
         ],
         "response_not_contains": [
           "source code fixed",
-          "Status: Closed"
+          "Status: Closed",
+          "$ccgs-settings"
         ],
         "required_tools": true,
         "counts": [

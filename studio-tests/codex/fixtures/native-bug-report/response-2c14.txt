@@ -1,0 +1,5 @@
+COMPLETE — Created [BUG-0001](production/qa/bugs/BUG-0001.md) in Description Mode with S2-High, P1-Fix this sprint, concrete reproduction steps, expected/actual results, affected file, and your explicit write approval.
+
+Source inspection confirms the guard rejects index `2`. Runtime reproduction was not performed. Source code remains unchanged.
+
+Suggested next step: `$ccgs-bug-triage`.

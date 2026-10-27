@@ -26,8 +26,8 @@ class BugReportNativeCaseTests(unittest.TestCase):
         cls.case = next(item for item in catalog["cases"] if item["id"] == "native-005-ccgs-bug-report")
         part = json.loads((ROOT / "studio-tests/native/case-parts/design-quality.json").read_text(encoding="utf-8"))
         cls.part_case = next(item for item in part["cases"] if item["id"] == cls.case["id"])
-        cls.report = (FIXTURES / "BUG-0001.md").read_text(encoding="utf-8")
-        cls.response = (FIXTURES / "response.txt").read_text(encoding="utf-8")
+        cls.report = (FIXTURES / "BUG-0001-2c14.md").read_text(encoding="utf-8")
+        cls.response = (FIXTURES / "response-2c14.txt").read_text(encoding="utf-8")
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="bug report case 005 ")
@@ -94,18 +94,31 @@ class BugReportNativeCaseTests(unittest.TestCase):
                 self.assertEqual(result["status"], "FAIL")
                 self.assertTrue(any(finding in item for item in result["findings"]))
 
-    def test_reproduction_results_and_next_triage_must_be_in_report(self):
+    def test_reproduction_and_results_must_be_in_report(self):
         cases = (
             (self.report.replace("## Reproduction Steps", "## Steps"), "missing ## Reproduction Steps"),
             (self.report.replace("**Expected Result**:", "**Expected**:"), "missing **Expected Result**:"),
             (self.report.replace("**Actual Result**:", "**Actual**:"), "missing **Actual Result**:"),
-            (self.report.replace("$ccgs-bug-triage", "$ccgs-settings"), "missing $ccgs-bug-triage"),
         )
         for report, finding in cases:
             with self.subTest(finding=finding):
                 result = self.assess(report=report)
                 self.assertEqual(result["status"], "FAIL")
                 self.assertTrue(any(finding in item for item in result["findings"]))
+
+    def test_next_triage_is_required_in_response(self):
+        result = self.assess(native_inputs=True)
+        self.assertEqual(result["status"], "NOT ASSESSED")
+        self.assertEqual(result["findings"], [])
+
+        for response in (
+            self.response.replace("Suggested next step: `$ccgs-bug-triage`.", ""),
+            self.response.replace("$ccgs-bug-triage", "$ccgs-settings"),
+        ):
+            with self.subTest(response=response[-80:]):
+                result = self.assess(response=response)
+                self.assertEqual(result["status"], "FAIL")
+                self.assertTrue(any("$ccgs-bug-triage" in item for item in result["findings"]))
 
     def test_exactly_one_report_and_unchanged_source_are_required(self):
         duplicate = self.assess(duplicate=True)

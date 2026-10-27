@@ -118,3 +118,9 @@ can fork their context; no model, provider or permission override is made.
 Resume fingerprints include all shared runtime inputs plus the selected case
 and its own fixture. Editing another case alone does not invalidate an unrelated
 PASS; shared code, host, instructions or selected-case changes still do.
+
+Child IDs are collected from actual legacy collaboration receipts and native
+`subAgentActivity` items. Interrupted parent attempts retain read-only child
+metadata and full history when the host provides them. Activity is lifecycle
+evidence only: it does not prove assignment contents, returned work or review
+completion. Missing or encrypted assignment evidence remains NOT ASSESSED.
