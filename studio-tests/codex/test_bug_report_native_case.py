@@ -28,6 +28,8 @@ class BugReportNativeCaseTests(unittest.TestCase):
         cls.part_case = next(item for item in part["cases"] if item["id"] == cls.case["id"])
         cls.report = (FIXTURES / "BUG-0001-2c14.md").read_text(encoding="utf-8")
         cls.response = (FIXTURES / "response-2c14.txt").read_text(encoding="utf-8")
+        cls.report_followup = (FIXTURES / "BUG-0001-529d.md").read_text(encoding="utf-8")
+        cls.response_followup = (FIXTURES / "response-529d.txt").read_text(encoding="utf-8")
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="bug report case 005 ")
@@ -106,19 +108,27 @@ class BugReportNativeCaseTests(unittest.TestCase):
                 self.assertEqual(result["status"], "FAIL")
                 self.assertTrue(any(finding in item for item in result["findings"]))
 
-    def test_next_triage_is_required_in_response(self):
-        result = self.assess(native_inputs=True)
-        self.assertEqual(result["status"], "NOT ASSESSED")
-        self.assertEqual(result["findings"], [])
-
-        for response in (
-            self.response.replace("Suggested next step: `$ccgs-bug-triage`.", ""),
-            self.response.replace("$ccgs-bug-triage", "$ccgs-settings"),
+    def test_triage_may_appear_in_response_or_listed_report(self):
+        for report, response in (
+            (self.report, self.response),
+            (self.report_followup, self.response_followup),
         ):
-            with self.subTest(response=response[-80:]):
-                result = self.assess(response=response)
-                self.assertEqual(result["status"], "FAIL")
-                self.assertTrue(any("$ccgs-bug-triage" in item for item in result["findings"]))
+            with self.subTest(placement="response" if "$ccgs-bug-triage" in response else "report"):
+                result = self.assess(report=report, response=response, native_inputs=True)
+                self.assertEqual(result["status"], "NOT ASSESSED")
+                self.assertEqual(result["findings"], [])
+
+        no_triage_report = self.report.replace("$ccgs-bug-triage", "$ccgs-settings")
+        no_triage_response = self.response.replace("$ccgs-bug-triage", "$ccgs-settings")
+        result = self.assess(report=no_triage_report, response=no_triage_response)
+        self.assertEqual(result["status"], "FAIL")
+        self.assertTrue(any("$ccgs-bug-triage" in item for item in result["findings"]))
+
+        wrong_skill_response = self.response_followup + "\nSuggested next step: `$ccgs-settings`."
+        wrong_skill_report = self.report_followup.replace("$ccgs-bug-triage", "$ccgs-settings")
+        result = self.assess(report=wrong_skill_report, response=wrong_skill_response)
+        self.assertEqual(result["status"], "FAIL")
+        self.assertTrue(any("Forbidden response claim" in item for item in result["findings"]))
 
     def test_exactly_one_report_and_unchanged_source_are_required(self):
         duplicate = self.assess(duplicate=True)

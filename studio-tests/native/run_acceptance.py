@@ -203,13 +203,14 @@ def assess(case, sandbox, before, response, items, hooks, transport_status, nati
         commands = set(re.findall(r"\$(ccgs-[a-z0-9-]+)", "\n".join(navigation), re.I))
         if {name.casefold() for name in commands} != set(expected["response_commands"]):
             fail.append("Workflow command set differs from the required single handoff: " + ", ".join(sorted(commands)))
-    artifacts = {}
+    artifacts, output_texts = {}, {}
     for spec in expected.get("files", []):
         path = safe_path(sandbox, spec["path"])
         if not path.is_file():
             fail.append("Missing artifact: " + spec["path"])
             continue
         text = path.read_text(encoding="utf-8-sig")
+        output_texts[spec["path"]] = text
         artifacts[spec["path"]] = sha(path)
         for token in spec.get("contains", []):
             if token not in text:
@@ -221,6 +222,17 @@ def assess(case, sandbox, before, response, items, hooks, transport_status, nati
             fail.append("Expected artifact was not changed: " + spec["path"])
         if spec.get("changed") is False and before.get(spec["path"]) != artifacts[spec["path"]]:
             fail.append("Preserved artifact changed: " + spec["path"])
+    for spec in expected.get("any_output_contains", []):
+        candidates = [response.casefold()]
+        for relative in spec.get("files", []):
+            if relative in output_texts:
+                candidates.append(output_texts[relative].casefold())
+            else:
+                path = safe_path(sandbox, relative)
+                if path.is_file():
+                    candidates.append(path.read_text(encoding="utf-8-sig").casefold())
+        if not any(spec["text"].casefold() in candidate for candidate in candidates):
+            fail.append("Missing expected output content: " + spec["text"])
     for spec in expected.get("counts", []):
         safe_path(sandbox, spec["glob"])
         actual_count = sum(path.is_file() for path in Path(sandbox).glob(spec["glob"]))

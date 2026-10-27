@@ -245,8 +245,10 @@
         "response_contains": [
           "BUG-0001",
           "S2-High",
-          "P1-Fix this sprint",
-          "$ccgs-bug-triage"
+          "P1-Fix this sprint"
+        ],
+        "any_output_contains": [
+          {"text": "$ccgs-bug-triage", "files": ["production/qa/bugs/BUG-0001.md"]}
         ],
         "response_not_contains": [
           "source code fixed",

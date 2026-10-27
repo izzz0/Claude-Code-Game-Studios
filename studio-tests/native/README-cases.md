@@ -124,3 +124,9 @@ Child IDs are collected from actual legacy collaboration receipts and native
 metadata and full history when the host provides them. Activity is lifecycle
 evidence only: it does not prove assignment contents, returned work or review
 completion. Missing or encrypted assignment evidence remains NOT ASSESSED.
+
+The bug-report handoff may appear in the final response or its explicitly
+listed report. `any_output_contains` checks those locations only; unrelated
+project files cannot satisfy it. Required report fields, unchanged source and
+missing/wrong-next-step counterexamples remain enforced. Offline reassessments
+of captured native runs stay separate from fresh invocations and resume state.
