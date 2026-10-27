@@ -52,6 +52,7 @@ class NativeHistoryReceiptTests(unittest.TestCase):
             def request(self, method, params):
                 self.requests.append(method)
                 if method == "thread/start":
+                    self.ephemeral = params["ephemeral"]
                     return {"thread": {"id": "timed-child"}, "model": "synthetic"}
                 if method == "turn/start":
                     return {"turn": {"id": "turn-1"}}
@@ -65,6 +66,7 @@ class NativeHistoryReceiptTests(unittest.TestCase):
             self.assertEqual(result["status"], "NOT ASSESSED")
             self.assertEqual(result["transport_status"], "timeout")
             self.assertEqual(client.requests.count("turn/start"), 1)
+            self.assertFalse(client.ephemeral, "Native child forks require a retained parent rollout")
             self.assertIn("turn/interrupt", client.requests)
             self.assertTrue(any("interruption was not confirmed" in x for x in result["missing"]))
             attempt = Path(result["attempt"])

@@ -112,3 +112,9 @@ and hashes of ignored review observations. A timed-out turn retains an unassesse
 result and stops the batch. Team/review verification crossmatches native child IDs,
 configured roles, actual completed turns, recovery ordering and retained artifact
 hashes. Missing history or independent review never becomes a PASS from prose.
+
+Acceptance parent threads retain local rollout history so native child agents
+can fork their context; no model, provider or permission override is made.
+Resume fingerprints include all shared runtime inputs plus the selected case
+and its own fixture. Editing another case alone does not invalidate an unrelated
+PASS; shared code, host, instructions or selected-case changes still do.

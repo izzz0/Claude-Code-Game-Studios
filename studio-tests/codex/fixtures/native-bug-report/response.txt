@@ -1,0 +1,3 @@
+Created [BUG-0001.md](production/qa/bugs/BUG-0001.md) in Description Mode with **S2-High**, **P1-Fix this sprint**, reproduction steps, expected/actual results, affected file, and your explicit write approval.
+
+Source inspection confirms `target_index >= 2` rejects the third target. Report fields were checked; `src/game.gd` is unchanged. Runtime reproduction was not performed.

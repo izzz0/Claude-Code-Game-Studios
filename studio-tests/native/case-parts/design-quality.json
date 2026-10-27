@@ -15,33 +15,45 @@
           {
             "path": "production/qa/bugs/BUG-0001.md",
             "contains": [
-              "BUG-0001",
-              "S2-High",
-              "P1-Fix this sprint",
-              "Reproduction Steps",
-              "Expected Result",
-              "Actual Result",
+              "**ID**: BUG-0001",
+              "**Severity**: S2-High",
+              "**Priority**: P1-Fix this sprint",
+              "**Status**: Open",
+              "## Reproduction Steps",
+              "**Expected Result**:",
+              "**Actual Result**:",
+              "$ccgs-bug-triage",
               "src/game.gd"
             ],
             "not_contains": [
+              "**Status**: Closed",
               "Status: Closed"
-            ]
+            ],
+            "changed": true
+          },
+          {
+            "path": "src/game.gd",
+            "contains": [
+              "target_index >= 2",
+              "return false"
+            ],
+            "changed": false
           }
         ],
         "response_contains": [
           "BUG-0001",
           "S2-High",
           "P1-Fix this sprint",
-          "Expected Result",
-          "Actual Result",
-          "COMPLETE",
-          "$ccgs-bug-triage"
+          "`src/game.gd` is unchanged"
         ],
         "response_not_contains": [
           "source code fixed",
           "Status: Closed"
         ],
-        "required_tools": true
+        "required_tools": true,
+        "counts": [
+          {"glob": "production/qa/bugs/BUG-*.md", "count": 1}
+        ]
       },
       "config": {
         "engine.name": "Godot",
@@ -51,7 +63,7 @@
       "expected_outputs": [
         {
           "path": "production/qa/bugs/BUG-0001.md",
-          "contains": ["BUG-0001", "S2-High", "Expected Result", "Actual Result"]
+          "contains": ["**ID**: BUG-0001", "**Severity**: S2-High", "**Priority**: P1-Fix this sprint", "**Status**: Open", "## Reproduction Steps", "**Expected Result**:", "**Actual Result**:", "$ccgs-bug-triage"]
         }
       ],
       "fixture_stdout": null,
