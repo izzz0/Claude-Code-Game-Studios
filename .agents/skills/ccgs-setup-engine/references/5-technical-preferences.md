@@ -14,8 +14,21 @@
 - Engine Specialists Routing
 - Collaborative Step
 
-After updating AGENTS.md, create or update `.agents/studio/docs/technical-preferences.md` with
-engine-appropriate defaults. Read the existing template first, then fill in:
+After checking the project rules, create or update the project's `docs/technical-preferences.md`
+with engine-appropriate defaults. Read and preserve an existing project document.
+If it is absent, initialize it from the read-only template at
+`.agents/studio/docs/technical-preferences.md` only when that template exists;
+never overwrite an existing project document or write the template path. For
+each setting, prefer `project.yaml`; a blank or `[TO BE CONFIGURED]` value in
+the project document leaves any configured legacy-template value available as
+a per-key fallback. Fill in:
+
+```bash
+if [ ! -f docs/technical-preferences.md ] && [ -f .agents/studio/docs/technical-preferences.md ]; then
+  mkdir -p docs
+  cp .agents/studio/docs/technical-preferences.md docs/technical-preferences.md
+fi
+```
 
 ### Engine & Language Section
 - Fill from the engine choice made in step 4

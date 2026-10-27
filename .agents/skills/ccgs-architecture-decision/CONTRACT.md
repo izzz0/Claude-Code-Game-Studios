@@ -22,7 +22,7 @@ nothing is indistinguishable from a check that passed.
 | `docs/architecture/` (existing ADRs) | Scanned to determine the next sequential ADR number | Yes |
 | `design/gdd/[system].md` (GDDs relevant to the decision) | Specific rules, formulas, performance constraints, or integration points that motivate the decision | Yes |
 | `project.yaml` | `engine.name` — derives the primary specialist (`<engine>-specialist`) to spawn for validation (Step 5.5) | Yes |
-| `.agents/studio/docs/technical-preferences.md` | `Engine Specialists` section — legacy fallback, used only when `engine.name` is absent or empty in `project.yaml` | Yes — required only when `engine.name` is absent |
+| `docs/technical-preferences.md` | Project-owned `Engine Specialists` guidance, after `project.yaml` and with the read-only `.agents/studio/docs/technical-preferences.md` as per-key fallback for unset/placeholder fields | Read when `engine.name` is unset or when specialist routing is needed |
 
 ### Preconditions
 - An engine must be configured (`docs/engine-reference/[engine]/VERSION.md` must exist) — if not, the skill prompts to run `$ccgs-setup-engine` first
@@ -47,7 +47,7 @@ nothing is indistinguishable from a check that passed.
 - Engine specialist validation (Step 5.5) runs before the file is written if an engine specialist is configured; blocking issues found by the specialist cause the Decision section to be revised before saving
 
 ## Immutability Rules
-- READS but does NOT modify: all existing ADR files in `docs/architecture/` (including in retrofit mode — existing sections are never touched), all GDD files in `design/gdd/`, `docs/engine-reference/**`, `project.yaml`, `.agents/studio/docs/technical-preferences.md` (legacy fallback)
+- READS but does NOT modify: all existing ADR files in `docs/architecture/` (including in retrofit mode — existing sections are never touched), all GDD files in `design/gdd/`, `docs/engine-reference/**`, `project.yaml`, `docs/technical-preferences.md`, and per-key fallback `.agents/studio/docs/technical-preferences.md`
 - MODIFIES: `docs/architecture/adr-NNNN-[slug].md` (new file created; or missing sections appended in retrofit mode), `docs/registry/architecture.yaml` (append only; existing entries get `status: superseded_by` annotation, never deleted or rewritten)
 - In retrofit mode: appends only the missing sections — never modifies any section that is already present in the target ADR file
 
@@ -89,6 +89,6 @@ nothing is indistinguishable from a check that passed.
 - If the ADR number scan misses a file (e.g., a file in a subdirectory of `docs/architecture/` or with a non-standard naming pattern), a duplicate number can be assigned — all ADR files must follow the `adr-NNNN-[slug].md` naming convention at the top level of `docs/architecture/`
 - Acceptance mode moves a story from `Blocked` to `Ready` only when the story file, under `production/epics/`, contains a Blocked Status line in any of the forms `$ccgs-create-stories` writes (`> **Status**: Blocked`, `**Status:** Blocked`, `Status: Blocked`) and this ADR's id. A story blocked pending this ADR that never names its id is not found, and stays `Blocked` until it is updated by hand
 - The `## GDD Requirements Addressed` table is populated based on what the user tells the skill during the collaborative session; if the user does not know which GDDs motivated the decision, this table may be incomplete — `$ccgs-create-epics` and `$ccgs-gate-check` both rely on this linkage for traceability
-- Engine specialist validation (Step 5.5) is skipped only when **both** sources are unset — `engine.name` absent or empty in `project.yaml` **and** `.agents/studio/docs/technical-preferences.md` still reading `[TO BE CONFIGURED]`. A project configured solely via `project.yaml` **does** get specialist validation. When both are unset, post-cutoff engine API risks are not caught before the ADR is written
+- Engine specialist validation (Step 5.5) is skipped only when all sources are unset — `engine.name` absent or empty in `project.yaml` and both project and legacy preferences have no configured engine. A project configured solely via `project.yaml` **does** get specialist validation. When all sources are unset, post-cutoff engine API risks are not caught before the ADR is written
 - `docs/registry/architecture.yaml` is append-only by design; if a stance entry becomes permanently invalid (not superseded by another ADR), it must be manually removed — there is no cleanup mechanism
 - In retrofit mode, if the existing ADR has sections present but empty (e.g., a `## Status` heading with no value), the skill treats the section as present and does not fill it — an empty Status is effectively invisible to downstream skills like `$ccgs-story-readiness`

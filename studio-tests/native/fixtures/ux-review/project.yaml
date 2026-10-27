@@ -1,0 +1,25 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Pocket Courier
+  stage: Pre-Production
+modes:
+  rigor: standard
+  automation: guided
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript
+platform:
+  targets: [PC]
+  primary_input: keyboard
+*** Add File: F:/work/Claude-Code-Game-Studios-full/studio-tests/native/fixtures/ux-review/design/ux/hud.md
+> **Template**: HUD Design
+# Courier HUD
+Status: Draft
+Platform Target: PC keyboard
+## HUD Philosophy
+Keep the next dock visible.
+## Acceptance Criteria
+- HUD opens within 200ms.

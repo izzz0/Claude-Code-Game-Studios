@@ -51,7 +51,7 @@ Read the target file(s) in full. Read AGENTS.md for project coding standards.
 
 ## Phase 2: Identify Engine Specialists
 
-Read the `specialists` block from `project.yaml`; if it is absent, fall back to the `## Engine Specialists` section of `.agents/studio/docs/technical-preferences.md`. Note:
+Read the `specialists` block from `project.yaml`; if it is absent, fall back to the `## Engine Specialists` section of `docs/technical-preferences.md`. Note:
 
 - The **Primary** specialist — `<engine>-specialist` derived from `engine.name` (Godot→`ccgs-godot-specialist`, Unity→`ccgs-unity-specialist`, Unreal→`ccgs-unreal-specialist`); used for architecture and broad engine concerns
 - The **Language/Code Specialist** — `specialists.code` — used when reviewing the project's primary language files

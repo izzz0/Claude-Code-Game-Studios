@@ -1,0 +1,11 @@
+schema_version: 1
+project:
+  name: Harbor Courier Reverse Document
+  stage: Systems Design
+modes:
+  rigor: full
+  automation: guided
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript

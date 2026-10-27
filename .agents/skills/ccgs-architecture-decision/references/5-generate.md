@@ -152,7 +152,7 @@ Engine Compatibility says why).
 
 5.5. **Engine Specialist Validation** — Before saving, spawn the **primary engine specialist** via
 `native delegation` to validate the drafted ADR:
-   - Resolve the primary specialist: `<engine>-specialist` derived from `engine.name` in `project.yaml` (Godot→`ccgs-godot-specialist`, Unity→`ccgs-unity-specialist`, Unreal→`ccgs-unreal-specialist`); if `engine.name` is absent or empty, read the Primary line of the `## Engine Specialists` section in `.agents/studio/docs/technical-preferences.md`
+   - Resolve the primary specialist: `<engine>-specialist` derived from `engine.name` in `project.yaml` (Godot→`ccgs-godot-specialist`, Unity→`ccgs-unity-specialist`, Unreal→`ccgs-unreal-specialist`); if `engine.name` is absent or empty, read the Primary line of the `## Engine Specialists` section in `docs/technical-preferences.md`
    - If no engine is configured (neither source yields an engine), skip this step **Record ``Engine validation: NOT ASSESSED — no engine configured (`engine.name` unset in `project.yaml`)`` in this run's output.** A skipped check that says nothing is indistinguishable from a check that passed; the reader cannot tell engine guidance was never sought.
    - Route the configured primary engine specialist (record its actual native role identity) with: the ADR's Engine Compatibility section, Decision section, Key Interfaces, and the engine reference docs path. If the native role cannot be dispatched or does not return a result, record `NOT ASSESSED` rather than inferring approval. Ask it to:
      1. Confirm the proposed approach is idiomatic for the pinned engine version

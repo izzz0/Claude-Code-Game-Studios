@@ -119,7 +119,7 @@ timing precision is not what you're testing.
 Best for action games, platformers, physics-heavy games, or any concept where
 moment-to-moment feel IS the hypothesis.
 
-- Write it in the project's engine and language — `engine.name` and `engine.language` from `project.yaml`; for any key absent or empty, from `.agents/studio/docs/technical-preferences.md`; if neither names one, ask. Check each node and API against `docs/engine-reference/[engine]/deprecated-apis.md` before using it from memory, and use the replacement it lists.
+- Write it in the project's engine and language — `engine.name` and `engine.language` from `project.yaml`; for any key absent or empty, from `docs/technical-preferences.md`; if neither names one, ask. Check each node and API against `docs/engine-reference/[engine]/deprecated-apis.md` before using it from memory, and use the replacement it lists.
 - Reliability: ~50–60% one-shot. **2–4 rounds of iteration are normal — this is not failure.**
 - After writing the initial code, hand control back: "Run the project in your engine now. Paste any errors or describe what you see."
 - Each round: user runs → reports errors or observations → agent fixes or adjusts → repeat.
@@ -152,7 +152,7 @@ Prototype code is disposable. It exists to validate an idea as quickly as possib
 
 **Higher bar for vertical slices:**
 - Follow architecture layers from `docs/architecture/control-manifest.md`
-- Naming conventions — `naming.*` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `naming` block), from `.agents/studio/docs/technical-preferences.md`
+- Naming conventions — `naming.*` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `naming` block), from `docs/technical-preferences.md`
 - No hardcoded gameplay values — use constants or config files
 - Basic error handling on critical paths
 - Placeholder art acceptable; representative art preferred

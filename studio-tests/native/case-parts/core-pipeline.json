@@ -14,22 +14,47 @@
         "files": [
           {
             "path": "production/epics/courier/story-001-movement-wall.md",
-            "contains": ["Story 001", "wall", "A/D", "Status: Ready"],
+            "contains": [
+              "Story 001",
+              "wall",
+              "A/D",
+              "Status: Ready"
+            ],
             "changed": false
           },
           {
             "path": "production/epics/courier/story-002-collect-three-restart.md",
-            "contains": ["Story 002", "collect three", "restart", "Story 001", "AC-1", "AC-2"],
+            "contains": [
+              "Story 002",
+              "collect three",
+              "restart",
+              "Story 001",
+              "AC-1",
+              "AC-2"
+            ],
             "changed": true
           },
           {
             "path": "production/epics/courier/EPIC.md",
-            "contains": ["Story 001", "Story 002"],
+            "contains": [
+              "Story 001",
+              "Story 002"
+            ],
             "changed": true
           }
         ],
-        "response_contains": ["Story 001", "Story 002", "idempotent", "Story 001", "dependency"],
-        "response_not_contains": ["Story 001 rewritten", "duplicate Story 002", "configuration changed"],
+        "response_contains": [
+          "Story 001",
+          "Story 002",
+          "idempotent",
+          "Story 001",
+          "dependency"
+        ],
+        "response_not_contains": [
+          "Story 001 rewritten",
+          "duplicate Story 002",
+          "configuration changed"
+        ],
         "required_tools": true
       },
       "config": {
@@ -41,7 +66,13 @@
       "expected_outputs": [
         {
           "path": "production/epics/courier/story-002-collect-three-restart.md",
-          "contains": ["collect three", "restart", "Story 001", "AC-1", "AC-2"]
+          "contains": [
+            "collect three",
+            "restart",
+            "Story 001",
+            "AC-1",
+            "AC-2"
+          ]
         }
       ],
       "fixture_stdout": null,
@@ -60,15 +91,32 @@
         "files": [
           {
             "path": "production/epics/courier/story-001-movement-wall.md",
-            "contains": ["Status: Incomplete", "Story 001"]
+            "contains": [
+              "Status: Incomplete",
+              "Story 001"
+            ]
           },
           {
             "path": "production/epics/courier/story-002-collect-three-restart.md",
-            "contains": ["Status: Ready", "Story 001", "## Dependencies"]
+            "contains": [
+              "Status: Ready",
+              "Story 001",
+              "## Dependencies"
+            ]
           }
         ],
-        "response_contains": ["BLOCKED", "Story 001", "Incomplete", "dependency"],
-        "response_not_contains": ["Status: Complete", "READY", "implementation started", "evidence written"],
+        "response_contains": [
+          "BLOCKED",
+          "Story 001",
+          "Incomplete",
+          "dependency"
+        ],
+        "response_not_contains": [
+          "Status: Complete",
+          "READY",
+          "implementation started",
+          "evidence written"
+        ],
         "required_tools": true
       },
       "config": {
@@ -86,51 +134,64 @@
       "skill": "ccgs-dev-story",
       "fixture": "dev-story",
       "readonly": false,
-      "files_changed": true,
       "required_tools": true,
-      "required_evidence": ["engine_tests"],
-      "prompt": "Run $ccgs-dev-story production/epics/health/story-001-clamp-health.md in English with the actual tools. Resolve the schema-1 Godot 4.6.1 minimal/guided project, implement the genuine pure-logic story, and preserve its scope. Add a clamp_health(value) API where -5 returns 0 and values above 100 return 100; test both boundaries meaningfully in the declared Godot unit test. Do not create a fake gdUnit runner, fabricate engine evidence, or call any extra model API. If Godot is unavailable, report engine tests as NOT VERIFIED/NOT ASSESSED and keep the required evidence as engine_tests rather than waiving it as pass.",
+      "required_evidence": [
+        "engine_tests"
+      ],
+      "prompt": "Run $ccgs-dev-story production/epics/health/story-001-clamp-health.md in English with the actual tools. Resolve the schema-1 Godot 4.6.1 minimal/guided project, implement the genuine pure-logic story, and preserve its scope. Add a clamp_health(value) API where -5 returns 0 and values above 100 return 100; test both boundaries meaningfully in the declared Godot unit test. Do not create a fake gdUnit runner, fabricate engine evidence, or call any extra model API. If Godot is unavailable, report engine tests as NOT VERIFIED/NOT ASSESSED and keep the required evidence as engine_tests rather than waiving it as pass. The real runner is provided when resources are available. When actual tests pass, leave the implementation In Review for independent review; never mark it Complete in this skill.",
       "expected": {
         "files": [
           {
             "path": "src/health.gd",
-            "contains": ["clamp_health", "0", "100"],
+            "contains": [
+              "clamp_health",
+              "0",
+              "100"
+            ],
             "changed": true
           },
           {
             "path": "tests/unit/health_test.gd",
-            "contains": ["clamp_health", "-5", "100"],
+            "contains": [
+              "clamp_health",
+              "-5",
+              "100"
+            ],
             "changed": true
           },
           {
             "path": "production/epics/health/story-001-clamp-health.md",
-            "contains": ["Status: In Progress", "engine_tests"],
-            "changed": true
+            "contains": [
+              "Status: In Review"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Status: Complete"
+            ]
           }
         ],
-        "response_contains": ["clamp_health", "-5", "100", "engine_tests"],
-        "response_not_contains": ["fake gdUnit", "all engine tests passed", "extra model API"],
-        "required_tools": true
-      },
-      "config": {
-        "engine.name": "Godot",
-        "engine.version": "4.6.1",
-        "modes.rigor": "minimal",
-        "modes.automation": "guided"
-      },
-      "expected_outputs": [
-        {
-          "path": "src/health.gd",
-          "contains": ["clamp_health"]
-        },
-        {
-          "path": "tests/unit/health_test.gd",
-          "contains": ["clamp_health"]
+        "response_contains": [
+          "clamp_health",
+          "-5",
+          "100",
+          "engine_tests"
+        ],
+        "response_not_contains": [
+          "Test result: WAIVED",
+          "Story status: Complete"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
         }
-      ],
+      },
       "fixture_stdout": null,
       "actual_result_stub": null,
-      "expected_native_until_run": true
+      "expected_native_until_run": true,
+      "engine_test": "godot"
     },
     {
       "id": "native-016-ccgs-story-done",
@@ -144,15 +205,32 @@
         "files": [
           {
             "path": "production/epics/health/story-001-clamp-health.md",
-            "contains": ["Status: In Review", "## Acceptance Criteria", "## Test Evidence"]
+            "contains": [
+              "Status: In Review",
+              "## Acceptance Criteria",
+              "## Test Evidence"
+            ]
           },
           {
             "path": "src/health.gd",
-            "contains": ["clamp_health", "return"]
+            "contains": [
+              "clamp_health",
+              "return"
+            ]
           }
         ],
-        "response_contains": ["In Review", "screenshot", "review", "QA", "BLOCKED"],
-        "response_not_contains": ["Status: Complete", "checkpoint updated", "closure approved"],
+        "response_contains": [
+          "In Review",
+          "screenshot",
+          "review",
+          "QA",
+          "BLOCKED"
+        ],
+        "response_not_contains": [
+          "Status: Complete",
+          "checkpoint updated",
+          "closure approved"
+        ],
         "required_tools": true
       },
       "config": {

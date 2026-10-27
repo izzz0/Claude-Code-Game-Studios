@@ -269,7 +269,7 @@ Recommended settings for Godot 4 C# projects:
 NuGet package guidance:
 - Only add packages that solve a clear, specific problem
 - Verify Godot thread-model compatibility before adding
-- Document every added package in `## Allowed Libraries / Addons` in `technical-preferences.md`
+- Document every added package in `## Allowed Libraries / Addons` in `docs/technical-preferences.md`
 - Avoid packages that assume a UI message loop (WinForms, WPF, etc.)
 
 ## Design Patterns
@@ -319,7 +319,7 @@ public override void _Ready()
 GameManager.Instance.PauseGame();
 ```
 
-Use Option B only for true global singletons. Document any Autoload in `technical-preferences.md`.
+Use Option B only for true global singletons. Document any Autoload in `docs/technical-preferences.md`.
 
 ### Composition Over Inheritance
 

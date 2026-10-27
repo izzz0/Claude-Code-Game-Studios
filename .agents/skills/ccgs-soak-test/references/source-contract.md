@@ -1,5 +1,5 @@
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every `the caller's input channel` call and
+  `project.yaml` → default `guided`). Every `the caller's input channel` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;
 `automation_always_ask` categories always prompt).
@@ -53,7 +53,7 @@ Read:
 - `project.yaml` — `engine.name` (for engine-specific memory monitoring
   guidance) and `performance.*` budgets (memory ceiling, target FPS); for any
   key absent or empty (including when `project.yaml` has no `performance` or
-  `engine` block), fall back to `.agents/studio/docs/technical-preferences.md`
+  `engine` block), fall back to `docs/technical-preferences.md`
 - `design/gdd/game-concept.md` — intended session length (for comparison against
   soak duration), core loop description (or `design/game-brief.md`, the one-page
   brief that replaces it at `rigor: minimal` — core loop, and session length only
@@ -65,7 +65,7 @@ Read:
 - Most recent file in `production/qa/qa-plan-*.md` — current sprint test coverage
   (to understand what has been formally tested vs. what the soak covers)
 
-Note any performance budget targets (`performance.*` from `project.yaml`, else `.agents/studio/docs/technical-preferences.md`):
+Note any performance budget targets (`performance.*` from `project.yaml`, else `docs/technical-preferences.md`):
 - Memory ceiling: [N MB, or "not set"]
 - Target FPS: [N, or "not set"]
 - Frame budget: [N ms, or "not set"]

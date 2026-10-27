@@ -103,7 +103,7 @@ design/art/art-bible.md` (Section 1's full option list is below). Choosing it is
 the approval to write that section; no section is written without it, fresh or
 retrofit.
 
-Extract performance budgets and the engine for asset standard constraints: read `performance.*` and `engine.name` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `performance` or `engine` block), fall back to `.agents/studio/docs/technical-preferences.md`.
+Extract performance budgets and the engine for asset standard constraints: read `performance.*` and `engine.name` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `performance` or `engine` block), fall back to `docs/technical-preferences.md`.
 
 ---
 
@@ -284,7 +284,7 @@ Write the approved section to file.
 
 **Native delegation**: Spawn in parallel:
 - **`ccgs-art-director`**: File format preferences, naming convention direction, texture resolution tiers, LOD level expectations, export settings philosophy
-- **`ccgs-technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets (`performance.*` in `project.yaml`, falling back to `.agents/studio/docs/technical-preferences.md`)
+- **`ccgs-technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets (`performance.*` in `project.yaml`, falling back to `docs/technical-preferences.md`)
 
 If any art preference conflicts with a technical constraint (e.g., ccgs-art-director wants 4K textures but performance budget requires 2K for mobile), surface the conflict explicitly with both positions — the ideal and the constrained standard, and the tradeoff. Do NOT silently resolve it — use
 `native user-input mechanism` to let the user pick (options: the ideal standard, the constrained standard, or document both and let per-asset judgment apply). Ambiguity in asset standards is where production costs are born.
@@ -325,7 +325,7 @@ After all sections are complete (or the scoped set from Phase 1 is complete), sp
 Pass: the art bible path (`design/art/art-bible.md`); the game pillars and core
 fantasy; the platform and performance constraints (`platform.*` and
 `performance.*` from `project.yaml`, falling back to
-`.agents/studio/docs/technical-preferences.md`); and the visual identity anchor. When
+`docs/technical-preferences.md`); and the visual identity anchor. When
 Phase 0 read the one-page brief, pass its pitch and "what they feel" line as the
 pillars and fantasy, and its "Art & audio direction" line as the anchor.
 
@@ -350,7 +350,7 @@ after Section 4 must not read like a finished bible.
 
 Before presenting next steps, check project state:
 - Does `design/gdd/systems-index.md` exist? → map-systems is done, skip that option
-- Is an engine configured — `engine.name` present in `project.yaml`, or a configured Engine field (not `[TO BE CONFIGURED]`) in `.agents/studio/docs/technical-preferences.md`? → setup-engine is done, skip that option
+- Is an engine configured — `engine.name` present in `project.yaml`, or a configured Engine field (not `[TO BE CONFIGURED]`) in `docs/technical-preferences.md`? → setup-engine is done, skip that option
 - Does `design/gdd/` contain any `*.md` files? → design-system has been run, skip that option
 - Does `design/gdd/gdd-cross-review-*.md` exist? → review-all-gdds is done
 - Do GDDs exist (check above)? → include $ccgs-consistency-check option

@@ -57,13 +57,13 @@ and `$ccgs-story-readiness` + `$ccgs-dev-story`.
 
 ## Immutability Rules
 - READS but does NOT modify: the epic's GDD, all ADR files, `docs/architecture/tr-registry.yaml`, `docs/architecture/control-manifest.md`
-These writes occur after one consolidated user decision naming every destination; review reads remain read-only.
+Present the consolidated story list and destinations before writing. Follow the resolved automation mode: collaborative reviews the phase draft; guided proceeds with authorized scope and asks about material scope decisions. Review reads remain read-only.
 
 ## Hard Constraints (Never Violate)
 - Never start implementation — this skill stops at the story file level
 - Never invent acceptance criteria — all criteria must come from the GDD (from `design/game-brief.md` at `minimal`)
 - Never invent implementation notes — all guidance must come from the referenced ADR
-- Never write story files without presenting the full story list for approval first
+- Present the full story list before writing; obtain approval when the resolved mode or a material scope decision requires it
 - Never mark a story `Status: Ready` if its governing ADR has `Status: Proposed`, `Deprecated` or `Superseded`
 - Never omit the `Manifest Version:` field — downstream readiness checks depend on it
 - Never reuse a story number (NNN) that already exists in the epic directory

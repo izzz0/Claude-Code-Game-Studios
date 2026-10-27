@@ -1,13 +1,13 @@
-# $ccgs-setup-engine — Section 4: Update AGENTS.md Technology Stack
+# $ccgs-setup-engine — Section 4: Confirm Project Technology Stack
 
 > Part of `$ccgs-setup-engine`. `SKILL.md` names when to read this file; the settings it
 > resolved and the rules under its later headings still apply here.
 
-## 4. Update AGENTS.md Technology Stack
+## 4. Confirm Project Technology Stack
 
 ### Language Selection (Godot only)
 
-If Godot was chosen, ask the user which language to use **before** showing the proposed Technology Stack:
+If Godot was chosen and the language is still unset, ask which language to use before showing the proposed Technology Stack. Preserve an already confirmed language.
 
 > "Godot supports two primary languages:
 >
@@ -17,7 +17,7 @@ If Godot was chosen, ask the user which language to use **before** showing the p
 >
 > Which will this project primarily use?"
 
-Record the choice. It determines the AGENTS.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
+Record the choice in project configuration and technical preferences. It determines naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
 
 ### Primary Language (Unreal)
 
@@ -29,12 +29,17 @@ preference. The answer sets `engine.language` (`"C++"` or `"Blueprint"`).
 
 ---
 
-Read `AGENTS.md` and update its Technology Stack from the engine choices already
-confirmed for this setup. Preserve other project instructions. Ask only if the
-existing stack conflicts with those choices; ordinary authorized synchronization
-does not require another file permission prompt.
+Read the applicable `AGENTS.md` instructions and check them against the confirmed
+engine choices. The shipped studio rules already route through `project.yaml`
+and the matching engine reference, so ordinary engine selection does not require
+rewriting instruction files. Store mutable technology values in `project.yaml`
+and `docs/technical-preferences.md` instead. Preserve existing project rules and
+ask about an actual conflict or a necessary instruction change. If the host
+requires human review of such a change, retain the blocker; do not approve it or
+use another tool to write a protected instruction path.
 
-Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with the actual values:
+Use these technology values in the project-owned preferences, replacing any
+applicable `[CHOOSE]` placeholders:
 
 **For Godot** — use the template matching the language chosen above. See `references/godot-language-config.md` (**A1**) for all three variants (GDScript, C#, Both).
 
@@ -58,18 +63,19 @@ The Language line follows the primary-language answer above: the first form for
 
 ### Explicit engine reference instruction
 
-In the same AGENTS.md update, set an explicit instruction to read the chosen
-engine's version reference before using engine APIs. Keep the legacy
-`ENGINE-REFERENCE-IMPORT` marker for an idempotent update, but use plain Codex
-instructions rather than an automatic-import syntax:
+Read the chosen engine's version reference before using engine APIs, following
+the existing dynamic routing rule. Record the selected reference in the
+project-owned preferences. Existing `ENGINE-REFERENCE-IMPORT` markers are legacy
+instructions to inspect for conflicts, not a reason to rewrite `AGENTS.md` on
+every setup:
 - Godot → read `docs/engine-reference/godot/VERSION.md`
 - Unity → read `docs/engine-reference/unity/VERSION.md`
 - Unreal → read `docs/engine-reference/unreal/VERSION.md`
 - Cocos → read `docs/engine-reference/Cocos/VERSION.md`
 
 This keeps the next session from reading another engine's reference.
-It is idempotent — re-running `$ccgs-setup-engine` for a different
-engine rewrites the same line. (The target `docs/engine-reference/<engine>/`
+It is idempotent — re-running `$ccgs-setup-engine` updates only changed project
+values. (The target `docs/engine-reference/<engine>/`
 directory is created in Section 7, Populate Engine Reference Docs, if it does not yet exist.)
 
 ---

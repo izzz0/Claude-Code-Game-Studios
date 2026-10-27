@@ -15,7 +15,7 @@ ranges with offset and limit. Extract:
 Determine the engine and language in use: read `engine.name` and
 `engine.language` from `project.yaml`. For each field, if its key is absent or
 empty (including when `project.yaml` has no `engine:` block), fall back to
-`AGENTS.md` and `.agents/studio/docs/technical-preferences.md`. Treat a
+`AGENTS.md` and `docs/technical-preferences.md`. Treat a
 `[TO BE CONFIGURED]` value as not set.
 
 ---

@@ -79,9 +79,9 @@ assumptions get baked into ADRs, and an assumption made here is re-derived by
 everything downstream rather than re-checked.
 3. Project config —
 aming.*` and `performance.*` from `project.yaml` (for any
-   key absent or empty, fall back to `.agents/studio/docs/technical-preferences.md`);
+   key absent or empty, fall back to `docs/technical-preferences.md`);
    allowed libraries and forbidden patterns from
-   `.agents/studio/docs/technical-preferences.md` (not migrated to project.yaml)
+   `docs/technical-preferences.md` (not migrated to project.yaml)
 4. **Every GDD in `design/gdd/`** — extract technical requirements from the
    sections that carry them, **not from whole files**. Establish the denominator
    first (glob `design/gdd/*.md`, count **N**), then:

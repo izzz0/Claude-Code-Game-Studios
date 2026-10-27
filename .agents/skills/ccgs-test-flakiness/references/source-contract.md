@@ -1,5 +1,5 @@
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every `the caller's input channel` call and
+  `project.yaml` → default `guided`). Every `the caller's input channel` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;
 `automation_always_ask` categories always prompt).

@@ -7,7 +7,7 @@
 
 **Required Artifacts:**
 - [ ] Engine chosen (project configuration and engine reference are not `[CHOOSE]`)
-- [ ] Project config populated (`project.yaml` has engine/naming/performance set, or legacy `.agents/studio/docs/technical-preferences.md` populated)
+- [ ] Project config populated (`project.yaml` has engine/naming/performance set, or project-owned `docs/technical-preferences.md` has real values; unset fields may use the read-only legacy template)
 - [ ] Art bible exists at `design/art/art-bible.md` with at least Sections 1–4 (Visual Identity Foundation)
 - [ ] At least 3 Architecture Decision Records in `docs/architecture/` covering
       Foundation-layer systems (scene management, event architecture, save/load)

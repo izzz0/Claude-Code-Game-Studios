@@ -19,7 +19,7 @@ of artifacts, and gaps that need attention. It's especially useful when:
 Run `bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,workflow` and use its output.
 
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every
+  `project.yaml` → default `guided`). Every
 `native user-input mechanism` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;

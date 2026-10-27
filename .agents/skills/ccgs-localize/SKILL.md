@@ -292,7 +292,7 @@ Grep the code root for VO audio references. Verify each referenced path exists i
 Right-to-left languages (Arabic, Hebrew, Persian, Urdu) require layout mirroring beyond
 just translating text. This mode validates the implementation.
 
-Determine the engine: read `engine.name` from `project.yaml`; if that key is absent or empty (including when `project.yaml` has no `engine:` block), fall back to `.agents/studio/docs/technical-preferences.md`. Then check:
+Determine the engine: read `engine.name` from `project.yaml`; if that key is absent or empty (including when `project.yaml` has no `engine:` block), fall back to `docs/technical-preferences.md`. Then check:
 
 **Layout mirroring**
 - Is RTL layout enabled in the engine? (Godot: `Control.layout_direction`, Unity: `RTL Support` package, Unreal: text direction flags)

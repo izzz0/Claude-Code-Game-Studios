@@ -226,7 +226,7 @@ QL-STORY-READY: [skipped — Solo mode | its verdicts]
 At `minimal`, each line traces to `Brief MVP feature N`, there is no ADRs line, and
 there is one story per MVP feature: no extra stories for brief items outside the
 MVP list. Then
-Ask whether to create or update the named epic and stories after presenting the full list.
+Present the full list, then apply the resolved automation mode: collaborative reviews the major phase draft; guided/autonomous perform ordinary authorized writes, while material scope or missing-input decisions still require a question.
 [create | update] `production/epics/[epic-slug]/EPIC.md` and update
 `production/epics/index.md`?" Options: Yes, write all [N] / Not yet, I want to
 adjust first; an adjustment can change any estimate. Name every file Phase 7 touches: *create* `EPIC.md` only when it

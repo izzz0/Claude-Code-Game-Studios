@@ -43,7 +43,8 @@ esac
 PY="project.yaml"
 STAGE_TXT="production/stage.txt"
 REVIEW_TXT="production/review-mode.txt"
-TP=".agents/studio/docs/technical-preferences.md"
+TP="docs/technical-preferences.md"
+LEGACY_TP=".agents/studio/docs/technical-preferences.md"
 REPORT="production/migration-report.md"
 
 WARN=""
@@ -54,7 +55,7 @@ manual() { MANUAL="${MANUAL}- $1"$'\n'; }
 # --- legacy detection -------------------------------------------------------
 
 legacy_present() {
-  [ -f "$STAGE_TXT" ] || [ -f "$REVIEW_TXT" ] || { [ -f "$TP" ] && tp_configured; }
+  [ -f "$STAGE_TXT" ] || [ -f "$REVIEW_TXT" ] || tp_configured
 }
 
 # A technical-preferences.md full of [TO BE CONFIGURED] is the template default,
@@ -81,8 +82,12 @@ legacy_present() {
 # resurrecting the false positive.
 _TP_KEYS='Engine|Language|Rendering|Physics|Target Platforms|Primary Input|Gamepad Support|Touch Support|Classes|Variables|Constants|Signals(/Events)?|Files|Scenes(/Prefabs)?|Target Framerate|Frame Budget|Draw Calls|Memory Ceiling|Framework|Minimum Coverage|Additional Specialists|Language/Code Specialist|Shader Specialist|UI Specialist'
 tp_configured() {
-  [ -f "$TP" ] || return 1
-  grep -qE "^[[:space:]]*-[[:space:]]+\*\*($_TP_KEYS)\*\*:[[:space:]]*[^[:space:]\[]" "$TP" 2>/dev/null
+  local file
+  for file in "$TP" "$LEGACY_TP"; do
+    [ -f "$file" ] || continue
+    grep -qE "^[[:space:]]*-[[:space:]]+\*\*($_TP_KEYS)\*\*:[[:space:]]*[^[:space:]\[]" "$file" 2>/dev/null && return 0
+  done
+  return 1
 }
 
 # --- technical-preferences.md parsing ---------------------------------------
@@ -93,9 +98,10 @@ tp_configured() {
 # truncated values mid-sentence -- a framerate budget migrated as
 # "...Pro-tier target.** *(Changed", cut exactly where the author had wrapped.
 # A continuation is indented and is not itself a new `- **Key**:` bullet.
-tp_get() {
-  [ -f "$TP" ] || return 0
-  awk -v sec="$1" -v key="$2" '
+tp_get_file() {
+  [ -f "$1" ] || return 0
+  local file="$1"
+  awk -v sec="$2" -v key="$3" '
     index($0, "## " sec) == 1 { ins = 1; next }
     ins && index($0, "## ") == 1 { ins = 0 }
     ins && grab {
@@ -119,7 +125,15 @@ tp_get() {
       }
     }
     END { if (grab) print val }
-  ' "$TP" | sed 's/^\[TO BE CONFIGURED.*$//'
+  ' "$file" | sed 's/^\[TO BE CONFIGURED.*$//'
+}
+
+tp_get() {
+  local file value
+  for file in "$TP" "$LEGACY_TP"; do
+    value=$(tp_get_file "$file" "$1" "$2")
+    if [ -n "$value" ]; then printf '%s\n' "$value"; return 0; fi
+  done
 }
 
 # Strip a trailing unit so "16.67ms" and "1024MB" become numbers. Non-numeric
@@ -205,7 +219,7 @@ legacy_conflict() {
     [ "$_lc" = "none" ] && _lc="solo"
     [ -z "$_lc" ] || grep -qE "^[[:space:]]*review_mode:[[:space:]]*\"?$(re_quote "$_lc")\"?" "$PY" || return 0
   fi
-  if [ -f "$TP" ] && tp_configured; then
+  if tp_configured; then
     _lc=$(tp_get "Engine & Language" "Engine" | awk '{print $1}')
     [ -z "$_lc" ] || grep -qE "^[[:space:]]*name:[[:space:]]*\"?$(re_quote "$_lc")\"?" "$PY" || return 0
   fi
@@ -269,9 +283,9 @@ if [ "$MODE" = "finalize" ]; then
     [ "$want" = "none" ] && want="solo"
     grep -qE "^[[:space:]]*review_mode:[[:space:]]*\"?$(re_quote "$want")\"?" "$PY" || FAILED="$FAILED $REVIEW_TXT"
   fi
-  if [ -f "$TP" ] && tp_configured; then
+  if tp_configured; then
     want=$(tp_get "Engine & Language" "Engine" | awk '{print $1}')
-    [ -z "$want" ] || grep -qE "^[[:space:]]*name:[[:space:]]*\"?$(re_quote "$want")\"?" "$PY" || FAILED="$FAILED $TP"
+    [ -z "$want" ] || grep -qE "^[[:space:]]*name:[[:space:]]*\"?$(re_quote "$want")\"?" "$PY" || FAILED="$FAILED $TP $LEGACY_TP"
   fi
   if [ -n "$FAILED" ]; then
     echo "REFUSED: content not preserved in $PY for:$FAILED"
@@ -281,8 +295,8 @@ if [ "$MODE" = "finalize" ]; then
   for f in "$STAGE_TXT" "$REVIEW_TXT"; do
     [ -f "$f" ] && rm -f "$f" && echo "deleted $f"
   done
-  echo "NOTE: $TP is NOT deleted — it still holds Forbidden Patterns and"
-  echo "      Allowed Libraries, which have no project.yaml equivalent."
+  echo "NOTE: $TP and $LEGACY_TP are NOT deleted — custom preferences and"
+  echo "      guidance remain available outside project.yaml."
   echo "finalize complete."
   exit 0
 fi
@@ -438,16 +452,18 @@ specialist_warn "specialists.ui"         "$S_UI_RAW"     "$S_UI"
 specialist_warn "specialists.additional" "$S_ADD_RAW"    "$S_ADD"
 
 # Sections a fork may have added. Not migrated — surfaced instead of dropped.
-if [ -f "$TP" ]; then
-  while IFS= read -r h; do
-    case "$h" in
-      "Engine & Language"|"Input & Platform"|"Naming Conventions"|"Performance Budgets"|"Testing"|"Forbidden Patterns"|"Allowed Libraries / Addons"|"Architecture Decisions Log"|"Engine Specialists") ;;
-      "") ;;
-      *) manual "Custom section \`## $h\` in $TP — not migrated, integrate by hand" ;;
-    esac
-  done < <(grep -E '^## ' "$TP" | sed 's/^## //; s/\r$//')
-fi
-[ -f "$TP" ] && manual "Forbidden Patterns and Allowed Libraries stay in $TP — they have no project.yaml equivalent"
+for _tp_file in "$TP" "$LEGACY_TP"; do
+  if [ -f "$_tp_file" ]; then
+    while IFS= read -r h; do
+      case "$h" in
+        "Engine & Language"|"Input & Platform"|"Naming Conventions"|"Performance Budgets"|"Testing"|"Forbidden Patterns"|"Allowed Libraries / Addons"|"Architecture Decisions Log"|"Engine Specialists") ;;
+        "") ;;
+        *) manual "Custom section \`## $h\` in $_tp_file — not migrated, integrate by hand" ;;
+      esac
+    done < <(grep -E '^## ' "$_tp_file" | sed 's/^## //; s/\r$//')
+  fi
+done
+{ [ -f "$TP" ] || [ -f "$LEGACY_TP" ]; } && manual "Forbidden Patterns and Allowed Libraries stay in the technical-preferences documents — they have no project.yaml equivalent"
 
 # v1.0 had no `modes.rigor`; its fixed process level matches v1.1's `standard`.
 # v1.1 defaults `rigor` to `minimal`, and this script writes nothing it did not
@@ -554,7 +570,7 @@ if [ "$MODE" = "dry-run" ]; then
   # And the other direction, for the same reason: the preview is the one artifact
   # a cautious user reads before migrating, so the consequence belongs here too.
   [ -n "$REVIEW" ] && echo "  (modes.review_mode will be set EXPLICITLY to '$REVIEW' — this outranks modes.rigor, so rigor will not control review depth afterwards)"
-  [ -f "$TP" ] && tp_configured && echo "  $TP -> engine/platform/naming/performance/testing/specialists"
+  tp_configured && echo "  $TP (then $LEGACY_TP per key) -> engine/platform/naming/performance/testing/specialists"
   [ -n "$WARN" ] && { echo; echo "warnings:"; printf '%s' "$WARN"; }
   exit 0
 fi
@@ -660,7 +676,7 @@ mkdir -p production 2>/dev/null
   echo ""
   [ -f "$STAGE_TXT" ]  && echo "- \`$STAGE_TXT\`"
   [ -f "$REVIEW_TXT" ] && echo "- \`$REVIEW_TXT\`"
-  { [ -f "$TP" ] && tp_configured; } && echo "- \`$TP\`"
+  tp_configured && echo "- \`$TP\` (legacy fallback: \`$LEGACY_TP\`)"
   echo ""
   echo "## Values preserved"
   echo ""

@@ -24,7 +24,7 @@
 # `-` means no value. Every row is always printed, so a missing row is a bug,
 # never "nothing found".
 #   engine          engine.name: project.local.yaml, then project.yaml, then
-#                   the legacy `Engine:` line of .agents/studio/docs/technical-preferences.md
+#                   `Engine:` in docs/technical-preferences.md, then the legacy template
 #   code_root       the same answer and source label as resolve_code_root in
 #                   .agents/studio/hooks/yaml-helper.sh; never defaults to src
 #   source_files    `unknown` when code_root is unset: unknown is not zero
@@ -145,18 +145,19 @@ if [ -z "$ENGINE" ] && [ -f project.yaml ]; then
   ENGINE=$(yaml_get project.yaml engine.name)
   [ -n "$ENGINE" ] && { ESRC="project.yaml"; CSRC="engine.name"; }
 fi
-LEGACY=".agents/studio/docs/technical-preferences.md"
-if [ -z "$ENGINE" ] && [ -f "$LEGACY" ]; then
-  # The legacy `Engine:` line, bold or bulleted; `[TO BE CONFIGURED]` and any
-  # other bracketed placeholder mean unset. The same pipeline as resolve_code_root.
-  ENGINE=$(grep -iE '^[[:space:]]*[-*]?[[:space:]]*\*{0,2}Engine\*{0,2}[[:space:]]*:' "$LEGACY" 2>/dev/null \
-           | head -1 | sed 's/.*://' | tr -d '\r' \
-           | sed 's/^[[:space:]]*//; s/[[:space:]].*$//; s/\*//g')
-  case "$ENGINE" in
-    *"[TO BE CONFIGURED]"*|"["*) ENGINE="" ;;
-  esac
-  [ -n "$ENGINE" ] && { ESRC="$LEGACY"; CSRC="$LEGACY"; }
-fi
+for PREFS in "docs/technical-preferences.md" ".agents/studio/docs/technical-preferences.md"; do
+  if [ -z "$ENGINE" ] && [ -f "$PREFS" ]; then
+    # The `Engine:` line, bold or bulleted; placeholders mean unset. Try each
+    # file independently so the template cannot mask legacy custom values.
+    ENGINE=$(grep -iE '^[[:space:]]*[-*]?[[:space:]]*\*{0,2}Engine\*{0,2}[[:space:]]*:' "$PREFS" 2>/dev/null \
+             | head -1 | sed 's/.*://' | tr -d '\r' \
+             | sed 's/^[[:space:]]*//; s/[[:space:]].*$//; s/\*//g')
+    case "$ENGINE" in
+      *"[TO BE CONFIGURED]"*|"["*) ENGINE="" ;;
+    esac
+    [ -n "$ENGINE" ] && { ESRC="$PREFS"; CSRC="$PREFS"; }
+  fi
+done
 # The code root each engine's own toolchain builds from
 # (.agents/studio/docs/core-workflow.md): Godot src/, Unity Assets/, Unreal Source/.
 case "$(printf '%s' "$ENGINE" | tr '[:upper:]' '[:lower:]')" in

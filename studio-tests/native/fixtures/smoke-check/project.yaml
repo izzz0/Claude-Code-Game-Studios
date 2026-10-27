@@ -1,0 +1,15 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Courier Smoke Gate
+  stage: Production
+modes:
+  rigor: standard
+  automation: guided
+qa:
+  level: standard
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript

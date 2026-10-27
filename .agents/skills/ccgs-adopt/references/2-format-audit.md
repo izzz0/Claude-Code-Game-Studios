@@ -135,7 +135,7 @@ traceability matrix are not on the minimal path, so their absence is not a gap.
 
 ### 2f: Project Config Audit
 
-Read `project.yaml` (the primary config store) and `.agents/studio/docs/technical-preferences.md` (legacy mirror). A setting counts as configured if EITHER source has a real value (in technical-preferences.md, `[TO BE CONFIGURED]` means unconfigured):
+Read `project.yaml` (the primary structured config) and the project-owned `docs/technical-preferences.md`. For each field, an absent, empty, or `[TO BE CONFIGURED]` value in the project document may fall back to `.agents/studio/docs/technical-preferences.md` for legacy projects. A setting counts as configured when its highest-precedence source has a real value:
 - `engine.name`/`version`/`language`/`rendering`/`physics` (else the Engine/Language/Rendering/Physics fields) → HIGH if unconfigured in both (ADR skills fail)
 -
 aming.*` (else Naming conventions) → MEDIUM
@@ -146,7 +146,7 @@ aming.*` (else Naming conventions) → MEDIUM
 
 A project is a **v1.0 project needing migration** when `project.yaml` does NOT
 exist at the repo root AND at least one legacy file does: `production/stage.txt`,
-`production/review-mode.txt`, or a `.agents/studio/docs/technical-preferences.md` with
+`production/review-mode.txt`, or a `docs/technical-preferences.md` with
 real values.
 
 "Real values" means one of the keys the converter actually migrates — Engine,

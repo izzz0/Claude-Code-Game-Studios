@@ -1,13 +1,19 @@
 # Technical Preferences
 
+<!-- Read-only framework template and legacy fallback. Project workflows write
+     docs/technical-preferences.md, initializing it from this template only when
+     that project document is absent. Do not update this framework path during
+     engine setup. Explicit framework-source maintenance remains authorized. -->
+
 <!-- project.yaml at the repo root is the machine-readable source of truth for
      engine, specialists, naming, performance, platform, and testing.framework.
      This file is the human-readable LEGACY FALLBACK: agents and skills resolve
      each key from project.yaml first and fall back here only when the
      project.yaml key is absent. Codex setup writes project.yaml; existing
      legacy values remain fallbacks until explicitly replaced.
-     Forbidden patterns and allowed libraries are NOT migrated — they live only
-     in this file. Populated by $ccgs-setup-engine; updated as decisions are made. -->
+     Forbidden patterns and allowed libraries use the project-owned preferences,
+     with this file retained as a per-key legacy fallback. When copied to the
+     project document, values are populated by $ccgs-setup-engine. -->
 
 ## Engine & Language
 

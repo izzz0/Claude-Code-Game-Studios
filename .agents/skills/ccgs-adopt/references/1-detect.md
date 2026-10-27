@@ -17,7 +17,7 @@ Then read silently before presenting anything else.
 - Count GDD files: `design/gdd/*.md` (excluding game-concept.md and systems-index.md)
 - Count ADR files: `docs/architecture/adr-*.md`
 - Count story files: `production/epics/**/*.md` (excluding EPIC.md)
-- `project.yaml` (`engine.name`) / `.agents/studio/docs/technical-preferences.md` — engine configured?
+- `project.yaml` (`engine.name`) / `docs/technical-preferences.md` — engine configured?
 - `docs/engine-reference/` — engine reference docs present?
 - Glob `docs/adoption-plan-*.md` — note the filename of the most recent prior plan if any exist
 

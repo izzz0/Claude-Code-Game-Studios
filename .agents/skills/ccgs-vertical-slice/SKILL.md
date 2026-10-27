@@ -134,7 +134,7 @@ files) are exempt.
 - Follow architecture layers from `docs/architecture/control-manifest.md`
 - Naming conventions —
 aming.*` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no
-aming` block), from `.agents/studio/docs/technical-preferences.md`
+aming` block), from `docs/technical-preferences.md`
 - No hardcoded gameplay values — use constants or config files
 - Basic error handling on critical paths
 - Placeholder art acceptable; representative art preferred

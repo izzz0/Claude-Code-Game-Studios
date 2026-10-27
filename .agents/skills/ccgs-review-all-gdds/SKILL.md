@@ -73,7 +73,7 @@ consistency and design-theory review is its domain.
   structure and the game pillars.
 - The full entity registry contents (`design/registry/entities.yaml`) if loaded in Phase 1b (paste the registry text, not just a file path)
 - The specific checklist items assigned to that agent's phase (Phase 2 gets 2a–2f; Phase 3 gets 3a–3g)
-- The engine name and version — `engine.name` and `engine.version` from `project.yaml`, resolving each field independently (if its key is absent or empty, use `.agents/studio/docs/technical-preferences.md`) — plus `docs/engine-reference/[engine]/VERSION.md`
+- The engine name and version — `engine.name` and `engine.version` from `project.yaml`, resolving each field independently (if its key is absent or empty, use `docs/technical-preferences.md`) — plus `docs/engine-reference/[engine]/VERSION.md`
 
 Do not rely on the subagent to re-read these files — it has its own context window and cannot access Phase 1 results unless they are explicitly passed in the
 `native delegation` prompt.

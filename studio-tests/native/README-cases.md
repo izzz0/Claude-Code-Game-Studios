@@ -1,6 +1,6 @@
 # Native acceptance smoke catalog
 
-This directory currently contains **thirty-one authored native cases**:
+This directory currently contains **seventy-four authored native cases**:
 
 - `ccgs-help`: read-only navigation from a minimal project with no engine;
   expected handoff is `$ccgs-setup-engine`. The case checks navigation, actual
@@ -33,9 +33,10 @@ This directory currently contains **thirty-one authored native cases**:
 - Teams: combat timing, HUD/accessibility and a QA smoke-failure stop. These
   require actual native-agent and recovery evidence, currently unassessed.
 
-`coverage.unauthored_manifest_skills` records the remaining 43 skills from
-`studio-tests/migration-manifest.json` that intentionally have no placeholder
-case yet.
+`coverage.unauthored_manifest_skills` is now zero: each of the 74 manifest skills
+has one authored case. This is catalog coverage, not 74 successful native runs.
+The added design, quality, runtime and six team cases check concrete inputs,
+outputs and missing-evidence outcomes; their actual results remain separate.
 
 Utility/context cases add local-override inspection, programmer onboarding,
 record-based retrospective analysis and read-only stage-gap detection. They
@@ -101,3 +102,13 @@ remains NOT ASSESSED, with the actual terminal host error retained in the result
 and compact console output. Observed hook or read-only protection failures still
 fail, even when the host turn fails. A host capacity error never switches models
 or turns an unexecuted case into a skill failure or PASS.
+
+Git-dependent fixtures use an explicit ignored `.scratch/case-history.git`, never
+the parent framework history or a new `.git` trust boundary. Baselines are committed
+with fixture-local identity and current input bytes restored before native execution.
+
+Each new attempt retains `before.json`, full child thread/item pagination receipts,
+and hashes of ignored review observations. A timed-out turn retains an unassessed
+result and stops the batch. Team/review verification crossmatches native child IDs,
+configured roles, actual completed turns, recovery ordering and retained artifact
+hashes. Missing history or independent review never becomes a PASS from prose.

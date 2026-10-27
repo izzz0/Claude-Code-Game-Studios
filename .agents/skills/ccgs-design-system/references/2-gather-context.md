@@ -173,7 +173,7 @@ which you picked.
 > you read the reference for, whichever row you came in on.
 
 **Step 2 — Read engine context (if available):**
-- Identify the engine and version: read `engine.name` and `engine.version` from `project.yaml`. Resolve each field independently — if its key is absent or empty (including when `project.yaml` has no `engine:` block), fall back to `.agents/studio/docs/technical-preferences.md` (a `[TO BE CONFIGURED]` value means not set)
+- Identify the engine and version: read `engine.name` and `engine.version` from `project.yaml`. Resolve each field independently — if its key is absent or empty (including when `project.yaml` has no `engine:` block), fall back to `docs/technical-preferences.md` (a `[TO BE CONFIGURED]` value means not set)
 - If engine is configured, read `docs/engine-reference/[engine]/VERSION.md`
 - Read `docs/engine-reference/[engine]/modules/[domain].md` if it exists.
   **If it does not exist, say so by name** — *"no engine reference for `[domain]`

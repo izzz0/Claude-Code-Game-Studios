@@ -6,7 +6,7 @@ description: "Security audit — save tampering, cheat vectors, network exploits
 Run `bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,workflow` and use its output.
 
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every
+  `project.yaml` → default `guided`). Every
 `native user-input mechanism` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;
@@ -47,7 +47,7 @@ etwork` — network/multiplayer only
 - `quick` — high-severity checks only (fastest, for iterative use)
 - No argument — run `full`
 
-Read `project.yaml` to determine the following, falling back to `.agents/studio/docs/technical-preferences.md` for engine/language/platforms when a key is absent or empty:
+Read `project.yaml` to determine the following, falling back to `docs/technical-preferences.md` for engine/language/platforms when a key is absent or empty:
 - `engine.name` and `engine.language` — **load-bearing: they select the Phase 3
   pattern set, and an engine with no sourced set for a category makes that
   category `NOT ASSESSED`.** If `engine.name` is absent or empty, say so in the

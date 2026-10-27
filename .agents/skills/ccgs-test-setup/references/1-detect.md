@@ -8,7 +8,7 @@
 1. **Read engine config**:
    - Read `engine.name` from `project.yaml`; if that key is absent or empty
      (including when `project.yaml` has no `engine:` block), fall back to the
-     `Engine:` value in `.agents/studio/docs/technical-preferences.md`.
+     `Engine:` value in `docs/technical-preferences.md`.
    - If neither source yields a configured engine (project.yaml `engine.name`
      absent/empty and technical-preferences.md shows `[TO BE CONFIGURED]` or is
      missing), stop:

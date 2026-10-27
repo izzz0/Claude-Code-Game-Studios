@@ -67,6 +67,9 @@ missing results remain NOT ASSESSED. See the
 project.yaml remains schema 1. Ignored project.local.yaml accepts only the
 existing whitelist. Shared resources live under .agents/studio/; see
 [configuration effects](.agents/studio/docs/effects-map.md).
+Project-owned technical preferences live in `docs/technical-preferences.md`.
+Game workflows keep framework resources read-only; old preferences in the shipped
+template remain per-key fallbacks, and `project.yaml` keeps precedence.
 
 Native hooks provide context, checks and ignored runtime receipts. They never
 launch models/Codex recursively or update code, stories, QA evidence or

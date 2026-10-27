@@ -1,5 +1,5 @@
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every `the caller's input channel` call and
+  `project.yaml` → default `guided`). Every `the caller's input channel` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;
 `automation_always_ask` categories always prompt).
@@ -88,7 +88,7 @@ Verdict: **BLOCKED** — stop here without generating notes.
 
 **Tone guide detection** — before drafting notes, check for writing style guidance:
 
-1. Check `.agents/studio/docs/technical-preferences.md` for any "tone", "voice", or "style"
+1. Check `docs/technical-preferences.md` for any "tone", "voice", or "style"
    fields or sections.
 2. Check `docs/PATCH-NOTES-STYLE.md` if it exists.
 3. Check `design/community/tone-guide.md` if it exists.

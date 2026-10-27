@@ -1437,6 +1437,38 @@ resolve_setting() {
 # unresolvable root returns empty, and the CALLER must announce that its check
 # did not run — see the `_no_code_root` reporting in validate-commit.sh.
 #
+# Preference readers are shared by resolve_code_root and resolve_config.
+_rc_tp_read_file() {
+  local file="$1" label="$2"
+  [ -f "$file" ] || return 0
+  awk -v lbl="$label" '{ gsub(/\r/, "") }
+    { pos = index($0, ":"); if (!pos) next
+      key = substr($0, 1, pos - 1)
+      sub(/^[ \t]*[-*][ \t]+/, "", key); gsub(/\*/, "", key)
+      sub(/^[ \t]+/, "", key); sub(/[ \t]+$/, "", key)
+      if (tolower(key) != tolower(lbl)) next
+      v = substr($0, pos + 1)
+      sub(/^[ \t]+/, "", v); sub(/[ \t]+$/, "", v)
+      if (v !~ /TO BE CONFIGURED/) print v; exit }' "$file"
+}
+_rc_tp() {
+  local f value
+  for f in "$_YH_ROOT/docs/technical-preferences.md" \
+           "$_YH_ROOT/.agents/studio/docs/technical-preferences.md"; do
+    value=$(_rc_tp_read_file "$f" "$1")
+    if [ -n "$value" ]; then printf '%s' "$value"; return 0; fi
+  done
+}
+_rc_tp_source() {
+  local f value
+  for f in "$_YH_ROOT/docs/technical-preferences.md" \
+           "$_YH_ROOT/.agents/studio/docs/technical-preferences.md"; do
+    value=$(_rc_tp_read_file "$f" "$1")
+    if [ -n "$value" ]; then printf '%s' "${f#$_YH_ROOT/}"; return 0; fi
+  done
+  printf unset
+}
+
 # Step 3 (detect) is derivation, not enumeration (obligation 5): it believes the
 # tree over the absence of config, but only when the tree is UNAMBIGUOUS. Two
 # roots present means a genuinely undecidable project, and guessing there would
@@ -1452,19 +1484,11 @@ resolve_code_root() {
   src=${resolved#*	}
   [ -z "$ename" ] && src=""
 
-  # 2. The legacy mirror. `/setup-engine` wrote an `Engine:` line here before
-  #    project.yaml existed, and workflow-catalog's `engine-setup` step still
-  #    accepts it as an `any_of` alternative — so a v1.0 project that never
-  #    migrated resolves rather than falling through to "unset".
-  legacy="$_YH_ROOT/.agents/studio/docs/technical-preferences.md"
-  if [ -z "$ename" ] && [ -f "$legacy" ]; then
-    ename=$(grep -iE '^[[:space:]]*[-*]?[[:space:]]*\*{0,2}Engine\*{0,2}[[:space:]]*:' "$legacy" 2>/dev/null \
-            | head -1 | sed 's/.*://' | tr -d '\r' \
-            | sed 's/^[[:space:]]*//; s/[[:space:]].*$//; s/\*//g')
-    case "$ename" in
-      *"[TO BE CONFIGURED]"*|"["*) ename="" ;;
-    esac
-    [ -n "$ename" ] && src=".agents/studio/docs/technical-preferences.md"
+  # 2. Project-owned preferences, then the legacy template per key. A
+  #    placeholder in the new file must not hide a configured legacy value.
+  if [ -z "$ename" ]; then
+    ename=$(_rc_tp Engine | awk '{print $1}')
+    [ -n "$ename" ] && src=$(_rc_tp_source Engine)
   fi
 
   case "$(printf '%s' "$ename" | tr '[:upper:]' '[:lower:]')" in
@@ -1782,9 +1806,8 @@ EOF
     fi
   fi
 
-  # engine: project.yaml only. No markdown reader is built here — skills keep
-  # their existing technical-preferences.md fallback prose, and forbidden
-  # patterns / allowed libraries never migrate at all.
+  # engine: project.yaml, then project-owned preferences, then the legacy
+  # template per key. Markdown placeholders never mask configured legacy data.
   local ename eversion
   if _rc_want engine; then
     ename=$(get_yaml_key "$_YH_ROOT/project.yaml" engine.name 2>/dev/null)
@@ -1792,7 +1815,12 @@ EOF
     if [ -n "$ename" ]; then
       echo "engine: $ename${eversion:+ $eversion} (project.yaml)"
     else
-      echo "engine: unset (fall back to .agents/studio/docs/technical-preferences.md)"
+      ename=$(_rc_tp Engine)
+      if [ -n "$ename" ]; then
+        echo "engine: $ename ($(_rc_tp_source Engine))"
+      else
+        echo "engine: unset (no configured project or legacy preferences value)"
+      fi
     fi
   fi
 
@@ -1928,18 +1956,6 @@ EOF
     case "$rv" in null|Null|NULL|"~") rv="" ;; esac
     printf '%s' "$rv"
   }
-  # _rc_tp <label>: a `- **Label**: value` line of the legacy
-  # technical-preferences.md; its `[TO BE CONFIGURED]` placeholder is unset.
-  _rc_tp() {
-    local f="$_YH_ROOT/.agents/studio/docs/technical-preferences.md"
-    [ -f "$f" ] || return 0
-    awk -v lbl="**$1**:" '{ gsub(/\r/, "") }
-      index($0, lbl) { v = substr($0, index($0, lbl) + length(lbl))
-        sub(/^[ \t]+/, "", v); sub(/[ \t]+$/, "", v)
-        if (v !~ /TO BE CONFIGURED/) print v; exit }' "$f"
-  }
-  local tp_src=".agents/studio/docs/technical-preferences.md"
-
   # gate_level: the gate level per story type, as coding-standards.md's table
   # defines it: testing.strict.<type> (project.local.yaml, then project.yaml),
   # then the legacy plain `testing.strict: true|false`, then the default
@@ -1978,8 +1994,8 @@ EOF
   fi
 
   # engine_values: engine.name, .version and .language from project.yaml, each
-  # falling back to technical-preferences.md, the record a v1.0 project that
-  # never migrated still has. Its Engine line holds name and version together
+  # falling back per key through project-owned then legacy technical
+  # preferences. The Engine line holds name and version together
   # ("Godot 4.6", "Unreal Engine 5.4"): the last word is the version when it
   # starts with a digit. Locked keys, so project.local.yaml is not read.
   local ev_name ev_ver ev_lang ev_line ev_ns ev_vs ev_ls
@@ -1989,16 +2005,18 @@ EOF
     ev_lang=$(_rc_yaml "$_YH_ROOT/project.yaml" engine.language); ev_ls="project.yaml"
     if [ -z "$ev_name" ] || [ -z "$ev_ver" ]; then
       ev_line=$(_rc_tp Engine)
+      local ev_line_src
+      ev_line_src=$(_rc_tp_source Engine)
       if [ -n "$ev_line" ]; then
         case "${ev_line##* }" in
-          [0-9]*) [ -z "$ev_ver" ] && { ev_ver="${ev_line##* }"; ev_vs="$tp_src"; }
-                  [ -z "$ev_name" ] && { ev_name="${ev_line% *}"; ev_ns="$tp_src"; } ;;
-          *)      [ -z "$ev_name" ] && { ev_name="$ev_line"; ev_ns="$tp_src"; } ;;
+          [0-9]*) [ -z "$ev_ver" ] && { ev_ver="${ev_line##* }"; ev_vs="$ev_line_src"; }
+                  [ -z "$ev_name" ] && { ev_name="${ev_line% *}"; ev_ns="$ev_line_src"; } ;;
+          *)      [ -z "$ev_name" ] && { ev_name="$ev_line"; ev_ns="$ev_line_src"; } ;;
         esac
       fi
     fi
     if [ -z "$ev_lang" ]; then
-      ev_lang=$(_rc_tp Language); ev_ls="$tp_src"
+      ev_lang=$(_rc_tp Language); ev_ls=$(_rc_tp_source Language)
     fi
   fi
   if _rc_named engine_values; then
@@ -2009,8 +2027,8 @@ EOF
   # from the engine (Godot -> godot-specialist), else the legacy Primary line.
   # code, shader, ui and additional come from project.yaml's specialists block;
   # a member set to null is UNSET, never an agent name. Only when the block is
-  # absent do they fall back to technical-preferences.md (the v1.0 migration
-  # writes the whole block, with null for each member it did not know).
+  # absent do they fall back per key to project-owned preferences, then legacy
+  # template values (migration writes a whole block when a v1.0 project moves).
   local sp_primary sp_psrc sp_src sp_code sp_shader sp_ui sp_add
   if _rc_named specialists; then
     case "$(printf '%s' "$ev_name" | tr '[:upper:]' '[:lower:]')" in
@@ -2020,7 +2038,7 @@ EOF
       *)       sp_primary="" ;;
     esac
     sp_psrc="engine.name"
-    if [ -z "$sp_primary" ]; then sp_primary=$(_rc_tp Primary); sp_psrc="$tp_src"; fi
+    if [ -z "$sp_primary" ]; then sp_primary=$(_rc_tp Primary); sp_psrc=$(_rc_tp_source Primary); fi
     if [ -n "$(get_yaml_child_keys "$_YH_ROOT/project.yaml" specialists 2>/dev/null)" ]; then
       sp_src="project.yaml"
       sp_code=$(_rc_yaml "$_YH_ROOT/project.yaml" specialists.code)
@@ -2029,7 +2047,7 @@ EOF
       sp_add=$(get_yaml_array "$_YH_ROOT/project.yaml" specialists.additional 2>/dev/null \
                | awk '$0 != "" && $0 != "null" && $0 != "~"' | paste -sd, - | sed 's/,/, /g')
     else
-      sp_src="$tp_src"
+      sp_src="preferences document"
       sp_code=$(_rc_tp "Language/Code Specialist")
       sp_shader=$(_rc_tp "Shader Specialist")
       sp_ui=$(_rc_tp "UI Specialist")
@@ -2087,8 +2105,10 @@ EOF
       echo "input_methods: ${im_set:-none} (project.yaml platform; primary: ${im_p:-unset})"
     else
       im_set=$(_rc_tp "Input Methods"); im_p=$(_rc_tp "Primary Input")
+      local im_src
+      im_src=$(_rc_tp_source "Input Methods")
       if [ -n "$im_set" ]; then
-        echo "input_methods: $im_set ($tp_src; primary: ${im_p:-unset})"
+        echo "input_methods: $im_set ($im_src; primary: ${im_p:-unset})"
       else
         echo "input_methods: unset (no platform block in project.yaml, no Input Methods line)"
       fi

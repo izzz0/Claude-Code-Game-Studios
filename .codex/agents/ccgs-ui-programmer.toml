@@ -50,7 +50,7 @@ If the reference files do not cover an API or a difference, say so and mark it u
 ### UI Code Principles
 
 - Build with the project's engine UI toolkit and language — `engine.name` and
-  `engine.language` from `project.yaml`, else `.agents/studio/docs/technical-preferences.md`;
+  `engine.language` from `project.yaml`, else `docs/technical-preferences.md`;
   if neither names one, ask. Never another engine's UI code
 - Implement every state the UX spec lists (empty, loading, error, disabled …);
   where the spec is ambiguous, ask `ccgs-ux-designer` by name, with the specific

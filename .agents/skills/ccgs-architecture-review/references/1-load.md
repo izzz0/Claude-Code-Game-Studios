@@ -32,7 +32,7 @@ finding or the verdict. `[engine]` is the lowercased `engine.name` from
 engine-reference paths out.
 
 ```
-Bash: bash .agents/studio/scripts/review-receipts.sh check "[latest-report]" docs/architecture/adr-*.md design/gdd/*.md docs/architecture/tr-registry.yaml docs/architecture/architecture.md docs/engine-reference/[engine]/*.md docs/engine-reference/[engine]/modules/*.md project.yaml .agents/studio/docs/technical-preferences.md docs/consistency-failures.md .agents/skills/ccgs-architecture-review/SKILL.md .agents/skills/ccgs-architecture-review/references/*.md
+Bash: bash .agents/studio/scripts/review-receipts.sh check "[latest-report]" docs/architecture/adr-*.md design/gdd/*.md docs/architecture/tr-registry.yaml docs/architecture/architecture.md docs/engine-reference/[engine]/*.md docs/engine-reference/[engine]/modules/*.md project.yaml docs/technical-preferences.md docs/consistency-failures.md .agents/skills/ccgs-architecture-review/SKILL.md .agents/skills/ccgs-architecture-review/references/*.md
 ```
 
 Phase 8 stamps the same list into this run's report; keep the two identical,
@@ -176,7 +176,7 @@ reasoning (Phase 4) — that is a per-ADR decision, not a blanket load.
 
 ### Project Standards
 - `project.yaml` —
-aming.*` and `performance.*`; plus `.agents/studio/docs/technical-preferences.md` for those keys when absent and for forbidden patterns / allowed libraries
+aming.*` and `performance.*`; plus `docs/technical-preferences.md` for those keys when absent and for forbidden patterns / allowed libraries
 
 Report a count: "Loaded [N] GDDs, [M] ADRs, engine: [name + version]."
 

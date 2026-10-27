@@ -1,0 +1,781 @@
+{
+  "version": 1,
+  "part": "design",
+  "cases": [
+    {
+      "id": "native-032-ccgs-adopt",
+      "skill": "ccgs-adopt",
+      "fixture": "adopt-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-adopt in English for this existing Godot 4.6.1 project. Audit the full workflow artifacts for template compliance, report the concrete counts and any gaps, and after the guided write approval create docs/adoption-plan-2026-10-26.md. Preserve project.yaml, design/gdd/courier.md, docs/architecture/adr-0001-delivery.md, docs/architecture/tr-registry.yaml, docs/architecture/control-manifest.md, and docs/engine-reference/godot/VERSION.md; do not claim runtime evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/adoption-plan-2026-10-26.md",
+            "contains": [
+              "courier.md",
+              "adr-0001-delivery.md",
+              "migration"
+            ],
+            "changed": true
+          },
+          {
+            "path": "project.yaml",
+            "contains": [
+              "Harbor Courier Adoption",
+              "4.6.1"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/courier.md",
+            "contains": [
+              "delivery_count = 3",
+              "Acceptance Criteria"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "GDD",
+          "ADR",
+          "BLOCKING",
+          "HIGH",
+          "adoption-plan-2026-10-26.md",
+          "migration"
+        ],
+        "response_not_contains": [
+          "runtime passed",
+          "review-mode.txt written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-033-ccgs-architecture-review",
+      "skill": "ccgs-architecture-review",
+      "fixture": "architecture-review-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-architecture-review in English on the supplied Harbor Courier GDDs, ADRs, architecture document, TR registry, and Godot 4.6.1 reference. Produce the traceability findings without changing any files. Report both TR-MOVEMENT-001 and TR-DELIVERY-001, their Accepted ADR coverage, dependency order, engine validation, and an honest PASS/CONCERNS/FAIL verdict.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/architecture.md",
+            "contains": [
+              "MovementController",
+              "DeliveryService"
+            ],
+            "changed": false
+          },
+          {
+            "path": "docs/architecture/tr-registry.yaml",
+            "contains": [
+              "TR-MOVEMENT-001",
+              "TR-DELIVERY-001"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "TR-MOVEMENT-001",
+          "TR-DELIVERY-001",
+          "Accepted",
+          "Godot 4.6.1"
+        ],
+        "response_not_contains": [
+          "registry updated",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-034-ccgs-art-bible",
+      "skill": "ccgs-art-bible",
+      "fixture": "art-bible-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-art-bible in English for Harbor Courier. Use the supplied concept's pitch, two pillars, teal/coral visual identity anchor, PC platform, and 256MB texture budget. Author the approved standard-scope art bible section by section at design/art/art-bible.md; preserve the concept and do not assert a rendered playtest.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/art/art-bible.md",
+            "contains": [
+              "Harbor Courier",
+              "Shape Language",
+              "Color System",
+              "Asset Standards"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/art/art-bible.md",
+          "teal",
+          "coral",
+          "Asset Standards",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "playtest passed",
+          "runtime verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-035-ccgs-asset-audit",
+      "skill": "ccgs-asset-audit",
+      "fixture": "asset-audit-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-asset-audit in English. Inspect the Godot asset root, the supplied art-bible standards, and src/asset_refs.gd. The files named char_courier_idle_512.png and sfx_parcel_pickup_01.ogg are deliberately corrupt media fixtures whose contents do not contain valid PNG/OGG magic bytes. Audit them without writing a report or changing any asset. Use actual file/magic/decoder evidence and report NON-COMPLIANT; never infer dimensions or duration from filenames or prose.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/art/art-bible.md",
+            "contains": [
+              "PNG",
+              "OGG",
+              "2MB"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/asset_refs.gd",
+            "contains": [
+              "char_courier_idle_512.png",
+              "sfx_parcel_pickup_01.ogg"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "char_courier_idle_512.png",
+          "sfx_parcel_pickup_01.ogg",
+          "magic",
+          "decoder",
+          "CORRUPT",
+          "NON-COMPLIANT"
+        ],
+        "response_not_contains": [
+          "asset files modified",
+          "all dimensions verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-036-ccgs-asset-spec",
+      "skill": "ccgs-asset-spec",
+      "fixture": "asset-spec-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-asset-spec character:courier in English. Read the actual art bible and courier character brief, identify a bounded set of idle/walk sprite sheets and a portrait, then after approval write design/assets/specs/courier-assets.md and update design/assets/asset-manifest.md. Include ASSET IDs, 512px PNG constraints, visual descriptions, art-bible anchors, generation prompts, and Status: Needed. Do not invent runtime assets.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/assets/specs/courier-assets.md",
+            "contains": [
+              "ASSET-001",
+              "courier",
+              "512",
+              "Art Bible Anchors",
+              "Generation Prompt",
+              "Status: Needed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/assets/asset-manifest.md",
+            "contains": [
+              "ASSET-001",
+              "Progress Summary",
+              "courier-assets.md"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "courier-assets.md",
+          "asset-manifest.md",
+          "ASSET-001",
+          "technical-artist",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "sprite sheet created",
+          "runtime imported"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-037-ccgs-content-audit",
+      "skill": "ccgs-content-audit",
+      "fixture": "content-audit-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-content-audit in English for the standard Harbor Courier project. Use the systems index and the two concrete GDD counts, inspect the resolved Godot content roots, and after the write approval create docs/content-audit-2026-10-26.md. Preserve project.yaml, design/gdd/systems-index.md, design/gdd/enemies.md, and design/gdd/items.md. Report the explicit enemy and item counts and distinguish scanned from not-assessed categories; do not invent missing content.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/content-audit-2026-10-26.md",
+            "contains": [
+              "Enemies",
+              "Items",
+              "2 enemy types",
+              "3 items"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/systems-index.md",
+            "contains": [
+              "Enemies",
+              "Items"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/enemies.md",
+            "contains": [
+              "2 enemy types",
+              "1 boss"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/items.md",
+            "contains": [
+              "3 items",
+              "2 equipment slots"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Enemies",
+          "Items",
+          "2 enemy types",
+          "3 items",
+          "content audit"
+        ],
+        "response_not_contains": [
+          "all content implemented",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-038-ccgs-create-architecture",
+      "skill": "ccgs-create-architecture",
+      "fixture": "create-architecture-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-architecture in English for Harbor Courier. Build the architecture from the actual concept, systems index, Movement and Delivery requirements, and Godot 4.6.1 reference. After the section approvals write docs/architecture/architecture.md with module ownership, boundaries, TR-MOVEMENT and TR-DELIVERY requirements, and honest review status. Do not claim engine runtime execution.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/architecture.md",
+            "contains": [
+              "Movement",
+              "Delivery",
+              "ownership",
+              "boundary"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "architecture.md",
+          "Movement",
+          "Delivery",
+          "TR-",
+          "$ccgs-architecture-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "runtime tested",
+          "all ADRs accepted"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-039-ccgs-create-control-manifest",
+      "skill": "ccgs-create-control-manifest",
+      "fixture": "create-control-manifest-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-control-manifest in English. Read the four Accepted ADRs and derive a concise control manifest with required patterns and forbidden approaches for input, delivery, save, and HUD ownership. Every rule must cite its ADR. After the preview approval write docs/architecture/control-manifest.md; do not alter ADRs or claim runtime validation.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/control-manifest.md",
+            "contains": [
+              "ADRs Covered",
+              "ADR-0001",
+              "ADR-0002",
+              "ADR-0003",
+              "ADR-0004",
+              "Required Patterns",
+              "Forbidden Approaches",
+              "source: ADR-0001"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "4 Accepted ADRs",
+          "control-manifest.md",
+          "ADR-0001",
+          "ADR-0004",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "ADR-0001 changed",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-040-ccgs-design-review",
+      "skill": "ccgs-design-review",
+      "fixture": "design-review-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-design-review design/gdd/delivery.md --review lean in English. Inspect the complete eight-section GDD, verify its Movement and HUD dependency paths, formula, and three measurable acceptance criteria. Remain read-only and return a concrete verdict with completeness, dependency graph, required-before-implementation, and recommended revisions; do not write tracking records.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Formulas",
+              "delivery_count = 3",
+              "AC-1"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "delivery.md",
+          "movement.md",
+          "hud.md",
+          "formula",
+          "acceptance criteria"
+        ],
+        "response_not_contains": [
+          "GDD updated",
+          "implementation complete"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-041-ccgs-design-system",
+      "skill": "ccgs-design-system",
+      "fixture": "design-system-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-design-system delivery in English. Use the actual Harbor Courier concept, systems index, standard Godot configuration, and engine reference. Author a substantive delivery GDD at design/gdd/delivery.md with Overview, Detailed Design, Formulas, Edge Cases, Dependencies, Acceptance Criteria, Summary, and a clear ownership rule for three parcel completion. Do not claim implementation or playtest evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Overview",
+              "## Detailed Design",
+              "## Formulas",
+              "## Edge Cases",
+              "## Dependencies",
+              "## Acceptance Criteria",
+              "three",
+              "parcel"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/gdd/delivery.md",
+          "Detailed Design",
+          "Acceptance Criteria",
+          "$ccgs-design-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "runtime passed",
+          "implementation verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-042-ccgs-propagate-design-change",
+      "skill": "ccgs-propagate-design-change",
+      "fixture": "propagate-design-change-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "history": {
+        "baseline": {
+          "design/gdd/delivery.md": "# Delivery\n## Formulas\nscore = delivered * 100 - elapsed_seconds.\n## Detailed Rules\nDeliveryService owns parcel state.\n"
+        }
+      },
+      "prompt": "Run $ccgs-propagate-design-change design/gdd/delivery.md in English. The actual changed GDD is backed by the isolated case history. Use exactly `git --git-dir .scratch/case-history.git --work-tree . diff HEAD -- design/gdd/delivery.md` (no global git settings), classify the score-formula impact from that diff, and after the separate approvals write docs/architecture/change-impact-2026-10-26-delivery.md. Preserve design/gdd/delivery.md and docs/architecture/adr-0001-score.md unless the user explicitly selects a status resolution; do not claim runtime execution.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/change-impact-2026-10-26-delivery.md",
+            "contains": [
+              "delivery.md",
+              "score",
+              "ADR-0001",
+              "Needs Review"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "score = delivered * 125 - elapsed_seconds",
+              "elapsed_seconds"
+            ],
+            "changed": false
+          },
+          {
+            "path": "docs/architecture/adr-0001-score.md",
+            "contains": [
+              "ADR-0001",
+              "GDD Requirements Addressed"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "score",
+          "ADR-0001",
+          "change-impact-2026-10-26-delivery.md"
+        ],
+        "response_not_contains": [
+          "GDD rewritten",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-043-ccgs-quick-design",
+      "skill": "ccgs-quick-design",
+      "fixture": "quick-design-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-quick-design make dash invincible on frame 1 in English. Classify this as a bounded tweak, use the current dash rule and prior cooldown spec, draft the Tweak format with old/new rule, affected system, acceptance criteria, and separate GDD update approval, then write design/quick-specs/dash-invincibility-tweak-2026-10-26.md. Preserve design/gdd/delivery.md, design/gdd/systems-index.md, and design/quick-specs/dash-cooldown-tuning-2026-10-20.md unless the separate GDD update is explicitly selected. Do not modify unrelated systems or claim playtest evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/quick-specs/dash-invincibility-tweak-2026-10-26.md",
+            "contains": [
+              "Tweak",
+              "dash",
+              "invincible",
+              "Acceptance Criteria"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "dash_cooldown = 2.0",
+              "dash_distance = 120"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/quick-specs/dash-cooldown-tuning-2026-10-20.md",
+            "contains": [
+              "dash_cooldown",
+              "2.0 seconds"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Tweak",
+          "dash",
+          "invincible",
+          "dash-cooldown-tuning-2026-10-20"
+        ],
+        "response_not_contains": [
+          "entire combat system",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-044-ccgs-reverse-document",
+      "skill": "ccgs-reverse-document",
+      "fixture": "reverse-document-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-reverse-document design src/gameplay/health_system.gd in English. Read the actual Godot script, present its mechanics and intent questions, then after approval write the full eight-section design GDD at design/gdd/health-system.md. Preserve the discovered clamp formula and max_health = 100, include the reverse-document provenance banner, and do not claim runtime behavior.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/health-system.md",
+            "contains": [
+              "Reverse-documented",
+              "## Formulas",
+              "clamp",
+              "max_health = 100",
+              "## Acceptance Criteria"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "health-system.md",
+          "clamp",
+          "max_health",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "health script tested",
+          "playtest passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-045-ccgs-review-all-gdds",
+      "skill": "ccgs-review-all-gdds",
+      "fixture": "review-all-gdds-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-review-all-gdds in English over the supplied Movement, Delivery, and HUD GDDs. Read their actual summaries, dependencies, cross-references, pillars, and anti-pillar; walk the concrete delivery scenario. Remain read-only, report the reviewed set and any consistency or holistic findings, and do not write the cross-review file.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/movement.md",
+            "contains": [
+              "## Summary",
+              "## Cross-References"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Summary",
+              "movement.md"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/hud.md",
+            "contains": [
+              "## Summary",
+              "Targets 0/3"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Movement",
+          "Delivery",
+          "HUD",
+          "scenario",
+          "consistency"
+        ],
+        "response_not_contains": [
+          "GDDs modified",
+          "cross-review written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-046-ccgs-ux-design",
+      "skill": "ccgs-ux-design",
+      "fixture": "ux-design-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-ux-design hud in English. Use the actual delivery UI requirement, Harbor Courier concept, player journey, and platform block (PC, full gamepad support). Author design/ux/hud.md section by section with Targets 0/3, completion feedback, keyboard/mouse and gamepad adaptation, readable hierarchy, and acceptance criteria. Preserve the GDD and do not claim a playtest; end with the $ccgs-ux-review handoff.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/ux/hud.md",
+            "contains": [
+              "HUD Philosophy",
+              "Information Architecture",
+              "Layout Zones",
+              "Targets 0/3",
+              "Platform Adaptation",
+              "Acceptance Criteria"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/ux/hud.md",
+          "Targets 0/3",
+          "gamepad",
+          "$ccgs-ux-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "playtest passed",
+          "GDD modified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

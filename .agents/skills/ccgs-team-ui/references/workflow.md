@@ -74,7 +74,7 @@ enforced.**
 - **ccgs-ux-designer** — User flows, wireframes, accessibility, input handling
 - **ccgs-ui-programmer** — UI framework, screens, widgets, data binding, implementation
 - **ccgs-art-director** — Visual style, layout polish, consistency with art bible
-- **engine UI specialist** — Validates UI implementation patterns against engine-specific best practices (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `.agents/studio/docs/technical-preferences.md`)
+- **engine UI specialist** — Validates UI implementation patterns against engine-specific best practices (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `docs/technical-preferences.md`)
 - **ccgs-accessibility-specialist** — Audits accessibility compliance at Phase 4
 
 > **`specialists.ui: null` means UNSET.** Treat it as absent and skip the engine
@@ -194,7 +194,7 @@ Delegate to **ccgs-art-director**:
 
 ### Phase 3: Implementation
 
-Before implementation begins, spawn the **engine UI specialist** (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `.agents/studio/docs/technical-preferences.md`) to review the UX spec and visual design spec for engine-specific implementation guidance:
+Before implementation begins, spawn the **engine UI specialist** (`specialists.ui` from `project.yaml`; if absent, the UI Specialist line of `## Engine Specialists` in `docs/technical-preferences.md`) to review the UX spec and visual design spec for engine-specific implementation guidance:
 - Which engine UI framework should be used for this screen? (e.g., UI Toolkit vs UGUI in Unity, Control nodes vs CanvasLayer in Godot, UMG vs CommonUI in Unreal)
 - Any engine-specific gotchas for the proposed layout or interaction patterns?
 - Recommended widget/node structure for the engine?

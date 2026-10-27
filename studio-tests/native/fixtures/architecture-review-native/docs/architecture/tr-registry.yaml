@@ -1,0 +1,5 @@
+tr:
+  - id: TR-MOVEMENT-001
+    source: design/gdd/movement.md
+  - id: TR-DELIVERY-001
+    source: design/gdd/delivery.md

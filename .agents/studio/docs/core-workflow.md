@@ -10,6 +10,15 @@ Locate the current project's project.yaml and Git/worktree identity. Use the nea
 
 Use the same helper for named system overrides; derive the system from its GDD filename stem before any TR alias. Whitelisted local -> project -> legacy mirror -> rigor expansion -> terminal default. Preserve existing values. Invalid configuration, orphan overrides or a local file without its base must be reported, never replaced with guessed defaults. On Windows, `runtime/context.py:bash_executable` discovers a real Git Bash; do not run a `WindowsApps` alias or mutate global `PATH`.
 
+During a game/project workflow, treat `.agents/studio/` as read-only framework
+and template content. Project-owned technical preferences live in
+`docs/technical-preferences.md`; initialize it from
+`.agents/studio/docs/technical-preferences.md` only when the project document is
+absent, and preserve an existing project document. The original
+`.agents/studio/docs/technical-preferences.md` remains a read-only per-key
+fallback for legacy values. This workflow rule does not restrict explicit
+maintenance of the studio framework source itself.
+
 New projects initialize only absent modes.rigor=minimal and modes.automation=guided using config-set.sh (preview --dry-run, then the authorized write). Never seed the six expanded knobs merely to choose rigor. Schema remains 1. Configuration changes preserve unrelated keys. Reserved settings remain visibly reserved until implemented; in particular strict_gate_checks has no independent runtime effect.
 
 Guided automatically performs ordinary authorized edits and checks, asking for material product, architecture or scope decisions. Collaborative reviews major phase drafts. Autonomous makes in-scope decisions and records them. Explicit human authorization wins; no mode grants new permission. A required unanswered question remains pending. Do not add an approval for every new file, status update or ordinary config edit.

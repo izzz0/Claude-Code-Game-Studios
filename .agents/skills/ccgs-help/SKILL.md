@@ -140,7 +140,7 @@ Do not re-derive any of this with ad-hoc filesystem scans. `any_of` in particula
 **alternatives** — one match is enough — and hand-evaluating it risks a false
 "incomplete": `engine-setup` is satisfied by `engine.name`
 in `project.yaml` **or** by the legacy `Engine:` line in
-`.agents/studio/docs/technical-preferences.md`, and the script reports which alternative
+`docs/technical-preferences.md`, and the script reports which alternative
 matched (`alt=`/`match=`).
 
 **`NO_CHECK` never means done.** The script prints a `NO_CHECK:` total before the

@@ -61,7 +61,7 @@ Before running anything, understand the environment:
 
 3. **Engine detection**: read `engine.name` from `project.yaml`; if that key
    is absent or empty (including when `project.yaml` has no `engine:` block),
-   fall back to the `Engine:` value in `.agents/studio/docs/technical-preferences.md`
+   fall back to the `Engine:` value in `docs/technical-preferences.md`
    (a `[TO BE CONFIGURED]` value means not configured). Store this for test
    command selection in Phase 2.
 

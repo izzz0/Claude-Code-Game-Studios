@@ -87,6 +87,21 @@ class NativeAcceptanceTests(unittest.TestCase):
         self.before = driver.tree_hashes(self.root)
         self.assertEqual(self.assess()["status"], "FAIL")
 
+    def test_project_authoring_never_rewrites_framework_templates(self):
+        template = self.root / ".agents/studio/docs/technical-preferences.md"
+        template.parent.mkdir(parents=True)
+        template.write_text("read-only template", encoding="utf-8")
+        self.before = driver.tree_hashes(self.root)
+        self.case["readonly"] = False
+        preferences = self.root / "docs/technical-preferences.md"
+        preferences.parent.mkdir()
+        preferences.write_text("Godot 4.6.1", encoding="utf-8")
+        self.assertEqual(self.assess()["status"], "PASS")
+        template.write_text("rewritten", encoding="utf-8")
+        result = self.assess()
+        self.assertEqual(result["status"], "FAIL")
+        self.assertTrue(any("Framework resources changed" in x for x in result["findings"]))
+
     def test_model_claims_do_not_supply_independent_or_rendered_evidence(self):
         self.case["required_evidence"] = ["independent_review", "rendered_input"]
         self.assertEqual(self.assess(response="Target index 2 is rejected. independent_review rendered_input PASS")["status"], "NOT ASSESSED")
@@ -184,6 +199,28 @@ class NativeAcceptanceTests(unittest.TestCase):
         self.assertTrue(any("project.stage" in row for row in result["findings"]))
         self.assertTrue(any("notes.owner" in row for row in result["findings"]))
 
+    def test_setup_checks_identity_in_actual_config_not_repeated_response_name(self):
+        catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
+        self.case = next(c for c in catalog["cases"] if c["skill"] == "ccgs-setup-engine")
+        target = self.root / "project.yaml"
+        target.write_bytes((ROOT / "studio-tests/native/fixtures/setup-engine/project.yaml").read_bytes())
+        self.before = driver.tree_hashes(self.root)
+        configured = (ROOT / "studio-tests/codex/fixtures/native-setup-project.yaml").read_text(encoding="utf-8")
+        response = (ROOT / "studio-tests/codex/fixtures/native-setup-configured.md").read_text(encoding="utf-8")
+        self.assertNotIn("Preserve This Project Name", response)
+        target.write_text(configured, encoding="utf-8")
+        self.assertEqual(self.assess(response=response)["status"], "PASS")
+        for old, new in (("Preserve This Project Name", "Wrong Project"),
+                         ("stage: Concept", "stage: Production"),
+                         ("owner: native-smoke", "owner: unrelated"),
+                         ("language: GDScript", "language: CSharp")):
+            with self.subTest(field=old):
+                self.assertIn(old, configured)
+                target.write_text(configured.replace(old, new), encoding="utf-8")
+                result = self.assess(response=response)
+                self.assertEqual(result["status"], "FAIL")
+                self.assertTrue(any("Configuration mismatch" in x for x in result["findings"]))
+
     def test_resume_rejects_changed_unlisted_source_and_response(self):
         receipts = self.root / "native receipts"
         receipts.mkdir()
@@ -193,11 +230,31 @@ class NativeAcceptanceTests(unittest.TestCase):
         events.write_text("[]", encoding="utf-8")
         thread = receipts / "thread.json"
         thread.write_text("{}", encoding="utf-8")
+        baseline = receipts / "before.json"
+        baseline.write_text("{}", encoding="utf-8")
+        children = receipts / "child-threads.json"
+        children.write_text("{}", encoding="utf-8")
+        for name in ("engine-runtime.json", "engine-observation.json"):
+            (receipts / name).write_text("null", encoding="utf-8")
         record = {"status": "PASS", "source_fingerprint": "version", "sandbox": str(self.root),
                   "attempt": str(receipts), "response_sha256": driver.sha(response),
                   "events_sha256": driver.sha(events), "thread_sha256": driver.sha(thread),
+                  "before_sha256": driver.sha(baseline),
+                  "child_threads_sha256": driver.sha(children),
+                  "engine_runtime_sha256": driver.sha(receipts / "engine-runtime.json"),
+                  "engine_observation_sha256": driver.sha(receipts / "engine-observation.json"),
+                  "observation_hashes": {},
                   "protected_hashes": driver.tree_hashes(self.root), "artifacts": {}}
         self.assertTrue(driver.can_resume(record, "version"))
+        observations = self.root / ".scratch/team-observations/production/team-runs"
+        observations.mkdir(parents=True)
+        (observations / "review.json").write_text("{}", encoding="utf-8")
+        self.assertFalse(driver.can_resume(record, "version"))
+        record["observation_hashes"] = driver.tree_hashes(self.root / ".scratch/team-observations")
+        self.assertTrue(driver.can_resume(record, "version"))
+        (observations / "review.json").write_text('{"stale":true}', encoding="utf-8")
+        self.assertFalse(driver.can_resume(record, "version"))
+        (observations / "review.json").write_text("{}", encoding="utf-8")
         (self.root / "code.gd").write_text("new behavior", encoding="utf-8")
         self.assertFalse(driver.can_resume(record, "version"))
         self.assertFalse(driver.can_resume(record, "different version"))
@@ -205,18 +262,32 @@ class NativeAcceptanceTests(unittest.TestCase):
     def test_resume_rejects_tampered_native_receipts_and_legacy_records(self):
         receipts = self.root / "native receipts tamper"
         receipts.mkdir()
-        for name, content in (("response.txt", "review"), ("events.json", "[]"), ("thread.json", "{}")):
+        for name, content in (("response.txt", "review"), ("events.json", "[]"),
+                              ("thread.json", "{}"), ("before.json", "{}"),
+                              ("child-threads.json", "{}"), ("engine-runtime.json", "null"),
+                              ("engine-observation.json", "null")):
             (receipts / name).write_text(content, encoding="utf-8")
         record = {"status": "PASS", "source_fingerprint": "version", "sandbox": str(self.root),
                   "attempt": str(receipts), "response_sha256": driver.sha(receipts / "response.txt"),
                   "events_sha256": driver.sha(receipts / "events.json"),
                   "thread_sha256": driver.sha(receipts / "thread.json"),
+                  "before_sha256": driver.sha(receipts / "before.json"),
+                  "child_threads_sha256": driver.sha(receipts / "child-threads.json"),
+                  "engine_runtime_sha256": driver.sha(receipts / "engine-runtime.json"),
+                  "engine_observation_sha256": driver.sha(receipts / "engine-observation.json"),
+                  "observation_hashes": {},
                   "protected_hashes": driver.tree_hashes(self.root), "artifacts": {}}
         self.assertTrue(driver.can_resume(record, "version"))
         (receipts / "events.json").write_text('[{"tampered":true}]', encoding="utf-8")
         self.assertFalse(driver.can_resume(record, "version"))
         (receipts / "events.json").write_text("[]", encoding="utf-8")
         (receipts / "thread.json").write_text('{"tampered":true}', encoding="utf-8")
+        self.assertFalse(driver.can_resume(record, "version"))
+        (receipts / "thread.json").write_text("{}", encoding="utf-8")
+        (receipts / "before.json").write_text('{"tampered":true}', encoding="utf-8")
+        self.assertFalse(driver.can_resume(record, "version"))
+        (receipts / "before.json").write_text("{}", encoding="utf-8")
+        (receipts / "child-threads.json").write_text('{"tampered":true}', encoding="utf-8")
         self.assertFalse(driver.can_resume(record, "version"))
         legacy = dict(record)
         legacy.pop("events_sha256")
@@ -246,11 +317,20 @@ class NativeAcceptanceTests(unittest.TestCase):
         (project / ".codex/agents/ccgs-test.toml").write_text("role", encoding="utf-8")
         (project / ".codex/hooks.json").parent.mkdir(exist_ok=True)
         (project / ".codex/hooks.json").write_text("hooks", encoding="utf-8")
+        (project / "docs").mkdir()
+        (project / "docs/technical-preferences.md").write_text("source preferences", encoding="utf-8")
         sandbox.mkdir()
+        (sandbox / "docs").mkdir()
+        (sandbox / "docs/technical-preferences.md").write_text("existing choices", encoding="utf-8")
         driver.copy_case_resources(project, sandbox)
         self.assertTrue((sandbox / ".codex/agents/ccgs-test.toml").is_file())
         self.assertEqual((sandbox / ".agents/skills/ccgs-help/SKILL.md").read_text(encoding="utf-8"), "skill")
         self.assertFalse((sandbox / ".codex/hooks.json").exists())
+        self.assertEqual((sandbox / "docs/technical-preferences.md").read_text(encoding="utf-8"), "existing choices")
+        fresh = self.root / "fresh sandbox"
+        fresh.mkdir()
+        driver.copy_case_resources(project, fresh)
+        self.assertEqual((fresh / "docs/technical-preferences.md").read_text(encoding="utf-8"), "source preferences")
 
     def test_catalog_coverage_reports_missing_cases_and_all_authored_cases_have_tools(self):
         catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
@@ -260,11 +340,23 @@ class NativeAcceptanceTests(unittest.TestCase):
         self.assertEqual(len(authored), len(catalog["cases"]))
         self.assertEqual(len({r["id"] for r in catalog["cases"]}), len(catalog["cases"]))
         self.assertTrue(authored <= required)
+        self.assertEqual(catalog["coverage"]["authored_cases"], len(authored))
+        self.assertEqual(catalog["coverage"]["unauthored_manifest_skills"], len(required - authored))
         for case in catalog["cases"]:
             self.assertTrue(case["expected"]["required_tools"])
+            self.assertIn("$" + case["skill"], case["prompt"])
+            self.assertIsNone(case["fixture_stdout"])
+            self.assertIsNone(case["actual_result_stub"])
+            self.assertIs(case["expected_native_until_run"], True)
             fixture = ROOT / "studio-tests/native/fixtures" / case["fixture"]
             self.assertTrue((fixture / "project.yaml").is_file())
+            for name, content in case.get("history", {}).get("baseline", {}).items():
+                self.assertTrue(driver.safe_path(fixture, name).is_file(), case["id"])
+                self.assertIsInstance(content, str)
             for spec in case["expected"].get("files", []):
+                driver.safe_path(fixture, spec["path"])
+                if spec.get("changed") is True:
+                    self.assertFalse(case["readonly"], f"{case['id']}: read-only case requires writes")
                 if spec.get("changed") is False:
                     self.assertTrue(driver.safe_path(fixture, spec["path"]).is_file(),
                                     f"{case['id']}: preserved fixture input is missing: {spec['path']}")

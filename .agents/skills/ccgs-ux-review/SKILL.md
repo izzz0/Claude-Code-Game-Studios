@@ -68,7 +68,7 @@ Before validating any spec, load:
    (`platform.targets`, `platform.primary_input`, `platform.gamepad_support`,
    `platform.touch_support`); if `project.yaml` has no `platform` block, fall
    back to the `## Input & Platform` section of
-   `.agents/studio/docs/technical-preferences.md`. For the set of supported input
+   `docs/technical-preferences.md`. For the set of supported input
    methods: when reading from `project.yaml`, derive it — keyboard/mouse if
    `PC` or `Web` is in `targets`; gamepad if `gamepad_support` is Full or
    Partial; touch if `touch_support` is Full or Partial; plus `primary_input`.

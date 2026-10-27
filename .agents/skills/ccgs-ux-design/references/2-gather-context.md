@@ -104,7 +104,7 @@ must satisfy the accessibility tier committed to there.
 
 Read the `platform` block from `project.yaml`; if `project.yaml` has no
 `platform` block, fall back to the `## Input & Platform` section of
-`.agents/studio/docs/technical-preferences.md`. Store these values for use throughout
+`docs/technical-preferences.md`. Store these values for use throughout
 the skill — they drive the Interaction Map and inform accessibility
 requirements:
 

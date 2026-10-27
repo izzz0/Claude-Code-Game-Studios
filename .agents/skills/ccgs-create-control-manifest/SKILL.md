@@ -52,9 +52,9 @@ title of every ADR a rule comes from.
 
 -
 aming.*` and `performance.*` from `project.yaml`; for any key absent or empty,
-  `.agents/studio/docs/technical-preferences.md`.
+  `docs/technical-preferences.md`.
 - Approved libraries and forbidden patterns from
-  `.agents/studio/docs/technical-preferences.md` (not migrated to `project.yaml`).
+  `docs/technical-preferences.md` (not migrated to `project.yaml`).
 
 ### Engine reference
 

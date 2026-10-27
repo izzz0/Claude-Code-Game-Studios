@@ -158,7 +158,7 @@ Read the output, not the exit code: a failing test and a run that matched nothin
 
 **Unknown engine / not configured:**
 "Engine not configured in `project.yaml` or
-`.agents/studio/docs/technical-preferences.md`. Run `$ccgs-setup-engine` to specify the
+`docs/technical-preferences.md`. Run `$ccgs-setup-engine` to specify the
 engine, then re-run `$ccgs-smoke-check`."
 
 **If the test runner is not available in this environment** (no editor

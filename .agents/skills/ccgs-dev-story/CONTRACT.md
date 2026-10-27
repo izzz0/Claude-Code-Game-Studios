@@ -14,7 +14,7 @@ Bridges planning and code by loading the full context for a single story (story 
 | `docs/architecture/control-manifest.md` | `Manifest Version:` header, layer rules (required patterns, forbidden patterns, performance guardrails) | Yes |
 | `project.yaml` | `engine.name`, `engine.version`,
 aming.*`, `performance.*` — the primary source for each of these fields | Yes |
-| `.agents/studio/docs/technical-preferences.md` | Legacy fallback for any field above that is absent or empty in `project.yaml`; **sole** source for forbidden patterns and allowed libraries (deliberately never migrated), plus the `Engine Specialists` section | Yes — required only for fields absent from `project.yaml`, and always for forbidden patterns |
+| `docs/technical-preferences.md` | Project-owned guidance and per-key fallback for fields absent or empty in `project.yaml`; legacy `.agents/studio/docs/technical-preferences.md` is a secondary fallback when this document is absent, empty, or placeholder-valued. Holds forbidden patterns, allowed libraries and `Engine Specialists` guidance. | Read when YAML or the project document leaves required values unset; consult the legacy file per key when applicable. |
 | `docs/engine-reference/[engine]/VERSION.md` | Engine version, LLM knowledge cutoff, post-cutoff risk levels | Yes |
 | `production/session-state/active.md` | (read to find active story when no argument given; created if absent) | No |
 
@@ -28,7 +28,7 @@ aming.*`, `performance.*` — the primary source for each of these fields | Yes 
 - The target story must have `Status: Ready` (validated by `$ccgs-story-readiness` at `standard`/`full`; at `minimal`, `$ccgs-create-stories` writes stories `Ready` and `$ccgs-story-readiness` is not on the path)
 - The ADR referenced in the story must have `Status: Accepted` — if `Status: Proposed`, do not implement; surface this as a blocker and direct user to `$ccgs-architecture-decision accept [ADR-id]`; `Deprecated` or `Superseded` also blocks, naming the successor. A story whose ADR field reads `N/A` references none, at every tier
 - All `## Dependencies` stories listed in the story file must already have `Status: Complete` (or `Status: Done`)
-- An engine must be configured — `engine.name` in `project.yaml`, or as legacy fallback an `**Engine**:` value in `.agents/studio/docs/technical-preferences.md` that is not `[TO BE CONFIGURED]`
+- An engine must be configured — `engine.name` in `project.yaml`, or a real `**Engine**:` value in `docs/technical-preferences.md`, falling back per key to the legacy template when unset
 - At `full`, `docs/architecture/tr-registry.yaml` must contain the story's TR-ID (optional at `standard`, not expected at `minimal`)
 - `docs/architecture/control-manifest.md` supplies the layer rules when present; a missing one warns and never stops the skill
 
@@ -44,7 +44,7 @@ aming.*`, `performance.*` — the primary source for each of these fields | Yes 
 
 ### Output Guarantees
 - All source files follow the naming conventions in `project.yaml` (
-aming.*`), falling back to `.agents/studio/docs/technical-preferences.md` for any convention absent there
+aming.*`), falling back to `docs/technical-preferences.md` for any convention absent there
 - Test file path matches exactly the path declared in the story's `## Test Evidence` section
 - Every acceptance criterion is mapped to a test function (Logic/Integration), an `OBSERVED` retained screenshot (the *look* half of Visual/Feel and UI), or flagged `DEFERRED` (the *feel* half only — timing, weight, responsiveness) in the implementation summary
 - No files are written outside the story's `## Out of Scope` boundary without surfacing the conflict to the user first
@@ -56,7 +56,7 @@ aming.*`), falling back to `.agents/studio/docs/technical-preferences.md` for an
 - **Completion is not assumed.** If the programmer agent stopped early or its output fails to parse, the story is reported **INCOMPLETE** with the specific breakage named, and `Implementation Complete` is not emitted
 
 ## Immutability Rules
-- READS but does NOT modify: `project.yaml`, `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md`, all GDD files in `design/gdd/`, `docs/architecture/control-manifest.md`, `.agents/studio/docs/technical-preferences.md` (legacy fallback), `docs/engine-reference/[engine]/VERSION.md`
+- READS but does NOT modify: `project.yaml`, `docs/architecture/tr-registry.yaml`, `docs/architecture/adr-NNNN-[slug].md`, all GDD files in `design/gdd/`, `docs/architecture/control-manifest.md`, `docs/technical-preferences.md`, and per-key legacy fallback `.agents/studio/docs/technical-preferences.md`, `docs/engine-reference/[engine]/VERSION.md`
 - MODIFIES, through the programmer agents: `<code root>/**` (new/updated source files; code root resolved per `.agents/studio/docs/code-root-resolution.md`) and the engine's test root (the new test file; `tests/` on Godot)
 - MODIFIES, within the accepted story scope and according to automation mode: the story file's `Status:`, `Last Updated:`, `## Files`, `ADR Version`, `**ADR Decision Summary**`, `## Implementation Notes`, `Manifest Version:` and `Manifest-Note:` (see the story row above); the story's entry in `production/sprint-status.yaml` (`status: in-progress`, top-level `updated`); a dependency story's `Status:` (that dependency answer only); a Config/Data story's data file; on Unity, `Assets/Scripts/ScreenshotOnArg.cs`, written verbatim from `.agents/studio/docs/run-and-observe.md` when the project has none. Normal authorized edits are grouped by scope, not approved one file at a time.
 - MODIFIES without an ask: `production/session-state/active.md` — its `<!-- CHECKPOINT -->` block is overwritten, never appended

@@ -20,7 +20,7 @@ One brief hypothesis, pinned engine/version/commands, and an explicit time box. 
 - Target that project explicitly in editor commands. If using project-aware helpers, pass --root prototypes/<slug>/ and keep its own configuration there; default helper roots would target the production project instead.
 - Parse/import, run the real engine window, reach the criterion, and retain screenshots under `production/qa/evidence/<slug>/` plus an evidence note. Text or headless output is not visual evidence.
 - Classify `PROCEED`, `PIVOT`, `KILL`, or `NOT ASSESSED`; missing runtime, timeout, or missing screenshot is `NOT ASSESSED`.
-- Record stage with `bash .agents/studio/scripts/set-stage.sh <Stage>` and checkpoint with `bash .agents/studio/scripts/session-state.sh checkpoint` (stdin).
+- For a verified `PROCEED`, `PIVOT`, or `KILL` result, record the agreed stage with `bash .agents/studio/scripts/set-stage.sh <Stage>` and checkpoint with `bash .agents/studio/scripts/session-state.sh checkpoint` (stdin). For `NOT ASSESSED` caused by missing engine, timeout, runtime, or screenshot evidence, retain the current stage and do not call `set-stage.sh`; when `features.session_state` is enabled, initialize or update its checkpoint, otherwise do not create session-state files solely for this result.
 
 ## Output
 

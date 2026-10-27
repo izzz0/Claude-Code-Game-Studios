@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites tests="9" failures="0" skipped="0" flaky="0" time="0.000">
+  <testsuite tests="9" failures="0" errors="0" skipped="0" flaky="0" time="0.134">
+    <testcase name="case_01" time="0.014" />
+    <testcase name="case_02" time="0.005" />
+    <testcase name="case_03" time="0.009" />
+    <testcase name="case_04" time="0.007" />
+    <testcase name="case_05" time="0.026" />
+    <testcase name="case_06" time="0.007" />
+    <testcase name="case_07" time="0.006" />
+    <testcase name="case_08" time="0.021" />
+    <testcase name="case_09" time="0.006" />
+  </testsuite>
+</testsuites>

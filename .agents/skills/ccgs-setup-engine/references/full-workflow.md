@@ -40,7 +40,7 @@ Four modes:
 
 **Read `references/3-version.md` now and follow it** — this phase's steps are in that file, not here. Read it again if the conversation was compacted or resumed during this phase.
 
-## 4. Update AGENTS.md Technology Stack
+## 4. Confirm Project Technology Stack
 
 **Read `references/4-agents-md-stack.md` now and follow it** — this phase's steps are in that file, not here. Read it again if the conversation was compacted or resumed during this phase.
 
@@ -113,9 +113,10 @@ If invoked as `$ccgs-setup-engine refresh`:
 ## Guardrails
 
 - NEVER guess an engine version — always verify via official web search or user confirmation
-- `project.yaml` is the primary config store (v1.1). Always dual-write engine
-  config to BOTH `project.yaml` (primary) and `technical-preferences.md` (legacy
-  mirror). If the two ever diverge, `project.yaml` is authoritative.
+- `project.yaml` is the primary structured config store (v1.1). Keep its values
+  consistent with project-owned `docs/technical-preferences.md`; never write
+  `.agents/studio/docs/technical-preferences.md`, which is a read-only template
+  and per-key fallback. If sources differ, `project.yaml` wins.
 - NEVER overwrite existing reference docs without asking — append or update
 - If reference docs already exist for a different engine, ask before replacing
 - Always show the user what you're about to change before making AGENTS.md edits

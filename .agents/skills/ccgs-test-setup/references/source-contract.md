@@ -1,5 +1,5 @@
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). Every `the caller's input channel` call and
+  `project.yaml` → default `guided`). Every `the caller's input channel` call and
 every file write follows `.agents/studio/docs/automation-modes.md`
 (collaborative reviews major drafts · guided raises material decisions · autonomous records decisions;
 `automation_always_ask` categories always prompt).
@@ -47,7 +47,7 @@ A test framework installed at sprint four costs 3 sprints.
 
 - **Never overwrite existing test files** — only create files that are missing.
   If a test runner file exists, leave it as-is.
-- **Always ask before creating files** — Phase 2 requires explicit approval.
+- **Respect the resolved automation mode** — collaborative reviews the Phase 2 draft; guided/autonomous perform ordinary authorized setup writes, while material scope decisions and missing inputs still require a question.
 - **Engine detection is non-negotiable** — if the engine is not configured,
   stop and redirect to `$ccgs-setup-engine`. Do not guess.
 - **`force` flag skips the "already exists" early-exit but never overwrites.**

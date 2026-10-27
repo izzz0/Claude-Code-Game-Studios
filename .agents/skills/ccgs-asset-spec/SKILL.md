@@ -172,7 +172,7 @@ content mode) and Read those ranges with offset and limit.
 
 - **Project config**: Read `performance.*` and
 naming.*` from `project.yaml`; for any key absent or empty (including when `project.yaml` has no `performance` or
-`naming` block), fall back to `.agents/studio/docs/technical-preferences.md`. Extract performance budgets and naming conventions.
+`naming` block), fall back to `docs/technical-preferences.md`. Extract performance budgets and naming conventions.
 
 ### Source doc reads (by target type):
 - **system**: Read `design/gdd/[target-name].md`. Extract the **Visual/Audio Requirements** section. If it doesn't exist or reads `[To be designed]`:

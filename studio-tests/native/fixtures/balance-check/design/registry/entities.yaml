@@ -1,0 +1,4 @@
+constants:
+  - name: player_damage_range
+    value: 90-110
+    source: design/gdd/combat.md

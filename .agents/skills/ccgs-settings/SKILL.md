@@ -12,7 +12,7 @@ Manages `project.yaml` (team-wide config, committed) and `project.local.yaml`
 settings or change them without manually editing YAML.
 
 **Automation mode**: Resolve `modes.automation` (`project.local.yaml` →
-`project.yaml` → default `collaborative`). The approval gates in Phase 4 and
+  `project.yaml` → default `guided`). The approval gates in Phase 4 and
 Phase 5 follow the pattern in `.agents/studio/docs/automation-modes.md`. **Note**:
 writing to `project.yaml` is a `schema_changes` decision (a default
 `automation_always_ask` category), so `$ccgs-settings` confirms config writes even
