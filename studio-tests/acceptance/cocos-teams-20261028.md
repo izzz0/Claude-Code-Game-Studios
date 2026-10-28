@@ -2,6 +2,9 @@
 
 Status: **NOT ASSESSED — nine native teams remain open; original game optimization has not started.**
 
+The bounded Cocos Web integration gate has an independent **PASS**. This is
+separate from the still-open nine-team gate below.
+
 The user paused Godot real runs and the exhaustive 74-skill campaign. The active
 gate is nine actual Cocos team workflows, then Cocos Web integration, then
 authorized full + guided optimization of the original game. Other skills may be
@@ -43,6 +46,13 @@ They were exported byte-for-byte to ordinary portable filenames; export hashes
 are in `baseline-report-portable.json`. That report is a derived archive index,
 not a new execution, and the originals remain retained.
 
+Independent reviewer `/root/review_cocos_baseline` opened eight key images and
+verified all861 source/copy hashes, all16 screenshot hashes and all198 build
+artifact hashes. The complete returned review is retained verbatim at
+`evidence/independent-cocos-review.md` with identity/hash metadata in the adjacent
+JSON file. Its PASS is limited to Cocos Web integration; it does not establish
+native team-role execution. IME remains explicitly human-reported.
+
 ## Nine native Cocos teams
 
 Only these entries are selected; do not run `--all` for this focused campaign.
@@ -56,7 +66,7 @@ primary in each fixture; no Godot role is selected.
 |---|---|---|
 | combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/identity confusion; third dispatched8 actual roles and completed7 tasks, then NOT ASSESSED: model capacity interrupted independent review |
 | UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
-| QA | Failed Web entry smoke, read-only negative gate | NOT ASSESSED — not reached |
+| QA | Failed Web entry smoke, read-only negative gate | Three actual children completed, including same-child interruption/recovery; NOT ASSESSED because the reviewer added an opaque hashing pipeline; new guided execution required |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
 | level | City track and boundaries | NOT ASSESSED — not reached |
 | live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
@@ -88,6 +98,20 @@ outputs. Counterexamples cover fixture-only review, unrelated writers, final
 output reads, legacy prompt binding and changes after review. Historical native
 records are unchanged; these evaluator fixes still need a new native execution.
 
+QA attempt `71c8d80d0366` subsequently exercised real QA-lead, QA-tester and
+independent engine-programmer children. Their full histories and original
+records are retained. The supplied failed smoke correctly stopped later QA
+phases. However, the reviewer also ran an unqualified `Get-FileHash | Format-List`
+pipeline whose host receipt was opaque; strict read-only proof therefore remains
+NOT ASSESSED. Updated Windows instructions keep hashing/configuration helpers
+with the coordinator and prescribe auditable literal reads for all read-only
+children. The verifier whitelist is unchanged. A redundant requirement that the
+answer literally say `read-only` was removed; actual protected-file hashes and
+all three native evidence predicates remain mandatory. A protocol regression
+proves the resulting answer cannot pass without evidence or after a protected
+write. Neither this fix nor the child's self-reported PASS reclassifies the
+original native NA.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -104,8 +128,13 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
   `ci-35b34ba-linux.log`. Local Windows245 passed too; the local Linux suite
   printed245/245 OK but its surrounding shell wrapper had an exit-argument error,
   which is not presented as a successful wrapper run. Hosted Linux exited cleanly.
-- The later reviewer-candidate and final-output binding fixes passed48 evidence
-  tests and23 driver tests; their final250-test source needs fresh full CI.
+- Reviewer-candidate/final-output binding source
+  `4c035202092f6535862b867a84242f8c829e89d1` passed250/250 on both local platforms
+  and hosted CI, zero skips. Hosted run `40711427344`, Windows job `122897442519`
+  and Linux job `122897442782`; receipt `evidence/ci-4c03520.json`. The earlier
+  local shell-wrapper error was corrected and this later local Linux run exited0.
+- The subsequent read-only instruction/wording regression adds one test; that
+  final251-test source requires fresh full CI.
 - Independent review verified Cocos inputs, release negative gates, run labels,
   claimed reviewer selection and final-output binding. An earlier follow-up quota
   failure remains historical; subsequent read-only follow-ups completed without

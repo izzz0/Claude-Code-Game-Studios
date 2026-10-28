@@ -510,8 +510,12 @@ def run_case(client, project, output, case, timeout):
                      name.replace("'", "''") + "' -Raw -Encoding utf8" for name in sorted(set(review_bundle) | set(outputs))]
             instruction += (
                 "\nThe host may retain encrypted assignment messages. For auditable input binding, "
-                "the independent child must read every input below with one separate command per file. "
-                "Use these exact literal read commands, without pipelines, compound commands or writes. "
+                "give every read-only child the fully qualified literal Get-Content reads below. "
+                "The coordinator computes hashes and runs configuration helpers; read-only children "
+                "must not add hashing/formatting pipelines, Python/Bash helpers or other opaque shell "
+                "commands whose effects cannot be established from host receipts. "
+                "The independent child must read every input below with one separate command per file. "
+                "Use these exact literal read commands, without pipelines, compound commands, hashing commands or writes. "
                 "Read other required project guidance with the same literal read form. "
                 "Return findings after the reads; failed or incomplete reads remain NOT ASSESSED:\n" +
                 "\n".join(reads))

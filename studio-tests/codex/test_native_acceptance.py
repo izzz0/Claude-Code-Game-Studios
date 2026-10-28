@@ -8,6 +8,7 @@ from unittest.mock import patch
 import contextlib
 import io
 import sys
+import shutil
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("native_acceptance", ROOT / "studio-tests/native/run_acceptance.py")
@@ -48,6 +49,25 @@ class NativeAcceptanceTests(unittest.TestCase):
         readonly = {"expected": {"files": [{"path": "code.gd", "changed": False}]}}
         initial = {"code.gd": {"sha256": self.before["code.gd"], "content": "old"}}
         self.assertEqual(driver.final_review_inputs(readonly, self.root, self.before, initial), (initial, []))
+
+    def test_qa_response_wording_does_not_replace_actual_readonly_and_native_guards(self):
+        # Protocol-only supplied evidence; this is not a new native case result.
+        fixture = ROOT / "studio-tests/native/fixtures/team-qa"
+        shutil.copytree(fixture, self.root, dirs_exist_ok=True)
+        driver.copy_case_resources(ROOT, self.root)
+        cases = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))["cases"]
+        case = next(case for case in cases if case["skill"] == "ccgs-team-qa")
+        before = driver.tree_hashes(self.root)
+        response = (ROOT / "studio-tests/codex/fixtures/native-cocos-qa-blocked.md").read_text(encoding="utf-8")
+        self.assertNotIn("read-only", response)
+        evidence = {"verified": case["required_evidence"], "findings": []}
+        result = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed", evidence)
+        self.assertEqual(result["status"], "PASS", result)
+        unproven = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed")
+        self.assertEqual(unproven["status"], "NOT ASSESSED")
+        (self.root / "code.gd").write_text("unauthorized mutation", encoding="utf-8")
+        changed = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed", evidence)
+        self.assertEqual(changed["status"], "FAIL")
 
     def assess(self, response="Target index 2 is rejected", **kwargs):
         return driver.assess(self.case, self.root, self.before, response,

@@ -1459,8 +1459,7 @@
           "FAIL",
           "index.html",
           "NOT ASSESSED",
-          "recovery",
-          "read-only"
+          "recovery"
         ],
         "response_not_contains": [
           "APPROVED",
