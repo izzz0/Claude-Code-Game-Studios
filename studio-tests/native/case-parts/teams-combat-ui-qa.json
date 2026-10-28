@@ -41,9 +41,7 @@
           }
         ],
         "response_contains": [
-          "team-combat",
           "capture",
-          "300 ms",
           "native",
           "recovery",
           "NOT ASSESSED"

@@ -69,6 +69,27 @@ class NativeAcceptanceTests(unittest.TestCase):
         changed = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed", evidence)
         self.assertEqual(changed["status"], "FAIL")
 
+    def test_combat_summary_need_not_repeat_constants_verified_in_its_artifact(self):
+        # Protocol counterexample; injected evidence does not count as native execution.
+        shutil.copytree(ROOT / "studio-tests/native/fixtures/team-combat", self.root, dirs_exist_ok=True)
+        driver.copy_case_resources(ROOT, self.root)
+        cases = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))["cases"]
+        case = next(case for case in cases if case["skill"] == "ccgs-team-combat")
+        before = driver.tree_hashes(self.root)
+        artifact = self.root / "production/combat/chase-capture-gdd-draft.md"
+        artifact.parent.mkdir(parents=True)
+        content = "Draft capture:24 units for300 ms; timeout60 seconds.\n"
+        artifact.write_text(content, encoding="utf-8")
+        response = (ROOT / "studio-tests/codex/fixtures/native-cocos-combat-summary.md").read_text(encoding="utf-8")
+        self.assertNotIn("300 ms", response)
+        self.assertNotIn("team-combat", response)
+        evidence = {"verified": case["required_evidence"], "findings": []}
+        result = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed", evidence)
+        self.assertEqual(result["status"], "PASS", result)
+        artifact.write_text(content.replace("300 ms", "200 ms"), encoding="utf-8")
+        wrong = driver.assess(case, self.root, before, response + "\n300 ms", self.items, self.hooks, "completed", evidence)
+        self.assertEqual(wrong["status"], "FAIL")
+
     def assess(self, response="Target index 2 is rejected", **kwargs):
         return driver.assess(self.case, self.root, self.before, response,
                              kwargs.get("items", self.items), kwargs.get("hooks", self.hooks), "completed")

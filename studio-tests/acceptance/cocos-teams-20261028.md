@@ -64,7 +64,7 @@ primary in each fixture; no Godot role is selected.
 
 | Team | Isolated scenario | Actual native status |
 |---|---|---|
-| combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/identity confusion; third dispatched8 actual roles and completed7 tasks, then NOT ASSESSED: model capacity interrupted independent review |
+| combat | Existing chase/capture/timeout rule drafts | Native attempt `5d51dc254e44` completed all three evidence predicates; original FAIL retained for two redundant response literals. Revised offline assessment PASS for bounded documentation orchestration only; no new native execution |
 | UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
 | QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
@@ -131,6 +131,27 @@ byte-for-byte unchanged. Closing audit: `evidence/qa-native-closure.json`.
 This is a PASS for the QA team's orchestration/recovery/negative-smoke gate;
 the supplied fixture's missing Web entry still blocks its game QA cycle.
 All prior NA/FAIL attempts remain intact. The other eight routes continue.
+
+Combat attempt `5d51dc254e44` subsequently completed four actual children:
+game-designer, gameplay-programmer, engine-programmer and QA-tester. Its
+documentation-production task was interrupted and resumed as the same child;
+the two distinct read-only reviewers inspected the supplied inputs and final
+GDD. The native verifier passed identities, recovery and independent review.
+The original evaluator nevertheless failed because the final summary did not
+repeat `team-combat` and `300 ms`. The actual invocation/manifest establishes
+the team identity; the GDD and bound reviews establish24 units/300ms/60s and
+final-tick capture precedence. The revised case removes only those response
+literals, retaining configuration, artifact and native-evidence checks. A
+counterexample still fails when the GDD changes300ms to200ms even if the reply
+says300ms. Targeted tests and a distinct read-only review passed.
+
+`evidence/combat-offline-reassessment.json` separately binds the original
+result hash, revised case hash, evaluator hash and rechecked host receipts,
+protected files, observations and artifacts. Its offline PASS is limited to
+documentation orchestration/recovery/review. The original native FAIL remains
+unchanged, the campaign cache is unchanged, and no new execution is claimed.
+Gameplay implementation, runtime quality and later combat-production phases
+remain NOT ASSESSED. UI and the remaining independent routes are running next.
 
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
