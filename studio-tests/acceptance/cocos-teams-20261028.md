@@ -1,6 +1,6 @@
 # Focused Cocos and nine-team acceptance
 
-Status: **NOT ASSESSED — nine native teams remain open; original game optimization has not started.**
+Status: **NOT ASSESSED — native teams1/9 passed; original game optimization has not started.**
 
 The bounded Cocos Web integration gate has an independent **PASS**. This is
 separate from the still-open nine-team gate below.
@@ -66,7 +66,7 @@ primary in each fixture; no Godot role is selected.
 |---|---|---|
 | combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/identity confusion; third dispatched8 actual roles and completed7 tasks, then NOT ASSESSED: model capacity interrupted independent review |
 | UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
-| QA | Failed Web entry smoke, read-only negative gate | First run completed3 actual children/recovery but retained NOT ASSESSED for an opaque hashing pipeline; next run interrupted by the Windows patch launcher's unsandboxed-retry approval request |
+| QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
 | level | City track and boundaries | NOT ASSESSED — not reached |
 | live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
@@ -120,6 +120,18 @@ weakened. Review retention additionally requires one complete verbatim artifact;
 valid hashes cannot legitimize a coordinator-added approval prefix or duplicate
 review artifacts. Its counterexamples passed with all49 evidence regressions.
 
+The next attempt `da3f28b52ad5` retained partial work but stopped with
+`usageLimitExceeded`; it remains NOT ASSESSED. After the reported reset, actual
+attempt `1da44033ad16` completed and passed all three native evidence predicates.
+Three actual completed children were QA-lead, QA-tester and engine-programmer.
+The tester was interrupted and resumed as the same child. The distinct designated
+reviewer was independently checked against all11 current input contents/hashes,
+the exact returned review and both completed dependencies. Protected inputs were
+byte-for-byte unchanged. Closing audit: `evidence/qa-native-closure.json`.
+This is a PASS for the QA team's orchestration/recovery/negative-smoke gate;
+the supplied fixture's missing Web entry still blocks its game QA cycle.
+All prior NA/FAIL attempts remain intact. The other eight routes continue.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -144,8 +156,11 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 - Source `01cad7df8a17b222f91dfe385615a7a7906aa184` passed hosted Windows251/251
   and Linux251/251, zero skips. Run `40716161377`, jobs `122914311474` and
   `122914311989`; receipt `evidence/ci-01cad7d.json`.
-- Subsequent bounded-retention guidance and the strict verbatim review regression
-  passed24 driver and49 evidence tests. The resulting252-test source needs new CI.
+- Bounded-retention/verbatim source
+  `5a1b67af085b3b4ec5001b762ab5f0ac3b095301` passed hosted Windows252/252 and
+  Linux252/252, zero skips. Run `40720120519`, jobs `122928406242` and
+  `122928406767`; receipt `evidence/ci-5a1b67a.json`. Current production code is
+  frozen at that reviewed/tested source while native routes continue.
 - Independent review verified Cocos inputs, release negative gates, run labels,
   claimed reviewer selection and final-output binding. An earlier follow-up quota
   failure remains historical; subsequent read-only follow-ups completed without
