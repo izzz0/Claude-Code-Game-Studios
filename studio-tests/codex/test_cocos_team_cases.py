@@ -71,6 +71,18 @@ class CocosTeamCaseTests(unittest.TestCase):
                     for key, value in expected.items():
                         self.assertEqual(observed[key], value)
 
+    def test_combat_recovery_stays_within_the_authorized_drafting_scope(self):
+        case = next(case for case in self.cases if case["fixture"] == "team-combat")
+        brief = (NATIVE / "fixtures/team-combat/production/team/recovery-brief.md").read_text(encoding="utf-8")
+        for text in (case["prompt"], brief):
+            self.assertIn("artifact-production task", text)
+            self.assertIn("rules-drafting scope", text)
+            self.assertNotIn("one real implementation task", text)
+        self.assertIn("produce a rules draft, not an added combat feature", case["prompt"])
+        self.assertIn("resume that exact task", case["prompt"])
+        self.assertIn("same native child", brief)
+        self.assertEqual(case["required_evidence"], ["native_agents", "team_recovery", "independent_review"])
+
     def test_qa_and_release_check_missing_evidence_without_approval(self):
         cases = {case["fixture"]: case for case in self.cases}
         qa = cases["team-qa"]
