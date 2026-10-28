@@ -750,8 +750,8 @@ def verify_review_evidence(
                         findings.append(f"review task for {child_id} has no substantive summary")
                         continue
                     artifacts = task.get("artifacts", [])
-                    if not isinstance(artifacts, list) or not artifacts:
-                        findings.append(f"review task for {child_id} has no retained artifact")
+                    if not isinstance(artifacts, list) or len(artifacts) != 1:
+                        findings.append(f"review task for {child_id} must retain exactly one complete review artifact")
                         continue
                     artifacts_ok = True
                     for artifact in artifacts:
@@ -764,7 +764,7 @@ def verify_review_evidence(
                             artifacts_ok = False
                             break
                         try:
-                            if final_text not in artifact_path.read_text(encoding="utf-8"):
+                            if artifact_path.read_text(encoding="utf-8").strip() != final_text:
                                 artifacts_ok = False
                                 break
                         except (OSError, UnicodeDecodeError):

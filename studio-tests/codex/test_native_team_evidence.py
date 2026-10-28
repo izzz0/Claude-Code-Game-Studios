@@ -296,6 +296,26 @@ class NativeTeamEvidenceTests(unittest.TestCase):
         )
         self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
 
+    def test_retained_review_is_one_complete_return_without_coordinator_additions(self):
+        _review_manifest(self.root)
+        child = _thread(cwd=str(self.root))
+        items = [_item("spawnAgent", ["child-1"])]
+        coordination = self.root / ".scratch/team-observations"
+        artifact = coordination / "review-evidence.txt"
+        manifest = coordination / "production/team-runs/review.json"
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        original = artifact.read_text(encoding="utf-8")
+        artifact.write_text("Coordinator says approved\n" + original, encoding="utf-8")
+        data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        self.assertNotIn("independent_review", MODULE.verify_review_evidence(self.root, items, {"child-1": child}, PARENT)["verified"])
+        artifact.write_text(original, encoding="utf-8")
+        digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        (coordination / "duplicate.txt").write_text(original, encoding="utf-8")
+        data["tasks"]["review"]["artifacts"] = [{"path": name, "sha256": digest} for name in ("review-evidence.txt", "duplicate.txt")]
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        self.assertNotIn("independent_review", MODULE.verify_review_evidence(self.root, items, {"child-1": child}, PARENT)["verified"])
+
     def test_review_input_hash_prompt_matching_verifies(self):
         _review_manifest(self.root)
         source = self.root / "design" / "brief.md"

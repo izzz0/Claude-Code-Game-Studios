@@ -66,7 +66,7 @@ primary in each fixture; no Godot role is selected.
 |---|---|---|
 | combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/identity confusion; third dispatched8 actual roles and completed7 tasks, then NOT ASSESSED: model capacity interrupted independent review |
 | UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
-| QA | Failed Web entry smoke, read-only negative gate | Three actual children completed, including same-child interruption/recovery; NOT ASSESSED because the reviewer added an opaque hashing pipeline; new guided execution required |
+| QA | Failed Web entry smoke, read-only negative gate | First run completed3 actual children/recovery but retained NOT ASSESSED for an opaque hashing pipeline; next run interrupted by the Windows patch launcher's unsandboxed-retry approval request |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
 | level | City track and boundaries | NOT ASSESSED — not reached |
 | live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
@@ -110,7 +110,15 @@ answer literally say `read-only` was removed; actual protected-file hashes and
 all three native evidence predicates remain mandatory. A protocol regression
 proves the resulting answer cannot pass without evidence or after a protected
 write. Neither this fix nor the child's self-reported PASS reclassifies the
-original native NA.
+original native NA. The next attempt `4b1e8cf63bf2` was interrupted by
+`item/fileChange/requestApproval` (`command failed; retry without sandbox?`)
+while the coordinator tried to retain the returned strategy inside the authorized
+observations directory. The driver did not approve it. Updated guidance uses
+bounded workspace file I/O/atomic retention instead, keeps the inherited sandbox,
+and stops if that bounded write is also denied. No permission/approval handler was
+weakened. Review retention additionally requires one complete verbatim artifact;
+valid hashes cannot legitimize a coordinator-added approval prefix or duplicate
+review artifacts. Its counterexamples passed with all49 evidence regressions.
 
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
@@ -133,8 +141,11 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
   and hosted CI, zero skips. Hosted run `40711427344`, Windows job `122897442519`
   and Linux job `122897442782`; receipt `evidence/ci-4c03520.json`. The earlier
   local shell-wrapper error was corrected and this later local Linux run exited0.
-- The subsequent read-only instruction/wording regression adds one test; that
-  final251-test source requires fresh full CI.
+- Source `01cad7df8a17b222f91dfe385615a7a7906aa184` passed hosted Windows251/251
+  and Linux251/251, zero skips. Run `40716161377`, jobs `122914311474` and
+  `122914311989`; receipt `evidence/ci-01cad7d.json`.
+- Subsequent bounded-retention guidance and the strict verbatim review regression
+  passed24 driver and49 evidence tests. The resulting252-test source needs new CI.
 - Independent review verified Cocos inputs, release negative gates, run labels,
   claimed reviewer selection and final-output binding. An earlier follow-up quota
   failure remains historical; subsequent read-only follow-ups completed without
