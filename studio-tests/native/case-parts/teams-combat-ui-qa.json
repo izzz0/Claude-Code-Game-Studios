@@ -12,12 +12,18 @@
       "required_evidence": ["native_agents", "team_recovery"],
       "prompt": "Run $ccgs-team-combat parry timing in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Use the native team profile and inherited model/permission context; do not simulate roles in one response. The approved feature is one player parrying one training drone within a 0.20-second window, with a late-input damage result. Initialize team-run.py with a fresh real coordinator ID, assign actual native roles with ownership, and retain the combat design draft at production/combat/parry-timing-gdd-draft.md. Exercise the supplied recovery brief: deliberately interrupt or fail one real implementation task once, record its returned agent/task IDs, resume that exact task, and verify the resumed artifact before advancing. If any required native agent, returned ID, artifact, or recovery evidence is unavailable, stop with NOT ASSESSED/BLOCKED and do not claim COMPLETE, implementation, runtime validation, or a fabricated ID.",
       "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio"
+        },
         "files": [{"path": "production/combat/parry-timing-gdd-draft.md", "contains": ["0.20", "parry", "late", "training drone"], "not_contains": ["networked multiplayer", "native runtime passed", "fake-agent"]}],
         "response_contains": ["team-combat", "parry", "0.20", "native", "recovery", "NOT ASSESSED"],
         "response_not_contains": ["COMPLETE — combat feature designed, implemented, and validated", "invented agent ID", "runtime PASS"],
         "required_tools": true
       },
-      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "standard", "modes.automation": "guided", "team.size": "studio"},
       "fixture_stdout": null,
       "actual_result_stub": null,
       "expected_native_until_run": true
@@ -32,12 +38,18 @@
       "required_evidence": ["native_agents", "team_recovery"],
       "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Godot 4.6.1 project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Targets 0/3 in the upper-left, a post-completion restart affordance, and a high-contrast wall-warning label readable at 200% scale; UI must not own movement state. Initialize team-run.py with fresh real IDs and follow the skill phases: assign ccgs-art-director to produce production/ui/courier-hud/visual-design.md, then assign the UI implementation task, followed by a dependent read-only ccgs-accessibility-specialist review. Interrupt or fail the real art-direction task that owns visual-design.md, resume that exact returned task, and validate the returned artifact; do not attribute the design file to implementation. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings.",
       "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "team.size": "small"
+        },
         "files": [{"path": "production/ui/courier-hud/visual-design.md", "contains": ["Targets 0/3", "200%", "wall-warning", "restart"], "not_contains": ["movement state owned by UI", "screenshot captured", "fake-agent"]}],
         "response_contains": ["team-ui", "courier-hud", "200%", "accessibility", "recovery", "NOT ASSESSED"],
         "response_not_contains": ["UI owns game state", "visual review passed", "invented agent ID", "runtime PASS"],
         "required_tools": true
       },
-      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "minimal", "modes.automation": "guided", "team.size": "small"},
       "fixture_stdout": null,
       "actual_result_stub": null,
       "expected_native_until_run": true
@@ -52,12 +64,19 @@
       "required_evidence": ["native_agents", "team_recovery"],
       "prompt": "Run $ccgs-team-qa sprint-001 in English as a read-only QA cycle with the supplied standard/guided Godot 4.6.1 project and team.size small. Use the real sprint stories and the supplied smoke report: the delivery scene failed to launch because its main scene path is missing. Native QA roles must inherit the current model/permissions, receive real IDs, and return actual ownership. Do not proceed past the failed smoke strategy. Exercise the recovery brief only with a real team task: interrupt or fail one returned task once, resume that exact task using team-run.py, and retain the returned recovery state; if native agents or IDs are unavailable, report NOT ASSESSED/BLOCKED. Preserve read-only scope: do not write QA plans, test cases, bugs, evidence, sign-off, checkpoint, or status files, and do not claim a QA approval or fabricated bug ID.",
       "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "small",
+          "qa.level": "standard"
+        },
         "files": [{"path": "production/qa/smoke-2026-10-26.md", "contains": ["FAIL", "main scene path is missing"], "not_contains": ["PASS", "QA approved"]}],
         "response_contains": ["smoke", "FAIL", "main scene", "NOT ASSESSED", "recovery", "read-only"],
         "response_not_contains": ["APPROVED", "QA cycle finished", "bug filed", "checkpoint updated", "invented agent ID"],
         "required_tools": true
       },
-      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "standard", "modes.automation": "guided", "team.size": "small", "qa.level": "standard"},
       "fixture_stdout": null,
       "actual_result_stub": null,
       "expected_native_until_run": true
