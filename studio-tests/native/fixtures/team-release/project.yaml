@@ -10,6 +10,6 @@ modes:
 team:
   size: studio
 engine:
-  name: Godot
-  version: 4.6.1
-  language: GDScript
+  name: Cocos
+  version: 3.8.8
+  language: TypeScript

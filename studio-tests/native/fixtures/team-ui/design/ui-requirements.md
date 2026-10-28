@@ -1,7 +1,3 @@
-# Courier HUD requirements
+# Cocos 3.8.8 / TypeScript acceptance brief
 
-The one-screen HUD shows `Targets 0/3` in the upper-left, a restart affordance after completion, and a high-contrast wall-warning label. The warning must remain readable at 200% UI scale and must not own player movement state.
-
-## Accepted scope
-
-Produce the visual design and accessibility review for this HUD only. Do not add menus, inventory, networking, or new game-state logic.
+Design the courier-hud for the chase: Time 60s, current role, connection-warning, restart after settlement. Text must remain readable at 200% scale. UI never owns authoritative race state. Art direction precedes implementation; accessibility review is independent and read-only.

@@ -144,6 +144,10 @@ def tool_guard(data: dict, root: Path) -> tuple[str, bool] | None:
     for target, relative in paths:
         if relative.startswith("production/session-state/"):
             return "Developmental checkpoints are updated by the coordinator CLI, not file tools.", True
+        if relative.lower().startswith(("client/assets/scripts/shared/", "assets/scripts/shared/")):
+            configured = code_roots(root)
+            if any(prefix in configured for prefix in ("client/assets/scripts", "assets/scripts")):
+                return "Cocos generated shared mirrors are read-only; edit the authoritative packages instead.", True
         if target.suffix.lower() in {".gd", ".cs", ".cpp", ".h", ".hpp", ".gdshader", ".shader",
                                      ".ts", ".tsx", ".js", ".jsx"}:
             if relative.startswith((".agents/", ".codex/", "studio-tests/", "tests/", "addons/")):
@@ -154,8 +158,8 @@ def tool_guard(data: dict, root: Path) -> tuple[str, bool] | None:
             valid = tuple(prefix + "/" for prefix in configured)
             if "Assets" in configured:
                 valid += ("Packages/",)
-            # Cocos may expose packages/server roots; generated/shared trees
-            # are intentionally absent from the resolver's authoritative rows.
+            # Additional Cocos roots expose authoritative packages/server code.
+            # Nested generated mirrors were checked before the prefix allowlist.
             if not relative.startswith(valid):
                 return f"Engine code must use a configured code root ({', '.join(configured)}/).", True
     return None

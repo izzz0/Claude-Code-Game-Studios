@@ -112,7 +112,7 @@ class NativeQualityCaseInputTests(unittest.TestCase):
         self.assertIn("interrupt the art-direction task", brief)
         self.assertIn("dependent read-only accessibility review", brief)
         self.assertNotIn("interrupt the implementation task", brief)
-        self.assertEqual(case["required_evidence"], ["native_agents", "team_recovery"])
+        self.assertEqual(case["required_evidence"], ["native_agents", "team_recovery", "independent_review"])
         self.assertEqual(case["expected"]["files"][0]["path"], "production/ui/courier-hud/visual-design.md")
         self.assertIn("fake-agent", case["expected"]["files"][0]["not_contains"])
         self.assertIn("runtime PASS", case["expected"]["response_not_contains"])

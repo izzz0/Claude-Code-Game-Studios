@@ -1,12 +1,7 @@
-# Story 1-1: Wall-bound movement
+# Capture hold
 
 > **Status**: In Review
 
-## Story Type
-
-Logic
-
 ## Acceptance Criteria
 
-- Right input moves the courier.
-- The courier stops at the wall boundary.
+- Capture requires 24 units for 300 ms; final-tick capture takes precedence.

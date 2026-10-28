@@ -1,3 +1,3 @@
-# Harbor Approach
+# Cocos 3.8.8 / TypeScript acceptance brief
 
-The courier starts at the ferry, crosses one readable hazard, and resolves at the dock. Layout must preserve a clear start, challenge, and resolution.
+Draft city-track: a clear start, one readable corner challenge and a finish/settlement resolution. Boundaries preserve police/thief distance and cannot change authoritative race rules. Define QA boundary cases and accessible cues; no runtime layout proof is supplied.

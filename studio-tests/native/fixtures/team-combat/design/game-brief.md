@@ -1,9 +1,3 @@
-# Pocket Courier
+# Cocos 3.8.8 / TypeScript acceptance brief
 
-## Combat Feature Brief
-
-The courier needs a short-range parry against one training drone. A successful parry within 0.20 seconds cancels the drone hit and emits one readable impact event; a late input takes damage. No multiplayer or ranged weapons are in this slice.
-
-## Approved Scope
-
-Implement only the parry timing contract and its testable feedback. Keep the feature bounded to one player, one drone, and one arena.
+Draft chase capture rules from the TypeScript contract: police capture inside 24 units for 300 ms; timeout after 60 seconds favors the thief; capture wins on the final tick. No weapons, damage, or new game feature is approved.

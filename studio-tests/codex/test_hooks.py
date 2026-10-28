@@ -196,6 +196,31 @@ class HookBoundaryTests(RuntimeFixture):
                           "tool_input":{"file_path":str(external)}})
         self.assertNotIn('"permissionDecision": "deny"', read.stdout)
 
+    def test_cocos_monorepo_roots_allow_authored_code_but_deny_generated_mirrors(self):
+        self.git_init()
+        (self.root / "project.yaml").write_text("engine:\n  name: Cocos\n  version: 3.8.8\n", encoding="utf-8")
+        (self.root / "client").mkdir()
+        (self.root / "client/package.json").write_text('{"creator":{"version":"3.8.8"}}', encoding="utf-8")
+        roots = ("client/assets/scripts", "packages/core/src", "packages/protocol/src", "server/src")
+        for relative in roots:
+            (self.root / relative).mkdir(parents=True)
+        for relative in roots:
+            result = self.hook({"hook_event_name":"PreToolUse", "tool_name":"Write", "cwd":str(self.root),
+                                "tool_input":{"file_path":relative + "/input.ts"}})
+            self.assertEqual(result.returncode, 0, result.stderr)
+            payload = json.loads(result.stdout) if result.stdout.strip() else {}
+            self.assertNotEqual(payload.get("hookSpecificOutput", {}).get("permissionDecision"), "deny", relative)
+            self.assertNotIn("NOT ASSESSED", result.stdout)
+        for relative in ("client/assets/scripts/shared/core/input.ts", "client/assets/scripts/shared/core/input.ts.meta",
+                         "client/assets/scripts/SHARED/core/input.ts", "shared/generated/input.ts",
+                         "packages/core/generated/input.ts", "client/assets/unconfirmed/input.ts"):
+            result = self.hook({"hook_event_name":"PreToolUse", "tool_name":"Write", "cwd":str(self.root),
+                                "tool_input":{"file_path":relative}})
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(result.stdout.strip(), relative)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["hookSpecificOutput"]["permissionDecision"], "deny", relative)
+
     def test_checkpoint_and_all_patch_destinations_are_denied(self):
         self.git_init(); (self.root / "production/session-state").mkdir(parents=True)
         patch = "\n".join((f"*** {kind} File: {path}" for kind,path in (("Add","a.txt"),("Update","b.txt"),("Delete","c.txt"))))

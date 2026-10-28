@@ -6,6 +6,8 @@ A team skill selects its active roles from team.size and the actual task. The co
 
 Use scripts/team-run.py to retain the orchestration manifest. Registration/receipts are observations, not attestations: the coordinator must validate returned artifact existence, freshness and substance. Pending/failed/interrupted work cannot be marked done by writing a filename. Bound concurrency to the host and serialize dependent work. Assign one writer per file; independent reviewers read only.
 
+`team-run.py init --id` is a local record slug (for example `chase-capture-01`), not a native coordinator identity. The current agent coordinates directly; do not spawn a child merely to obtain that label. Record each actual host-returned child UUID or exact unambiguous agent path (for example `/root/chase_designer`) in `event --agent-id`; keep run/task slugs separate from those identities. Never remove path separators from an agent identity or invent a UUID.
+
 Configured independent review needs a separate reviewer run that did not implement that change. Keep reviewer identity and hashes. The coordinator may retain the review response after the read-only phase; the reviewer does not create a stamp or change a checkpoint. If independence is required and unavailable, stop at NOT ASSESSED. Self-review is explicit and only applicable where the route allows it.
 
 Review_mode solo skips director panels; lean runs phase gates; full runs the applicable specialist/director gates. Workflow defines the documents to evaluate, while team.size defines active production roles. Do not conflate these axes.

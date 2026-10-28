@@ -1,3 +1,3 @@
-# Dock Arrival Audio
+# Cocos 3.8.8 / TypeScript acceptance brief
 
-Design one readable arrival one-shot, a quiet failure cue, and a high-contrast accessibility alternative. No runtime playback is supplied.
+Draft race-countdown audio: three countdown cues, a one-shot start cue, distinct capture and timeout cues, visual accessibility alternatives. No recordings or actual playback are supplied; audio quality remains NOT ASSESSED.

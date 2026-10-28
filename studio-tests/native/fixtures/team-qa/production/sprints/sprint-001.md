@@ -1,6 +1,4 @@
-# Sprint 001 — Courier loop
+# Sprint 001 — Chase rules
 
-## Stories in scope
-
-- `production/epics/courier/story-001-movement.md` — wall-bound movement, Logic.
-- `production/epics/courier/story-002-collection.md` — collect three targets, Integration.
+- `production/epics/courier/story-001-movement.md` — Capture hold, Logic.
+- `production/epics/courier/story-002-collection.md` — Timeout settlement, Integration; depends on story 1.

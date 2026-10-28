@@ -1,12 +1,7 @@
-# Story 1-2: Collect three targets
+# Timeout settlement
 
 > **Status**: In Review
 
-## Story Type
-
-Integration
-
 ## Acceptance Criteria
 
-- Three distinct targets increment the count once each.
-- Completion occurs at exactly 3/3.
+- After 60 seconds without capture the thief wins. Depends on story 1-1.

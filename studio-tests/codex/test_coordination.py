@@ -52,6 +52,23 @@ class TeamRunTests(unittest.TestCase):
         overlap = self.invoke("event", "--id", "run-overlap", "--task", "right", "--status", "running", "--agent-id", "synthetic-right")
         self.assertEqual(overlap.returncode, 3); self.assertIn("owns", overlap.stderr)
 
+    def test_record_slug_is_separate_from_verbatim_native_agent_path(self):
+        # Protocol fixture only: actual identity requires separate host receipts.
+        invalid = self.invoke("init", "--id", "/root/designer", "--team", "team-combat", "--size", "small", "--host-limit", "1")
+        self.assertNotEqual(invalid.returncode, 0)
+        self.assertEqual(self.invoke("init", "--id", "chase-01", "--team", "team-combat", "--size", "small", "--host-limit", "1").returncode, 0)
+        self.assertEqual(self.invoke("assign", "--id", "chase-01", "--task", "design", "--role", "ccgs-game-designer").returncode, 0)
+        identity = "/root/synthetic_designer"
+        running = self.invoke("event", "--id", "chase-01", "--task", "design", "--status", "running", "--agent-id", identity)
+        self.assertEqual(running.returncode, 0, running.stderr)
+        completed = self.invoke("event", "--id", "chase-01", "--task", "design", "--status", "completed", "--agent-id", identity,
+                                "--summary", "Synthetic protocol return, no real child execution asserted")
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertFalse(json.loads(completed.stdout)["execution_attested"])
+        record = json.loads(self.invoke("show", "--id", "chase-01").stdout)
+        self.assertEqual(record["id"], "chase-01")
+        self.assertEqual(record["tasks"]["design"]["agent_id"], identity)
+
     def test_read_only_assign_requires_flag_and_duplicate_events_are_idempotent(self):
         self.assertEqual(self.invoke("init", "--id", "run-3", "--team", "ccgs-team-combat", "--size", "individual", "--host-limit", "2").returncode, 0)
         normal = self.invoke("assign", "--id", "run-3", "--task", "review", "--role", "ccgs-qa-tester", "--files", "docs/a.md", "--read-only")

@@ -1312,25 +1312,27 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-combat parry timing in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Use the native team profile and inherited model/permission context; do not simulate roles in one response. The approved feature is one player parrying one training drone within a 0.20-second window, with a late-input damage result. Initialize team-run.py with a fresh real coordinator ID, assign actual native roles with ownership, and retain the combat design draft at production/combat/parry-timing-gdd-draft.md. Exercise the supplied recovery brief: deliberately interrupt or fail one real implementation task once, record its returned agent/task IDs, resume that exact task, and verify the resumed artifact before advancing. If any required native agent, returned ID, artifact, or recovery evidence is unavailable, stop with NOT ASSESSED/BLOCKED and do not claim COMPLETE, implementation, runtime validation, or a fabricated ID.",
+      "prompt": "Run $ccgs-team-combat chase capture in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Use the native team profile and inherited model/permission context; do not simulate roles in one response. The approved rules are a police chase: capture within 24 units for 300 ms, a 60-second timeout awards the thief, and capture takes precedence on the final tick. Read the supplied TypeScript contract and produce a rules draft, not an added combat feature. Initialize team-run.py with a fresh local run label, assign actual native roles with ownership, and retain the combat design draft at production/combat/chase-capture-gdd-draft.md. Exercise the supplied recovery brief: deliberately interrupt or fail one real implementation task once, record its returned agent/task IDs, resume that exact task, and verify the resumed artifact before advancing. If any required native agent, returned ID, artifact, or recovery evidence is unavailable, stop with NOT ASSESSED/BLOCKED and do not claim COMPLETE, implementation, runtime validation, or a fabricated ID. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "studio"
+          "team.size": "studio",
+          "engine.language": "TypeScript"
         },
         "files": [
           {
-            "path": "production/combat/parry-timing-gdd-draft.md",
+            "path": "production/combat/chase-capture-gdd-draft.md",
             "contains": [
-              "0.20",
-              "parry",
-              "late",
-              "training drone"
+              "300 ms",
+              "capture",
+              "timeout",
+              "24 units"
             ],
             "not_contains": [
               "networked multiplayer",
@@ -1341,8 +1343,8 @@
         ],
         "response_contains": [
           "team-combat",
-          "parry",
-          "0.20",
+          "capture",
+          "300 ms",
           "native",
           "recovery",
           "NOT ASSESSED"
@@ -1367,28 +1369,30 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Godot 4.6.1 project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Targets 0/3 in the upper-left, a post-completion restart affordance, and a high-contrast wall-warning label readable at 200% scale; UI must not own movement state. Initialize team-run.py with fresh real IDs and follow the skill phases: assign ccgs-art-director to produce production/ui/courier-hud/visual-design.md, then assign the UI implementation task, followed by a dependent read-only ccgs-accessibility-specialist review. Interrupt or fail the real art-direction task that owns visual-design.md, resume that exact returned task, and validate the returned artifact; do not attribute the design file to implementation. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings.",
+      "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Time 60s in the upper-left, a post-settlement restart affordance, and a high-contrast connection-warning label readable at 200% scale; UI must not own authoritative race state. Initialize team-run.py with a fresh local run label and actual child identities and follow the skill phases: assign ccgs-art-director to produce production/ui/courier-hud/visual-design.md, then assign the UI implementation task, followed by a dependent read-only ccgs-accessibility-specialist review. Interrupt or fail the real art-direction task that owns visual-design.md, resume that exact returned task, and validate the returned artifact; do not attribute the design file to implementation. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "minimal",
           "modes.automation": "guided",
-          "team.size": "small"
+          "team.size": "small",
+          "engine.language": "TypeScript"
         },
         "files": [
           {
             "path": "production/ui/courier-hud/visual-design.md",
             "contains": [
-              "Targets 0/3",
+              "Time 60s",
               "200%",
-              "wall-warning",
+              "connection-warning",
               "restart"
             ],
             "not_contains": [
-              "movement state owned by UI",
+              "authoritative race state owned by UI",
               "screenshot captured",
               "fake-agent"
             ]
@@ -1423,24 +1427,26 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-qa sprint-001 in English as a read-only QA cycle with the supplied standard/guided Godot 4.6.1 project and team.size small. Use the real sprint stories and the supplied smoke report: the delivery scene failed to launch because its main scene path is missing. Native QA roles must inherit the current model/permissions, receive real IDs, and return actual ownership. Do not proceed past the failed smoke strategy. Exercise the recovery brief only with a real team task: interrupt or fail one returned task once, resume that exact task using team-run.py, and retain the returned recovery state; if native agents or IDs are unavailable, report NOT ASSESSED/BLOCKED. Preserve read-only scope: do not write QA plans, test cases, bugs, evidence, sign-off, checkpoint, or status files, and do not claim a QA approval or fabricated bug ID.",
+      "prompt": "Run $ccgs-team-qa sprint-001 in English as a read-only QA cycle with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Use the real sprint stories and the supplied smoke report: the Cocos Web page failed to launch because its Web entry index.html is missing. Native QA roles must inherit the current model/permissions, receive real IDs, and return actual ownership. Do not proceed past the failed smoke strategy. Exercise the recovery brief only with a real team task: interrupt or fail one returned task once, resume that exact task using team-run.py, and retain the returned recovery state; if native agents or IDs are unavailable, report NOT ASSESSED/BLOCKED. Preserve read-only scope: do not write QA plans, test cases, bugs, evidence, sign-off, checkpoint, or status files, and do not claim a QA approval or fabricated bug ID. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
           "team.size": "small",
-          "qa.level": "standard"
+          "qa.level": "standard",
+          "engine.language": "TypeScript"
         },
         "files": [
           {
             "path": "production/qa/smoke-2026-10-26.md",
             "contains": [
               "FAIL",
-              "main scene path is missing"
+              "Web entry index.html is missing"
             ],
             "not_contains": [
               "PASS",
@@ -1451,7 +1457,7 @@
         "response_contains": [
           "smoke",
           "FAIL",
-          "main scene",
+          "index.html",
           "NOT ASSESSED",
           "recovery",
           "read-only"
@@ -3293,16 +3299,17 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-audio dock-arrival in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Use native ccgs profiles with inherited model, provider, permissions and tools; do not simulate roles in one response. Assign actual audio-director, sound-designer, accessibility-specialist, technical-artist, gameplay-programmer and Godot specialist ownership through team-run.py, preserve dependencies, and retain the concrete artifacts under production/audio/dock-arrival/ (direction.md, sfx-spec.md, accessibility.md, integration-plan.md, engine-notes.md). Deliberately interrupt or fail one real implementation task, then resume that exact returned task and verify its artifact. Missing native agent, real ID, returned output, or recovery evidence requires NOT ASSESSED/BLOCKED; do not claim runtime audio was heard or fabricate IDs.",
+      "prompt": "Run $ccgs-team-audio race-countdown in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Use native ccgs profiles with inherited model, provider, permissions and tools; do not simulate roles in one response. Assign actual audio-director, sound-designer, accessibility-specialist, technical-artist, gameplay-programmer and engine-programmer ownership through team-run.py, preserve dependencies, and retain the concrete artifacts under production/audio/race-countdown/ (direction.md, sfx-spec.md, accessibility.md, integration-plan.md, engine-notes.md). Deliberately interrupt or fail one real implementation task, then resume that exact returned task and verify its artifact. Missing native agent, real ID, returned output, or recovery evidence requires NOT ASSESSED/BLOCKED; do not claim runtime audio was heard or fabricate IDs. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
-            "path": "production/audio/dock-arrival/direction.md",
+            "path": "production/audio/race-countdown/direction.md",
             "contains": [
-              "dock-arrival",
-              "arrival",
+              "race-countdown",
+              "countdown",
               "one-shot"
             ],
             "not_contains": [
@@ -3313,41 +3320,41 @@
             "changed": true
           },
           {
-            "path": "production/audio/dock-arrival/sfx-spec.md",
+            "path": "production/audio/race-countdown/sfx-spec.md",
             "contains": [
-              "dock-arrival",
+              "race-countdown",
               "one-shot"
             ],
             "changed": true
           },
           {
-            "path": "production/audio/dock-arrival/accessibility.md",
+            "path": "production/audio/race-countdown/accessibility.md",
             "contains": [
               "accessibility",
-              "dock-arrival"
+              "race-countdown"
             ],
             "changed": true
           },
           {
-            "path": "production/audio/dock-arrival/integration-plan.md",
+            "path": "production/audio/race-countdown/integration-plan.md",
             "contains": [
               "integration",
-              "dock-arrival"
+              "race-countdown"
             ],
             "changed": true
           },
           {
-            "path": "production/audio/dock-arrival/engine-notes.md",
+            "path": "production/audio/race-countdown/engine-notes.md",
             "contains": [
-              "Godot",
-              "dock-arrival"
+              "Cocos",
+              "race-countdown"
             ],
             "changed": true
           }
         ],
         "response_contains": [
           "team-audio",
-          "dock-arrival",
+          "race-countdown",
           "ownership",
           "native",
           "recovery"
@@ -3360,11 +3367,12 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "studio"
+          "team.size": "studio",
+          "engine.language": "TypeScript"
         }
       },
       "fixture_stdout": null,
@@ -3380,15 +3388,16 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-level harbor-approach in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Dispatch native level-designer, systems-designer, art-director, QA tester, narrative-director, world-builder and accessibility-specialist profiles with inherited context, real IDs, ownership and dependency ordering via team-run.py. Produce the bounded drafts under production/levels/harbor-approach/ and have the coordinator synthesize the final design at design/levels/harbor-approach.md plus QA cases at production/qa/test-cases/harbor-approach-cases.md. Interrupt or fail one real task once and resume the exact task before aggregation. Missing native/recovery evidence means NOT ASSESSED/BLOCKED; do not claim gameplay screenshots or runtime validation.",
+      "prompt": "Run $ccgs-team-level city-track in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch native level-designer, systems-designer, art-director, QA tester, narrative-director, world-builder and accessibility-specialist profiles with inherited context, real IDs, ownership and dependency ordering via team-run.py. Produce the bounded drafts under production/levels/city-track/ and have the coordinator synthesize the final design at design/levels/city-track.md plus QA cases at production/qa/test-cases/city-track-cases.md. Interrupt or fail one real task once and resume the exact task before aggregation. Missing native/recovery evidence means NOT ASSESSED/BLOCKED; do not claim gameplay screenshots or runtime validation. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
-            "path": "production/levels/harbor-approach/layout.md",
+            "path": "production/levels/city-track/layout.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "start",
               "challenge",
               "resolution"
@@ -3401,57 +3410,57 @@
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/systems.md",
+            "path": "production/levels/city-track/systems.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "system"
             ],
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/visual-direction.md",
+            "path": "production/levels/city-track/visual-direction.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "visual"
             ],
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/narrative.md",
+            "path": "production/levels/city-track/narrative.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "narrative"
             ],
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/lore.md",
+            "path": "production/levels/city-track/lore.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "lore"
             ],
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/accessibility.md",
+            "path": "production/levels/city-track/accessibility.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "accessibility"
             ],
             "changed": true
           },
           {
-            "path": "production/levels/harbor-approach/production-concepts.md",
+            "path": "production/levels/city-track/production-concepts.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "production"
             ],
             "changed": true
           },
           {
-            "path": "design/levels/harbor-approach.md",
+            "path": "design/levels/city-track.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "start",
               "challenge",
               "resolution"
@@ -3459,9 +3468,9 @@
             "changed": true
           },
           {
-            "path": "production/qa/test-cases/harbor-approach-cases.md",
+            "path": "production/qa/test-cases/city-track-cases.md",
             "contains": [
-              "harbor-approach",
+              "city-track",
               "acceptance"
             ],
             "changed": true
@@ -3469,9 +3478,9 @@
         ],
         "response_contains": [
           "team-level",
-          "harbor-approach",
+          "city-track",
           "layout",
-          "design/levels/harbor-approach.md",
+          "design/levels/city-track.md",
           "ownership",
           "aggregation",
           "recovery"
@@ -3483,11 +3492,12 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "studio"
+          "team.size": "studio",
+          "engine.language": "TypeScript"
         }
       },
       "fixture_stdout": null,
@@ -3503,15 +3513,16 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-live-ops lantern-week in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Dispatch native live-ops-designer, economy-designer, analytics-engineer, community-manager, writer and narrative-director profiles with inherited model/permissions, actual IDs, dependencies and one writer per artifact through team-run.py. Author the bounded seasonal brief, economy, telemetry, narrative text, copy and comms under production/live-ops/lantern-week/. Force one real task failure/interruption, resume that exact task, validate returned outputs, and aggregate only observed results. Missing role/ID/artifact/recovery evidence requires NOT ASSESSED/BLOCKED; do not claim live publication, telemetry collection, or economy balance.",
+      "prompt": "Run $ccgs-team-live-ops chase-week in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch native live-ops-designer, economy-designer, analytics-engineer, community-manager, writer and narrative-director profiles with inherited model/permissions, actual IDs, dependencies and one writer per artifact through team-run.py. Author the bounded seasonal brief, economy, telemetry, narrative text, copy and comms under production/live-ops/chase-week/. Force one real task failure/interruption, resume that exact task, validate returned outputs, and aggregate only observed results. Missing role/ID/artifact/recovery evidence requires NOT ASSESSED/BLOCKED; do not claim live publication, telemetry collection, or economy balance. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
-            "path": "production/live-ops/lantern-week/brief.md",
+            "path": "production/live-ops/chase-week/brief.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "cadence"
             ],
             "not_contains": [
@@ -3522,49 +3533,49 @@
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/narrative.md",
+            "path": "production/live-ops/chase-week/narrative.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "narrative"
             ],
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/economy.md",
+            "path": "production/live-ops/chase-week/economy.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "economy"
             ],
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/analytics.md",
+            "path": "production/live-ops/chase-week/analytics.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "telemetry"
             ],
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/narrative-text.md",
+            "path": "production/live-ops/chase-week/narrative-text.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "narrative"
             ],
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/copy.md",
+            "path": "production/live-ops/chase-week/copy.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "copy"
             ],
             "changed": true
           },
           {
-            "path": "production/live-ops/lantern-week/comms.md",
+            "path": "production/live-ops/chase-week/comms.md",
             "contains": [
-              "lantern-week",
+              "chase-week",
               "comms"
             ],
             "changed": true
@@ -3572,7 +3583,7 @@
         ],
         "response_contains": [
           "team-live-ops",
-          "lantern-week",
+          "chase-week",
           "economy",
           "telemetry",
           "ownership",
@@ -3585,11 +3596,12 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "studio"
+          "team.size": "studio",
+          "engine.language": "TypeScript"
         }
       },
       "fixture_stdout": null,
@@ -3605,15 +3617,16 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-narrative lost-bell in English with the supplied standard/guided Godot 4.6.1 project and team.size small. Dispatch the native narrative-director and writer roles, plus localization/world-builder only when the skill's review-mode contract requires them, inheriting model and permissions. Use team-run.py init/assign --depends-on/event/show/resume with actual IDs, fixed ownership and aggregation. Author the brief, topic-specific lore-village draft, scene-specific dialogue-return draft, localization review and level integration under production/narrative/lost-bell/, then retain the final design documents at the documented design/narrative paths. At small, register the distinct read-only ND-CONSISTENCY review and report its actual verdict; it must not write design files. Interrupt or fail one real writing task and resume the exact task before reporting. Missing native or recovery evidence requires NOT ASSESSED/BLOCKED; do not claim independent consistency approval or runtime dialogue playback.",
+      "prompt": "Run $ccgs-team-narrative chase-copy in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Dispatch the native narrative-director and writer roles, plus localization/world-builder only when the skill's review-mode contract requires them, inheriting model and permissions. Use team-run.py init/assign --depends-on/event/show/resume with actual IDs, fixed ownership and aggregation. Author the brief, topic-specific rules-help draft, scene-specific settlement draft, localization review and level integration under production/narrative/chase-copy/, then retain the final design documents at the documented design/narrative paths. At small, register the distinct read-only ND-CONSISTENCY review and report its actual verdict; it must not write design files. Interrupt or fail one real writing task and resume the exact task before reporting. Missing native or recovery evidence requires NOT ASSESSED/BLOCKED; retain the exact independent consistency verdict and do not claim runtime dialogue playback. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
-            "path": "production/narrative/lost-bell/brief.md",
+            "path": "production/narrative/chase-copy/brief.md",
             "contains": [
-              "lost-bell",
+              "chase-copy",
               "canon"
             ],
             "not_contains": [
@@ -3624,69 +3637,69 @@
             "changed": true
           },
           {
-            "path": "production/narrative/lost-bell/lore-village.md",
+            "path": "production/narrative/chase-copy/rules-help.md",
             "contains": [
-              "lost-bell",
-              "village",
-              "lore"
+              "chase-copy",
+              "timeout",
+              "rules"
             ],
             "changed": true
           },
           {
-            "path": "production/narrative/lost-bell/dialogue-return.md",
+            "path": "production/narrative/chase-copy/settlement.md",
             "contains": [
-              "lost-bell",
-              "return",
-              "dialogue"
+              "chase-copy",
+              "capture",
+              "settlement"
             ],
             "changed": true
           },
           {
-            "path": "production/narrative/lost-bell/i18n-review.md",
+            "path": "production/narrative/chase-copy/i18n-review.md",
             "contains": [
-              "lost-bell",
+              "chase-copy",
               "localization"
             ],
             "changed": true
           },
           {
-            "path": "production/narrative/lost-bell/level-integration.md",
+            "path": "production/narrative/chase-copy/level-integration.md",
             "contains": [
-              "lost-bell",
+              "chase-copy",
               "level"
             ],
             "changed": true
           },
           {
-            "path": "design/narrative/lost-bell-brief.md",
+            "path": "design/narrative/chase-copy-brief.md",
             "contains": [
-              "lost-bell",
+              "chase-copy",
               "brief"
             ],
             "changed": true
           },
           {
-            "path": "design/narrative/lore/village.md",
+            "path": "design/narrative/rules/help.md",
             "contains": [
-              "lost-bell",
-              "village",
-              "lore"
+              "chase-copy",
+              "timeout",
+              "rules"
             ],
             "changed": true
           },
           {
-            "path": "design/narrative/dialogue/return.md",
+            "path": "design/narrative/copy/settlement.md",
             "contains": [
-              "lost-bell",
-              "return",
-              "dialogue"
+              "chase-copy",
+              "capture",
+              "settlement"
             ],
             "changed": true
           }
         ],
         "response_contains": [
           "team-narrative",
-          "lost-bell",
+          "chase-copy",
           "brief",
           "localization",
           "ownership",
@@ -3700,11 +3713,12 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "small"
+          "team.size": "small",
+          "engine.language": "TypeScript"
         }
       },
       "fixture_stdout": null,
@@ -3720,15 +3734,16 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-polish courier-impact in English with the supplied standard/guided Godot 4.6.1 project and team.size studio. Dispatch performance-analyst, technical-artist, sound-designer, QA tester, engine-programmer, tools-programmer when traced, and adversarial QA according to the native profile; inherit model/permissions and use team-run.py with real IDs, dependencies, ownership, event/show and resume. Produce dated bounded reports under production/polish/ (including courier-impact-report-2026-10-26.md and the role-specific render/audio/verification notes) and keep claims tied to actual measurements. Interrupt or fail one real implementation task, resume the exact task, and aggregate only validated outputs. Missing runtime/profiler/screenshots or native recovery evidence stays NOT ASSESSED; do not invent FPS, timings, or pass.",
+      "prompt": "Run $ccgs-team-polish chase-feedback in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch performance-analyst, technical-artist, sound-designer, QA tester, engine-programmer, tools-programmer when traced, and adversarial QA according to the native profile; inherit model/permissions and use team-run.py with real IDs, dependencies, ownership, event/show and resume. Produce dated bounded reports under production/polish/ (including chase-feedback-report-2026-10-26.md and the role-specific render/audio/verification notes) and keep claims tied to actual measurements. Interrupt or fail one real implementation task, resume the exact task, and aggregate only validated outputs. Missing runtime/profiler/screenshots or native recovery evidence stays NOT ASSESSED; do not invent FPS, timings, or pass. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
-            "path": "production/polish/courier-impact-report-2026-10-26.md",
+            "path": "production/polish/chase-feedback-report-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "profiler"
             ],
             "not_contains": [
@@ -3739,41 +3754,41 @@
             "changed": true
           },
           {
-            "path": "production/polish/courier-impact-render-notes-2026-10-26.md",
+            "path": "production/polish/chase-feedback-render-notes-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "render"
             ],
             "changed": true
           },
           {
-            "path": "production/polish/courier-impact-engine-fixes-2026-10-26.md",
+            "path": "production/polish/chase-feedback-engine-fixes-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "engine"
             ],
             "changed": true
           },
           {
-            "path": "production/polish/courier-impact-tool-fixes-2026-10-26.md",
+            "path": "production/polish/chase-feedback-tool-fixes-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "tool"
             ],
             "changed": true
           },
           {
-            "path": "production/polish/courier-impact-audio-notes-2026-10-26.md",
+            "path": "production/polish/chase-feedback-audio-notes-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "audio"
             ],
             "changed": true
           },
           {
-            "path": "production/polish/courier-impact-verification-2026-10-26.md",
+            "path": "production/polish/chase-feedback-verification-2026-10-26.md",
             "contains": [
-              "courier-impact",
+              "chase-feedback",
               "verification"
             ],
             "changed": true
@@ -3781,7 +3796,7 @@
         ],
         "response_contains": [
           "team-polish",
-          "courier-impact",
+          "chase-feedback",
           "performance",
           "adversarial",
           "ownership",
@@ -3794,11 +3809,12 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
-          "team.size": "studio"
+          "team.size": "studio",
+          "engine.language": "TypeScript"
         }
       },
       "fixture_stdout": null,
@@ -3814,9 +3830,10 @@
       "required_tools": true,
       "required_evidence": [
         "native_agents",
-        "team_recovery"
+        "team_recovery",
+        "independent_review"
       ],
-      "prompt": "Run $ccgs-team-release 0.9.0 in English with the supplied Release-stage standard/guided Godot 4.6.1 project and team.size studio. Read the supplied release gate and local build inputs; dispatch native producer, release-manager, QA lead, devops, security, localization, performance, analytics and conditional network roles with inherited model/permissions and actual team-run.py IDs. Preserve one writer per fixed production/releases artifact, dependencies, failures and resume; interrupt or fail one real task and resume it before aggregation. Stop at a locally runnable package; absent build/test/sign-off/runtime evidence must remain NOT ASSESSED and no publication or invented ID is allowed.",
+      "prompt": "Run $ccgs-team-release 0.9.0 in English with the supplied Release-stage standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Read the supplied release gate and local build inputs; dispatch native producer, release-manager, QA lead, devops, security, localization, performance, analytics and conditional network roles with inherited model/permissions and actual team-run.py IDs. Preserve one writer per fixed production/releases artifact, dependencies, failures and resume; interrupt or fail one real task and resume it before aggregation. Stop at a locally runnable package; absent build/test/sign-off/runtime evidence must remain NOT ASSESSED and no publication or invented ID is allowed. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. Final quality verdict must be NOT ASSESSED. Each QA/build/security/localization/performance/analytics/go-no-go gate document must explicitly retain NOT ASSESSED, not an approved sign-off, because the required release inputs are absent. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
       "expected": {
         "files": [
           {
@@ -3842,51 +3859,93 @@
           {
             "path": "production/releases/qa-gate-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/build-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/security-signoff-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/localization-signoff-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/performance-signoff-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/analytics-signoff-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/go-no-go-0.9.0.md",
             "contains": [
-              "0.9.0"
+              "0.9.0",
+              "NOT ASSESSED"
             ],
-            "changed": true
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ]
           },
           {
             "path": "production/releases/announcement-0.9.0.md",
@@ -3909,7 +3968,8 @@
           "build",
           "sign-off",
           "ownership",
-          "recovery"
+          "recovery",
+          "NOT ASSESSED"
         ],
         "response_not_contains": [
           "published",
@@ -3919,13 +3979,17 @@
         ],
         "required_tools": true,
         "config": {
-          "engine.name": "Godot",
-          "engine.version": "4.6.1",
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
           "modes.rigor": "standard",
           "modes.automation": "guided",
           "team.size": "studio",
-          "project.stage": "Release"
-        }
+          "project.stage": "Release",
+          "engine.language": "TypeScript"
+        },
+        "response_verdict_any": [
+          "NOT ASSESSED"
+        ]
       },
       "fixture_stdout": null,
       "actual_result_stub": null,
