@@ -19,6 +19,7 @@ browser runs. No original-game source, assets, meta files or configuration chang
 |---|---|---|---|---|
 | Fresh dependencies and type checks | Install and both TS checks succeed | npm ci, server/core check and client check exit 0 | `evidence/baseline-report-portable.json`, `01-ci.log`, `02-run-typecheck.log`, `03-typecheck-client.log` | PASS |
 | Real Node game tests | Nonzero actual tests, no failure/skip/cancellation | 26 tests, 26 pass, all other counts zero | `evidence/04-test.log` | PASS |
+| Studio Cocos test adapter | Read actual TAP counts, not helper exit alone | Configured isolated full + guided project; dry-run and real `test-run.sh cocos` resolved the Node command and parsed26/26, recognized TAP, no timeout, result PASS | `evidence/adapter-live.json`, `adapter-live.tsv`, `game/production/qa/adapter-live.tap` | PASS |
 | Server and Creator Web build | Actual success code, fresh outputs | Server exit 0; Creator 3.8.8 exit 36 correctly mapped to wrapper 0; fresh Web assets | `evidence/05-build-server.log`, `06-build-client-web-mobile.log`, portable report per-file hashes | PASS |
 | Actual local Web start | Served package and backend respond | Browser loaded rendered game on loopback18089; backend18787 health returned success | `evidence/gui/01-lobby.png`, `gui-observations.json` | PASS |
 | Two-player room and readiness | Both roles in same room, actual countdown | Room637703 joined by two pages; ready/countdown and live synchronized race observed | `evidence/gui/04-two-player-room.png`, `gui-observations.json` | PASS |
@@ -53,7 +54,7 @@ primary in each fixture; no Godot role is selected.
 
 | Team | Isolated scenario | Actual native status |
 |---|---|---|
-| combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/agent-identity instruction confusion; fixes need new execution |
+| combat | Existing chase/capture/timeout rules | First attempt NOT ASSESSED: missing Cocos primary; second FAIL: run-label/identity confusion; third dispatched8 actual roles and completed7 tasks, then NOT ASSESSED: model capacity interrupted independent review |
 | UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
 | QA | Failed Web entry smoke, read-only negative gate | NOT ASSESSED — not reached |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
@@ -71,6 +72,22 @@ required team/recovery/review evidence. `team-run.py init --id` is a local recor
 slug; `event --agent-id` preserves the actual host path or UUID. A new regression
 executes that distinction without claiming real agent execution.
 
+Third attempt `ae97fc14b79c` retained native game-designer, gameplay-programmer,
+AI scope reviewer, technical-artist, engine-programmer, sound-designer, QA tester
+and independent QA-lead identities. Its manifest records seven completed tasks;
+the final reviewer did not complete. The native host returned `serverOverloaded`.
+Neither partial artifacts nor a model-capacity failure establish team PASS.
+
+That run also exposed an evaluator defect: implementation children were being
+considered reviewer candidates before review-manifest matching. The fix filters
+only the claimed actual reviewer identities and keeps write/role/parent checks.
+A separate review found that new deliverables were absent from the initial input
+bundle. The evaluator now binds the same reviewer to final expected output
+contents/hashes as well as supplied inputs, failing closed on missing/unreadable
+outputs. Counterexamples cover fixture-only review, unrelated writers, final
+output reads, legacy prompt binding and changes after review. Historical native
+records are unchanged; these evaluator fixes still need a new native execution.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -81,12 +98,18 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 - A source snapshot including the generated-mirror fix and first four Cocos
   scenario tests passed Windows244/244 and Linux244/244, zero skips.
-- A subsequent run-label protocol regression and refined prompts passed targeted
-  tests. The final combined source still requires full CI; do not call244 the
-  latest245-test result.
-- Independent review verified Cocos input consistency, release negative-gate
-  predicates and actual review binding. Follow-up review of the last run-label
-  clarification hit a usage limit (host said19:41 Asia/Shanghai); it remains open.
+- Source `35b34ba54e59e39e9101ee437a15e1cb7ebd20f4` passed hosted Windows245/245
+  and Linux245/245, zero skips. Run `40706589644`, jobs `122880260925` and
+  `122880263049`; logs are retained as `evidence/ci-35b34ba-windows.log` and
+  `ci-35b34ba-linux.log`. Local Windows245 passed too; the local Linux suite
+  printed245/245 OK but its surrounding shell wrapper had an exit-argument error,
+  which is not presented as a successful wrapper run. Hosted Linux exited cleanly.
+- The later reviewer-candidate and final-output binding fixes passed48 evidence
+  tests and23 driver tests; their final250-test source needs fresh full CI.
+- Independent review verified Cocos inputs, release negative gates, run labels,
+  claimed reviewer selection and final-output binding. An earlier follow-up quota
+  failure remains historical; subsequent read-only follow-ups completed without
+  additional actionable findings. They do not replace native acceptance.
 - Resume only the nine selectors with `--resume`, from the ordinary Git host,
   preserving inherited model/provider/permissions and existing Hook trust.
   No new Hook definition or global configuration is installed.

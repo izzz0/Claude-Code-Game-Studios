@@ -283,6 +283,19 @@ class NativeTeamEvidenceTests(unittest.TestCase):
         result = MODULE.verify_review_evidence(self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
         self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
 
+    def test_unrelated_writer_child_does_not_invalidate_claimed_readonly_review(self):
+        _review_manifest(self.root, agent_id="review-child")
+        reviewer = _thread(thread_id="review-child", cwd=str(self.root))
+        writer = _thread(thread_id="writer-child", cwd=str(self.root))
+        writer["turns"][0]["items"].append({"type": "fileChange", "id": "write-1", "status": "completed"})
+        result = MODULE.verify_review_evidence(
+            self.root,
+            [_item("spawnAgent", ["review-child", "writer-child"])],
+            {"review-child": reviewer, "writer-child": writer},
+            PARENT,
+        )
+        self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
+
     def test_review_input_hash_prompt_matching_verifies(self):
         _review_manifest(self.root)
         source = self.root / "design" / "brief.md"
@@ -306,6 +319,57 @@ class NativeTeamEvidenceTests(unittest.TestCase):
         self.assertEqual(result["verified"], [])
         self.assertEqual(result["missing"], ["independent_review"])
         self.assertEqual(result["findings"], [])
+
+    def test_legacy_review_must_bind_new_deliverable_and_reject_post_review_change(self):
+        from run_acceptance import final_review_inputs, tree_hashes
+        _review_manifest(self.root)
+        source = self.root / "brief.md"
+        source.write_text("approved scope", encoding="utf-8")
+        before = tree_hashes(self.root)
+        initial = {"brief.md": {"sha256": hashlib.sha256(source.read_bytes()).hexdigest(), "content": "approved scope"}}
+        output = self.root / "draft.md"
+        output.write_text("actual new deliverable", encoding="utf-8")
+        case = {"expected": {"files": [{"path": "draft.md", "changed": True}]}}
+        expected, missing = final_review_inputs(case, self.root, before, initial)
+        self.assertEqual(missing, [])
+        child = _thread(cwd=str(self.root))
+        def check(bundle, current):
+            item = _item("spawnAgent", ["child-1"], prompt="CCGS_REVIEW_INPUTS\n" + json.dumps(bundle) + "\nCCGS_REVIEW_INPUTS_END")
+            return MODULE.verify_review_evidence(self.root, [item], {"child-1": child}, PARENT, current)
+        self.assertEqual(check(initial, expected)["verified"], [])
+        self.assertEqual(check(expected, expected)["verified"], ["independent_review"])
+        output.write_text("changed after review", encoding="utf-8")
+        current, missing = final_review_inputs(case, self.root, before, initial)
+        self.assertEqual(missing, [])
+        self.assertEqual(check(expected, current)["verified"], [])
+
+    def test_modern_reviewer_must_read_both_fixture_and_final_output(self):
+        from run_acceptance import final_review_inputs, tree_hashes
+        _review_manifest(self.root, agent_id=NATIVE_PATH)
+        (self.root / "brief.md").write_text("approved scope", encoding="utf-8")
+        before = tree_hashes(self.root)
+        initial = {"brief.md": {"sha256": hashlib.sha256(b"approved scope").hexdigest(), "content": "approved scope"}}
+        (self.root / "draft.md").write_text("new deliverable", encoding="utf-8")
+        case = {"expected": {"files": [{"path": "draft.md", "changed": True}]}}
+        expected, missing = final_review_inputs(case, self.root, before, initial)
+        self.assertEqual(missing, [])
+        child = _native_thread(self.root)
+        child["cwd"] = str(self.root)
+        def add_read(name):
+            script = "Microsoft.PowerShell.Management\\Get-Content -LiteralPath '" + name + "' -Raw -Encoding utf8"
+            child["turns"][-1]["items"].insert(0, {
+                "type": "commandExecution", "command": '\"C:\\runtime\\pwsh.exe\" -Command ' + "'" + script.replace("'", "''") + "'",
+                "commandActions": [{"type": "unknown", "command": script}],
+                "status": "completed", "exitCode": 0, "aggregatedOutput": expected[name]["content"],
+            })
+        add_read("brief.md")
+        items = [_activity("started")]
+        self.assertEqual(MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT, expected)["verified"], [])
+        add_read("draft.md")
+        self.assertEqual(MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT, expected)["verified"], ["independent_review"])
+        (self.root / "draft.md").write_text("changed after read", encoding="utf-8")
+        current, _ = final_review_inputs(case, self.root, before, initial)
+        self.assertEqual(MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT, current)["verified"], [])
 
     def test_review_changed_input_hash_stays_na_without_finding(self):
         _review_manifest(self.root)

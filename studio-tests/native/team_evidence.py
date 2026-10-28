@@ -662,6 +662,26 @@ def verify_review_evidence(
     manifests = _review_manifest_paths(root)
     if not manifests:
         return {"verified": [], "missing": ["independent_review"], "findings": []}
+    # Restrict review validation to children explicitly claimed by a review
+    # manifest. Other spawned children may be legitimate writers in the same run.
+    claimed_ids: set[str] = set()
+    for manifest_path, _ in manifests:
+        try:
+            data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        tasks = data.get("tasks")
+        if not isinstance(tasks, dict):
+            continue
+        for task in tasks.values():
+            if not isinstance(task, dict):
+                continue
+            for child_id, _spawn in candidates:
+                if _manifest_child_id(task.get("agent_id"), {child_id}, aliases) == child_id:
+                    claimed_ids.add(child_id)
+    candidates = [(child_id, spawn) for child_id, spawn in candidates if child_id in claimed_ids]
+    if not candidates:
+        return {"verified": [], "missing": ["independent_review"], "findings": []}
     for child_id, spawn in candidates:
             if spawn is not None and spawn.get("senderThreadId") != parent_thread_id:
                 findings.append("review spawn receipt has wrong sender thread")

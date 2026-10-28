@@ -29,6 +29,26 @@ class NativeAcceptanceTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
+    def test_final_review_bundle_includes_new_and_replaces_changed_outputs(self):
+        initial = {"code.gd": {"sha256": self.before["code.gd"], "content": "old"}}
+        (self.root / "code.gd").write_text("updated", encoding="utf-8")
+        (self.root / "draft.md").write_text("new deliverable", encoding="utf-8")
+        case = {"expected": {"files": [{"path": "code.gd", "changed": True}, {"path": "draft.md"}]}}
+        bundle, missing = driver.final_review_inputs(case, self.root, self.before, initial)
+        self.assertEqual(missing, [])
+        self.assertEqual(bundle["code.gd"], {"sha256": driver.sha(self.root / "code.gd"), "content": "updated"})
+        self.assertEqual(bundle["draft.md"], {"sha256": driver.sha(self.root / "draft.md"), "content": "new deliverable"})
+        self.assertEqual(initial["code.gd"]["content"], "old")
+
+    def test_final_review_missing_or_unreadable_outputs_cannot_be_omitted(self):
+        (self.root / "binary.md").write_bytes(b"\xff\xfe")
+        case = {"expected": {"files": [{"path": "missing.md", "changed": True}, {"path": "binary.md"}]}}
+        _, missing = driver.final_review_inputs(case, self.root, self.before, {})
+        self.assertEqual(missing, ["missing.md", "binary.md"])
+        readonly = {"expected": {"files": [{"path": "code.gd", "changed": False}]}}
+        initial = {"code.gd": {"sha256": self.before["code.gd"], "content": "old"}}
+        self.assertEqual(driver.final_review_inputs(readonly, self.root, self.before, initial), (initial, []))
+
     def assess(self, response="Target index 2 is rejected", **kwargs):
         return driver.assess(self.case, self.root, self.before, response,
                              kwargs.get("items", self.items), kwargs.get("hooks", self.hooks), "completed")
