@@ -684,22 +684,25 @@ def main(argv=None):
                 write_json(summary_path, inspection)
                 print(json.dumps(inspection, ensure_ascii=True))
                 return 0
+            current_statuses = {}
             for case in selected:
                 current_fingerprint = case_fingerprint(case, fingerprint)
                 old = state["cases"].get(case["id"], {})
                 if args.resume and can_resume(old, current_fingerprint):
+                    current_statuses[case["id"]] = "PASS"
                     print(json.dumps({"id": case["id"], "status": "PASS", "reused": True}), flush=True)
                     continue
                 result = run_case(client, project, output, case, args.timeout)
                 result["source_fingerprint"] = current_fingerprint
                 state["cases"][case["id"]] = result
+                current_statuses[case["id"]] = result["status"]
                 write_json(state_path, state)
                 print(json.dumps({key: value for key, value in result.items()
                                   if key not in {"protected_hashes", "artifacts"}},
                                  ensure_ascii=True), flush=True)
                 if result["status"] != "PASS":
                     break
-            statuses = [state["cases"].get(c["id"], {}).get("status", "NOT ASSESSED") for c in selected]
+            statuses = [current_statuses.get(c["id"], "NOT ASSESSED") for c in selected]
             overall = "FAIL" if "FAIL" in statuses else "NOT ASSESSED" if "NOT ASSESSED" in statuses else "PASS"
             summary = {"selected_result": overall, "selected": len(selected),
                        "authored_cases": len(cases), "full_port_acceptance": "NOT ASSESSED",

@@ -374,6 +374,41 @@ class NativeAcceptanceTests(unittest.TestCase):
         listing["data"][0]["hooks"] = []
         self.assertTrue(driver.check_hooks(listing, self.root))
 
+    def test_batch_summary_ignores_unvisited_history_and_counts_current_results(self):
+        (self.root / ".git").mkdir()
+        output = self.root / ".scratch/batch"
+        output.mkdir(parents=True)
+        catalog = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))
+        first, second = catalog["cases"][:2]
+        class FixtureClient:
+            def __init__(self, *args): pass
+            def request(self, *args): return {}
+            def notify(self, *args): pass
+            def close(self): pass
+        scenarios = [
+            ("NOT ASSESSED", False, "NOT ASSESSED", 2),
+            ("FAIL", False, "FAIL", 1),
+            ("PASS", True, "PASS", 0),
+        ]
+        for actual, reuse_second, expected, exit_code in scenarios:
+            with self.subTest(actual=actual):
+                historical = {"status": "PASS" if reuse_second else "FAIL", "historical": True}
+                (output / "state.json").write_text(json.dumps({"cases": {second["id"]: historical}}), encoding="utf-8")
+                result = {"status": actual, "findings": [], "missing": []}
+                with patch.object(driver, "Client", FixtureClient), patch.object(
+                        driver.subprocess, "check_output", return_value="fixture-version"), patch.object(
+                        driver, "check_hooks", return_value=[]), patch.object(
+                        driver, "can_resume", side_effect=lambda record, _: reuse_second and record == historical), patch.object(
+                        driver, "run_case", return_value=result) as run, contextlib.redirect_stdout(io.StringIO()):
+                    code = driver.main(["--project", str(self.root), "--codex", sys.executable,
+                                        "--output", str(output), "--resume",
+                                        "--case", first["id"], "--case", second["id"]])
+                self.assertEqual(code, exit_code)
+                self.assertEqual(json.loads((output / "summary.json").read_text())["selected_result"], expected)
+                self.assertEqual(run.call_count, 1)
+                saved = json.loads((output / "state.json").read_text())
+                self.assertEqual(saved["cases"][second["id"]], historical)
+
     def test_preflight_failure_and_attention_replace_prior_pass_summary(self):
         (self.root / ".git").mkdir()
         (self.root / ".codex").mkdir()
