@@ -55,8 +55,9 @@ def _script(item: dict[str, Any], sandbox: Path) -> str | None:
                 or not executable.is_absolute()
                 or any(part in {".", ".."} for part in executable.parts)):
             return None
-        root = PureWindowsPath(str(Path(sandbox).resolve()))
-        if root.drive and _windows_path_under(executable, root):
+        roots = (PureWindowsPath(str(Path(sandbox).absolute())),
+                 PureWindowsPath(str(Path(sandbox).resolve())))
+        if any(root.drive and _windows_path_under(executable, root) for root in roots):
             return None
         if not re.fullmatch(r"pwsh(?:\.exe)?", executable.name, re.IGNORECASE):
             return None

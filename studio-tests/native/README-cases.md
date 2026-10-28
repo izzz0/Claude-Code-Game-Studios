@@ -139,6 +139,13 @@ commands. Unsupported commands or incomplete history leave read-only/input proof
 unassessed; confirmed writes fail. A model's assertion that it read an input is
 not a substitute for these receipts.
 
+The coordinator retains the independent child's complete final response verbatim
+and hashes that artifact after writing it. Formatting changes or a coordinator's
+summary do not establish returned-work binding. List only actual returned-review
+artifacts on that review task; keep coordinator summaries separately. A completed
+child with valid input reads can still be unassessed when this return evidence is
+missing.
+
 The bug-report handoff may appear in the final response or its explicitly
 listed report. `any_output_contains` checks those locations only; unrelated
 project files cannot satisfy it. Required report fields, unchanged source and

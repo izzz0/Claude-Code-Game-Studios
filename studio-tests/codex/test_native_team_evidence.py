@@ -501,6 +501,36 @@ class NativeTeamEvidenceTests(unittest.TestCase):
         result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child, "child-1": unrelated}, PARENT)
         self.assertNotIn("team_recovery", result["verified"])
 
+    def test_recovery_fallback_crossmatches_unambiguous_manifest_alias(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root, interrupted=True)
+        items = [
+            _activity("started"),
+            _item("wait", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "running"}}),
+            _item("interruptAgent", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "interrupted"}}),
+            _item("resumeAgent", [NATIVE_CHILD]),
+            _item("wait", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "completed"}}),
+        ]
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+        self.assertIn("team_recovery", result["verified"])
+
+    def test_recovery_fallback_rejects_alias_for_unrelated_child(self):
+        other_child = "01a17d9e-a3b0-77c3-955a-35487d6efb93"
+        other_path = "/root/unrelated_agent"
+        _manifest(self.root, agent_id=other_path)
+        child = _native_thread(self.root, interrupted=True)
+        unrelated = _native_thread(self.root, child_id=other_child, path=other_path)
+        items = [
+            _activity("started"),
+            _activity("started", child_id=other_child, path=other_path),
+            _item("wait", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "running"}}),
+            _item("interruptAgent", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "interrupted"}}),
+            _item("resumeAgent", [NATIVE_CHILD]),
+            _item("wait", [NATIVE_CHILD], states={NATIVE_CHILD: {"status": "completed"}}),
+        ]
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child, other_child: unrelated}, PARENT)
+        self.assertNotIn("team_recovery", result["verified"])
+
     def test_modern_recovery_rejects_invalid_interruption_timing(self):
         _manifest(self.root, agent_id=NATIVE_PATH)
         child = _native_thread(self.root, interrupted=True)

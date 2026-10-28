@@ -22,7 +22,14 @@ bash .agents/studio/hooks/yaml-helper.sh resolve_config --keys rigor,automation,
 
 ## Output
 
-Return findings, evidence hashes/paths, and verdict. No blocking findings route to ccgs-story-done; findings route to ccgs-dev-story.
+Return findings, evidence hashes/paths, and one shared-gate verdict in every workflow mode:
+
+- **PASS** — all applicable criteria were assessed with sufficient evidence, with no blocking finding or required evidence left unassessed. The caller may continue to `$ccgs-story-done`, which performs the separate closure check; this review never marks a story complete.
+- **CONCERNS** — the review is otherwise assessed, but has named non-blocking risks. State each risk and obtain the user's explicit acceptance before continuing to `$ccgs-story-done`; record accepted risks there.
+- **FAIL** — a verified acceptance failure or other blocking finding remains. Route its concrete evidence to `$ccgs-dev-story` for correction, then review again. Never route a failing story to `$ccgs-story-done`.
+- **NOT ASSESSED** — a required input, evidence source, or independent review is unavailable. Name each gap and the source or action that can resolve it. Do not route an unassessed story to `$ccgs-story-done` or treat missing evidence as a pass.
+
+If a verified blocker and an unassessed section coexist, report the section as NOT ASSESSED and use FAIL as the overall verdict. Do not ask whether to continue along the ordinary correction and re-review route. This skill remains read-only; the caller decides whether to start another skill.
 
 ## Standard/full workflow
 

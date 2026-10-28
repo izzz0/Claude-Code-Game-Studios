@@ -30,8 +30,9 @@ not a filled-in report.** Check first, and stop if the check fails.
    **`NOT ASSESSED — NO DATA`** as the whole verdict, naming what was missing and
    which skill produces it.
 
-**A verdict of `NOT ASSESSED` is a success.** It is the correct, useful answer to
-"what does the data say?" when there is no data. The failure mode this prevents is
+**`NOT ASSESSED` is correct evidence reporting, not a successful gate.** It is
+the useful answer to "what does the data say?" when there is no data, and it
+never permits story completion or stage advancement. The failure mode this prevents is
 specific: a report whose verdict enum has no "could not run" state produces
 **false clean passes** — an asset audit returning COMPLIANT on a project with no
 assets and no standards, or a performance profile reporting ">99% headroom against
@@ -239,22 +240,14 @@ authorized follow-up through the normal workflow.
 ### Suggestions
 [Nice-to-have improvements]
 
-### Verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]
+### Verdict: [PASS / CONCERNS / FAIL / NOT ASSESSED]
 ```
 
-Choose the verdict, first match wins:
-- **CHANGES REQUIRED** — anything under Required Changes
-- **NOT ASSESSED** — nothing to review (the no-data path above), the engine
-  specialist review did not run — no engine configured, or a specialist that
-  could not be spawned — or any report section reads `NOT ASSESSED` (ADR
-  Compliance with a referenced ADR that could not be read, Architecture, explicit architecture constraints);
-  name which. NOT ASSESSED ranks below CHANGES REQUIRED, because a known
-  defect is more actionable than a skipped check, and above both approvals: a
-  review that skipped the engine check has not approved the code. (`NO ADRS
-  FOUND` is not NOT ASSESSED: with no ADR to check, it does not stop an
-  approval.)
-- **APPROVED WITH SUGGESTIONS** — only Suggestions
-- **APPROVED** — no required changes and no suggestions
+Use the shared gate meanings in every mode:
+- **FAIL** — at least one verified blocking acceptance or correctness finding remains. Name each blocker and route it to `$ccgs-dev-story`; never offer story completion while a blocker remains.
+- **NOT ASSESSED** — a required input, evidence source, or required independent specialist review is missing or unavailable. Name the gap and its source. `NO ADRS FOUND` is not missing evidence when no ADR is referenced. If a verified blocker also exists, retain the affected section's NOT ASSESSED label and use FAIL as the overall verdict.
+- **CONCERNS** — the applicable checks were assessed, no blocking finding remains, and only named non-blocking risks remain. State each risk; it requires the user's explicit acceptance before the caller may continue to `$ccgs-story-done`.
+- **PASS** — all applicable criteria were assessed with sufficient evidence, no blocking finding remains, and no required evidence is unassessed. The caller may continue to `$ccgs-story-done` for its separate closure check; this review does not complete the story.
 
 This skill is read-only — no files are written.
 
@@ -262,24 +255,12 @@ This skill is read-only — no files are written.
 
 ## Phase 9: Next Steps
 
-Use
-`native user-input mechanism`:
-- Prompt: "Code review complete — verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]. How would you like to proceed?" (the Phase 8 verdict, word for word)
-- Options (adjust based on verdict):
-  - If APPROVED:
-    - `[A] Run $ccgs-story-done to mark the story complete`
-    - `[B] Stop here`
-  - If APPROVED WITH SUGGESTIONS:
-    - `[A] Apply the suggestions, then run $ccgs-story-done`
-    - `[B] Run $ccgs-story-done now — suggestions noted for later`
-    - `[C] Stop here`
-  - If CHANGES REQUIRED:
-    - `[A] Fix the issues and re-run $ccgs-code-review`
-    - `[B] Run $ccgs-story-done anyway with noted exceptions`
-    - `[C] Stop here`
-  - If NOT ASSESSED:
-    - `[A] Fix what stopped the review (point me at the code, run $ccgs-setup-engine, or fix the unreadable ADR reference), then re-run $ccgs-code-review`
-    - `[B] Stop here`
+Follow the verdict directly; do not add a generic "How would you like to proceed?" prompt.
+
+- **PASS** — report that `$ccgs-story-done` is the next closure check. Do not mark the story complete here.
+- **CONCERNS** — present the specific risks and obtain explicit user acceptance before recommending `$ccgs-story-done`. If the user does not accept them, route the risks for correction and re-review.
+- **FAIL** — give the concrete blockers to `$ccgs-dev-story` for correction and re-review. Never offer `$ccgs-story-done` as an exception.
+- **NOT ASSESSED** — name missing inputs/evidence and the relevant source or setup action, then re-run the review when available. Never offer `$ccgs-story-done` as an alternative.
 
 If an ARCHITECTURAL VIOLATION is found:
 - If the violation contradicts an **existing ADR**: fix the implementation to comply with `docs/architecture/[adr-file].md`. If the design has legitimately changed, run `$ccgs-architecture-decision` to formally *revise* the existing ADR — do not create a competing one.

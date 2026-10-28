@@ -523,7 +523,9 @@ def _recovery_evidence(sandbox: Path, items: list[dict[str, Any]], child_threads
                 except (OSError, json.JSONDecodeError):
                     continue
                 has_manifest_task = any(
-                    isinstance(task, dict) and task.get("agent_id") == child_id and task.get("status") == "completed"
+                    isinstance(task, dict)
+                    and _manifest_child_id(task.get("agent_id"), {child_id}, aliases) == child_id
+                    and task.get("status") == "completed"
                     for task in (data.get("tasks") or {}).values()
                 )
                 if has_manifest_task:

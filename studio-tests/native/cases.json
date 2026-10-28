@@ -192,11 +192,21 @@
         ],
         "response_contains": [
           "delivery.gd",
-          "index 2",
-          "CHANGES REQUIRED"
+          "AC-3"
+        ],
+        "response_verdict_any": [
+          "FAIL"
+        ],
+        "response_any_contains": [
+          [
+            "index 2",
+            "index `2`",
+            "target_index == 2",
+            "Target Gamma",
+            "third target"
+          ]
         ],
         "response_not_contains": [
-          "APPROVED",
           "source file edited",
           "status: done"
         ],
@@ -392,7 +402,7 @@
       "fixture": "consistency-check",
       "readonly": true,
       "required_tools": true,
-      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Use the registry's Player entry as canonical: health 120 from design/gdd/player.md. Compare the registered Player against design/gdd/combat.md, where Player is stated as 80 HP. Report the actual conflict with both values and both file paths, classify it as CONFLICT, and ask for a registry/GDD decision only as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
+      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Treat design/gdd/player.md as authoritative because it is the registry source and states 120 HP, matching the registry. Compare it with design/gdd/combat.md, which says 80 HP. Report the conflict with both values and paths, classify it as CONFLICT, and propose updating combat.md from 80 HP to 120 HP; ask only whether to apply that correction as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
       "expected": {
         "files": [
           {
@@ -423,6 +433,8 @@
           "80",
           "design/gdd/player.md",
           "design/gdd/combat.md",
+          "120 HP",
+          "update",
           "CONFLICT"
         ],
         "response_not_contains": [
@@ -502,7 +514,7 @@
       "fixture": "bug-triage",
       "readonly": false,
       "required_tools": true,
-      "prompt": "Run $ccgs-bug-triage sprint in English. Re-evaluate the two open reports against Sprint 004 capacity: BUG-0001 is an S1 crash blocking the delivery scene and must be ordered P1 for the current sprint; BUG-0002 is an S3 cosmetic sparkle issue and remains P3 backlog. Preserve BUG-0003 exactly as closed and exclude it from open counts. Produce the dated triage report with priority/order, sprint assignment or backlog disposition, and no invented bug fixes. Use the authorized report-write approval; do not edit the bug reports or sprint plan. Write the explicitly requested output path(s): production/qa/bug-triage-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "prompt": "Run $ccgs-bug-triage sprint in English. Re-evaluate the two open reports against Sprint 004 capacity: BUG-0001 is an S1 crash blocking the delivery scene and must be ordered P1 and assigned to the documented remaining sprint capacity; BUG-0002 is an S3 cosmetic sparkle issue and remains P3 backlog. Preserve BUG-0003 exactly as closed and exclude it from open counts. Produce the dated triage report with priority/order, sprint assignment or backlog disposition, and no invented bug fixes. Use the authorized report-write approval; do not edit the bug reports or sprint plan. Write the explicitly requested output path(s): production/qa/bug-triage-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
       "expected": {
         "files": [
           {
@@ -556,7 +568,7 @@
       "fixture": "tech-debt",
       "readonly": false,
       "required_tools": true,
-      "prompt": "Run $ccgs-tech-debt scan in English on the Godot src/ code root. Find the concrete TODO in src/game.gd: per-frame string allocation for target lookup, with performance impact in the 60 FPS loop. Present a scoped Performance debt entry with a truthful reason, effort M, impact High, and no automatic refactor. With the authorized register-write approval, append the next ID TD-002 to docs/tech-debt-register.md while preserving TD-001 byte-for-byte and all ten register columns. Do not edit src/game.gd. Write the explicitly requested output path(s): docs/tech-debt-register.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "prompt": "Run $ccgs-tech-debt scan in English on the Godot src/ code root. Find the concrete TODO in src/game.gd: per-frame string allocation for target lookup, with performance impact in the 60 FPS loop. The supplied docs/debt-acceptance-context.md states the accepted reason: this optimization was deferred until profiling can confirm its impact, avoiding a premature change to target lookup. Present a scoped Performance debt entry using that reason, effort M, impact High, and no automatic refactor. With the authorized register-write approval, append the next ID TD-002 to docs/tech-debt-register.md while preserving TD-001 byte-for-byte and all ten register columns. Do not edit src/game.gd. Write the explicitly requested output path(s): docs/tech-debt-register.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
       "expected": {
         "files": [
           {
@@ -566,6 +578,7 @@
               "TD-002",
               "Performance",
               "src/game.gd",
+              "deferred until profiling",
               "M",
               "High",
               "Open"
@@ -582,6 +595,7 @@
           "src/game.gd",
           "Performance",
           "string allocation",
+          "deferred until profiling",
           "60 FPS",
           "M",
           "High",
@@ -609,7 +623,7 @@
       "fixture": "test-flakiness",
       "readonly": false,
       "required_tools": true,
-      "prompt": "Run $ccgs-test-flakiness scan in English using only the five dated synthetic text result files under test-results/. Parse the supplied history, not the current Godot game: collect_three_targets fails in 2 of 5 runs (40.0%, High) while wall_collision is stable in 5 of 5 runs (0.0%, clean). Report the exact counts, identify the likely history-based flakiness, and state that no current-game execution was performed. Write the dated flakiness report only after authorized approval; do not quarantine or modify tests/regression-suite.md and do not claim PASS for the current game. Write the explicitly requested output path(s): production/qa/flakiness-report-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "prompt": "Run $ccgs-test-flakiness scan in English. Use the five dated synthetic text result files under test-results/ for outcomes and test-results/history-provenance.md to confirm that all five runs used the same source revision with no code changes. Parse the supplied history, not the current Godot game: collect_three_targets fails in 2 of 5 runs (40.0%, High) while wall_collision is stable in 5 of 5 runs (0.0%, clean). Report the exact counts, identify the likely history-based flakiness, and state that no current-game execution was performed. Write the dated flakiness report only after authorized approval; do not quarantine or modify tests/regression-suite.md and do not claim PASS for the current game. Write the explicitly requested output path(s): production/qa/flakiness-report-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
       "expected": {
         "files": [
           {
@@ -619,6 +633,7 @@
               "2",
               "5",
               "40.0",
+              "fixture-revision-7f3a21c",
               "High",
               "wall_collision",
               "clean",
@@ -1348,7 +1363,7 @@
         "native_agents",
         "team_recovery"
       ],
-      "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Godot 4.6.1 project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Targets 0/3 in the upper-left, a post-completion restart affordance, and a high-contrast wall-warning label readable at 200% scale; UI must not own movement state. Initialize team-run.py with fresh real IDs, assign ownership and dependent accessibility review, and retain the bounded visual artifact at production/ui/courier-hud/visual-design.md. Follow the recovery brief by interrupting or failing one real implementation task, then resume that exact returned task and verify the result. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings.",
+      "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Godot 4.6.1 project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Targets 0/3 in the upper-left, a post-completion restart affordance, and a high-contrast wall-warning label readable at 200% scale; UI must not own movement state. Initialize team-run.py with fresh real IDs and follow the skill phases: assign ccgs-art-director to produce production/ui/courier-hud/visual-design.md, then assign the UI implementation task, followed by a dependent read-only ccgs-accessibility-specialist review. Interrupt or fail the real art-direction task that owns visual-design.md, resume that exact returned task, and validate the returned artifact; do not attribute the design file to implementation. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings.",
       "expected": {
         "files": [
           {

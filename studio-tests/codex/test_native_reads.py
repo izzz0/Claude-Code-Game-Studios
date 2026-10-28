@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path, PureWindowsPath
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("native_reads", ROOT / "studio-tests/native/native_reads.py")
@@ -166,6 +167,51 @@ class NativeReadTests(unittest.TestCase):
             local_exe = local_exe.replace("/", "\\")
             self.assertIsNone(powershell_read_path(
                 _item(self.path, executable=local_exe), self.root))
+
+    def test_rejects_workspace_local_executable_through_sandbox_junction(self):
+        class SandboxPath:
+            def __init__(self, _value):
+                pass
+
+            def absolute(self):
+                return PureWindowsPath(r"F:\acceptance-alias")
+
+            def resolve(self):
+                return PureWindowsPath(r"F:\acceptance-physical")
+
+        expected_script = _item(self.path, self.content)["commandActions"][0]["command"]
+        with patch.object(MODULE, "Path", SandboxPath):
+            for executable in (
+                r"F:\acceptance-alias\tools\pwsh.exe",
+                r"F:\acceptance-physical\tools\pwsh.exe",
+            ):
+                item = _item(self.path, self.content, executable=executable)
+                self.assertIsNone(MODULE._script(item, "fixture-sandbox"))
+
+            external = _item(self.path, self.content)
+            self.assertEqual(MODULE._script(external, "fixture-sandbox"), expected_script)
+            mismatch = _item(self.path, self.content, action=expected_script + "; whoami")
+            self.assertIsNone(MODULE._script(mismatch, "fixture-sandbox"))
+
+        if os.name != "nt":
+            return
+
+        junction = self.root.parent / (self.root.name + "-junction")
+        try:
+            subprocess.run(["cmd.exe", "/c", "mklink", "/J", str(junction), str(self.root)],
+                           check=True, capture_output=True, text=True)
+            self.assertNotEqual(str(junction.absolute()).casefold(),
+                                str(junction.resolve()).casefold())
+            local_exe = str(junction / "tools" / "pwsh.exe").replace("/", "\\")
+            item = _item(self.path, self.content, executable=local_exe)
+            self.assertIsNone(powershell_read_path(item, junction))
+
+            external_item = _item(self.path, self.content)
+            self.assertEqual(powershell_read_path(external_item, junction), self.path)
+        finally:
+            if junction.exists():
+                subprocess.run(["cmd.exe", "/c", "rmdir", str(junction)], check=True,
+                               capture_output=True, text=True)
 
     def test_rejects_absolute_parent_and_nonexistent_paths(self):
         for path in ("../outside.txt", "C:\\temp\\file.txt", "/etc/passwd", "missing.txt"):

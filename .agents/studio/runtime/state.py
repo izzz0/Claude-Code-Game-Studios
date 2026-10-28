@@ -54,9 +54,6 @@ def file_lock(path: Path, timeout: float = 10):
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a+b") as handle:
-        if path.stat().st_size == 0:
-            handle.write(b"\0")
-            handle.flush()
         deadline = time.monotonic() + timeout
         while True:
             try:
@@ -73,6 +70,12 @@ def file_lock(path: Path, timeout: float = 10):
                     raise StateError("state lock timeout", 4)
                 time.sleep(0.02)
         try:
+            # Initialize the lock byte only while holding the OS lock. Otherwise
+            # simultaneous first users can race while extending the empty file.
+            if path.stat().st_size == 0:
+                handle.seek(0)
+                handle.write(b"\0")
+                handle.flush()
             yield
         finally:
             handle.seek(0)

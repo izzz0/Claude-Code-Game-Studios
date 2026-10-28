@@ -9,6 +9,7 @@ import time
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from threading import Barrier
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNTIME = ROOT / ".agents/studio/runtime"
@@ -84,10 +85,14 @@ class StateRegressionTests(RuntimeFixture):
         sources = []
         for value in "ABCD":
             p = self.root / f"{value}.tmp"; p.write_text(value); sources.append(p)
+        gate = Barrier(len(sources))
         def attempt(p):
-            return self.state("--path", "winner.txt", "--source", p, "--expected-sha256", "MISSING", "--operation", p.stem).returncode
+            gate.wait()
+            return self.state("--path", "winner.txt", "--source", p, "--expected-sha256", "MISSING", "--operation", p.stem)
         with ThreadPoolExecutor(max_workers=4) as pool: codes = list(pool.map(attempt, sources))
-        self.assertEqual(codes.count(0), 1, codes); self.assertEqual(codes.count(3), 3)
+        outcomes = [(r.returncode, r.stderr, r.stdout) for r in codes]
+        self.assertEqual([r.returncode for r in codes].count(0), 1, outcomes)
+        self.assertEqual([r.returncode for r in codes].count(3), 3, outcomes)
 
     def test_concurrent_identical_writers_all_succeed(self):
         src = self.root / "same.tmp"; src.write_text("same")
@@ -111,6 +116,50 @@ class StateRegressionTests(RuntimeFixture):
         finally:
             if proc.poll() is None: proc.kill()
             if proc.stdout is not None: proc.stdout.close()
+            proc.wait(timeout=5)
+
+    def test_empty_lock_byte_contention_times_out_without_initializing(self):
+        lock = self.root / "empty.lock"
+        lock.touch()
+        holder = self.root / "raw_lock.py"
+        holder.write_text(
+            "import os,sys,time\n"
+            "path=sys.argv[1]\n"
+            "handle=open(path,'r+b')\n"
+            "if os.name == 'nt':\n"
+            " import msvcrt; msvcrt.locking(handle.fileno(),msvcrt.LK_NBLCK,1)\n"
+            "else:\n"
+            " import fcntl; fcntl.flock(handle.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)\n"
+            "print('held',flush=True)\n"
+            "time.sleep(30)\n", encoding="utf-8")
+        proc = subprocess.Popen([sys.executable, str(holder), str(lock)],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            self.assertEqual(proc.stdout.readline().strip(), "held")
+            code = (
+                "import sys;sys.path.insert(0,sys.argv[1]);"
+                "from state import file_lock;from pathlib import Path\n"
+                "try:\n with file_lock(Path(sys.argv[2]),.15): pass\n"
+                "except Exception as e: raise SystemExit(getattr(e,'code',1))\n")
+            timed = subprocess.run([sys.executable, "-c", code, str(RUNTIME), str(lock)],
+                                   capture_output=True, text=True)
+            self.assertEqual(timed.returncode, 4, (timed.returncode, timed.stderr, timed.stdout))
+            self.assertEqual(lock.stat().st_size, 0)
+            inode = lock.stat().st_ino
+            proc.terminate(); proc.wait(timeout=5)
+            self.assertEqual(lock.stat().st_ino, inode)
+            acquire = subprocess.run([sys.executable, "-c",
+                "import sys;sys.path.insert(0,sys.argv[1]);from state import file_lock;"
+                "from pathlib import Path\nwith file_lock(Path(sys.argv[2]),1): print('acquired')",
+                str(RUNTIME), str(lock)], capture_output=True, text=True)
+            self.assertEqual(acquire.returncode, 0, (acquire.stderr, acquire.stdout))
+            self.assertIn("acquired", acquire.stdout)
+            self.assertEqual(lock.stat().st_size, 1)
+            self.assertEqual(lock.stat().st_ino, inode)
+        finally:
+            if proc.poll() is None: proc.kill()
+            if proc.stdout is not None: proc.stdout.close()
+            if proc.stderr is not None: proc.stderr.close()
             proc.wait(timeout=5)
 
 

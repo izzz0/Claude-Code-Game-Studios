@@ -204,7 +204,7 @@
       "readonly": true,
       "files_changed": false,
       "required_tools": true,
-      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Use the registry's Player entry as canonical: health 120 from design/gdd/player.md. Compare the registered Player against design/gdd/combat.md, where Player is stated as 80 HP. Report the actual conflict with both values and both file paths, classify it as CONFLICT, and ask for a registry/GDD decision only as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
+      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Treat design/gdd/player.md as authoritative because it is the registry source and states 120 HP, matching the registry. Compare it with design/gdd/combat.md, which says 80 HP. Report the conflict with both values and paths, classify it as CONFLICT, and propose updating combat.md from 80 HP to 120 HP; ask only whether to apply that correction as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
       "expected": {
         "files": [
           {
@@ -235,6 +235,8 @@
           "80",
           "design/gdd/player.md",
           "design/gdd/combat.md",
+          "120 HP",
+          "update",
           "CONFLICT"
         ],
         "response_not_contains": [
