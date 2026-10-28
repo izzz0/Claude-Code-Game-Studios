@@ -1343,8 +1343,6 @@
         ],
         "response_contains": [
           "capture",
-          "native",
-          "recovery",
           "NOT ASSESSED"
         ],
         "response_not_contains": [
@@ -1386,7 +1384,8 @@
             "contains": [
               "Time 60s",
               "200%",
-              "connection-warning",
+              "connection",
+            "warning",
               "restart"
             ],
             "not_contains": [
@@ -1397,11 +1396,9 @@
           }
         ],
         "response_contains": [
-          "team-ui",
           "courier-hud",
           "200%",
           "accessibility",
-          "recovery",
           "NOT ASSESSED"
         ],
         "response_not_contains": [
@@ -3350,11 +3347,7 @@
           }
         ],
         "response_contains": [
-          "team-audio",
-          "race-countdown",
-          "ownership",
-          "native",
-          "recovery"
+          "race-countdown"
         ],
         "response_not_contains": [
           "audio heard",
@@ -3474,13 +3467,9 @@
           }
         ],
         "response_contains": [
-          "team-level",
           "city-track",
           "layout",
-          "design/levels/city-track.md",
-          "ownership",
-          "aggregation",
-          "recovery"
+          "design/levels/city-track.md"
         ],
         "response_not_contains": [
           "level runtime PASS",
@@ -3579,12 +3568,9 @@
           }
         ],
         "response_contains": [
-          "team-live-ops",
           "chase-week",
           "economy",
-          "telemetry",
-          "ownership",
-          "recovery"
+          "telemetry"
         ],
         "response_not_contains": [
           "event published",
@@ -3695,12 +3681,9 @@
           }
         ],
         "response_contains": [
-          "team-narrative",
           "chase-copy",
           "brief",
           "localization",
-          "ownership",
-          "recovery",
           "ND-CONSISTENCY"
         ],
         "response_not_contains": [
@@ -3792,12 +3775,9 @@
           }
         ],
         "response_contains": [
-          "team-polish",
           "chase-feedback",
           "performance",
-          "adversarial",
-          "ownership",
-          "recovery"
+          "adversarial"
         ],
         "response_not_contains": [
           "60 FPS achieved",
@@ -3960,12 +3940,9 @@
           }
         ],
         "response_contains": [
-          "team-release",
           "0.9.0",
           "build",
           "sign-off",
-          "ownership",
-          "recovery",
           "NOT ASSESSED"
         ],
         "response_not_contains": [

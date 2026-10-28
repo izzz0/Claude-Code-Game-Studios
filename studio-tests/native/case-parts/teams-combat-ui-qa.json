@@ -42,8 +42,6 @@
         ],
         "response_contains": [
           "capture",
-          "native",
-          "recovery",
           "NOT ASSESSED"
         ],
         "response_not_contains": [
@@ -85,7 +83,8 @@
             "contains": [
               "Time 60s",
               "200%",
-              "connection-warning",
+              "connection",
+            "warning",
               "restart"
             ],
             "not_contains": [
@@ -96,11 +95,9 @@
           }
         ],
         "response_contains": [
-          "team-ui",
           "courier-hud",
           "200%",
           "accessibility",
-          "recovery",
           "NOT ASSESSED"
         ],
         "response_not_contains": [

@@ -283,6 +283,102 @@ class NativeTeamEvidenceTests(unittest.TestCase):
         result = MODULE.verify_review_evidence(self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
         self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
 
+    def test_not_assessed_is_a_valid_completed_review_verdict_not_a_quality_pass(self):
+        review = "Accessibility: NOT ASSESSED — runtime evidence missing.\n\nVerdict: NOT ASSESSED."
+        _review_manifest(self.root)
+        coordination = self.root / ".scratch/team-observations"
+        artifact = coordination / "review-evidence.txt"
+        artifact.write_text(review, encoding="utf-8")
+        manifest = coordination / "production/team-runs/review.json"
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        child = _thread(cwd=str(self.root), text=review)
+        result = MODULE.verify_review_evidence(
+            self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+        self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
+        # This evidence records that a review ran; its NOT ASSESSED verdict
+        # remains distinct from game-quality or accessibility acceptance.
+        self.assertIn("NOT ASSESSED", review)
+        self.assertNotIn("PASS", review)
+
+    def test_full_ui_reviews_use_their_own_explicit_not_assessed_conclusions(self):
+        for filename in ("native-ui-accessibility-review.md", "native-ui-independent-review.md",
+                         "native-qa-independent-review.md", "native-combat-independent-review.md"):
+            with self.subTest(filename=filename):
+                review = (ROOT / "studio-tests/native/fixtures" / filename).read_text(encoding="utf-8").strip()
+                _review_manifest(self.root)
+                coordination = self.root / ".scratch/team-observations"
+                artifact = coordination / "review-evidence.txt"
+                artifact.write_text(review, encoding="utf-8")
+                manifest = coordination / "production/team-runs/review.json"
+                data = json.loads(manifest.read_text(encoding="utf-8"))
+                data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+                manifest.write_text(json.dumps(data), encoding="utf-8")
+                child = _thread(cwd=str(self.root), text=review)
+                result = MODULE.verify_review_evidence(
+                    self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+                self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
+
+    def test_quoted_or_unresolved_verdict_words_do_not_count_as_review_conclusion(self):
+        for text in (
+            "The supplied report says NOT ASSESSED. I have not reached a review verdict.",
+            "The source says PASS, but this reviewer has not reached a verdict.",
+            "No verdict: FAIL appears in the quoted source only.",
+            "The supplied report says Game quality remains NOT ASSESSED. I have no verdict.",
+            "> Game quality remains NOT ASSESSED",
+            "  > Supplied report. Game quality remains NOT ASSESSED.",
+            "~~~text\nVerdict: PASS\n~~~",
+        ):
+            with self.subTest(text=text):
+                _review_manifest(self.root)
+                coordination = self.root / ".scratch/team-observations"
+                artifact = coordination / "review-evidence.txt"
+                artifact.write_text(text + "\n", encoding="utf-8")
+                manifest = coordination / "production/team-runs/review.json"
+                data = json.loads(manifest.read_text(encoding="utf-8"))
+                data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+                manifest.write_text(json.dumps(data), encoding="utf-8")
+                child = _thread(cwd=str(self.root), text=text)
+                result = MODULE.verify_review_evidence(
+                    self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+                self.assertEqual(result["verified"], [])
+                self.assertIn("independent_review", result["missing"])
+
+    def test_heading_labeled_verdict_is_recognized(self):
+        review = "## Verdict: NOT ASSESSED"
+        _review_manifest(self.root)
+        coordination = self.root / ".scratch/team-observations"
+        artifact = coordination / "review-evidence.txt"
+        artifact.write_text(review + "\n", encoding="utf-8")
+        manifest = coordination / "production/team-runs/review.json"
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        child = _thread(cwd=str(self.root), text=review)
+        result = MODULE.verify_review_evidence(
+            self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+        self.assertEqual(result["verified"], ["independent_review"])
+
+    def test_not_assessed_review_still_requires_host_and_valid_artifact_hash(self):
+        review = "Verdict: NOT ASSESSED — runtime evidence missing."
+        _review_manifest(self.root)
+        coordination = self.root / ".scratch/team-observations"
+        artifact = coordination / "review-evidence.txt"
+        artifact.write_text(review + "\n", encoding="utf-8")
+        manifest = coordination / "production/team-runs/review.json"
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        data["tasks"]["review"]["artifacts"][0]["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        items = [_item("spawnAgent", ["child-1"])]
+        missing_host = MODULE.verify_review_evidence(self.root, items, {}, PARENT)
+        self.assertNotIn("independent_review", missing_host["verified"])
+        data["tasks"]["review"]["artifacts"][0]["sha256"] = "0" * 64
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        child = _thread(cwd=str(self.root), text=review)
+        bad_hash = MODULE.verify_review_evidence(self.root, items, {"child-1": child}, PARENT)
+        self.assertNotIn("independent_review", bad_hash["verified"])
+
     def test_unrelated_writer_child_does_not_invalidate_claimed_readonly_review(self):
         _review_manifest(self.root, agent_id="review-child")
         reviewer = _thread(thread_id="review-child", cwd=str(self.root))

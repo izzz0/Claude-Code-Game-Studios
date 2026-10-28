@@ -76,6 +76,20 @@ def _final_response_text(thread: dict[str, Any]) -> str:
     ).strip()
 
 
+def _has_explicit_review_verdict(text: str) -> bool:
+    """Recognize a reviewer's own labeled verdict or direct quality conclusion."""
+    text = "\n".join(line for line in text.splitlines() if not re.match(r"^\s*>", line))
+    text = re.sub(r"(?ms)^\s*(?:```|~~~).*?^\s*(?:```|~~~)\s*$", "", text)
+    verdict = r"(?:NOT ASSESSED|APPROVED WITH SUGGESTIONS|CHANGES REQUIRED|NEEDS REVISION|PASS|CONCERNS|FAIL|APPROVED)"
+    return bool(re.search(
+        rf"(?im)^\s*(?:#{{1,6}}\s*)?(?:\*\*)?(?:Verdicts?|Review result)\s*:\s*{verdict}\b"
+        rf"|(?:^|(?<=[.!?]\s))(?:Final orchestration acceptance|"
+        rf"(?:Game quality|Orchestration)(?: and [\w ]+)?|Documentation)"
+        rf"\s+(?:remains|is|are|verdict:)\s*(?:\*\*)?{verdict}\b",
+        text,
+    ))
+
+
 def _writer_turn_intervals(thread: dict[str, Any]) -> list[tuple[float, float]] | None:
     turns = thread.get("turns", [])
     if not turns or not isinstance(turns[-1], dict) or turns[-1].get("status") != "completed":
@@ -725,7 +739,7 @@ def verify_review_evidence(
                 findings.append(f"review child {child_id} has no completed substantive final turn")
                 continue
             final_text = _final_response_text(thread)
-            if not re.search(r"\b(?:PASS|CONCERNS|FAIL|APPROVED|CHANGES REQUIRED|NEEDS REVISION)\b", final_text, re.IGNORECASE):
+            if not _has_explicit_review_verdict(final_text):
                 findings.append(f"review child {child_id} has no explicit meaningful verdict")
                 continue
             for manifest_path, coordination_root in manifests:

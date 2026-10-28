@@ -90,6 +90,28 @@ class NativeAcceptanceTests(unittest.TestCase):
         wrong = driver.assess(case, self.root, before, response + "\n300 ms", self.items, self.hooks, "completed", evidence)
         self.assertEqual(wrong["status"], "FAIL")
 
+    def test_ui_summary_requires_actual_warning_artifact_and_native_evidence(self):
+        # This is a protocol fixture, not another actual team execution.
+        shutil.copytree(ROOT / "studio-tests/native/fixtures/team-ui", self.root, dirs_exist_ok=True)
+        driver.copy_case_resources(ROOT, self.root)
+        cases = json.loads((ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))["cases"]
+        case = next(case for case in cases if case["skill"] == "ccgs-team-ui")
+        before = driver.tree_hashes(self.root)
+        path = self.root / "production/ui/courier-hud/visual-design.md"
+        path.parent.mkdir(parents=True)
+        content = "Time 60s; 200% reflow; connection warning; restart intent.\n"
+        path.write_text(content, encoding="utf-8")
+        response = (ROOT / "studio-tests/codex/fixtures/native-cocos-ui-summary.md").read_text(encoding="utf-8")
+        self.assertNotIn("team-ui", response)
+        evidence = {"verified": case["required_evidence"], "findings": []}
+        result = driver.assess(case, self.root, before, response, self.items, self.hooks, "completed", evidence)
+        self.assertEqual(result["status"], "PASS", result)
+        self.assertEqual(driver.assess(case, self.root, before, response, self.items, self.hooks,
+                                      "completed")["status"], "NOT ASSESSED")
+        path.write_text(content.replace("connection warning", "restart"), encoding="utf-8")
+        self.assertEqual(driver.assess(case, self.root, before, response + " connection-warning", self.items,
+                                      self.hooks, "completed", evidence)["status"], "FAIL")
+
     def assess(self, response="Target index 2 is rejected", **kwargs):
         return driver.assess(self.case, self.root, self.before, response,
                              kwargs.get("items", self.items), kwargs.get("hooks", self.hooks), "completed")

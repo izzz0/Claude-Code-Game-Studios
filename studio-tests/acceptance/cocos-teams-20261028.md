@@ -1,6 +1,6 @@
 # Focused Cocos and nine-team acceptance
 
-Status: **NOT ASSESSED — native teams1/9 passed; original game optimization has not started.**
+Status: **NOT ASSESSED — one native PASS and two separately reassessed bounded team runs; six routes remain. Original game optimization has not started.**
 
 The bounded Cocos Web integration gate has an independent **PASS**. This is
 separate from the still-open nine-team gate below.
@@ -65,7 +65,7 @@ primary in each fixture; no Godot role is selected.
 | Team | Isolated scenario | Actual native status |
 |---|---|---|
 | combat | Existing chase/capture/timeout rule drafts | Native attempt `5d51dc254e44` completed all three evidence predicates; original FAIL retained for two redundant response literals. Revised offline assessment PASS for bounded documentation orchestration only; no new native execution |
-| UI | Chase HUD, connection warning,200% scale, restart | NOT ASSESSED — not reached |
+| UI | Chase HUD, connection warning,200% scale, restart | Native attempt `d26fc465ab13` completed4 actual profiles; original FAIL retained. Corrected offline evidence assessment PASS; UI quality/accessibility remain NOT ASSESSED |
 | QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
 | audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
 | level | City track and boundaries | NOT ASSESSED — not reached |
@@ -151,7 +151,39 @@ protected files, observations and artifacts. Its offline PASS is limited to
 documentation orchestration/recovery/review. The original native FAIL remains
 unchanged, the campaign cache is unchanged, and no new execution is claimed.
 Gameplay implementation, runtime quality and later combat-production phases
-remain NOT ASSESSED. UI and the remaining independent routes are running next.
+remain NOT ASSESSED. UI and the remaining independent routes follow this run.
+The subsequent combat fixture revision resolves its contradictory request for
+an implementation-task recovery while authorizing only rules drafts. Recovery
+now explicitly concerns a real assigned artifact-production task in that drafting
+scope, with the same native child, returned artifact and state checked. The three
+native evidence predicates are unchanged. This prompt revision was separately
+reviewed; it is not retroactive proof of a new native execution.
+
+UI attempt `d26fc465ab13` actually completed art-director, UI-programmer,
+accessibility-specialist and UX-designer children. The art director was interrupted
+and resumed with the same identity; the returned design preceded implementation,
+which preceded the two dependent read-only reviews. The final component and notes
+were frozen and both reviewers read them, the scenario, configuration and manifests.
+The original FAIL is retained: a team-name response literal, a hyphenated warning
+token and a verifier that did not recognize the reviewers' NOT ASSESSED verdicts.
+The revised artifact assertion still requires both connection and warning in the
+actual design; response wording cannot replace that artifact or native evidence.
+
+The independent-review verifier now recognizes explicit NOT ASSESSED conclusions
+without treating them as quality approval. Explicit labels/direct conclusions
+are required; source quotations, blockquotes, fenced examples, missing host data,
+bad hashes and reviewer writes cannot substitute for review execution. Four complete
+real reviews from UI, QA and combat are preserved as byte-identical regression
+samples. Independent framework review found no remaining scoped blocker.
+
+`evidence/ui-offline-reassessment.json` separately rechecks the original receipts,
+protected inputs, observation hashes, identities and both complete returned reviews.
+It also binds the actual component and implementation notes in addition to the
+required design. Its bounded orchestration/recovery/review assessment is PASS;
+this is not a new native execution and the original FAIL/cache remain unchanged.
+Compilation, scene integration, committed accessibility tier, actual input and
+rendered200% observations remain NOT ASSESSED for this synthetic UI project.
+Six independent team routes remain, and the original game is unchanged.
 
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
@@ -161,6 +193,15 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 ## Framework checks and recovery
 
+- Source `26446667eaa54d069295b1147004ad3b9e728903` passed hosted Windows254/254
+  and Linux254/254, zero skips. Run `40782553249`, jobs `123147598725` and
+  `123147598356`; receipt `evidence/ci-2644666.json`. This includes combat-summary
+  counterexamples and the scoped recovery-brief regression.
+- Preceding source `243d04dd0fb67675bec09fd48b3bf7b6fd5f4b73` passed local
+  Windows253/253 and Linux253/253, exit0, zero skips, and hosted253/253 on both
+  platforms. Hosted run `40782177771`, jobs `123146340069` and `123146339722`;
+  receipt `evidence/ci-243d04d.json`. Local logs are `.scratch/windows-253.log`
+  and `.scratch/linux-253.log`; the later recovery-scope edit has its own CI above.
 - A source snapshot including the generated-mirror fix and first four Cocos
   scenario tests passed Windows244/244 and Linux244/244, zero skips.
 - Source `35b34ba54e59e39e9101ee437a15e1cb7ebd20f4` passed hosted Windows245/245
