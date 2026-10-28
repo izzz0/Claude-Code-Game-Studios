@@ -13,6 +13,40 @@ SPEC.loader.exec_module(driver)
 
 
 class NativeHistoryReceiptTests(unittest.TestCase):
+    def test_review_submission_binds_fixture_inputs_and_requires_auditable_reads(self):
+        class Client:
+            def __init__(self):
+                self.events = []
+            def request(self, method, params):
+                if method == "thread/start":
+                    return {"thread": {"id": "review-parent"}}
+                if method == "turn/start":
+                    self.instruction = params["input"][1]["text"]
+                    return {"turn": {"id": "review-turn"}}
+                raise AssertionError("Unexpected RPC: " + method)
+            def receive(self, timeout):
+                return {"method": "turn/completed", "params": {
+                    "threadId": "review-parent", "turn": {"status": "completed"}}}
+        case = next(case for case in json.loads(
+            (ROOT / "studio-tests/native/cases.json").read_text(encoding="utf-8"))["cases"]
+            if case["skill"] == "ccgs-code-review")
+        with tempfile.TemporaryDirectory() as temp:
+            client = Client()
+            result = driver.run_case(client, ROOT, Path(temp), case, 10)
+            payload = client.instruction.split("CCGS_REVIEW_INPUTS\n", 1)[1].split(
+                "\nCCGS_REVIEW_INPUTS_END", 1)[0]
+            bundle = json.loads(payload)
+            self.assertIn("project.yaml", bundle)
+            self.assertIn("production/qa/evidence/courier-evidence.md", bundle)
+            for name, value in bundle.items():
+                self.assertEqual(value["sha256"], driver.sha(Path(result["sandbox"]) / name))
+                self.assertEqual(value["content"], (Path(result["sandbox"]) / name).read_bytes().decode("utf-8"))
+                if driver.os.name == "nt":
+                    self.assertIn("Microsoft.PowerShell.Management\\Get-Content -LiteralPath '" +
+                                  name.replace("'", "''") + "' -Raw -Encoding utf8", client.instruction)
+            self.assertNotEqual(result["status"], "PASS")
+            self.assertIn("Separate evidence required: independent_review", result["missing"])
+
     def test_child_ids_use_authoritative_host_items_only(self):
         items = [
             {"type": "collabAgentToolCall", "receiverThreadIds": ["legacy", "shared"]},

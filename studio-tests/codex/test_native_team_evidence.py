@@ -1,11 +1,13 @@
 import hashlib
 import importlib.util
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "studio-tests/native"))
 SPEC = importlib.util.spec_from_file_location("native_team_evidence", ROOT / "studio-tests/native/team_evidence.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -14,6 +16,8 @@ verify_team_evidence = MODULE.verify_team_evidence
 
 
 PARENT = "parent-1"
+NATIVE_CHILD = "01a17d9e-a3b0-77c3-955a-35487d6efb92"
+NATIVE_PATH = "/root/godot_adr_validation"
 
 
 def _thread(thread_id="child-1", role="ccgs-qa-tester", parent=PARENT, text="Review result: PASS - completed evidence", cwd=None):
@@ -78,6 +82,31 @@ def _multi_writer_manifest(root):
         "two": {"role": "ccgs-qa-tester", "files": ["src/shared.gd"], "read_only": False,
                 "depends_on": [], "status": "completed", "agent_id": "child-2", "summary": "two done", "artifacts": []},
     }}), encoding="utf-8")
+
+
+def _native_thread(root, child_id=NATIVE_CHILD, parent=PARENT, role="ccgs-qa-tester", path=NATIVE_PATH,
+                   final=True, interrupted=False):
+    thread = _thread(thread_id=child_id, role=role, parent=parent,
+                     cwd=str(root / "project"), text="Review result: PASS - completed evidence")
+    thread["source"] = {"subAgent": {"thread_spawn": {
+        "parent_thread_id": parent, "agent_path": path, "agent_role": role,
+    }}}
+    thread["turns"] = []
+    if interrupted:
+        thread["turns"].append({"id": "turn-interrupted", "status": "interrupted",
+                                "startedAt": 1, "completedAt": 2, "items": [], "itemsView": "full"})
+    if final:
+        thread["turns"].append({"id": "turn-completed", "status": "completed",
+                                "startedAt": 3, "completedAt": 4, "items": [
+                                    {"type": "agentMessage", "phase": "final_answer",
+                                     "text": "Review result: PASS - completed evidence"}
+                                ], "itemsView": "full"})
+    return thread
+
+
+def _activity(kind, child_id=NATIVE_CHILD, path=NATIVE_PATH, receipt_id=None):
+    return {"type": "subAgentActivity", "kind": kind, "agentThreadId": child_id,
+            "agentPath": path, "id": receipt_id or f"activity-{kind}"}
 
 
 class NativeTeamEvidenceTests(unittest.TestCase):
@@ -330,6 +359,204 @@ class NativeTeamEvidenceTests(unittest.TestCase):
     def test_review_evidence_absence_stays_na(self):
         result = MODULE.verify_review_evidence(self.root, [], {}, PARENT)
         self.assertEqual(result, {"verified": [], "missing": ["independent_review"], "findings": []})
+
+    def test_modern_activity_and_unambiguous_agent_path_crossmatch_manifest(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root)
+        result = verify_team_evidence(self.root, [_activity("started")], {NATIVE_CHILD: child}, PARENT)
+        self.assertIn("native_agents", result["verified"])
+
+    def test_mixed_legacy_and_modern_receipts_require_union_of_all_children(self):
+        _manifest(self.root, agent_id="child-1")
+        legacy = _thread(cwd=str(self.root))
+        missing_modern = _native_thread(self.root, child_id="modern-child")
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"]),
+                                                  _activity("started", "modern-child")],
+                                      {"child-1": legacy}, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+
+    def test_mixed_same_uuid_legacy_receipt_does_not_require_optional_modern_metadata(self):
+        _manifest(self.root, agent_id="child-1")
+        legacy = _thread(cwd=str(self.root))
+        legacy["source"] = {"subAgent": {"thread_spawn": {
+            "parent_thread_id": PARENT, "agent_role": "ccgs-qa-tester",
+        }}}
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"]),
+                                                  _activity("started", "child-1")],
+                                      {"child-1": legacy}, PARENT)
+        self.assertIn("native_agents", result["verified"])
+
+    def test_mixed_same_uuid_rejects_contradictory_modern_metadata(self):
+        _manifest(self.root, agent_id="child-1")
+        legacy = _thread(cwd=str(self.root))
+        legacy["source"] = {"subAgent": {"thread_spawn": {
+            "parent_thread_id": PARENT, "agent_path": "/root/wrong", "agent_role": "ccgs-qa-tester",
+        }}}
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"]),
+                                                  _activity("started", "child-1")],
+                                      {"child-1": legacy}, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+
+    def test_mixed_review_rejects_contradictory_provided_modern_metadata(self):
+        _review_manifest(self.root, agent_id=NATIVE_CHILD)
+        child = _native_thread(self.root)
+        child["source"]["subAgent"]["thread_spawn"]["agent_role"] = "ccgs-wrong"
+        items = [_item("spawnAgent", [NATIVE_CHILD]), _activity("started")]
+        result = MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+        self.assertNotIn("independent_review", result["verified"])
+
+    def test_modern_activity_rejects_wrong_parent_cwd_and_role(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        for child in (
+            _native_thread(self.root, parent="other-parent"),
+            _native_thread(self.root, role="ccgs-unconfigured"),
+            _native_thread(self.root, path=NATIVE_PATH, final=True),
+        ):
+            if child["parentThreadId"] == PARENT and child["agentRole"] == "ccgs-qa-tester":
+                child["cwd"] = str(self.root.parent)
+            result = verify_team_evidence(self.root, [_activity("started")], {NATIVE_CHILD: child}, PARENT)
+            self.assertNotIn("native_agents", result["verified"])
+
+    def test_modern_activity_only_or_model_claimed_uuid_does_not_prove_completion(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root, final=False)
+        result = verify_team_evidence(self.root, [_activity("started"), {"type": "agentMessage", "text": NATIVE_CHILD}],
+                                      {NATIVE_CHILD: child}, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+
+    def test_ambiguous_agent_path_alias_cannot_crossmatch_manifest(self):
+        second = "01a17d9e-a3b0-77c3-955a-35487d6efb93"
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        children = {NATIVE_CHILD: _native_thread(self.root), second: _native_thread(self.root, child_id=second)}
+        items = [_activity("started", NATIVE_CHILD), _activity("started", second)]
+        result = verify_team_evidence(self.root, items, children, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+        self.assertTrue(any("ambiguous" in finding for finding in result["findings"]))
+
+    def test_readonly_team_task_rejects_file_changes_and_unproven_commands(self):
+        _manifest(self.root)
+        child = _thread(cwd=str(self.root))
+        child["turns"][0]["items"].append({"type": "fileChange", "id": "write"})
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+        self.assertTrue(any("read-only team task" in finding and "fileChange" in finding for finding in result["findings"]))
+
+        child = _thread(cwd=str(self.root))
+        child["turns"][0]["items"].append({
+            "type": "commandExecution", "command": "pwsh -Command Get-Content secret.txt",
+            "commandActions": [{"type": "unknown", "command": "Get-Content secret.txt"}],
+        })
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+        self.assertNotIn("native_agents", result["verified"])
+        self.assertNotIn("unproven command", " ".join(result["findings"]))
+        self.assertEqual(result["findings"], [])
+
+    def test_authoring_team_task_may_have_write_receipts(self):
+        _manifest(self.root)
+        manifest = self.root / "production" / "team-runs" / "run.json"
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        data["tasks"]["qa"]["read_only"] = False
+        manifest.write_text(json.dumps(data), encoding="utf-8")
+        child = _thread(cwd=str(self.root))
+        child["turns"][0]["items"].append({"type": "fileChange", "id": "write"})
+        child["turns"][0]["items"].append({"type": "commandExecution", "command": "write command"})
+        result = verify_team_evidence(self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
+        self.assertIn("native_agents", result["verified"])
+
+    def test_modern_recovery_requires_started_interrupted_interacted_and_bound_completion(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root, interrupted=True)
+        items = [_activity("started"), _activity("interrupted"), _activity("interacted"),
+                 _activity("completed", receipt_id="subagent-completed-turn-completed")]
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+        self.assertIn("team_recovery", result["verified"])
+
+    def test_modern_recovery_rejects_wrong_order_missing_interruption_and_replayed_completion(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root, interrupted=True)
+        good_completion = _activity("completed", receipt_id="subagent-completed-turn-completed")
+        bad_chains = (
+            [_activity("started"), _activity("interacted"), _activity("interrupted"), good_completion],
+            [_activity("started"), _activity("interacted"), good_completion],
+            [_activity("started"), _activity("interrupted"), _activity("interacted"),
+             _activity("completed", receipt_id="subagent-completed-old-turn")],
+            [_activity("started"), _activity("interrupted", child_id="other-child"),
+             _activity("interacted"), good_completion],
+        )
+        for items in bad_chains:
+            result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+            self.assertNotIn("team_recovery", result["verified"])
+
+    def test_modern_recovery_requires_recovering_child_cwd_and_matching_manifest_task(self):
+        _manifest(self.root, agent_id="child-1")
+        child = _native_thread(self.root, interrupted=True)
+        child["cwd"] = str(self.root.parent)
+        unrelated = _thread(cwd=str(self.root))
+        items = [_activity("started"), _activity("interrupted"), _activity("interacted"),
+                 _activity("completed", receipt_id="subagent-completed-turn-completed")]
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child, "child-1": unrelated}, PARENT)
+        self.assertNotIn("team_recovery", result["verified"])
+
+        child = _native_thread(self.root, interrupted=True)
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child, "child-1": unrelated}, PARENT)
+        self.assertNotIn("team_recovery", result["verified"])
+
+    def test_modern_recovery_rejects_invalid_interruption_timing(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        child = _native_thread(self.root, interrupted=True)
+        child["turns"][0]["startedAt"] = 999
+        items = [_activity("started"), _activity("interrupted"), _activity("interacted"),
+                 _activity("completed", receipt_id="subagent-completed-turn-completed")]
+        result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+        self.assertNotIn("team_recovery", result["verified"])
+
+    def test_readonly_evidence_requires_full_turn_history(self):
+        _manifest(self.root, agent_id=NATIVE_PATH)
+        items = [_activity("started")]
+        _review_manifest(self.root, agent_id=NATIVE_PATH)
+        for view in ("notLoaded", "summary"):
+            child = _native_thread(self.root)
+            child["turns"].insert(0, {"id": "hidden", "status": "completed", "itemsView": view, "items": []})
+            result = verify_team_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+            self.assertNotIn("native_agents", result["verified"])
+            result = MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT)
+            self.assertNotIn("independent_review", result["verified"])
+
+    def test_modern_review_requires_and_verifies_canonical_source_reads(self):
+        _review_manifest(self.root, agent_id=NATIVE_PATH)
+        source = self.root / "design" / "brief.md"
+        source.parent.mkdir(parents=True)
+        content = "review input\n"
+        source.write_bytes(content.encode("utf-8"))
+        digest = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        expected = {"design/brief.md": {"sha256": digest, "content": content}}
+        script = "Microsoft.PowerShell.Management\\Get-Content -LiteralPath 'design/brief.md' -Raw -Encoding utf8"
+        command = '"C:\\runtime\\pwsh.exe" -Command ' + "'" + script.replace("'", "''") + "'"
+        child = _native_thread(self.root)
+        child["turns"][-1]["items"].insert(0, {
+            "type": "commandExecution", "command": command,
+            "commandActions": [{"type": "unknown", "command": script}],
+            "status": "completed", "exitCode": 0, "aggregatedOutput": content,
+        })
+        items = [_activity("started")]
+        result = MODULE.verify_review_evidence(self.root, items, {NATIVE_CHILD: child}, PARENT, expected)
+        self.assertEqual(result["verified"], ["independent_review"])
+
+    def test_modern_review_without_bound_reads_stays_na_and_write_receipts_fail(self):
+        _review_manifest(self.root, agent_id=NATIVE_PATH)
+        source = self.root / "design" / "brief.md"
+        source.parent.mkdir(parents=True)
+        content = "review input\n"
+        source.write_bytes(content.encode("utf-8"))
+        expected = {"design/brief.md": {"sha256": hashlib.sha256(content.encode()).hexdigest(), "content": content}}
+        child = _native_thread(self.root)
+        result = MODULE.verify_review_evidence(self.root, [_activity("started")], {NATIVE_CHILD: child}, PARENT, expected)
+        self.assertEqual(result["verified"], [])
+        self.assertEqual(result["missing"], ["independent_review"])
+        child["turns"][-1]["items"].append({"type": "fileChange", "id": "write"})
+        result = MODULE.verify_review_evidence(self.root, [_activity("started")], {NATIVE_CHILD: child}, PARENT, expected)
+        self.assertNotIn("independent_review", result["verified"])
+        self.assertTrue(any("fileChange" in finding for finding in result["findings"]))
 
 
 if __name__ == "__main__":

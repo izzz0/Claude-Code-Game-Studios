@@ -32,7 +32,7 @@ class NativeCaseCacheTests(unittest.TestCase):
                 fixture = catalog_dir / "fixtures" / case["fixture"]
                 fixture.mkdir(parents=True)
                 (fixture / "project.yaml").write_text("schema_version: 1\n", encoding="utf-8")
-            for module in ("team_evidence.py", "engine_evidence.py"):
+            for module in ("team_evidence.py", "engine_evidence.py", "native_reads.py"):
                 (catalog_dir / module).write_text("protocol fixture", encoding="utf-8")
             observed = []
 
@@ -65,4 +65,7 @@ class NativeCaseCacheTests(unittest.TestCase):
             self.assertNotEqual(run(), selected)
             selected = run()
             (catalog_dir / "team_evidence.py").write_text("shared verifier changed", encoding="utf-8")
+            self.assertNotEqual(run(), selected)
+            selected = run()
+            (catalog_dir / "native_reads.py").write_text("read verifier changed", encoding="utf-8")
             self.assertNotEqual(run(), selected)

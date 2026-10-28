@@ -275,7 +275,7 @@
       "fixture": "architecture-decision",
       "readonly": false,
       "required_tools": true,
-      "prompt": "Run $ccgs-architecture-decision delivery-state-ownership in English. Use the existing architecture-decision template, the Godot engine context, the valid empty TR registry fixture, and the delivery-system GDD. The user has already chosen and explicitly approved the baseline option: a DeliveryService owns delivery state and emits delivery-recorded; the alternatives are scene-owned state and persistence-owned state. Present the context, alternatives, decision, consequences, and implementation constraints, then use the explicit approval in this case to write the new ADR. Authoring must leave the ADR status Proposed (never silently Accepted); mention the separate registry approval and the accept route. Do not alter the GDD or story.",
+      "prompt": "Run $ccgs-architecture-decision delivery-state-ownership in English. Use the existing architecture-decision template, the Godot engine context, the valid empty TR registry fixture, the architecture layer map, and the delivery-system GDD. The user has already chosen and explicitly approved the baseline option: a DeliveryService in the Feature layer of the Gameplay Domain owns delivery state and emits delivery-recorded; scene adapters call the service, and neither scenes nor persistence own delivery state. The alternatives are scene-owned state and persistence-owned state. Present the context, alternatives, decision, consequences, and implementation constraints, then use the explicit approval in this case to write the new ADR. Authoring must leave the ADR status Proposed (never silently Accepted); identify delivery-state ownership and delivery-recorded as registry candidates, report that registry publication is pending separate approval, and do not modify the registry or ask for an optional registry decision. Mention the accept route. Do not alter the GDD or story.",
       "expected": {
         "files": [
           {
@@ -286,6 +286,8 @@
               "## Context",
               "## Decision",
               "DeliveryService",
+              "**Layer**",
+              "Feature",
               "## Alternatives Considered",
               "## Consequences"
             ],
@@ -293,14 +295,33 @@
               "Status: Accepted"
             ],
             "changed": true
+          },
+          {
+            "path": "design/gdd/delivery-system.md",
+            "contains": ["Delivery state must survive scene transitions"],
+            "changed": false
+          },
+          {
+            "path": "production/epics/courier/story-001-delivery.md",
+            "contains": ["id: STORY-001", "Blocked pending the delivery-state ADR"],
+            "changed": false
+          },
+          {
+            "path": "docs/registry/architecture.yaml",
+            "contains": ["architecture: []"],
+            "changed": false
           }
         ],
         "response_contains": [
           "ADR-0001",
           "Proposed",
           "DeliveryService",
+          "Feature",
+          "Gameplay Domain",
           "Alternatives",
           "Consequences",
+          "registry",
+          "pending",
           "$ccgs-architecture-review",
           "accept ADR-0001"
         ],

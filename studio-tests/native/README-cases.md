@@ -125,6 +125,20 @@ metadata and full history when the host provides them. Activity is lifecycle
 evidence only: it does not prove assignment contents, returned work or review
 completion. Missing or encrypted assignment evidence remains NOT ASSESSED.
 
+Modern activity is correlated with authoritative child metadata, including its
+parent, configured role and working directory. A manifest may name an actual
+UUID or an unambiguous native agent path; contradictory metadata, absent children
+and unrelated recovery manifests cannot satisfy team evidence. Recovery also
+requires real interruption/resumption ordering and a matching completed turn.
+
+On Windows, independent review assignments include separate module-qualified
+`Get-Content -LiteralPath ... -Raw -Encoding utf8` reads for the hashed input
+bundle. The verifier parses these as data and checks the actual working directory,
+completed exit code, full output and current file bytes. It never executes captured
+commands. Unsupported commands or incomplete history leave read-only/input proof
+unassessed; confirmed writes fail. A model's assertion that it read an input is
+not a substitute for these receipts.
+
 The bug-report handoff may appear in the final response or its explicitly
 listed report. `any_output_contains` checks those locations only; unrelated
 project files cannot satisfy it. Required report fields, unchanged source and
