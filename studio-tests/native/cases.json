@@ -3406,15 +3406,21 @@
             "contains": [
               "city-track",
               "start",
-              "challenge",
-              "resolution"
+              "challenge"
             ],
             "not_contains": [
               "screenshot captured",
               "runtime passed",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "resolution",
+                "finish"
+              ]
+            ]
           },
           {
             "path": "production/levels/city-track/systems.md",
@@ -3422,7 +3428,8 @@
               "city-track",
               "system"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/levels/city-track/visual-direction.md",
@@ -3430,7 +3437,8 @@
               "city-track",
               "visual"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/levels/city-track/narrative.md",
@@ -3438,7 +3446,8 @@
               "city-track",
               "narrative"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/levels/city-track/lore.md",
@@ -3446,7 +3455,8 @@
               "city-track",
               "lore"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/levels/city-track/accessibility.md",
@@ -3454,7 +3464,8 @@
               "city-track",
               "accessibility"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/levels/city-track/production-concepts.md",
@@ -3462,17 +3473,24 @@
               "city-track",
               "production"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "design/levels/city-track.md",
             "contains": [
               "city-track",
               "start",
-              "challenge",
-              "resolution"
+              "challenge"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "resolution",
+                "finish"
+              ]
+            ]
           },
           {
             "path": "production/qa/test-cases/city-track-cases.md",
@@ -3480,7 +3498,8 @@
               "city-track",
               "acceptance"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [
@@ -3533,7 +3552,8 @@
               "telemetry collected",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/narrative.md",
@@ -3541,7 +3561,8 @@
               "chase-week",
               "narrative"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/economy.md",
@@ -3549,7 +3570,8 @@
               "chase-week",
               "economy"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/analytics.md",
@@ -3557,7 +3579,8 @@
               "chase-week",
               "telemetry"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/narrative-text.md",
@@ -3565,7 +3588,8 @@
               "chase-week",
               "narrative"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/copy.md",
@@ -3573,7 +3597,8 @@
               "chase-week",
               "copy"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/live-ops/chase-week/comms.md",
@@ -3581,7 +3606,8 @@
               "chase-week",
               "comms"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [
@@ -3634,7 +3660,8 @@
               "dialogue played",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/narrative/chase-copy/rules-help.md",
@@ -3643,7 +3670,8 @@
               "timeout",
               "rules"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/narrative/chase-copy/settlement.md",
@@ -3652,7 +3680,8 @@
               "capture",
               "settlement"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/narrative/chase-copy/i18n-review.md",
@@ -3660,7 +3689,8 @@
               "chase-copy",
               "localization"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/narrative/chase-copy/level-integration.md",
@@ -3668,7 +3698,8 @@
               "chase-copy",
               "level"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "design/narrative/chase-copy-brief.md",
@@ -3676,7 +3707,8 @@
               "chase-copy",
               "brief"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "design/narrative/rules/help.md",
@@ -3685,7 +3717,8 @@
               "timeout",
               "rules"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "design/narrative/copy/settlement.md",
@@ -3694,7 +3727,8 @@
               "capture",
               "settlement"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [
@@ -3748,7 +3782,8 @@
               "runtime passed",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/polish/chase-feedback-render-notes-2026-10-26.md",
@@ -3756,7 +3791,8 @@
               "chase-feedback",
               "render"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/polish/chase-feedback-engine-fixes-2026-10-26.md",
@@ -3764,7 +3800,8 @@
               "chase-feedback",
               "engine"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/polish/chase-feedback-tool-fixes-2026-10-26.md",
@@ -3772,7 +3809,8 @@
               "chase-feedback",
               "tool"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/polish/chase-feedback-audio-notes-2026-10-26.md",
@@ -3780,7 +3818,8 @@
               "chase-feedback",
               "audio"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/polish/chase-feedback-verification-2026-10-26.md",
@@ -3788,7 +3827,8 @@
               "chase-feedback",
               "verification"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [
@@ -3841,14 +3881,16 @@
               "Go / No-Go: READY",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/releases/release-checklist-0.9.0.md",
             "contains": [
               "0.9.0"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/releases/qa-gate-0.9.0.md",
@@ -3861,7 +3903,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/build-0.9.0.md",
@@ -3874,7 +3917,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/security-signoff-0.9.0.md",
@@ -3887,7 +3931,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/localization-signoff-0.9.0.md",
@@ -3900,7 +3945,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/performance-signoff-0.9.0.md",
@@ -3913,7 +3959,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/analytics-signoff-0.9.0.md",
@@ -3926,7 +3973,8 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/go-no-go-0.9.0.md",
@@ -3939,21 +3987,24 @@
               "Verdict: PASS",
               "Status: PASS",
               "Go / No-Go: READY"
-            ]
+            ],
+            "case_sensitive": false
           },
           {
             "path": "production/releases/announcement-0.9.0.md",
             "contains": [
               "0.9.0"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/releases/release-report-0.9.0.md",
             "contains": [
               "0.9.0"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [

@@ -224,6 +224,14 @@ FAIL and quota-interrupted attempt are untouched. No playback, listening, render
 scene, audio API compatibility or measured audio quality is accepted from these
 documents. Five team routes remain.
 
+Level's actual drafts likewise title the scenario `City-track`, and describe the
+given finish/settlement resolution as `finish`. The remaining five teams' Markdown
+predicates now explicitly use the same prose casefold option. Level retains start,
+challenge and the case identifier, with `resolution`/`finish` alternatives matching
+the supplied scenario. All forbidden-claim, changed-file and native-evidence checks
+remain. A distinct review found no scoped blocker; six case-contract tests passed.
+This metadata clarification does not change the active run or establish game quality.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -232,6 +240,9 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 ## Framework checks and recovery
 
+- Source `735a5634452cec1c7fd175987634c8bef8d1d456` passed hosted Windows264/264
+  and Linux264/264, zero skips. Run `40817196624`, jobs `123260936082` and
+  `123260935724`; receipt `evidence/ci-735a563.json`.
 - Source `ef4a1420bf5440fc58881100abd16904de849632` passed local Windows263/263
   (194.787s), exit0, zero skips, and both hosted platforms. Hosted run
   `40816777159`, Windows job `123259579105`, Linux job `123259578600`.
