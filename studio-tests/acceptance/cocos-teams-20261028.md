@@ -1,6 +1,6 @@
 # Focused Cocos and nine-team acceptance
 
-Status: **NOT ASSESSED — one native PASS and two separately reassessed bounded team runs; six routes remain. Original game optimization has not started.**
+Status: **NOT ASSESSED — one native PASS and three separately reassessed bounded team runs; five routes remain. Original game optimization has not started.**
 
 The bounded Cocos Web integration gate has an independent **PASS**. This is
 separate from the still-open nine-team gate below.
@@ -67,7 +67,7 @@ primary in each fixture; no Godot role is selected.
 | combat | Existing chase/capture/timeout rule drafts | Native attempt `5d51dc254e44` completed all three evidence predicates; original FAIL retained for two redundant response literals. Revised offline assessment PASS for bounded documentation orchestration only; no new native execution |
 | UI | Chase HUD, connection warning,200% scale, restart | Native attempt `d26fc465ab13` completed4 actual profiles; original FAIL retained. Corrected offline evidence assessment PASS; UI quality/accessibility remain NOT ASSESSED |
 | QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
-| audio | Countdown/capture/timeout cue draft | Attempt `87dd3e753f71` NOT ASSESSED: two real children, partial direction document, then usageLimitExceeded; retry pending |
+| audio | Countdown/capture/timeout cue draft | Attempt `fcc2ec4925f2` completed6 native roles plus independent QA; original8-finding FAIL retained, corrected offline bounded planning/orchestration assessment PASS |
 | level | City track and boundaries | NOT ASSESSED — not reached |
 | live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
 | narrative | Help and settlement copy, consistency review | NOT ASSESSED — not reached |
@@ -208,6 +208,22 @@ Empty/malformed alternatives and a response without the actual file fail.
 This corrects assertion semantics; it does not establish native or audio-quality
 PASS. The active host copy remains unchanged until its current run finishes.
 
+Audio attempt `fcc2ec4925f2` has now completed. All six applicable roles returned
+work and a seventh distinct QA child read the supplied inputs and five frozen
+documents. Direction was interrupted while running and resumed as the same child.
+The complete returned review was retained verbatim. Original findings were seven
+prose-token mismatches and one unrecognized scoped verdict. The verifier now also
+recognizes the actual explicit `Bounded planning verdict` and `Game/runtime quality
+verdict` labels while retaining quotation/blockquote/fence protections. A complete
+byte-for-byte review sample and source-quotation counterexamples passed with all55
+evidence tests; independent review found no scoped blocker.
+`evidence/audio-offline-reassessment.json` separately verifies the original receipt,
+observation and artifact hashes and all three native evidence predicates. Its PASS
+is for bounded planning/orchestration only, not a new native execution. The original
+FAIL and quota-interrupted attempt are untouched. No playback, listening, rendered
+scene, audio API compatibility or measured audio quality is accepted from these
+documents. Five team routes remain.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -216,6 +232,10 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 ## Framework checks and recovery
 
+- Source `ef4a1420bf5440fc58881100abd16904de849632` passed local Windows263/263
+  (194.787s), exit0, zero skips, and both hosted platforms. Hosted run
+  `40816777159`, Windows job `123259579105`, Linux job `123259578600`.
+  The subsequent scoped-verdict sample has its separate55-test focused check.
 - Source `8b17c28da958f2e825386ca78e7acb649b1e3b38` passed hosted Windows261/261
   and Linux261/261, zero skips. Run `40815065256`, jobs `123254091234` and
   `123254091431`; receipt `evidence/ci-8b17c28.json`. This includes the four-team

@@ -82,7 +82,7 @@ def _has_explicit_review_verdict(text: str) -> bool:
     text = re.sub(r"(?ms)^\s*(?:```|~~~).*?^\s*(?:```|~~~)\s*$", "", text)
     verdict = r"(?:NOT ASSESSED|APPROVED WITH SUGGESTIONS|CHANGES REQUIRED|NEEDS REVISION|PASS|CONCERNS|FAIL|APPROVED)"
     return bool(re.search(
-        rf"(?im)^\s*(?:#{{1,6}}\s*)?(?:\*\*)?(?:Verdicts?|Review result)\s*:\s*{verdict}\b"
+        rf"(?im)^\s*(?:#{{1,6}}\s*)?(?:\*\*)?(?:(?:Bounded planning|Game/runtime quality)\s+)?(?:Verdicts?|Review result)\s*:\s*{verdict}\b"
         rf"|(?:^|(?<=[.!?]\s))(?:Final orchestration acceptance|"
         rf"(?:Game quality|Orchestration)(?: and [\w ]+)?|Documentation)"
         rf"\s+(?:remains|is|are|verdict:)\s*(?:\*\*)?{verdict}\b",

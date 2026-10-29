@@ -320,6 +320,14 @@ class NativeTeamEvidenceTests(unittest.TestCase):
                     self.root, [_item("spawnAgent", ["child-1"])], {"child-1": child}, PARENT)
                 self.assertEqual(result, {"verified": ["independent_review"], "missing": [], "findings": []})
 
+    def test_audio_review_has_explicit_scoped_planning_and_runtime_verdicts(self):
+        review = (ROOT / "studio-tests/native/fixtures/native-audio-independent-review.md").read_text(encoding="utf-8")
+        self.assertTrue(MODULE._has_explicit_review_verdict(review))
+        self.assertTrue(MODULE._has_explicit_review_verdict("**Bounded planning verdict: PASS.**"))
+        self.assertTrue(MODULE._has_explicit_review_verdict("**Game/runtime quality verdict: NOT ASSESSED.**"))
+        self.assertFalse(MODULE._has_explicit_review_verdict("The report says Bounded planning verdict: PASS."))
+        self.assertFalse(MODULE._has_explicit_review_verdict("> Bounded planning verdict: PASS."))
+
     def test_quoted_or_unresolved_verdict_words_do_not_count_as_review_conclusion(self):
         for text in (
             "The supplied report says NOT ASSESSED. I have not reached a review verdict.",
