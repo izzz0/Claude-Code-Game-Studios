@@ -83,6 +83,25 @@ class CocosTeamCaseTests(unittest.TestCase):
         self.assertIn("same native child", brief)
         self.assertEqual(case["required_evidence"], ["native_agents", "team_recovery", "independent_review"])
 
+    def test_recovery_tasks_match_each_team_s_document_artifact_scope(self):
+        scopes = {
+            "team-audio": ("audio planning artifact", "one of the five planning documents"),
+            "team-level": ("level design or QA artifact", "design draft or QA cases"),
+            "team-polish": ("polish analysis report", "bounded analysis report"),
+            "team-release": ("local release gate document", "local gate document"),
+        }
+        for case in self.cases:
+            if case["fixture"] not in scopes:
+                continue
+            brief = (NATIVE / "fixtures" / case["fixture"] / "production/team/recovery-brief.md").read_text(encoding="utf-8")
+            for text in (case["prompt"], brief):
+                self.assertIn(scopes[case["fixture"]][0], text)
+                self.assertNotIn("implementation task", text)
+                self.assertNotIn("real release task", text)
+            self.assertIn(scopes[case["fixture"]][1], brief)
+            self.assertIn("same returned task", brief)
+            self.assertTrue("verify" in brief or "validate" in brief)
+
     def test_qa_and_release_check_missing_evidence_without_approval(self):
         cases = {case["fixture"]: case for case in self.cases}
         qa = cases["team-qa"]

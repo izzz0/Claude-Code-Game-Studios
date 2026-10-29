@@ -1,5 +1,5 @@
 # Recovery input
 
-Interrupt or fail one real release task, resume its exact returned task, and retain the recovery state. Missing native evidence blocks go/no-go.
+Interrupt or fail one real task producing a local release gate document under production/releases/, resume that same returned task, and verify the local gate document before aggregation. Retain the actual recovery state. Missing native evidence blocks go/no-go.
 
-Use Cocos/TypeScript applicable roles only; this is a recovery request, never pre-existing evidence.
+This is local release documentation only: do not publish, fabricate sign-offs, or claim a runnable package without build evidence.

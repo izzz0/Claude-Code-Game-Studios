@@ -1,5 +1,5 @@
 # Recovery input
 
-After real assignment, interrupt or fail one returned implementation task, retain its agent/task IDs, resume the exact task, and validate its artifact. This fixture contains no prior IDs.
+After real assignment, interrupt or fail the task producing one audio planning artifact, specifically one of the five planning documents under production/audio/race-countdown/. Resume that same returned task and verify its document before aggregation. Retain its actual child/task IDs; none are prefilled.
 
-Use Cocos/TypeScript applicable roles only; this is a recovery request, never pre-existing evidence.
+Use Cocos/TypeScript applicable roles only. This recovers a planning artifact, not runtime playback or code implementation.

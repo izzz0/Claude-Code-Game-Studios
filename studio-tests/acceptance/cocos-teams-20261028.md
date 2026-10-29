@@ -67,7 +67,7 @@ primary in each fixture; no Godot role is selected.
 | combat | Existing chase/capture/timeout rule drafts | Native attempt `5d51dc254e44` completed all three evidence predicates; original FAIL retained for two redundant response literals. Revised offline assessment PASS for bounded documentation orchestration only; no new native execution |
 | UI | Chase HUD, connection warning,200% scale, restart | Native attempt `d26fc465ab13` completed4 actual profiles; original FAIL retained. Corrected offline evidence assessment PASS; UI quality/accessibility remain NOT ASSESSED |
 | QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
-| audio | Countdown/capture/timeout cue draft | NOT ASSESSED — not reached |
+| audio | Countdown/capture/timeout cue draft | Attempt `87dd3e753f71` NOT ASSESSED: two real children, partial direction document, then usageLimitExceeded; retry pending |
 | level | City track and boundaries | NOT ASSESSED — not reached |
 | live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
 | narrative | Help and settlement copy, consistency review | NOT ASSESSED — not reached |
@@ -185,6 +185,17 @@ Compilation, scene integration, committed accessibility tier, actual input and
 rendered200% observations remain NOT ASSESSED for this synthetic UI project.
 Six independent team routes remain, and the original game is unchanged.
 
+Closing audit `evidence/completed-team-closure-ea4409f.json` rechecks all three
+completed runs with the current verifier and each designated independent reviewer
+individually. It binds final writer outputs, immutable raw receipts and original
+verdicts; it is not a new execution. Audio attempt `87dd3e753f71` stopped with
+`usageLimitExceeded` after partial real work. It remains NOT ASSESSED. The four
+documentation-only audio/level/polish/release recovery requests are now explicitly
+scoped to their actual authorized documents, with same-task/native-evidence
+requirements intact. A distinct review found no scoped blocker. Old attempts
+are retained. The replacement installed CLI path reports the same0.165.0-alpha.1.2
+version; preflight still discovers all10 trusted project Hooks without retrusting.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -193,6 +204,11 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 ## Framework checks and recovery
 
+- Source `ea4409fc77a776365be80d873621999a40bc6c2d` passed local Windows260/260
+  (188.834s) and Linux260/260 (51.230s), exit0, zero skips, and hosted260/260 on
+  both platforms. Hosted run `40784529441`, jobs `123154282891` and `123154282582`;
+  receipt `evidence/ci-ea4409f.json`. The subsequent four-team recovery wording
+  regression passed all6 Cocos case checks; it is separate from this frozen run.
 - Source `26446667eaa54d069295b1147004ad3b9e728903` passed hosted Windows254/254
   and Linux254/254, zero skips. Run `40782553249`, jobs `123147598725` and
   `123147598356`; receipt `evidence/ci-2644666.json`. This includes combat-summary
