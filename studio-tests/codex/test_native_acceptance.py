@@ -116,6 +116,41 @@ class NativeAcceptanceTests(unittest.TestCase):
         return driver.assess(self.case, self.root, self.before, response,
                              kwargs.get("items", self.items), kwargs.get("hooks", self.hooks), "completed")
 
+    def test_prose_case_folding_is_explicit_and_preserves_required_and_forbidden_content(self):
+        path = self.root / "code.gd"
+        path.write_text("Race-countdown; emit start once per round", encoding="utf-8")
+        spec = {"path": "code.gd", "contains": ["race-countdown"], "not_contains": ["runtime passed"]}
+        case = {"expected": {"files": [spec]}}
+        check = lambda: driver.assess(case, self.root, self.before, "", self.items, self.hooks, "completed")
+        self.assertEqual(check()["status"], "FAIL")  # Default code tokens stay strict.
+        spec["case_sensitive"] = "false"
+        self.assertEqual(check()["status"], "FAIL")
+        spec["case_sensitive"] = False
+        self.assertEqual(check()["status"], "PASS")
+        path.write_text("Race-countdown; RUNTIME PASSED", encoding="utf-8")
+        self.assertEqual(check()["status"], "FAIL")
+        path.write_text("Different topic", encoding="utf-8")
+        self.assertEqual(check()["status"], "FAIL")
+
+    def test_file_alternatives_require_real_content_in_every_group(self):
+        path = self.root / "code.gd"
+        spec = {"path": "code.gd", "case_sensitive": False, "contains": ["race-countdown"],
+                "any_contains": [["one-shot", "start once", "deduplicate countdown"], ["capture", "timeout"]]}
+        case = {"expected": {"files": [spec]}}
+        check = lambda: driver.assess(case, self.root, self.before,
+                                     "one-shot capture", self.items, self.hooks, "completed")
+        path.write_text("Race-countdown: emit START ONCE; capture", encoding="utf-8")
+        self.assertEqual(check()["status"], "PASS")
+        for content in ("Race-countdown concept; capture", "Race-countdown: start once"):
+            path.write_text(content, encoding="utf-8")
+            self.assertEqual(check()["status"], "FAIL")
+        path.write_text("Race-countdown capture", encoding="utf-8")
+        for invalid in ([], "capture", [""], [" "], [123, "capture"]):
+            spec["any_contains"] = [invalid]
+            self.assertEqual(check()["status"], "FAIL")
+        path.unlink()
+        self.assertEqual(check()["status"], "FAIL")
+
     def test_completed_transport_does_not_mask_failed_hook_or_missing_tool(self):
         self.assertEqual(self.assess(hooks=[{"status": "failed"}])["status"], "FAIL")
         self.assertEqual(self.assess(items=[])["status"], "NOT ASSESSED")

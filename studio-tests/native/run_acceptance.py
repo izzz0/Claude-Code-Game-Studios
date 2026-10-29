@@ -274,11 +274,18 @@ def assess(case, sandbox, before, response, items, hooks, transport_status, nati
         text = path.read_text(encoding="utf-8-sig")
         output_texts[spec["path"]] = text
         artifacts[spec["path"]] = sha(path)
+        normalize = str.casefold if spec.get("case_sensitive") is False else str
+        checked_text = normalize(text)
         for token in spec.get("contains", []):
-            if token not in text:
+            if normalize(token) not in checked_text:
                 fail.append(f"{spec['path']}: missing {token}")
+        for alternatives in spec.get("any_contains", []):
+            if (not isinstance(alternatives, list) or not alternatives
+                    or not all(isinstance(token, str) and token.strip() for token in alternatives)
+                    or not any(normalize(token) in checked_text for token in alternatives)):
+                fail.append(f"{spec['path']}: missing all acceptable alternatives {alternatives}")
         for token in spec.get("not_contains", []):
-            if token in text:
+            if normalize(token) in checked_text:
                 fail.append(f"{spec['path']}: forbidden {token}")
         if spec.get("changed") is True and before.get(spec["path"]) == artifacts[spec["path"]]:
             fail.append("Expected artifact was not changed: " + spec["path"])

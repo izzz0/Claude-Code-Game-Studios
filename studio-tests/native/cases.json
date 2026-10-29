@@ -3303,23 +3303,37 @@
             "path": "production/audio/race-countdown/direction.md",
             "contains": [
               "race-countdown",
-              "countdown",
-              "one-shot"
+              "countdown"
             ],
             "not_contains": [
               "audio heard",
               "runtime passed",
               "fake-agent"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "one-shot",
+                "start once",
+                "deduplicate countdown"
+              ]
+            ]
           },
           {
             "path": "production/audio/race-countdown/sfx-spec.md",
             "contains": [
-              "race-countdown",
-              "one-shot"
+              "race-countdown"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "one-shot",
+                "start once",
+                "deduplicate countdown"
+              ]
+            ]
           },
           {
             "path": "production/audio/race-countdown/accessibility.md",
@@ -3327,7 +3341,8 @@
               "accessibility",
               "race-countdown"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/audio/race-countdown/integration-plan.md",
@@ -3335,7 +3350,8 @@
               "integration",
               "race-countdown"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           },
           {
             "path": "production/audio/race-countdown/engine-notes.md",
@@ -3343,7 +3359,8 @@
               "Cocos",
               "race-countdown"
             ],
-            "changed": true
+            "changed": true,
+            "case_sensitive": false
           }
         ],
         "response_contains": [

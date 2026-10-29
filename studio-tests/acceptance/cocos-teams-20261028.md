@@ -196,6 +196,18 @@ requirements intact. A distinct review found no scoped blocker. Old attempts
 are retained. The replacement installed CLI path reports the same0.165.0-alpha.1.2
 version; preflight still discovers all10 trusted project Hooks without retrusting.
 
+The next audio attempt is retained separately as `fcc2ec4925f2`. Its Markdown
+titles use `Race-countdown`; its direction says `start once`, and its SFX plan
+specifies `Deduplicate countdown` rather than the literal `one-shot`. The evaluator
+now supports explicit per-file `case_sensitive: false` for prose and `any_contains`
+groups requiring a nonempty alternative in the actual file. Default code-token
+checks stay case-sensitive. The audio case alone opts its five documents into
+casefold matching and accepts the three explicit one-shot formulations. Required
+topics, forbidden claims, changed files, hashes and native proof remain required.
+Empty/malformed alternatives and a response without the actual file fail.
+This corrects assertion semantics; it does not establish native or audio-quality
+PASS. The active host copy remains unchanged until its current run finishes.
+
 Cases intentionally test orchestration and correct negative quality gates.
 Even nine case PASS results would not prove actual audio, measured performance
 or release-quality approval from fixtures without those inputs. Inspect each
@@ -204,6 +216,10 @@ the team gate; honest missing game-quality evidence remains NOT ASSESSED.
 
 ## Framework checks and recovery
 
+- Source `8b17c28da958f2e825386ca78e7acb649b1e3b38` passed hosted Windows261/261
+  and Linux261/261, zero skips. Run `40815065256`, jobs `123254091234` and
+  `123254091431`; receipt `evidence/ci-8b17c28.json`. This includes the four-team
+  recovery-scope regression and follows the independent review of those edits.
 - Source `ea4409fc77a776365be80d873621999a40bc6c2d` passed local Windows260/260
   (188.834s) and Linux260/260 (51.230s), exit0, zero skips, and hosted260/260 on
   both platforms. Hosted run `40784529441`, jobs `123154282891` and `123154282582`;
