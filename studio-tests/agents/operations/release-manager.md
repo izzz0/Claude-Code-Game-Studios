@@ -3,7 +3,7 @@
 ## Agent Summary
 - **Domain**: Release pipeline (Build → Test → Cert → Submit → Verify → Launch), platform certification checklists scoped by `platform.cert_tier`, store submission and store page management, age ratings, semantic version numbering and release tags, release-day coordination, post-release monitoring
 - **Does NOT own**: Game design, feature and scope decisions (producer), QA test strategy and test case design (qa-lead), build pipelines and CI/CD (devops-engineer), marketing copy (community-manager)
-- **Gate IDs**: None; spawned by `/team-release` for the release candidate and the Go/No-Go sign-off. Its blocking output is a `NOT READY` Go/No-Go verdict from the preloaded `/release-checklist`, reported to producer
+- **Gate IDs**: None; spawned by `$ccgs-team-release` for the release candidate and the Go/No-Go sign-off. Its blocking output is a `NOT READY` Go/No-Go verdict from the preloaded `$ccgs-release-checklist`, reported to producer
 
 ---
 
@@ -12,9 +12,9 @@
 - [ ] `description:` field is present and domain-specific (references release pipeline, certification, store submission)
 - [ ] `tools:` reads `Read, Glob, Grep, Write, Edit, Bash` — Bash for release tagging ("Version tags must be applied to the git repository at every release point")
 - [ ] `skills:` preloads `release-checklist`, `changelog` and `patch-notes`
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over QA strategy, game design, or build infrastructure
-- [ ] Its next-step offer runs `/patch-notes [version]` itself and hands the result to community-manager for the announcement — never a brief for community-manager to write the patch notes
+- [ ] Its next-step offer runs `$ccgs-patch-notes [version]` itself and hands the result to community-manager for the announcement — never a brief for community-manager to write the patch notes
 - [ ] The pipeline's Test step takes the release gate's tier: QA sign-off at `workflow: full` (recommended at `standard`), no open S1 at any tier, no open S2 or S3 either at `full`
 
 ---
@@ -25,10 +25,10 @@
 **Input context**: `project.yaml` sets `platform.cert_tier: console`; the game ships on Nintendo Switch.
 **Input**: "Generate the certification checklist for our Nintendo Switch submission."
 **Expected behavior**:
-- Emits the console certification block its preloaded `/release-checklist` defines for `cert_tier: console` — TRC/TCR/Lotcheck requirements checklist, first-party submission, achievement/trophy integration, parental controls, save-data rules (corruption, full storage, user switching), age ratings — plus the console device requirements (controller prompts, suspend/resume, user switching, connectivity loss, storage full)
+- Emits the console certification block its preloaded `$ccgs-release-checklist` defines for `cert_tier: console` — TRC/TCR/Lotcheck requirements checklist, first-party submission, achievement/trophy integration, parental controls, save-data rules (corruption, full storage, user switching), age ratings — plus the console device requirements (controller prompts, suspend/resume, user switching, connectivity loss, storage full)
 - Tracks every requirement individually with pass / fail / not-applicable status (Platform Certification Requirements)
 - Emits no itch.io or Steamworks certification rows — the certification block follows `cert_tier`, not the platform named in the request
-- Ends with the Go / No-Go line in `/release-checklist`'s three words (READY / NOT ASSESSED / NOT READY, first match wins) — here NOT ASSESSED or NOT READY, never READY, because the fixture supplies no build or test evidence — and asks "May I write this to `production/releases/release-checklist-[version].md`?" before writing
+- Ends with the Go / No-Go line in `$ccgs-release-checklist`'s three words (READY / NOT ASSESSED / NOT READY, first match wins) — here NOT ASSESSED or NOT READY, never READY, because the fixture supplies no build or test evidence — and asks "May I write this to `production/releases/release-checklist-[version].md`?" before writing
 
 ### Case 2: Out-of-domain request — design test cases
 **Input**: "Write test cases for our save system to make sure it passes certification."
@@ -41,7 +41,7 @@
 **Input**: "Our build was rejected by the ESRB. The rejection cites content not reflected in our rating submission: a hidden profanity string in debug output that appeared in a screenshot."
 **Expected behavior**:
 - Treats the rejection as blocking: the pipeline halts at the failed step until the issue is resolved ("No step may be skipped. If a step fails, the pipeline halts and the issue is resolved before proceeding")
-- Returns the Go / No-Go verdict as NOT READY, listing the rating issue as a blocking item with an estimated time to resolve (`/release-checklist` Go / No-Go rationale)
+- Returns the Go / No-Go verdict as NOT READY, listing the rating issue as a blocking item with an estimated time to resolve (`$ccgs-release-checklist` Go / No-Go rationale)
 - Identifies the action required: remove all debug output containing the content, then resubmit the rating questionnaire and track receipt of the new certificate (Store Page Management: age ratings)
 - Does NOT minimize the issue or propose launching around it — a rating rejection is a blocking event, not an advisory
 - Reports the delay's impact on the release date to producer, which it reports to for scheduling
@@ -80,4 +80,4 @@
 - Case 1 assumes `platform.cert_tier: console`; with the key unset, the expected output is a question about which platforms are in scope or `NOT ASSESSED — cert tier unknown`, never every certification track
 - Case 5 requires current date and release date context; verify the agent uses actual dates, not placeholder estimates
 - Certification requirements change over time — flag if the agent produces specific requirement IDs that may be outdated
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

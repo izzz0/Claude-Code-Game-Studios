@@ -1,8 +1,8 @@
-# Skill Test Spec: /create-epics
+# Skill Test Spec: $ccgs-create-epics
 
 ## Skill Summary
 
-`/create-epics` reads in-scope GDDs, the architecture document, Accepted ADRs and
+`$ccgs-create-epics` reads in-scope GDDs, the architecture document, Accepted ADRs and
 the TR registry, and turns each system into one epic mapped to an architectural
 module. Systems are processed in layer order (Foundation → Core → Feature →
 Presentation), and within a layer in `systems-index.md` order. Each epic is
@@ -26,23 +26,23 @@ at the gate, or no eligible systems found).
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED
 - [ ] Contains "May I write" collaborative protocol language (per-epic approval)
-- [ ] Has a next-step handoff at the end (`/create-stories [epic-slug]`)
+- [ ] Has a next-step handoff at the end (`$ccgs-create-stories [epic-slug]`)
 - [ ] Documents PR-EPIC gate behavior: runs in full mode; skipped in lean/solo
 
 ---
 
 ## Director Gate Checks
 
-In `full` mode: PR-EPIC (`producer`, `.claude/docs/director-gates/pr-epic.md`)
+In `full` mode: PR-EPIC (`producer`, `.agents/studio/docs/director-gates/pr-epic.md`)
 runs once all epics for the current layer are defined and before any epic file is
 written. Verdicts: REALISTIC → proceed to the write asks; CONCERNS →
-`AskUserQuestion` with `[A] Proceed as planned` / `[B] Revise epic boundaries` /
+`native user-input mechanism` with `[A] Proceed as planned` / `[B] Revise epic boundaries` /
 `[C] Stop`; UNREALISTIC → offer to split or merge epics, revise, present the
 revised epics again, and re-run the gate before writing. CONCERNS `[B]` likewise
 re-presents the revised epics before the gate re-runs. NOT ASSESSED [missing
@@ -60,7 +60,7 @@ In `solo` mode: PR-EPIC is skipped. Output notes: "PR-EPIC skipped — Solo mode
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -80,7 +80,7 @@ Fixture defaults.
 - `docs/architecture/control-manifest.md` exists
 - No `production/epics/` directory
 
-**Input:** `/create-epics layer: foundation`
+**Input:** `$ccgs-create-epics layer: foundation`
 
 **Expected behavior:**
 1. Globs `design/gdd/*.md` (excluding systems-index and other non-system docs)
@@ -94,7 +94,7 @@ Fixture defaults.
    add its row to `production/epics/index.md` (creating it if absent)?" and writes
    both after approval
 6. Creates or updates `production/epics/index.md`
-7. Verdict: COMPLETE — 2 epic(s) written; next step `/create-stories [epic-slug]`
+7. Verdict: COMPLETE — 2 epic(s) written; next step `$ccgs-create-stories [epic-slug]`
 
 **Assertions:**
 - [ ] Each epic block is shown and "Shall I create Epic: [name]?" asked before any write ask
@@ -105,7 +105,7 @@ Fixture defaults.
 - [ ] The Definition of Done asks Logic and Integration stories for passing tests under `tests/` (the Godot test root) and Visual/Feel and UI stories for retained screenshots in `production/qa/evidence/` — each screen touched for UI, plus a lead sign-off for Visual/Feel
 - [ ] "PR-EPIC skipped — Lean mode." appears; no producer is spawned
 - [ ] `production/epics/index.md` is created or updated after writing, and only after an ask that named it
-- [ ] Verdict is COMPLETE and names `/create-stories [epic-slug]`
+- [ ] Verdict is COMPLETE and names `$ccgs-create-stories [epic-slug]`
 
 ---
 
@@ -116,17 +116,17 @@ Fixture defaults.
 - `design/gdd/` contains only `game-concept.md` and `systems-index.md` (no
   system GDDs)
 
-**Input:** `/create-epics all`
+**Input:** `$ccgs-create-epics all`
 
 **Expected behavior:**
 1. Globs `design/gdd/*.md` excluding the non-system docs — N = 0
-2. Reports "No system GDDs found in `design/gdd/` — run `/design-system` first"
+2. Reports "No system GDDs found in `design/gdd/` — run `$ccgs-design-system` first"
    and stops
 3. No epic is presented, no gate runs, no file is written
 
 **Assertions:**
 - [ ] `game-concept.md` and `systems-index.md` are not counted as system GDDs
-- [ ] The "No system GDDs found … run `/design-system` first" message is printed
+- [ ] The "No system GDDs found … run `$ccgs-design-system` first" message is printed
 - [ ] No "Shall I create Epic" or "May I write" ask is shown and no EPIC.md or index.md is written
 - [ ] Verdict is BLOCKED (no eligible systems found), not COMPLETE
 
@@ -141,7 +141,7 @@ Fixture defaults.
   brief instead of the GDDs and the gate never comes into play
 - PR-EPIC returns REALISTIC
 
-**Input:** `/create-epics layer: foundation`
+**Input:** `$ccgs-create-epics layer: foundation`
 
 **Full mode expected behavior:**
 1. Both epics are presented and accepted via "Shall I create Epic: [name]?"
@@ -157,7 +157,7 @@ Fixture defaults.
 
 **Fixture (per-run override):**
 - Same project, `modes.workflow: full`, `modes.review_mode: full`
-- Input: `/create-epics layer: foundation --review lean`
+- Input: `$ccgs-create-epics layer: foundation --review lean`
 
 **Override expected behavior:**
 1. `--review lean` overrides the resolved `full`
@@ -177,15 +177,15 @@ Fixture defaults.
 - One Approved Foundation GDD whose system has 5 TR-IDs in `tr-registry.yaml`;
   Accepted ADRs cover 3 of them (2 untraced)
 
-**Input:** `/create-epics [system-name]`
+**Input:** `$ccgs-create-epics [system-name]`
 
 **Expected behavior:**
 1. Epic block shows "GDD Requirements Covered by ADRs: 3 / 5" and lists the 2
    untraced TR-IDs under "Untraced Requirements"
 2. Warns: "⚠️ 2 requirements in [system] have no ADR. The epic can be created, but
-   `/create-stories` will write their stories with no governing ADR (`ADR: N/A`)
+   `$ccgs-create-stories` will write their stories with no governing ADR (`ADR: N/A`)
    and `Status: Ready` — nothing downstream blocks them, so they would be
-   implemented without architectural guidance. Run `/architecture-decision` first
+   implemented without architectural guidance. Run `$ccgs-architecture-decision` first
    if they need a decision, or proceed and accept the gap."
 3. Asks "Shall I create Epic: [name]?" with `[A] Yes, create it` /
    `[B] Skip this epic` / `[C] Pause — I need to write ADRs first`
@@ -194,7 +194,7 @@ Fixture defaults.
 
 **Assertions:**
 - [ ] Coverage count and the 2 untraced TR-IDs are shown before the create ask
-- [ ] The untraced-requirements warning names `/architecture-decision` and says what actually happens downstream: the stories are written `Ready` with no governing ADR — it does not claim they will be Blocked
+- [ ] The untraced-requirements warning names `$ccgs-architecture-decision` and says what actually happens downstream: the stories are written `Ready` with no governing ADR — it does not claim they will be Blocked
 - [ ] Option `[C] Pause — I need to write ADRs first` is offered
 - [ ] The written EPIC.md marks the untraced rows `❌ No ADR` (not silently dropped)
 
@@ -207,12 +207,12 @@ Fixture defaults.
 - `project.yaml`: `modes.workflow: full`, `modes.review_mode: full`
 - PR-EPIC returns CONCERNS (one epic's scope is too large)
 
-**Input:** `/create-epics layer: foundation`
+**Input:** `$ccgs-create-epics layer: foundation`
 
 **Expected behavior:**
 1. PR-EPIC is spawned and returns CONCERNS with specific feedback
 2. Skill presents the producer's assessment before any write ask
-3. `AskUserQuestion`: "Producer raised concerns about the epic structure. How do
+3. `native user-input mechanism`: "Producer raised concerns about the epic structure. How do
    you want to proceed?" with `[A] Proceed as planned — I accept the producer's
    concerns` / `[B] Revise epic boundaries — split or merge as recommended` /
    `[C] Stop — I want to reconsider the scope`
@@ -237,7 +237,7 @@ Fixture defaults.
   `production/epics/index.md` has its row with `3 stories`
 - The second system has no EPIC.md
 
-**Input:** `/create-epics layer: foundation`
+**Input:** `$ccgs-create-epics layer: foundation`
 
 **Expected behavior:**
 1. Both epics are presented and accepted via "Shall I create Epic: [name]?"
@@ -272,7 +272,7 @@ Fixture defaults.
   one of the Core system's TR-IDs has no ADR
 - `docs/architecture/control-manifest.md` does not exist
 
-**Input:** `/create-epics all`
+**Input:** `$ccgs-create-epics all`
 
 **Expected behavior:**
 1. Globs `design/gdd/*.md` for N = 2; the `^## Summary` scan returns 0 matches
@@ -300,7 +300,7 @@ Fixture defaults.
 - [ ] PR-EPIC gate (if active) runs before write asks — not after
 - [ ] Skipped gates noted by name and mode in output
 - [ ] EPIC.md content sourced only from GDDs, ADRs, and architecture docs — nothing invented
-- [ ] Never creates stories; ends with next-step handoff `/create-stories [epic-slug]` per created epic
+- [ ] Never creates stories; ends with next-step handoff `$ccgs-create-stories [epic-slug]` per created epic
 
 ---
 

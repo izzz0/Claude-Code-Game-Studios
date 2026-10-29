@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "part": "design-production",
+  "cases": [
+    {
+      "id": "native-013-ccgs-brainstorm",
+      "skill": "ccgs-brainstorm",
+      "fixture": "brainstorm",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-brainstorm in English for the already-approved Pocket Courier toy-game MVP. Requirements are complete, so do not ask a creative follow-up: one small Godot game supports left/right movement, wall collision, collecting exactly three targets, and restart after a run; explicitly exclude online play and networking. Use minimal rigor with guided automation and write design/game-brief.md. Its Build order must be actionable for these behaviors and Out of Scope must preserve the no-online boundary. Do not claim a playable run, screenshot, or implementation was tested.",
+      "expected": {
+        "files": [{"path": "design/game-brief.md", "contains": ["Pocket Courier", "Core Loop", "movement", "wall", "three", "restart", "Out of Scope", "online", "Build Order"], "not_contains": ["playtest passed", "screenshot attached"]}],
+        "response_contains": ["design/game-brief.md", "movement", "three", "online", "Build order", "COMPLETE"],
+        "response_not_contains": ["creative question", "playable run passed", "native execution PASS"],
+        "required_tools": true
+      },
+      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "minimal", "modes.automation": "guided"},
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-014-ccgs-map-systems",
+      "skill": "ccgs-map-systems",
+      "fixture": "map-systems",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-map-systems in English against the approved design/gdd/game-concept.md for Pocket Courier. Resolve standard/guided Godot configuration, preserve the accepted scope, and write design/gdd/systems-index.md with exactly two MVP systems: Movement as Foundation and Collection as Core depending on Movement. Do not infer UI, networking, persistence, or any other systems; online play is out of scope. Use the fixed systems-index table and valid registry layout, report dependency order and registry validation, and do not claim runtime execution.",
+      "expected": {
+        "files": [{"path": "design/gdd/systems-index.md", "contains": ["Movement", "Collection", "Foundation", "Core", "Depends On", "MVP", "design/gdd/game-concept.md"], "not_contains": ["Networking", "UI System", "20 systems", "native runtime passed"]}],
+        "response_contains": ["systems-index.md", "Movement", "Collection", "depends on", "registry", "COMPLETE"],
+        "response_not_contains": ["invented systems", "networking system", "runtime PASS"],
+        "required_tools": true
+      },
+      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "standard", "modes.automation": "guided"},
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-015-ccgs-create-epics",
+      "skill": "ccgs-create-epics",
+      "fixture": "create-epics",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-epics in English for accepted Pocket Courier design. Resolve standard/guided Godot configuration, read approved Movement and Collection GDDs, architecture modules, accepted ADR-0001, and valid TR registry. Create exactly two epics at production/epics/movement/EPIC.md and production/epics/collection/EPIC.md plus their index rows. Preserve TR-MOVEMENT-001 and TR-COLLECTION-001 coverage, name the correct modules and accepted ADR, and do not invent stories or systems. The user approved writing these epics; do not claim implementation or runtime validation.",
+      "expected": {
+        "files": [{"path": "production/epics/movement/EPIC.md", "contains": ["Movement", "Foundation", "design/gdd/movement.md", "ADR-0001", "TR-MOVEMENT-001", "Status**: Ready"], "not_contains": ["Stories created", "Networking"]}, {"path": "production/epics/collection/EPIC.md", "contains": ["Collection", "Core", "design/gdd/collection.md", "ADR-0001", "TR-COLLECTION-001", "Status**: Ready"], "not_contains": ["Stories created", "Networking"]}, {"path": "production/epics/index.md", "contains": ["Movement", "Collection", "movement/EPIC.md", "collection/EPIC.md"], "not_contains": ["Networking"]}],
+        "response_contains": ["2 epics", "movement", "collection", "ADR-0001", "TR-MOVEMENT-001", "TR-COLLECTION-001", "COMPLETE"],
+        "response_not_contains": ["runtime PASS", "stories written", "invented module"],
+        "required_tools": true
+      },
+      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "standard", "modes.automation": "guided"},
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-016-ccgs-sprint-plan",
+      "skill": "ccgs-sprint-plan",
+      "fixture": "sprint-plan",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-sprint-plan new in English for Pocket Courier. Resolve standard/guided Godot configuration and use user-approved capacity of 10 days. Plan sprint 001 with dependency-ordered Ready stories 1-1 Movement foundation (3 days), 1-2 Wall collision (3 days), and 1-3 Collect three targets (4 days), total 10. Keep blocked 1-4 Online mode (4 days) out, and do not invent velocity, story, QA result, or current-game execution. Write production/sprints/sprint-001.md and production/sprint-status.yaml with the three ready-for-dev stories, real paths, estimates, and honest blocked-scope note.",
+      "expected": {
+        "files": [{"path": "production/sprints/sprint-001.md", "contains": ["Sprint 1", "Capacity", "10", "1-1", "1-2", "1-3", "Movement", "Wall collision", "Collect three targets", "Online mode", "blocked"], "not_contains": ["1-4 |", "velocity: 14", "all tests passed"]}, {"path": "production/sprint-status.yaml", "contains": ["sprint: 1", "1-1", "1-2", "1-3", "ready-for-dev", "estimate_days: 3", "estimate_days: 4"], "not_contains": ["1-4", "done", "current game passed"]}],
+        "response_contains": ["sprint-001", "10", "1-1", "1-2", "1-3", "blocked", "sprint-status.yaml", "COMPLETE"],
+        "response_not_contains": ["1-4 planned", "velocity proven", "current game PASS"],
+        "required_tools": true
+      },
+      "config": {"engine.name": "Godot", "engine.version": "4.6.1", "modes.rigor": "standard", "modes.automation": "guided"},
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

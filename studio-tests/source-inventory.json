@@ -1,0 +1,715 @@
+{
+  "source_revision": "05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418",
+  "counts": {
+    "skills": 74,
+    "roles": 49,
+    "hooks": 18
+  },
+  "entries": [
+    {
+      "kind": "skills",
+      "source": ".claude/skills/adopt/SKILL.md",
+      "blob": "718436bcff3cd10d9057470f75e25d9875c87c7c"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/architecture-decision/SKILL.md",
+      "blob": "a368961c10eadf55e2d1fe85cd455e5584e49c2c"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/architecture-review/SKILL.md",
+      "blob": "1a9d28aadbcbd26b5fc6b8ed1c64d73ae82b7b73"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/art-bible/SKILL.md",
+      "blob": "dca9084adf24377d23e9895ce21e29c1d1028ae4"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/asset-audit/SKILL.md",
+      "blob": "94494e0e2c96cf6aa0b40fd809155151fdae56a0"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/asset-spec/SKILL.md",
+      "blob": "5bf55732f0e661a5e4d8f0d43fc375727b7cc356"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/balance-check/SKILL.md",
+      "blob": "909564528074d466db0b418ffc91d1054d6f60fe"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/brainstorm/SKILL.md",
+      "blob": "8b28bfc2eb7bc58895ae3948b1146d37f6fd3e0d"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/bug-report/SKILL.md",
+      "blob": "72677db5a468e727b91089d7cf0c92a1aeefca74"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/bug-triage/SKILL.md",
+      "blob": "b22c2d354e488ab4eef7cc4a9e4e4e0160f9d468"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/changelog/SKILL.md",
+      "blob": "b3f7b19fce4bcdf8ad604828605ba49df5d5de5b"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/code-review/SKILL.md",
+      "blob": "9c1ed4fd0edb1a8410294d131c2adc13c9555a2b"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/consistency-check/SKILL.md",
+      "blob": "f57de89d80c12f58afd78dc2ebdd7a4614641c75"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/content-audit/SKILL.md",
+      "blob": "1e0af3f15c8d8d11c9ba23ce1d578d94081f9f66"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/create-architecture/SKILL.md",
+      "blob": "f2cb63f04050b6ffb9ed0da916eb972635f66d88"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/create-control-manifest/SKILL.md",
+      "blob": "b462893469eaba02936198248aba889502b885b7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/create-epics/SKILL.md",
+      "blob": "e61a921e56501b11a23b66a5e9956cf4f11e6b5b"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/create-stories/SKILL.md",
+      "blob": "4640fa10bf70c5ac01f4abd4eaa90bb13be4ddd3"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/day-one-patch/SKILL.md",
+      "blob": "ec0f179f8256d8fadc269e5bc8ea93afdc19ef78"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/design-review/SKILL.md",
+      "blob": "a63d8fba9b7142eeb43791f061e2e1533c429b43"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/design-system/SKILL.md",
+      "blob": "d5e37b132341a89bf9af1d792081a20bc78c39b1"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/dev-story/SKILL.md",
+      "blob": "e7fd26f888fa2ed7262402ed7142db232a90925e"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/estimate/SKILL.md",
+      "blob": "4087d9275066e6af895c228b202877b996529842"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/gate-check/SKILL.md",
+      "blob": "ae3d0fec7e392df9b2926aa2e1b5b5da97cec1fb"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/help/SKILL.md",
+      "blob": "01f5396df1aa2477c2902fdcbeba0e7aa1b37146"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/hotfix/SKILL.md",
+      "blob": "9b5939443ae73e83693df34a5cc3782119e1cec3"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/launch-checklist/SKILL.md",
+      "blob": "cf3291897f0bd2dd011f5952dede2c08ac2e16d5"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/localize/SKILL.md",
+      "blob": "5eccbecd25c38a3b0d66e6b5487578db8b7f05c6"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/map-systems/SKILL.md",
+      "blob": "4dd6b792b7b811fdcd44e5eaa8fc996bb350748e"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/milestone-review/SKILL.md",
+      "blob": "7490deb0249b5e70e8c49bd4ad60c5f81be959b7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/onboard/SKILL.md",
+      "blob": "d2645820bee6ddaf8b3b159e47ae119da07f4f77"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/patch-notes/SKILL.md",
+      "blob": "4bf6cb6f7557a00d138bb0897adf1ddb97d69f5b"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/perf-profile/SKILL.md",
+      "blob": "f7a95b9f0f617c15310f41b3192b4a406ad94d80"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/playtest-report/SKILL.md",
+      "blob": "9df02469f0340731e8d58d31156dffc2b82f4cf2"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/project-stage-detect/SKILL.md",
+      "blob": "ac6e3e825fd8485688ae1baf9d1f6902495d1b77"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/propagate-design-change/SKILL.md",
+      "blob": "576f628dddc612c3ed238734a0b957d3b1b084e7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/prototype/SKILL.md",
+      "blob": "526f19b654204ed31dd89d6638a7cffe5dbb05ff"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/qa-plan/SKILL.md",
+      "blob": "a32307dbdc227489bf18cd97a30ec46db6faf1fa"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/quick-design/SKILL.md",
+      "blob": "a7f7f3df247f7eec18f6a72b5f010e01bdab8dd5"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/regression-suite/SKILL.md",
+      "blob": "00a73c4d63ac12d051c50d206b279cd8b969ba3e"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/release-checklist/SKILL.md",
+      "blob": "b0cee9d1ece101808730fc191e20efc902716e49"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/retrospective/SKILL.md",
+      "blob": "f1852f7b0aa4f15fd873bb51098396388af95024"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/reverse-document/SKILL.md",
+      "blob": "de268c5a769b4eeeba3a67d8c4fba85e7f279585"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/review-all-gdds/SKILL.md",
+      "blob": "6e18feab0920bb42eba0ad0d33333e67d4f08da1"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/scope-check/SKILL.md",
+      "blob": "daf45ef2b65fb1ff95a125fd4062564302e464c9"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/security-audit/SKILL.md",
+      "blob": "83ede5ebc20f66fd31f4400f9af8af0a07ad06cf"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/settings/SKILL.md",
+      "blob": "215fde1fc7193720f0b2fdc3e41dc2ecadd019d2"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/setup-engine/SKILL.md",
+      "blob": "b2db91861bc8dec13ad6702cf77949231795506c"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/skill-improve/SKILL.md",
+      "blob": "ee14553305d172618428bb854a0cad71e2d103a7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/skill-test/SKILL.md",
+      "blob": "5c0be43caa21781d012321666f89b64c74d71dcc"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/smoke-check/SKILL.md",
+      "blob": "297bb44ac583dca8fd0817577a193982e40dee0e"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/soak-test/SKILL.md",
+      "blob": "4de42ab9ffa6c2c403168f0a971e24fb81d3152a"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/sprint-plan/SKILL.md",
+      "blob": "25d1b336a1993cd4b0c55dd03d9a5f11231ded28"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/sprint-status/SKILL.md",
+      "blob": "4ac8ff6ef7d42a991a8a5b636deb4318a2c24ba3"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/start/SKILL.md",
+      "blob": "eee07d46d3499356dd8b2e0cbcac45a15b1253c9"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/story-done/SKILL.md",
+      "blob": "91c6f7c39bf77b45e82f1de895a61777b8ad87d8"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/story-readiness/SKILL.md",
+      "blob": "56935cf9fca8f0ff6cf7c30551297692f86a4f1c"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-audio/SKILL.md",
+      "blob": "a912b77440d289e3f886678bab2f5b7e96c6b9c5"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-combat/SKILL.md",
+      "blob": "afa01e72a01ecab23320bcabaab5b1c232a703b7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-level/SKILL.md",
+      "blob": "9fa9dd8ce5e957bb00db4b6fcc94e969df548915"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-live-ops/SKILL.md",
+      "blob": "ce653d99c306f1af93959bf6cc811d8a83c243f5"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-narrative/SKILL.md",
+      "blob": "369a9181d33100d654c6f4dd8f5dcd3081134bf7"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-polish/SKILL.md",
+      "blob": "4758f080bfd4b3c2be4809844fdcd75c201b2c08"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-qa/SKILL.md",
+      "blob": "38ebbb2be450bf4a8314d53319e8abc2cfd7e4fe"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-release/SKILL.md",
+      "blob": "e177251108199776bcecabc75999edfa43a31548"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/team-ui/SKILL.md",
+      "blob": "af4bff320c1f0a6f9b6be8926ab1396266c7ef0e"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/tech-debt/SKILL.md",
+      "blob": "b943697871a5006a06cc032dcdc5573bf8271824"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/test-evidence-review/SKILL.md",
+      "blob": "6845a48b0adc926e85f1bde129b5ebcd50ec3563"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/test-flakiness/SKILL.md",
+      "blob": "38deb96b5c42d931ae9c1947b44e447ccadf0ad1"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/test-helpers/SKILL.md",
+      "blob": "c9e3f65a0f98366c3b6c3451e6514e51f4a27e2d"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/test-setup/SKILL.md",
+      "blob": "468c6264f9a767ffea193934f5247eae433a00ea"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/ux-design/SKILL.md",
+      "blob": "0647dc430ed53fd1559cce8ac8deba46042c4f6f"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/ux-review/SKILL.md",
+      "blob": "4891f47f8bd3bf091ee8e48144e0ee31a03fc315"
+    },
+    {
+      "kind": "skills",
+      "source": ".claude/skills/vertical-slice/SKILL.md",
+      "blob": "786172a6fdf6e674e2f6a0d1dc88291266056f5d"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/accessibility-specialist.md",
+      "blob": "d96657099b3fd4aa4b07a201eedea5ab360a0df1"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ai-programmer.md",
+      "blob": "63d987822a5264f4d4392a2c00356fa34e750afd"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/analytics-engineer.md",
+      "blob": "7a142754f29c8f75fafd1cc66155784583a3a868"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/art-director.md",
+      "blob": "61f3b7c89c4988213d9e209bcb1eb1928d91cd5e"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/audio-director.md",
+      "blob": "844b7a4eb88245f02efeb007e442ca68796fead8"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/community-manager.md",
+      "blob": "88d6a75ef38f9c1ef4e3ff1e253f1d569af37a69"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/creative-director.md",
+      "blob": "e8aba2307844ed8fccdcf0c910da45b4d7139fdc"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/devops-engineer.md",
+      "blob": "63c7f028a9e4b24945993425851fb6ba5d3af9aa"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/economy-designer.md",
+      "blob": "cdf64577197632c4c2e7d44b34591ea9a4ff1b5f"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/engine-programmer.md",
+      "blob": "761480b34f6be4e544ed16dd1202dd6bf7e78363"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/game-designer.md",
+      "blob": "a6fde98a81c720b86dd2fbc7b10b9af719709291"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/gameplay-programmer.md",
+      "blob": "1dc8c8503bad5efc2c5b5b7c5d2bd1fdd4a84070"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/godot-csharp-specialist.md",
+      "blob": "eeb2ab8b4fa4bb06e8c7a2bd03d903417cfa336f"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/godot-gdextension-specialist.md",
+      "blob": "3185d8ec08f907460dbc35d8f71e24dbd59ae572"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/godot-gdscript-specialist.md",
+      "blob": "11e3a257268f75a11961b3432787afd6c4e87cad"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/godot-shader-specialist.md",
+      "blob": "9ab5802fe909e1a282b36833f7789533ceaa58ef"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/godot-specialist.md",
+      "blob": "6c1c90e4d9a809c66ba50a9fc8c53cb7fe22c976"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/lead-programmer.md",
+      "blob": "52f473681f6b6574fd94656aaca3ebce7f70af24"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/level-designer.md",
+      "blob": "2b2d7f430f52870fefc93a5e8fc531300e8b732a"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/live-ops-designer.md",
+      "blob": "b4c47168ba656310682eb5753225d2410f227831"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/localization-lead.md",
+      "blob": "ad48095044524cbe27cbd1df5622a664b8b2b157"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/narrative-director.md",
+      "blob": "2c2a741fffba684deb954f163caf1d53ed3928a8"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/network-programmer.md",
+      "blob": "12a40909e96474c7bca4976d1b5f687d3250df6c"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/performance-analyst.md",
+      "blob": "86da2413611ebbf4fae732d9b1be12d24c678566"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/producer.md",
+      "blob": "a188502eaa3dfd36fa1c5b0f3248c6f927e0fa03"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/prototyper.md",
+      "blob": "830e6cfe51418b0910797d4edac3fd3a7cb6caa9"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/qa-lead.md",
+      "blob": "c005cadbb73e89fa67590279592f1b6db08c2cea"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/qa-tester.md",
+      "blob": "326d3336af18d1c1f5717a84d3d16d754095a3a5"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/release-manager.md",
+      "blob": "123fe64c83e698d8f0ec73c1a071439c9cd9a7bc"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/security-engineer.md",
+      "blob": "6a7430319ef36cc1e1515010d044d8bf8f833044"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/sound-designer.md",
+      "blob": "ab57cf8b0f9ea6232fd5e34ba1d0d16779428600"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/systems-designer.md",
+      "blob": "0a75aa1dd9a1356627da1864309d8ec3d4532e85"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/technical-artist.md",
+      "blob": "c8f69c957ce91216fe085ea598dff3ca5b2b53a1"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/technical-director.md",
+      "blob": "ff2f6d533eef35049db78614e02aef8b50d58f03"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/tools-programmer.md",
+      "blob": "ea0361828a77f00f37067ca760ac5cbad952654a"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ue-blueprint-specialist.md",
+      "blob": "85d2bda268dd264e2937c47e755feb039883a8a2"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ue-gas-specialist.md",
+      "blob": "74a44ed1e5dbf1dd682c9dd915e92b427dee0972"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ue-replication-specialist.md",
+      "blob": "9dd763a5d567b9ddda6baa9cf3f1e4732aac108c"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ue-umg-specialist.md",
+      "blob": "7500cd5fe8b6b3a3aaebe485eb48c62c27e55f89"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ui-programmer.md",
+      "blob": "eec8aea4b9783cfc79796b34b24d7553de575270"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unity-addressables-specialist.md",
+      "blob": "23c00e6907086e620d65bac991b47945f44dc721"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unity-dots-specialist.md",
+      "blob": "98676554d2961edd1bbc80857fe1d86537f679bc"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unity-shader-specialist.md",
+      "blob": "6b062303c42e0bfa295b711e1cfed4942fd5c9b4"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unity-specialist.md",
+      "blob": "eb415162dfca591a2263cb20fbc8711bbfa165e5"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unity-ui-specialist.md",
+      "blob": "60dd25158c7e5b5302f8129148d2dd39b4896095"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/unreal-specialist.md",
+      "blob": "dec5f70473995490ce62f8ac3a274feed2593080"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/ux-designer.md",
+      "blob": "ced35d6dac5225592403e22e1add6c629a6eb65f"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/world-builder.md",
+      "blob": "0e130faabfa41af9c0761fbec335ce9a4da16937"
+    },
+    {
+      "kind": "roles",
+      "source": ".claude/agents/writer.md",
+      "blob": "351f5c51efd7e49dea47f87ecbd81178c9829ca2"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/detect-gaps.sh",
+      "blob": "766df36932e526430583138cc95c4b5d67318685"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/log-agent-stop.sh",
+      "blob": "611449dbe1553b5be33aa4e3ddc1b199ef824f5b"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/log-agent.sh",
+      "blob": "8ec795e8dd992bfb40d31f3fff4de0dabbe9ea38"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/log-instructions.sh",
+      "blob": "b7303d31fb6fe5f3cb26aaa877b838ba3c3faf80"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/notify.sh",
+      "blob": "a37928616593247e6642b8b248d35f2620860a08"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/pre-compact.sh",
+      "blob": "a9672cd8c3771f750589eff505c26207482861e2"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/session-start.sh",
+      "blob": "7bc05f8d133a1a98bf2fdd00ef28b70ac143b9a6"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/session-stop.sh",
+      "blob": "aeb15ac740efcdc285fa37fc12304c5c23cc9815"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/update-check.sh",
+      "blob": "73dd038a6f28778eaaa8f1df1832e9d21368a638"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-agent-artifact.sh",
+      "blob": "1240363c8691900d791e79a0164b5682311fcc6b"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-assets.sh",
+      "blob": "53e07359ce776b82831a4b49719d25620ec5b51c"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-commit.sh",
+      "blob": "7128e41a31887338bc265ae4e7765be4e67e844d"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-push.sh",
+      "blob": "7c10e30e45345b0ea8f37de2990014f7491c6699"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-read.sh",
+      "blob": "68d23dc2895705247f595ffbfb3314d624932897"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-registry.sh",
+      "blob": "e00f43e87e0400c425fd28fa8615cb16b3f5bc9c"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-skill-change.sh",
+      "blob": "c1d1c3009c9ffdaf0d661913b382631856dba702"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/validate-write.sh",
+      "blob": "9ea2609b34a9b5bc0b5e082d8d9fb5f815b1580c"
+    },
+    {
+      "kind": "hooks",
+      "source": ".claude/hooks/yaml-helper.sh",
+      "blob": "ac0f30695576bbac858d42919f257fceb43635f2"
+    }
+  ]
+}

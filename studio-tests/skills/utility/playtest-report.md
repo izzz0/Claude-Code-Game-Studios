@@ -1,8 +1,8 @@
-# Skill Test Spec: /playtest-report
+# Skill Test Spec: $ccgs-playtest-report
 
 ## Skill Summary
 
-`/playtest-report` has two modes. `new` outputs a blank playtest report template
+`$ccgs-playtest-report` has two modes. `new` outputs a blank playtest report template
 and stops with Verdict COMPLETE, saving nothing;
 `analyze [path]` reads raw notes from a file, cross-references the design
 documents, fills the template with structured findings and flags observations
@@ -13,8 +13,8 @@ confusion, delight), Bugs Encountered, Feature-Specific Feedback, Quantitative
 Data, Overall Assessment, and Top 3 Priorities.
 
 Findings are sorted into four buckets and routed: design changes to
-`/propagate-design-change [path]`, balance adjustments to `/balance-check
-[system]`, bugs to `/bug-report`, polish items to the `production/` backlog. In
+`$ccgs-propagate-design-change [path]`, balance adjustments to `$ccgs-balance-check
+[system]`, bugs to `$ccgs-bug-report`, polish items to the `production/` backlog. In
 `full` review mode the skill spawns `creative-director` for gate **CD-PLAYTEST**;
 in `lean` and `solo` it skips the gate with a note. It then asks "May I write
 this playtest report to `production/qa/playtests/playtest-[date]-[tester].md`?".
@@ -24,13 +24,13 @@ Verdict is **COMPLETE**.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keyword: COMPLETE
 - [ ] Contains "May I write" collaborative protocol language before writing the report
-- [ ] Has a next-step handoff (`/design-review` after design changes, `/bug-triage` after bug fixes)
+- [ ] Has a next-step handoff (`$ccgs-design-review` after design changes, `$ccgs-bug-triage` after bug fixes)
 
 ---
 
@@ -50,7 +50,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -67,15 +67,15 @@ Fixture defaults.
   first door teaches the interact key
 - Review mode: `solo`
 
-**Input:** `/playtest-report analyze production/qa/notes/session-01.md`
+**Input:** `$ccgs-playtest-report analyze production/qa/notes/session-01.md`
 
 **Expected behavior:**
 1. Skill reads the notes and cross-references the design documents
 2. Skill fills the template; the framerate drop goes in the Bugs Encountered table
 3. Phase 3 presents findings in four buckets: the door confusion as a design
    change, the boss damage as a balance adjustment, the framerate drop as a bug
-4. Routing: `/propagate-design-change` on the tutorial GDD, `/balance-check` for
-   combat, `/bug-report` for the framerate drop
+4. Routing: `$ccgs-propagate-design-change` on the tutorial GDD, `$ccgs-balance-check` for
+   combat, `$ccgs-bug-report` for the framerate drop
 5. Skill notes "CD-PLAYTEST skipped — Solo mode." and asks "May I write this
    playtest report to `production/qa/playtests/playtest-[date]-[tester].md`?"
 6. On approval the file is written; verdict is COMPLETE
@@ -83,7 +83,7 @@ Fixture defaults.
 **Assertions:**
 - [ ] The framerate drop appears in the Bugs Encountered table, not under Gameplay Flow
 - [ ] Findings are presented in the four buckets (design, balance, bug, polish)
-- [ ] Each bucket is routed to its named skill (`/propagate-design-change`, `/balance-check`, `/bug-report`)
+- [ ] Each bucket is routed to its named skill (`$ccgs-propagate-design-change`, `$ccgs-balance-check`, `$ccgs-bug-report`)
 - [ ] "May I write" names `production/qa/playtests/playtest-[date]-[tester].md` before writing
 - [ ] Verdict is COMPLETE
 
@@ -94,7 +94,7 @@ Fixture defaults.
 **Fixture:**
 - Any project state
 
-**Input:** `/playtest-report new`
+**Input:** `$ccgs-playtest-report new`
 
 **Expected behavior:**
 1. Skill selects `new` mode
@@ -122,19 +122,19 @@ Fixture defaults.
   crafting menu in 40 minutes
 - Review mode: `solo`
 
-**Input:** `/playtest-report analyze production/qa/notes/session-02.md`
+**Input:** `$ccgs-playtest-report analyze production/qa/notes/session-02.md`
 
 **Expected behavior:**
 1. Skill reads the notes and cross-references `design/gdd/crafting.md`
 2. Skill flags the observation as conflicting with design intent
 3. Phase 3 puts it in the "Design changes needed" bucket
-4. Routing names `/propagate-design-change` on `design/gdd/crafting.md`
+4. Routing names `$ccgs-propagate-design-change` on `design/gdd/crafting.md`
 5. Report saved after the "May I write" ask; verdict COMPLETE
 
 **Assertions:**
 - [ ] The crafting observation is explicitly flagged as conflicting with the GDD's intent
 - [ ] It is categorised as a design change, not a polish item
-- [ ] `/propagate-design-change` is suggested on the affected GDD
+- [ ] `$ccgs-propagate-design-change` is suggested on the affected GDD
 - [ ] Verdict is COMPLETE after the write
 
 ---
@@ -146,7 +146,7 @@ Fixture defaults.
 - Neither `design/gdd/game-concept.md` nor `design/game-brief.md` exists
 - `production/qa/notes/session-03.md` holds playtest notes
 
-**Input:** `/playtest-report analyze production/qa/notes/session-03.md`
+**Input:** `$ccgs-playtest-report analyze production/qa/notes/session-03.md`
 
 **Expected behavior:**
 1. Skill structures and categorises the findings
@@ -172,7 +172,7 @@ Fixture defaults.
 - Run three times: `--review full`, `--review lean`, `--review solo`
 - In the full run, `creative-director` returns CONCERNS
 
-**Input:** `/playtest-report analyze production/qa/notes/session-04.md --review [mode]`
+**Input:** `$ccgs-playtest-report analyze production/qa/notes/session-04.md --review [mode]`
 
 **Expected behavior:**
 1. Full: after Phase 3 categorisation, `creative-director` is spawned for
@@ -199,7 +199,7 @@ Fixture defaults.
 - [ ] Applies the review mode before spawning CD-PLAYTEST and prints the skip note when skipped
 - [ ] Presents the director's assessment (full mode) before asking to save
 - [ ] Asks "May I write this playtest report to `production/qa/playtests/playtest-[date]-[tester].md`?" before writing
-- [ ] Ends with verdict COMPLETE and next steps (`/design-review`, `/bug-triage`)
+- [ ] Ends with verdict COMPLETE and next steps (`$ccgs-design-review`, `$ccgs-bug-triage`)
 
 ---
 

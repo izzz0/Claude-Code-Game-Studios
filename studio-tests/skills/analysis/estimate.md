@@ -1,10 +1,10 @@
-# Skill Test Spec: /estimate
+# Skill Test Spec: $ccgs-estimate
 
 ## Skill Summary
 
-`/estimate [task-description]` estimates the effort for one task. It reads the
+`$ccgs-estimate [task-description]` estimates the effort for one task. It reads the
 task description from the argument (asking for clarification first if it is too
-vague to estimate), the project context from `CLAUDE.md`, and any related GDD in
+vague to estimate), the project context from `AGENTS.md`, and any related GDD in
 `design/gdd/` (Phase 1). It scans the affected code for complexity, integration
 points and test coverage, and reads `production/sprints/` for similar completed
 tasks and historical velocity (Phase 2). It analyzes code complexity, scope and
@@ -20,9 +20,9 @@ half days. The skill is read-only and invokes no director gates.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains the Optimistic / Expected / Pessimistic scenarios, the High / Medium / Low confidence levels, and the `COMPLETE` verdict
 - [ ] Does NOT require "May I write" language (read-only; states that no files are written)
@@ -40,7 +40,7 @@ None. Estimation is an advisory informational skill; no gates are invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -55,7 +55,7 @@ Fixture defaults.
 - `src/combat/` holds the melee attack code; similar collision code already exists there
 - `production/sprints/sprint-003.md` through `sprint-005.md` record completed combat tasks
 
-**Input:** `/estimate Add hitbox detection to melee attacks`
+**Input:** `$ccgs-estimate Add hitbox detection to melee attacks`
 
 **Expected behavior:**
 1. Skill restates the task; the description is specific enough, so no clarification is asked
@@ -85,20 +85,20 @@ Fixture defaults.
 - `src/` holds no source files for an online or matchmaking subsystem
 - `design/gdd/online.md` describes the lobby with open "TBD" requirements, and says the networking approach (transport, host model) is not yet decided
 
-**Input:** `/estimate Implement online lobby matchmaking`
+**Input:** `$ccgs-estimate Implement online lobby matchmaking`
 
 **Expected behavior:**
 1. Skill reads `design/gdd/online.md` and finds the unresolved requirements and the undecided networking approach
 2. Code scan finds no existing subsystem; "Existing patterns available" is No
 3. Risk Factors table lists the specific unknowns: the networking approach the GDD leaves undecided, new technology, unclear requirements
 4. Confidence is Low, with the drivers explained
-5. Phase 5 recommends a time-boxed spike via `/prototype` before committing
+5. Phase 5 recommends a time-boxed spike via `$ccgs-prototype` before committing
 6. No files are written
 
 **Assertions:**
 - [ ] Confidence is Low when the task has an undecided approach, no existing code and TBD requirements
 - [ ] The Risk Factors table names the specific unknowns driving the uncertainty
-- [ ] Output recommends a time-boxed `/prototype` spike before committing
+- [ ] Output recommends a time-boxed `$ccgs-prototype` spike before committing
 - [ ] No files are written
 
 ---
@@ -110,7 +110,7 @@ Fixture defaults.
 - `design/gdd/save-load.md` documents the save system clearly
 - `production/sprints/` is empty — no historical sprints
 
-**Input:** `/estimate Implement save and load of player inventory`
+**Input:** `$ccgs-estimate Implement save and load of player inventory`
 
 **Expected behavior:**
 1. Skill reads the task, the GDD and the affected code
@@ -134,7 +134,7 @@ Fixture defaults.
 - `project.yaml`: `engine.name: godot`
 - Project has GDDs and source code under `src/`; sprint history exists
 
-**Input:** `/estimate make combat feel better`
+**Input:** `$ccgs-estimate make combat feel better`
 
 **Expected behavior:**
 1. Skill reads the task description and finds it too vague to estimate meaningfully (no scope, no named change)
@@ -156,18 +156,18 @@ Fixture defaults.
 - `project.yaml`: `engine.name: godot`, `modes.review_mode: full`
 - Task relates to a documented system with medium complexity; its code is under `src/`
 
-**Input:** `/estimate Add item pickup with inventory stacking`
+**Input:** `$ccgs-estimate Add item pickup with inventory stacking`
 
 **Expected behavior:**
 1. Skill reads context, scans code and sprint history; produces the estimate
 2. No director gate is invoked in any review mode
 3. Estimate is presented as advisory output only
-4. Next steps include "run `/sprint-plan update` to add it to the next sprint"
+4. Next steps include "run `$ccgs-sprint-plan update` to add it to the next sprint"
 
 **Assertions:**
 - [ ] No director gate is invoked regardless of review mode
 - [ ] Output is purely informational — no approval or write prompt
-- [ ] Next-step recommendation references `/sprint-plan`
+- [ ] Next-step recommendation references `$ccgs-sprint-plan`
 - [ ] Estimate does not change based on review mode
 
 ---
@@ -179,7 +179,7 @@ Fixture defaults.
 - [ ] Produces an effort range (Optimistic / Expected / Pessimistic days), not a single number
 - [ ] Does not write any files
 - [ ] No director gates are invoked
-- [ ] Ends with Phase 5 next steps matched to the result (`/prototype` for Low confidence, `/create-stories` for tasks over 10 days, `/sprint-plan update` to schedule)
+- [ ] Ends with Phase 5 next steps matched to the result (`$ccgs-prototype` for Low confidence, `$ccgs-create-stories` for tasks over 10 days, `$ccgs-sprint-plan update` to schedule)
 
 ---
 
@@ -187,7 +187,7 @@ Fixture defaults.
 
 - The skill estimates one task per run; a sprint file with several stories is
   not a supported input.
-- The "task over 10 days → break it into smaller stories via `/create-stories`"
+- The "task over 10 days → break it into smaller stories via `$ccgs-create-stories`"
   branch is not given its own case.
 - The accuracy of the day figures depends on the team and is not tested; the
   assertions check the range's structure, its sources and its stated drivers.

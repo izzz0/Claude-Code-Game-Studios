@@ -1,0 +1,8 @@
+# Registry layout: tr
+tr:
+  - id: TR-MOVEMENT-001
+    system: Movement
+    requirement: Horizontal input moves the courier and respects the wall boundary.
+  - id: TR-COLLECTION-001
+    system: Collection
+    requirement: Three target pickups complete the run exactly once.

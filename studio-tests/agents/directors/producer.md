@@ -9,11 +9,11 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.claude/agents/producer.md` frontmatter:
+Verified by reading the agent's `.codex/agents/ccgs-producer.toml` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references scope, sprint, milestone, production — not generic)
 - [ ] `tools:` includes Write and Edit (it authors sprint plans per its Output Format and maintains the risk register) and Bash only because a preloaded skill needs it (`skills:` includes `scope-check`, which reads `git log`)
-- [ ] Model tier is `opus` — frontmatter `model:` reads exactly `opus` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over design decisions or technical architecture
 
 ---
@@ -74,7 +74,7 @@ Verified by reading the agent's `.claude/agents/producer.md` frontmatter:
 - [ ] Does not invent a capacity or velocity figure to judge the load against
 
 ### Case 7: Phase gate at `minimal` — the brief's Build order is the plan
-**Scenario:** `/gate-check production` at `workflow: minimal` runs the panel with `review_mode: lean` set explicitly, so the producer is spawned alone for PR-PHASE-GATE. The context gives the target phase (Production), the tier, and the gate's required artifacts at that tier: a filled `design/game-brief.md` with its Build order, and stories under `production/epics/`. Both are present — the Build order lists four MVP features, the first three independent and the fourth depending on the first, and there is one story per feature in that order, none Blocked. `team.size` is `individual`; the brief states a six-week target for the MVP. The sprint plan and sprint capacity are passed as "not required at `workflow: minimal`".
+**Scenario:** `$ccgs-gate-check production` at `workflow: minimal` runs the panel with `review_mode: lean` set explicitly, so the producer is spawned alone for PR-PHASE-GATE. The context gives the target phase (Production), the tier, and the gate's required artifacts at that tier: a filled `design/game-brief.md` with its Build order, and stories under `production/epics/`. Both are present — the Build order lists four MVP features, the first three independent and the fourth depending on the first, and there is one story per feature in that order, none Blocked. `team.size` is `individual`; the brief states a six-week target for the MVP. The sprint plan and sprint capacity are passed as "not required at `workflow: minimal`".
 **Expected:** Returns `PR-PHASE-GATE: READY` — the Build order is the plan at this tier, its dependency is ordered, and four stories fit a solo developer's six weeks. The absent sprint plan and velocity are not findings.
 **Assertions:**
 - [ ] Verdict is exactly one of READY / CONCERNS / NOT READY (the PR-PHASE-GATE verdicts), formatted as `PR-PHASE-GATE: READY`
@@ -96,7 +96,7 @@ Verified by reading the agent's `.claude/agents/producer.md` frontmatter:
 ---
 
 ## Coverage Notes
-- PR-EPIC (the epic-structure review `/create-epics` runs before it writes any epic) has no case yet.
-- PR-MILESTONE (milestone health review) is not covered — deferred to integration with /milestone-review skill.
+- PR-EPIC (the epic-structure review `$ccgs-create-epics` runs before it writes any epic) has no case yet.
+- PR-MILESTONE (milestone health review) is not covered — deferred to integration with $ccgs-milestone-review skill.
 - PR-PHASE-GATE is covered at `minimal` (Case 7); a `standard`/`full` Production gate judged against a sprint plan has no case yet.
 - Multi-sprint burn-down and velocity trend analysis are not covered here.

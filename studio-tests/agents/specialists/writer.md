@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references dialogue, lore entries, item descriptions, in-game text)
 - [ ] `tools:` reads Read, Glob, Grep, Write, Edit and `disallowedTools:` lists Bash — text authoring only, no shell or code execution
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over narrative structure, world rules, or UX copy direction
 
 ---
@@ -79,4 +79,4 @@
 - Case 3 (lore contradiction detection) requires that existing lore is in the conversation context — test is only valid when context is provided
 - Case 4 (dependency gap) tests whether the agent writes descriptions that could set wrong player expectations — a subtle but important quality issue
 - Case 5 is the most important context-awareness test; voice guide compliance must be checked rule-by-rule, not holistically
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

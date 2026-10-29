@@ -1,8 +1,8 @@
-# Skill Test Spec: /balance-check
+# Skill Test Spec: $ccgs-balance-check
 
 ## Skill Summary
 
-`/balance-check [system-name|path-to-data-file]` identifies the balance domain
+`$ccgs-balance-check [system-name|path-to-data-file]` identifies the balance domain
 (combat, economy, progression, loot, or a data file given directly), reads the
 domain's data files from `assets/data/` and `design/balance/`, then reads the
 intended values — from `design/registry/entities.yaml` first (its `constants:` and
@@ -14,9 +14,9 @@ Data Sources Analyzed, a Health Summary, an Outliers Detected table
 (Item/Value | Expected Range | Actual | Issue), Degenerate Strategies, Progression
 Analysis, a Priority-ranked Recommendations table and Values That Need Attention.
 Inputs it cannot find make the affected section `NOT ASSESSED — NO DATA`, naming
-the missing source and `/design-system`, never an estimate; a value with no
+the missing source and `$ccgs-design-system`, never an estimate; a value with no
 target is listed as `no stated range — not judged`. After the report, an
-`AskUserQuestion` offers [A] fix now, [B] save the report to
+`native user-input mechanism` offers [A] fix now, [B] save the report to
 `design/balance/balance-check-[system]-[date].md`, [C] stop; it writes only on
 [B]. No director gates are invoked. Health Summary, first match wins: CRITICAL
 ISSUES, CONCERNS, NOT ASSESSED, HEALTHY.
@@ -25,12 +25,12 @@ ISSUES, CONCERNS, NOT ASSESSED, HEALTHY.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: HEALTHY, CONCERNS, CRITICAL ISSUES, NOT ASSESSED
-- [ ] Has ask-before-write language: the save is an `AskUserQuestion` option that names its target path, and the Write happens only when that option is chosen
+- [ ] Has ask-before-write language: the save is an `native user-input mechanism` option that names its target path, and the Write happens only when that option is chosen
 - [ ] Has a next-step handoff (what to do after findings are reviewed)
 
 ---
@@ -45,7 +45,7 @@ None. Balance check is an analysis skill; no gates are invoked in any review mod
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -60,7 +60,7 @@ Fixture defaults.
 - `design/gdd/combat-system.md` gives an expected range for all 6 stats
 - All 6 values fall inside their ranges; no degenerate strategy exists
 
-**Input:** `/balance-check combat`
+**Input:** `$ccgs-balance-check combat`
 
 **Expected behavior:**
 1. Skill identifies the Combat domain from the argument
@@ -69,7 +69,7 @@ Fixture defaults.
 4. Each of the 6 values is compared with its GDD range and none falls outside; the combat checks find no dominant option
 5. Report lists `assets/data/combat-balance.json` and `design/gdd/combat-system.md` under Data Sources Analyzed; the Outliers Detected table has no rows
 6. Health Summary is HEALTHY
-7. Phase 6 `AskUserQuestion` offers [A] / [B] / [C]; nothing is written before the user chooses
+7. Phase 6 `native user-input mechanism` offers [A] / [B] / [C]; nothing is written before the user chooses
 
 **Assertions:**
 - [ ] Data Sources Analyzed lists every file read, including the data file and the GDD
@@ -87,7 +87,7 @@ Fixture defaults.
 - `design/gdd/combat-system.md` gives `player_damage_base` an expected range of 90–110
 - All other stats are within range
 
-**Input:** `/balance-check combat`
+**Input:** `$ccgs-balance-check combat`
 
 **Expected behavior:**
 1. Skill reads the data file and the GDD range for `player_damage_base`, and compares each value with its range
@@ -95,13 +95,13 @@ Fixture defaults.
 3. The Recommendations table has a row for it with a Priority, a Suggested Fix and an Impact
 4. Values That Need Attention gives a suggested adjustment with rationale
 5. Health Summary is CONCERNS — one outlier a tuning pass can fix, with no degenerate strategy, stalled progression or sinkless loop
-6. If the user picks [A] and changes `player_damage_base`, which the combat GDD defines, the skill reminds them to run `/propagate-design-change` on that GDD before committing
+6. If the user picks [A] and changes `player_damage_base`, which the combat GDD defines, the skill reminds them to run `$ccgs-propagate-design-change` on that GDD before committing
 
 **Assertions:**
 - [ ] `player_damage_base` appears in the Outliers Detected table with Expected Range 90–110 and Actual 140
 - [ ] The Recommendations table ranks the fix with a Priority
 - [ ] Health Summary is CONCERNS — not HEALTHY, and not CRITICAL ISSUES without a finding of the critical kind
-- [ ] On [A], a fix to a GDD-defined value is followed by the `/propagate-design-change` reminder
+- [ ] On [A], a fix to a GDD-defined value is followed by the `$ccgs-propagate-design-change` reminder
 
 ---
 
@@ -112,19 +112,19 @@ Fixture defaults.
 - `design/registry/entities.yaml` has no entries
 - No GDD in `design/gdd/` covers the economy
 
-**Input:** `/balance-check economy`
+**Input:** `$ccgs-balance-check economy`
 
 **Expected behavior:**
 1. Skill records its inputs as FOUND / ABSENT: the data file is FOUND; the registry entries and the economy GDD are ABSENT
 2. Skill reads the data file and lists it under Data Sources Analyzed
-3. The sections that need intended values (Outliers Detected, and Progression Analysis where it needs a target) are marked `NOT ASSESSED — NO DATA`, naming the missing economy GDD and the empty registry, and naming `/design-system` as the skill that writes them
+3. The sections that need intended values (Outliers Detected, and Progression Analysis where it needs a target) are marked `NOT ASSESSED — NO DATA`, naming the missing economy GDD and the empty registry, and naming `$ccgs-design-system` as the skill that writes them
 4. No expected range is invented or inferred from the data itself
 5. Health Summary is NOT ASSESSED — the report says the values could not be judged, not that they are fine
 
 **Assertions:**
 - [ ] Skill does not fabricate expected ranges when neither the registry nor a GDD supplies them
 - [ ] The affected sections are marked `NOT ASSESSED — NO DATA` rather than shown as empty tables
-- [ ] Output names the missing design source (economy GDD in `design/gdd/`, empty `design/registry/entities.yaml`) and `/design-system`
+- [ ] Output names the missing design source (economy GDD in `design/gdd/`, empty `design/registry/entities.yaml`) and `$ccgs-design-system`
 - [ ] Health Summary is NOT ASSESSED — not HEALTHY, and not CONCERNS, since nothing was found wrong
 
 ---
@@ -136,7 +136,7 @@ Fixture defaults.
 - `design/gdd/combat-system.md` still says `player_damage_base` range 100–130 (stale)
 - `assets/data/combat-balance.json` has `player_damage_base: 125`
 
-**Input:** `/balance-check combat`
+**Input:** `$ccgs-balance-check combat`
 
 **Expected behavior:**
 1. Skill greps `design/registry/entities.yaml` (`^  - name:` with context) before reading the GDD
@@ -160,14 +160,14 @@ Fixture defaults.
 - `project.yaml`: `modes.review_mode: full`
 - `modes.automation` resolves to `collaborative`
 
-**Input:** `/balance-check` (no argument)
+**Input:** `$ccgs-balance-check` (no argument)
 
 **Expected behavior:**
 1. Skill asks the user which system to check; user answers "combat"
 2. Skill reads data and design targets and prints the report
 3. No director gate is invoked
-4. After the report, `AskUserQuestion` offers [A] fix now, [B] save to `design/balance/balance-check-combat-[date].md`, [C] stop
-5. On [B]: the report is written to `design/balance/balance-check-combat-[YYYY-MM-DD].md` (directory created if needed), the write is confirmed, and the skill ends with "Re-run `/balance-check` after fixes to verify."
+4. After the report, `native user-input mechanism` offers [A] fix now, [B] save to `design/balance/balance-check-combat-[date].md`, [C] stop
+5. On [B]: the report is written to `design/balance/balance-check-combat-[YYYY-MM-DD].md` (directory created if needed), the write is confirmed, and the skill ends with "Re-run `$ccgs-balance-check` after fixes to verify."
 6. On [C]: nothing is written; open issues are summarized and the same re-run line ends the output
 
 **Assertions:**
@@ -175,7 +175,7 @@ Fixture defaults.
 - [ ] No director gate is invoked in any review mode
 - [ ] The report is presented before the save option, and the save option names `design/balance/balance-check-[system]-[date].md`
 - [ ] Option [B] writes to that path with the date in YYYY-MM-DD form; option [C] writes nothing
-- [ ] Both [B] and [C] end with "Re-run `/balance-check` after fixes to verify."
+- [ ] Both [B] and [C] end with "Re-run `$ccgs-balance-check` after fixes to verify."
 
 ---
 
@@ -187,7 +187,7 @@ Fixture defaults.
 - `design/gdd/combat-system.md` gives a range for the 6 stats and nothing for `legacy_armor_mult`
 - The 6 stats are inside their ranges; no degenerate strategy exists
 
-**Input:** `/balance-check combat`
+**Input:** `$ccgs-balance-check combat`
 
 **Expected behavior:**
 1. Every value is compared with its target; the 6 stats are in range
@@ -207,7 +207,7 @@ Fixture defaults.
 - [ ] Reads the domain's data files (Phase 2) and the registry then GDD (Phase 3) before analysis
 - [ ] Compares every data value with its target (registry constant `value`, registry formula `output_range`, or GDD range); a value outside it is an Outliers Detected row, a value with none is `no stated range — not judged`
 - [ ] Outliers Detected table uses the columns Item/Value, Expected Range, Actual, Issue; Recommendations uses Priority, Issue, Suggested Fix, Impact
-- [ ] A section whose inputs are absent is `NOT ASSESSED — NO DATA`, never estimated, and names the missing source and `/design-system`
+- [ ] A section whose inputs are absent is `NOT ASSESSED — NO DATA`, never estimated, and names the missing source and `$ccgs-design-system`
 - [ ] Writes only when the user picks the save option, and only to `design/balance/balance-check-[system]-[date].md`
 - [ ] No director gates are invoked
 - [ ] Health Summary, first match: CRITICAL ISSUES, CONCERNS, NOT ASSESSED, HEALTHY — HEALTHY only when every value was judged against a stated target

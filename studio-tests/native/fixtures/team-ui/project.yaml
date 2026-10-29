@@ -1,0 +1,15 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Pocket Courier
+  stage: Production
+modes:
+  rigor: minimal
+  automation: guided
+team:
+  size: small
+engine:
+  name: Cocos
+  version: 3.8.8
+  language: TypeScript

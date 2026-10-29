@@ -1,20 +1,20 @@
-# Skill Test Spec: /map-systems
+# Skill Test Spec: $ccgs-map-systems
 
 ## Skill Summary
 
-`/map-systems` decomposes a game concept into a systems index. It reads
+`$ccgs-map-systems` decomposes a game concept into a systems index. It reads
 `design/gdd/game-concept.md` (at `minimal`, `design/game-brief.md`) and the pillars,
 enumerates explicit and implicit systems, maps dependencies into layers
 (Foundation → Core → Feature → Presentation → Polish), assigns priority tiers
 (MVP / Vertical Slice / Alpha / Full Vision), derives a design order, and writes
-`design/gdd/systems-index.md` from `.claude/docs/templates/systems-index.md` after
-approval. Each collaborative phase ends with an `AskUserQuestion`.
+`design/gdd/systems-index.md` from `.agents/studio/docs/templates/systems-index.md` after
+approval. Each collaborative phase ends with an `native user-input mechanism`.
 
 Three director gates run in sequence, each in its own phase:
 TD-SYSTEM-BOUNDARY (technical-director) after the dependency map is approved,
 PR-SCOPE (producer) after priorities are approved and before the write, and
 CD-SYSTEMS (creative-director) after the index is written. In `lean` and `solo`
-each is skipped with a named note. It is required before `/design-system` at
+each is skipped with a named note. It is required before `$ccgs-design-system` at
 `standard`/`full` and optional at `minimal`. Verdicts: COMPLETE (index written) or
 BLOCKED (user declined the write).
 
@@ -22,13 +22,13 @@ BLOCKED (user declined the write).
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED
 - [ ] Contains "May I write" collaborative protocol language (for `design/gdd/systems-index.md`)
-- [ ] Has a next-step handoff at the end (`/design-system`)
+- [ ] Has a next-step handoff at the end (`$ccgs-design-system`)
 - [ ] Documents three gates at their phases: TD-SYSTEM-BOUNDARY (Phase 3), PR-SCOPE (Phase 4), CD-SYSTEMS (Phase 5, after the write)
 
 ---
@@ -46,7 +46,7 @@ In `full` mode, sequentially:
    the index path, the pillars and core fantasy (the brief's pitch and "what they
    feel" line at `minimal`), every tier's assignments and the high-risk and
    bottleneck systems. REJECT → revise the system set before GDD authoring;
-   CONCERNS → `AskUserQuestion` (`Revise the system set` / `Accept — record them
+   CONCERNS → `native user-input mechanism` (`Revise the system set` / `Accept — record them
    in the index` / `Discuss further`); on Accept they are recorded as a
    `> **Creative Director Note** (<tier>): …` directly beneath the
    `## Priority Tiers` table.
@@ -66,7 +66,7 @@ In `solo` mode the same three notes appear with "Solo mode."
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -84,7 +84,7 @@ Fixture defaults.
 - TD-SYSTEM-BOUNDARY returns APPROVE, PR-SCOPE returns REALISTIC, CD-SYSTEMS
   returns APPROVE
 
-**Input:** `/map-systems`
+**Input:** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. Reads the concept and pillars; globs `design/gdd/*.md`
@@ -105,7 +105,7 @@ Fixture defaults.
    fantasy, every tier's system assignments and the high-risk and bottleneck
    systems
 8. Updates `production/session-state/active.md`; Verdict: COMPLETE; offers
-   `/design-system [first-system-in-order]`
+   `$ccgs-design-system [first-system-in-order]`
 
 **Assertions:**
 - [ ] Implicit systems are inferred and labelled implicit, with the reason given
@@ -124,17 +124,17 @@ Fixture defaults.
 - `project.yaml`: `modes.workflow: standard`
 - Neither `design/gdd/game-concept.md` nor `design/game-brief.md` exists
 
-**Input:** `/map-systems`
+**Input:** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. Phase 1 finds no concept
-2. Skill outputs: "No game concept found. Run `/brainstorm` first to create one,
+2. Skill outputs: "No game concept found. Run `$ccgs-brainstorm` first to create one,
    then come back to decompose it into systems."
 3. Skill stops — no enumeration, no gates, no index
 
 **Assertions:**
 - [ ] The "No game concept found" message is printed
-- [ ] Skill recommends `/brainstorm` as the next action
+- [ ] Skill recommends `$ccgs-brainstorm` as the next action
 - [ ] No systems enumeration is presented and no gate is spawned
 - [ ] No `design/gdd/systems-index.md` is created and Verdict COMPLETE is not emitted
 
@@ -149,12 +149,12 @@ Fixture defaults.
 - CD-SYSTEMS returns CONCERNS: an MVP system implied by the core fantasy is missing
 - At the CONCERNS question the user picks `Accept — record them in the index`
 
-**Input:** `/map-systems`
+**Input:** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. The index is written after "May I write" approval
 2. CD-SYSTEMS is spawned and returns CONCERNS
-3. The concerns are shown with `AskUserQuestion`: `Revise the system set` /
+3. The concerns are shown with `native user-input mechanism`: `Revise the system set` /
    `Accept — record them in the index` / `Discuss further`
 4. On Accept, the concern is recorded in the index as
    `> **Creative Director Note** (MVP): …` directly beneath the `## Priority Tiers`
@@ -178,7 +178,7 @@ Fixture defaults.
 - `design/gdd/game-concept.md` exists
 - `design/gdd/systems-index.md` already exists with 8 systems, 3 of them designed
 
-**Input:** `/map-systems`
+**Input:** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. Skill reads the existing index and presents its current status
@@ -218,7 +218,7 @@ Fixture defaults.
 
 **Fixture (solo mode):**
 - Same concept, `project.yaml`: `modes.workflow: standard`, `modes.review_mode: full`
-- Input: `/map-systems --review solo`
+- Input: `$ccgs-map-systems --review solo`
 
 **Solo mode expected behavior:**
 1. `--review solo` overrides the resolved `full`
@@ -241,7 +241,7 @@ Fixture defaults.
 - Same, but `design/gdd/systems-index.md` exists and the user chose "Update the
   index with new systems"
 
-**Input (both fixtures):** `/map-systems`
+**Input (both fixtures):** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. New index: after the summary, asks "May I write the systems index to
@@ -264,7 +264,7 @@ Fixture defaults.
 - TD-SYSTEM-BOUNDARY returns REJECT: two systems share one responsibility and
   must be merged
 
-**Input:** `/map-systems`
+**Input:** `$ccgs-map-systems`
 
 **Expected behavior:**
 1. The dependency map is approved and TD-SYSTEM-BOUNDARY is spawned
@@ -283,12 +283,12 @@ Fixture defaults.
 ## Protocol Compliance
 
 - [ ] Reads the game concept (or brief at `minimal`) and pillars before any decomposition
-- [ ] `AskUserQuestion` at enumeration, dependencies, priorities and the write
+- [ ] `native user-input mechanism` at enumeration, dependencies, priorities and the write
 - [ ] "May I write the systems index to `design/gdd/systems-index.md`?" asked before writing — at `collaborative`, and at `guided` for a new index
 - [ ] CD-SYSTEMS's CONCERNS reach the written index only through the user's choice; TD-SYSTEM-BOUNDARY's CONCERNS are noted inline in the index
 - [ ] Gates run sequentially at their own phases in full mode, never before their inputs exist
 - [ ] Skipped gates noted by name and mode in lean/solo output
-- [ ] Ends with next-step handoff: `/design-system [next-system]`
+- [ ] Ends with next-step handoff: `$ccgs-design-system [next-system]`
 
 ---
 
@@ -300,6 +300,6 @@ Fixture defaults.
   any of the three gates are not given fixtures.
 - `autonomous` (records the enumeration via `log_decision` and writes without
   asking) is not tested.
-- The `next` and `[system-name]` argument modes (handoff to `/design-system`) are
+- The `next` and `[system-name]` argument modes (handoff to `$ccgs-design-system`) are
   not tested here — they are post-index conveniences.
 - `docs.density` depth (where per-system prose goes) is not fixture-locked.

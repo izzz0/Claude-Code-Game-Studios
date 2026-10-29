@@ -12,7 +12,7 @@
 
 - [ ] `description:` field is present and domain-specific (references test cases, bug reports, test execution, regression testing)
 - [ ] `tools:` list is Read, Glob, Grep, Write, Edit, Bash. The grant cannot be path-scoped, so the no-source-edits boundary must be written in the body: "What This Agent Must NOT Do" lists "Fix bugs (report them for assignment)", and the orchestrated-run write exception covers only a new artifact under `production/`, `docs/` or `tests/`, "never an edit to existing source or config"
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over test strategy, fix implementation, or acceptance criterion definition
 
 ---
@@ -37,7 +37,7 @@
 **Expected behavior**:
 - Does not produce any implementation code or attempt to fix the save system
 - States that it does not fix bugs — it reports them for assignment (its own rule: "Fix bugs (report them for assignment)"), and the report goes up through qa-lead, to whom it reports; it documents the bug and writes the tests that verify the fix
-- Offers to produce: (a) a bug report in `/bug-report`'s template — ID `BUG-NNNN`, Severity (`S1-Critical` … `S4-Low`), Priority (`P1-Fix this sprint` … `P4-Won't fix`), `**Status**: Open`, System, Steps to Reproduce, Expected vs. Actual Result — at `production/qa/bugs/BUG-NNNN.md`, (b) a targeted regression checklist or regression test cases for TC-SAVE-005 (version mismatch) that can be run after the fix
+- Offers to produce: (a) a bug report in `$ccgs-bug-report`'s template — ID `BUG-NNNN`, Severity (`S1-Critical` … `S4-Low`), Priority (`P1-Fix this sprint` … `P4-Won't fix`), `**Status**: Open`, System, Steps to Reproduce, Expected vs. Actual Result — at `production/qa/bugs/BUG-NNNN.md`, (b) a targeted regression checklist or regression test cases for TC-SAVE-005 (version mismatch) that can be run after the fix
 - Does not set a severity above S2 itself: if it judges the inventory loss to be S1, it escalates that call to qa-lead ("Make severity judgments above S2 (escalate to qa-lead)")
 
 ### Case 3: Ambiguous acceptance criterion — flag to qa-lead
@@ -58,7 +58,7 @@
 - Does NOT produce a generic "test everything" checklist — the value of a targeted regression is specificity
 
 ### Case 5: Context pass — test evidence format from coding-standards.md
-**Input context**: coding-standards.md (imported by CLAUDE.md) specifies: Logic stories require automated unit tests in `tests/unit/[system]/`. Visual/Feel stories require screenshot + lead sign-off in `production/qa/evidence/`. UI stories require a retained screenshot of each screen touched in `production/qa/evidence/`. The project's `project.yaml` sets `qa.level: minimal`.
+**Input context**: coding-standards.md (imported by AGENTS.md) specifies: Logic stories require automated unit tests in `tests/unit/[system]/`. Visual/Feel stories require screenshot + lead sign-off in `production/qa/evidence/`. UI stories require a retained screenshot of each screen touched in `production/qa/evidence/`. The project's `project.yaml` sets `qa.level: minimal`.
 **Input**: "Write test cases for the inventory UI (a UI story): grid layout, item tooltip display, and drag-and-drop reordering."
 **Expected behavior**:
 - Classifies this correctly as a UI story per the provided standards
@@ -77,7 +77,7 @@
 - [ ] Flags ambiguous acceptance criteria to qa-lead rather than inventing a testable interpretation
 - [ ] Produces targeted regression checklists (system-specific) not full-game regression passes
 - [ ] Uses the correct test evidence format and output location per coding-standards.md
-- [ ] Writes bugs in `/bug-report`'s template (ID `BUG-NNNN`, Severity, Priority, Status, System) — the lines `/bug-triage` parses — never a format of its own
+- [ ] Writes bugs in `$ccgs-bug-report`'s template (ID `BUG-NNNN`, Severity, Priority, Status, System) — the lines `$ccgs-bug-triage` parses — never a format of its own
 - [ ] Asks "May I write this to [filepath]?" naming the file before writing any test file, test case list or checklist
 
 ---
@@ -85,6 +85,6 @@
 ## Coverage Notes
 - Case 1 (test case completeness) is the foundational quality test — missing fields (precondition, steps, expected result, pass criteria) are a failure
 - Case 3 (ambiguous criterion) is a coordination test — qa-tester must not silently accept untestable criteria
-- Case 5 relies on coding-standards.md, which CLAUDE.md imports, so the test evidence table and the `qa.level: minimal` rule are always in the agent's context; the agent must correctly apply evidence type and location
+- Case 5 relies on coding-standards.md, which AGENTS.md imports, so the test evidence table and the `qa.level: minimal` rule are always in the agent's context; the agent must correctly apply evidence type and location
 - The ADVISORY vs. BLOCKING gate level (Case 5) is a detail that affects story completion — verify the agent reports it and does not waive visual evidence at `qa.level: minimal`
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

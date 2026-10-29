@@ -1,8 +1,8 @@
-# Skill Test Spec: /asset-audit
+# Skill Test Spec: $ccgs-asset-audit
 
 ## Skill Summary
 
-`/asset-audit` audits the engine's asset root — `assets/` (art, audio, vfx,
+`$ccgs-asset-audit` audits the engine's asset root — `assets/` (art, audio, vfx,
 shaders, data) on Godot, `Assets/` on Unity, `Content/` on Unreal — for naming
 convention compliance, size budgets, format standards, orphaned assets and
 missing assets. It reads the art bible or asset standards from the design docs
@@ -13,7 +13,7 @@ own patterns — art `[category]_[name]_[variant]_[size].[ext]`, audio
 `[category]_[context]_[name]_[variant].[ext]`, all lowercase with underscores —
 and Unity and Unreal names only against a rule the art bible states. Orphaned
 and missing assets are found by searching the **code root** for asset
-references; GDD-level completeness is `/content-audit`'s job. The report lists
+references; GDD-level completeness is `$ccgs-content-audit`'s job. The report lists
 violations only, in one table per category, and names every section it could
 not assess. A measurement it cannot take is `NOT ASSESSED`, never an estimate.
 The skill is read-only: it writes no files and invokes no director gates.
@@ -24,12 +24,12 @@ COMPLIANT only when at least one asset was scanned and every section assessed.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLIANT, WARNINGS, NON-COMPLIANT, NOT ASSESSED
-- [ ] Does NOT require "May I write" language (read-only: `allowed-tools` has no Write/Edit and the skill states it does not write files)
+- [ ] Does NOT require "May I write" language (read-only: `tool permissions` has no Write/Edit and the skill states it does not write files)
 - [ ] Has a next-step handoff (what to do after audit results)
 
 ---
@@ -44,7 +44,7 @@ None. Asset auditing is a read-only analysis skill; no gates are invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -60,7 +60,7 @@ Fixture defaults.
 - `assets/audio/sfx/` contains: `sfx_player_jump_01.ogg`, `sfx_item_pickup_01.ogg` (OGG, 44.1 kHz, 80KB and under 1 s each)
 - `src/` references all four files
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Skill reads the asset standards from `design/art/art-bible.md` (Phase 1)
@@ -86,7 +86,7 @@ Fixture defaults.
 - `assets/art/environment/` contains 5 correctly named power-of-two PNG textures, all referenced from code
 - 3 of them are 4096×4096 at 4MB each; 2 are 1024×1024 at 1MB each
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Skill reads the 2MB texture budget from the art bible
@@ -113,7 +113,7 @@ Fixture defaults.
 - `assets/audio/music/music_menu_theme_01.wav` exists (WAV format, 6MB), referenced from code
 - `assets/audio/sfx/sfx_player_footstep_01.ogg` exists (OGG format, 40KB), referenced from code
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Skill applies the Phase 3 audio format standard (OGG for SFX, OGG/MP3 for music)
@@ -141,7 +141,7 @@ Fixture defaults.
 - `assets/art/characters/boss/` is empty — the file does not exist
 - `design/gdd/enemies.md` also names `char_boss_roar_512.png`, which no code references
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Skill searches code for asset references (Phase 3 "Missing assets") and checks each path exists
@@ -149,13 +149,13 @@ Fixture defaults.
 3. The Missing Assets table lists Reference Location `src/enemies/boss.gd` and the Expected Path
 4. The GDD-only name `char_boss_roar_512.png` is not reported — the missing-asset check searches code, not GDDs
 5. Verdict is NON-COMPLIANT
-6. Next steps point to `/content-audit` for the GDD cross-check
+6. Next steps point to `$ccgs-content-audit` for the GDD cross-check
 
 **Assertions:**
 - [ ] The Missing Assets table lists `src/enemies/boss.gd` as the reference location and `assets/art/characters/boss/char_boss_idle_512.png` as the expected path
 - [ ] The GDD-only asset name is not reported as missing
 - [ ] Verdict is NON-COMPLIANT when a code-referenced asset is missing
-- [ ] Next steps name `/content-audit` for GDD-vs-asset completeness
+- [ ] Next steps name `$ccgs-content-audit` for GDD-vs-asset completeness
 - [ ] Skill does not create or add placeholder assets
 
 ---
@@ -167,7 +167,7 @@ Fixture defaults.
 - `assets/` does not exist
 - `design/art/art-bible.md` does not exist; no design doc defines asset standards
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Skill runs its insufficient-input check before producing a report: records each input as FOUND or ABSENT
@@ -179,7 +179,7 @@ Fixture defaults.
 **Assertions:**
 - [ ] Inputs are listed as FOUND / ABSENT before any report section
 - [ ] Verdict is `NOT ASSESSED — NO DATA`, not COMPLIANT
-- [ ] The report names the missing inputs (`assets/`, asset standards) and the skill that produces the standards (`/art-bible`)
+- [ ] The report names the missing inputs (`assets/`, asset standards) and the skill that produces the standards (`$ccgs-art-bible`)
 - [ ] No director gate is invoked, even with review mode `full`
 - [ ] No "May I write" prompt appears and no file is written
 
@@ -192,7 +192,7 @@ Fixture defaults.
 - `design/art/art-bible.md` asset standards: textures PNG ≤2MB; SFX OGG ≤500KB
 - `assets/` does not exist; `src/` holds gameplay code that loads no asset yet
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. The art bible is FOUND, so the insufficient-input check does not stop the run
@@ -214,18 +214,18 @@ Fixture defaults.
 - `design/art/art-bible.md` does not exist; no design doc states asset standards
 - `assets/art/ui/` holds 3 correctly named power-of-two PNGs; `src/` references all three
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Assets are FOUND and standards ABSENT, so the skill runs rather than stopping
 2. Naming, Format, Orphaned and Missing are checked; none finds a violation
-3. Size is `NOT ASSESSED — no size budget set`, and the report names `/art-bible` as the skill that writes the standards
+3. Size is `NOT ASSESSED — no size budget set`, and the report names `$ccgs-art-bible` as the skill that writes the standards
 4. The Summary lists Size under Sections not assessed
 5. Verdict is NOT ASSESSED, naming Size
 
 **Assertions:**
 - [ ] No size is judged against an invented budget
-- [ ] The Size section is `NOT ASSESSED — no size budget set` and `/art-bible` is named
+- [ ] The Size section is `NOT ASSESSED — no size budget set` and `$ccgs-art-bible` is named
 - [ ] Verdict is NOT ASSESSED, not COMPLIANT
 
 ---
@@ -239,12 +239,12 @@ Fixture defaults.
 - `assets/` does not exist
 - `Source/Arena/Private/GruntCharacter.cpp` loads `/Game/Characters/Grunt/T_Grunt_D`
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
 1. Phase 2 globs `Content/**/*.uasset` and `Content/**/*.umap`, not `assets/`: `Total assets scanned: 2`
 2. Both sizes are measured against the 4MB texture budget; neither is over
-3. The PascalCase names are not checked against the Godot lowercase patterns; with no naming rule in the art bible, Naming is `NOT ASSESSED — no naming rule for Unreal`, and `/art-bible` is named
+3. The PascalCase names are not checked against the Godot lowercase patterns; with no naming rule in the art bible, Naming is `NOT ASSESSED — no naming rule for Unreal`, and `$ccgs-art-bible` is named
 4. Format is NOT ASSESSED (an Unreal asset file does not keep its source format) and Orphaned is NOT ASSESSED (Unreal assets are referenced from other assets, not only from code)
 5. The code reference resolves to an existing asset, so Missing has no finding
 6. Verdict is NOT ASSESSED, naming Naming, Format and Orphaned
@@ -260,20 +260,20 @@ Fixture defaults.
 ### Case 9: Engine Unresolved — Stop before scanning
 
 **Fixture:**
-- `project.yaml` has no `engine.name`; `.claude/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
+- `project.yaml` has no `engine.name`; `.agents/studio/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
 - Both `src/` and `Source/` exist, so the tree does not decide the engine
 - `design/art/art-bible.md` has asset standards; `assets/art/` holds PNG files
 
-**Input:** `/asset-audit`
+**Input:** `$ccgs-asset-audit`
 
 **Expected behavior:**
-1. Phase 2 cannot resolve the engine or its code root per `.claude/docs/code-root-resolution.md`
-2. The skill stops with `NOT ASSESSED — engine unresolved`, naming `/setup-engine`
+1. Phase 2 cannot resolve the engine or its code root per `.agents/studio/docs/code-root-resolution.md`
+2. The skill stops with `NOT ASSESSED — engine unresolved`, naming `$ccgs-setup-engine`
 3. No asset root is guessed, so the Godot naming patterns are not applied and no section is reported clean
 
 **Assertions:**
 - [ ] Verdict is `NOT ASSESSED — engine unresolved`, not COMPLIANT
-- [ ] Output names `/setup-engine`
+- [ ] Output names `$ccgs-setup-engine`
 - [ ] No violation table is filled from an assumed `assets/` layout
 
 ---
@@ -300,7 +300,7 @@ Fixture defaults.
   and Unreal it is NOT ASSESSED (Case 8).
 - Unity follows Case 8's naming and orphan rules, with Format still checked on
   the source files under `Assets/`; it is not tested separately.
-- `/asset-audit` checks compliance against code references; `/content-audit`
+- `$ccgs-asset-audit` checks compliance against code references; `$ccgs-content-audit`
   checks completeness against the GDDs. Case 4 pins that boundary.
 - An audio duration budget is not measurable with the skill's tools, so it makes
   that check NOT ASSESSED; Case 1's fixture sets none, and the path is not given

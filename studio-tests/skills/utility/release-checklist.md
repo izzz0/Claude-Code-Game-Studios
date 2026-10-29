@@ -1,10 +1,10 @@
-# Skill Test Spec: /release-checklist
+# Skill Test Spec: $ccgs-release-checklist
 
 ## Skill Summary
 
-`/release-checklist [platform: pc|console|mobile|all]` builds a pre-release
+`$ccgs-release-checklist [platform: pc|console|mobile|all]` builds a pre-release
 checklist scoped to the project. It resolves `modes.rigor`, `modes.workflow`,
-`project.stage` and `platform.cert_tier`, reads `CLAUDE.md` and the current
+`project.stage` and `platform.cert_tier`, reads `AGENTS.md` and the current
 milestone in `production/milestones/`, and reads open bugs from
 `production/qa/bugs/` (Severity and Status lines). The bug items use the release
 gate's thresholds for the resolved `workflow` — an open S1, S2 or S3 fails at
@@ -34,22 +34,22 @@ then asks "May I write this to
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: READY, NOT READY, NOT ASSESSED
 - [ ] Contains "May I write" language before writing the checklist
-- [ ] Has a next-step handoff (`/gate-check` for the formal verdict, `/team-release` for sign-offs)
+- [ ] Has a next-step handoff (`$ccgs-gate-check` for the formal verdict, `$ccgs-team-release` for sign-offs)
 
 ---
 
 ## Director Gate Checks
 
-None. `/release-checklist` spawns no agents (`Agent` is not in its allowed
+None. `$ccgs-release-checklist` spawns no agents (`Agent` is not in its allowed
 tools). The Sign-offs Required list (QA Lead, Technical Director, Producer,
 Creative Director) is a checklist for humans, not spawned gates. Formal phase
-advancement is `/gate-check`.
+advancement is `$ccgs-gate-check`.
 
 ---
 
@@ -57,7 +57,7 @@ advancement is `/gate-check`.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -74,10 +74,10 @@ Fixture defaults.
   `BUG-0004.md` (S4, `**Status**: Open`); `modes.rigor` is unset (`workflow: minimal`)
 - CI test output exists
 
-**Input:** `/release-checklist pc`
+**Input:** `$ccgs-release-checklist pc`
 
 **Expected behavior:**
-1. Skill reads `CLAUDE.md` and the current milestone
+1. Skill reads `AGENTS.md` and the current milestone
 2. Codebase Health states the denominator: `scanned 40 source files: 3 TODO, 1
    FIXME, 0 HACK`, listing the FIXME
 3. The PC device block is emitted; no Console or Mobile device block
@@ -85,7 +85,7 @@ Fixture defaults.
 5. Store / Distribution, Launch Readiness and the Go / No-Go line follow
 6. Skill presents total items and known blockers, then asks "May I write this
    to `production/releases/release-checklist-[version].md`?"; next steps name
-   `/gate-check` and `/team-release`
+   `$ccgs-gate-check` and `$ccgs-team-release`
 
 **Assertions:**
 - [ ] TODO/FIXME/HACK counts are reported with the number of files scanned
@@ -103,7 +103,7 @@ Fixture defaults.
 - `platform.cert_tier: itch`
 - Source files exist in the code root
 
-**Input:** `/release-checklist console`
+**Input:** `$ccgs-release-checklist console`
 
 **Expected behavior:**
 1. The `console` argument selects the Console device block (suspend/resume, user
@@ -126,7 +126,7 @@ Fixture defaults.
 - Run B: `platform.cert_tier` absent (resolved block shows it as unset) and the
   user cannot say which platforms are in scope
 
-**Input:** `/release-checklist` (no argument → device blocks for `all`)
+**Input:** `$ccgs-release-checklist` (no argument → device blocks for `all`)
 
 **Expected behavior:**
 1. Run A emits no certification block, only the line "Certification: omitted —
@@ -154,12 +154,12 @@ Fixture defaults.
 - No test output directories or CI logs
 - `production/qa/bugs/` holds one bug, `BUG-0002.md` (S2, `**Status**: Closed`)
 
-**Input:** `/release-checklist pc`
+**Input:** `$ccgs-release-checklist pc`
 
 **Expected behavior:**
 1. The code root is unresolved, so no scan runs
 2. Codebase Health reads `NOT ASSESSED — code root unresolved`
-   (`.claude/docs/code-root-resolution.md`), not `0` TODO/FIXME/HACK
+   (`.agents/studio/docs/code-root-resolution.md`), not `0` TODO/FIXME/HACK
 3. The test line reads `Test results: NOT ASSESSED — no test output or CI logs
    found` rather than being omitted
 4. The rest of the checklist is still generated and offered for writing
@@ -180,20 +180,20 @@ Fixture defaults.
 - `platform.cert_tier: console`; source files present
 - Any review mode
 
-**Input:** `/release-checklist all`
+**Input:** `$ccgs-release-checklist all`
 
 **Expected behavior:**
 1. Skill generates the checklist with all device blocks and the console
    certification block
 2. The Sign-offs Required list appears as unchecked items
 3. No director or other agent is spawned; no gate IDs appear
-4. Next steps point to `/gate-check` and `/team-release`
+4. Next steps point to `$ccgs-gate-check` and `$ccgs-team-release`
 
 **Assertions:**
 - [ ] No director gate is invoked and no gate skip message appears
 - [ ] No subagent is spawned, although sign-offs are listed
 - [ ] The console certification block is the only certification block
-- [ ] Next steps name `/gate-check` and `/team-release`
+- [ ] Next steps name `$ccgs-gate-check` and `$ccgs-team-release`
 
 ---
 
@@ -206,7 +206,7 @@ Fixture defaults.
 - CI test output exists
 - `production/qa/bugs/BUG-0007.md` is an S1 (Critical) bug with `**Status**: Open`
 
-**Input:** `/release-checklist pc`
+**Input:** `$ccgs-release-checklist pc`
 
 **Expected behavior:**
 1. Codebase Health reads `NOT ASSESSED — code root unresolved`
@@ -232,7 +232,7 @@ Fixture defaults.
 - Run B: `modes.rigor: full` (`workflow: full`); `production/qa/bugs/BUG-0013.md`
   is an S3 (Medium) bug with `**Status**: Open`, and no other bug is open
 
-**Input:** `/release-checklist pc`
+**Input:** `$ccgs-release-checklist pc`
 
 **Expected behavior:**
 1. Both runs read the bugs from `production/qa/bugs/`, not from the milestone
@@ -254,14 +254,14 @@ Fixture defaults.
 - `platform.cert_tier: steam`; source files present; CI test output exists
 - `production/qa/bugs/` does not exist
 
-**Input:** `/release-checklist pc`
+**Input:** `$ccgs-release-checklist pc`
 
 **Expected behavior:**
 1. The Quality Gates bug line reads `NOT ASSESSED — no bug records`, not `0`
 2. The bug items are not ticked
 3. Go / No-Go is NOT ASSESSED (naming the bug items), unless a blocking item
    failed elsewhere — never READY
-4. The output says bugs are filed with `/bug-report`
+4. The output says bugs are filed with `$ccgs-bug-report`
 
 **Assertions:**
 - [ ] No bare `0` bug count and no ticked "Zero open S1 (Critical) bugs" item
@@ -279,7 +279,7 @@ Fixture defaults.
 - [ ] Reads open bugs from `production/qa/bugs/` and applies the release gate's thresholds for the resolved `workflow` (S1–S3 at `full`, S1 at `standard`/`minimal`); no bug files → `NOT ASSESSED — no bug records`
 - [ ] Go / No-Go takes the first match: NOT READY, then NOT ASSESSED, then READY
 - [ ] Presents totals and blockers before asking "May I write"
-- [ ] Ends with `/gate-check` and `/team-release` as next steps
+- [ ] Ends with `$ccgs-gate-check` and `$ccgs-team-release` as next steps
 
 ---
 

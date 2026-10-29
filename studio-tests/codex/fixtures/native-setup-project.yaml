@@ -1,0 +1,39 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Preserve This Project Name
+  stage: Concept
+modes:
+  rigor: minimal
+  automation: guided
+notes:
+  owner: native-smoke
+
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript
+  path: null
+
+specialists:
+  code: ccgs-godot-gdscript-specialist
+  shader: ccgs-godot-shader-specialist
+  ui: ccgs-godot-specialist
+  additional: [ccgs-godot-gdextension-specialist]
+
+naming:
+  classes: PascalCase
+  variables: snake_case
+  constants: SCREAMING_SNAKE
+  signals: past_tense
+  files: snake_case
+  scenes: snake_case
+
+# TODO: godot is not on PATH; locate Godot 4.6.1 and set its full path and commands.
+# Build/test remain unset until an export preset and test runner are configured.
+commands:
+  build: null
+  test: null
+  run: godot --path . --windowed --resolution 1280x720
+  smoke: godot --headless --path . --import

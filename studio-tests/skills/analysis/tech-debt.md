@@ -1,8 +1,8 @@
-# Skill Test Spec: /tech-debt
+# Skill Test Spec: $ccgs-tech-debt
 
 ## Skill Summary
 
-`/tech-debt` tracks technical debt through four subcommands: `scan`, `add`,
+`$ccgs-tech-debt` tracks technical debt through four subcommands: `scan`, `add`,
 `prioritize` and `report`. With no subcommand it prints usage and stops with
 Verdict FAIL. `scan` searches the code root (resolved per engine: `src/`,
 `Assets/` or `Source/`) for `TODO`, `FIXME`, `HACK` and `@deprecated` markers,
@@ -15,12 +15,12 @@ skill's Debt Register Format (next `TD-NNN`, ten columns, an `Added` date). A
 scan over zero source files is `NOT ASSESSED — no source files to scan`, an
 unresolved code root is `NOT ASSESSED — code root unresolved`, and both write
 nothing. `add` collects an
-entry through prompts and three `AskUserQuestion` choices, then asks "May I append
+entry through prompts and three `native user-input mechanism` choices, then asks "May I append
 this entry to `docs/tech-debt-register.md`?". `prioritize` scores each register
 item as `impact ÷ effort` from its Impact and Effort columns, re-sorts
 and asks before writing it back; it recommends what goes in the next sprint, or at
 `workflow: minimal` (no sprints) what to build next, and the closing next steps
-send high-priority items to `/sprint-plan` or the brief's build order. The skill
+send high-priority items to `$ccgs-sprint-plan` or the brief's build order. The skill
 resolves `automation` and `workflow`. `report` is read-only. No director gates are
 invoked. Verdicts: COMPLETE, BLOCKED (user declined a write), FAIL (missing
 subcommand), NOT ASSESSED.
@@ -29,13 +29,13 @@ subcommand), NOT ASSESSED.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED, FAIL, NOT ASSESSED
 - [ ] Contains "May I write" language (writes `docs/tech-debt-register.md`)
-- [ ] Has a next-step handoff (Phase 3: `/sprint-plan`, `/tech-debt report`)
+- [ ] Has a next-step handoff (Phase 3: `$ccgs-sprint-plan`, `$ccgs-tech-debt report`)
 
 ---
 
@@ -50,7 +50,7 @@ invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -67,7 +67,7 @@ Fixture defaults.
 - `src/gameplay/combat.gd` has 2 `# TODO` comments and 1 `# FIXME` comment
 - `src/ui/hud.gd` is 620 lines long; 12 source files in `src/` in total
 
-**Input:** `/tech-debt scan`
+**Input:** `$ccgs-tech-debt scan`
 
 **Expected behavior:**
 1. Skill resolves the code root to `src/` and scans it for debt indicators
@@ -97,7 +97,7 @@ Fixture defaults.
 - `docs/tech-debt-register.md` exists
 - `src/` contains source files with TODO comments
 
-**Input:** `/tech-debt`
+**Input:** `$ccgs-tech-debt`
 
 **Expected behavior:**
 1. Phase 1 finds no subcommand
@@ -119,7 +119,7 @@ Fixture defaults.
 - `src/` exists but contains no source files
 - `docs/tech-debt-register.md` exists with 3 entries
 
-**Input:** `/tech-debt scan`
+**Input:** `$ccgs-tech-debt scan`
 
 **Expected behavior:**
 1. Skill resolves the code root to `src/` and counts the files the scan covered: zero
@@ -137,14 +137,14 @@ Fixture defaults.
 ### Case 3b: Code Root Unresolved — NOT ASSESSED, nothing scanned on a guess
 
 **Fixture:**
-- `project.yaml` has no `engine.name`; `.claude/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
+- `project.yaml` has no `engine.name`; `.agents/studio/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
 - Both `src/` and `Source/` exist and hold source files, so the tree does not decide the root
 - `docs/tech-debt-register.md` exists with 3 entries
 
-**Input:** `/tech-debt scan`
+**Input:** `$ccgs-tech-debt scan`
 
 **Expected behavior:**
-1. The code root cannot be resolved per `.claude/docs/code-root-resolution.md`
+1. The code root cannot be resolved per `.agents/studio/docs/code-root-resolution.md`
 2. Skill reports `NOT ASSESSED — code root unresolved` and stops
 3. Neither directory is scanned on a guess; no "May I write" prompt, no register write, no COMPLETE verdict
 
@@ -161,22 +161,22 @@ Fixture defaults.
 - `docs/tech-debt-register.md` exists with 4 entries
 - `modes.automation` unset (collaborative)
 
-**Input:** `/tech-debt add`
+**Input:** `$ccgs-tech-debt add`
 
 **Expected behavior:**
 1. Skill asks in plain text for the description and affected files
-2. Skill uses `AskUserQuestion` for the category — six options, Architecture through Performance
-3. Skill uses `AskUserQuestion` for the fix effort — S, M, L, XL
-4. Skill uses `AskUserQuestion` for the impact if left unfixed — Low, Med, High, Critical
+2. Skill uses `native user-input mechanism` for the category — six options, Architecture through Performance
+3. Skill uses `native user-input mechanism` for the fix effort — S, M, L, XL
+4. Skill uses `native user-input mechanism` for the impact if left unfixed — Low, Med, High, Critical
 5. Skill presents the complete new entry
 6. Skill asks "May I append this entry to `docs/tech-debt-register.md`?"
 7. User declines — nothing is written
 8. Verdict: **BLOCKED** — user declined write
 
 **Assertions:**
-- [ ] Category is collected with `AskUserQuestion` offering the six debt categories
-- [ ] Effort is collected with `AskUserQuestion` offering S / M / L / XL
-- [ ] Impact is collected with `AskUserQuestion` offering Low / Med / High / Critical, so `prioritize` can score the row
+- [ ] Category is collected with `native user-input mechanism` offering the six debt categories
+- [ ] Effort is collected with `native user-input mechanism` offering S / M / L / XL
+- [ ] Impact is collected with `native user-input mechanism` offering Low / Med / High / Critical, so `prioritize` can score the row
 - [ ] The full entry is shown before the append prompt
 - [ ] On decline the register is unchanged and the verdict is BLOCKED
 
@@ -188,7 +188,7 @@ Fixture defaults.
 - `docs/tech-debt-register.md` exists with an `Open` entry for the same file
   and the same category as the one the user is about to add
 
-**Input:** `/tech-debt add`
+**Input:** `$ccgs-tech-debt add`
 
 **Expected behavior:**
 1. Steps 1–5 of Case 4 run as usual
@@ -212,16 +212,16 @@ Fixture defaults.
 **Fixture:**
 - `docs/tech-debt-register.md` does not exist
 
-**Input:** `/tech-debt report`
+**Input:** `$ccgs-tech-debt report`
 
 **Expected behavior:**
 1. Skill looks for the register and does not find it
-2. Verdict: **NOT ASSESSED** — no register to report on; run `/tech-debt scan` first
+2. Verdict: **NOT ASSESSED** — no register to report on; run `$ccgs-tech-debt scan` first
 3. No trend or totals are printed and nothing is written
 
 **Assertions:**
 - [ ] Verdict is NOT ASSESSED, not a report of zero items or a "stable" trend
-- [ ] The output names `/tech-debt scan` as the way to create the register
+- [ ] The output names `$ccgs-tech-debt scan` as the way to create the register
 - [ ] No file is written
 
 ---
@@ -233,7 +233,7 @@ Fixture defaults.
 - `docs/tech-debt-register.md` has 4 entries: TD-001 High/S, TD-002 Low/L, TD-003
   Critical/M, TD-004 Med/— (Effort not yet estimated)
 
-**Input:** `/tech-debt prioritize`
+**Input:** `$ccgs-tech-debt prioritize`
 
 **Expected behavior:**
 1. Skill reads `docs/tech-debt-register.md`
@@ -251,7 +251,7 @@ Fixture defaults.
 - [ ] No director gate is invoked in any review mode
 - [ ] The write happens only after the "May I write" prompt is approved
 - [ ] Verdict is COMPLETE
-- [ ] The next steps send high-priority items to `/sprint-plan`
+- [ ] The next steps send high-priority items to `$ccgs-sprint-plan`
 
 ---
 
@@ -262,20 +262,20 @@ Fixture defaults.
 - `docs/tech-debt-register.md` has 3 `Open` entries: TD-001 High/S, TD-002 Low/L, TD-003 Critical/M
 - `design/game-brief.md` exists with a build order of three numbered items; no `production/sprints/` folder
 
-**Input:** `/tech-debt prioritize`
+**Input:** `$ccgs-tech-debt prioritize`
 
 **Expected behavior:**
 1. Skill resolves `workflow: minimal` and reads the register
 2. Items are scored and re-sorted as in Case 5: TD-001 3.0, TD-003 2.0, TD-002 0.3
 3. The recommendation says which items to build next, not which belong in the next sprint
 4. Skill asks "May I write the re-prioritized register back to `docs/tech-debt-register.md`?" and writes on approval
-5. Next steps tell the user to add the high-priority items to the brief's build order instead of running `/sprint-plan`; they still include `/tech-debt report`
+5. Next steps tell the user to add the high-priority items to the brief's build order instead of running `$ccgs-sprint-plan`; they still include `$ccgs-tech-debt report`
 6. Verdict: **COMPLETE** — register re-prioritized and saved
 
 **Assertions:**
 - [ ] The recommendation is "which to build next"; the word "sprint" is not used as the place to put the items
 - [ ] The next steps name the brief's build order (`design/game-brief.md`) as where the high-priority items go
-- [ ] `/sprint-plan` is not recommended
+- [ ] `$ccgs-sprint-plan` is not recommended
 - [ ] Scoring, re-sort and the write-after-approval rule are the same as in Case 5
 - [ ] Verdict is COMPLETE
 
@@ -291,7 +291,7 @@ Fixture defaults.
 - [ ] New rows follow the Debt Register Format: the next `TD-NNN` ID, all ten columns, an `Added` date in `YYYY-MM-DD`
 - [ ] A declined write ends with BLOCKED
 - [ ] No director gates are invoked
-- [ ] Ends with the Phase 3 next steps (`/sprint-plan`, `/tech-debt report`); at workflow `minimal` the sprint step becomes "add them to the brief's build order"
+- [ ] Ends with the Phase 3 next steps (`$ccgs-sprint-plan`, `$ccgs-tech-debt report`); at workflow `minimal` the sprint step becomes "add them to the brief's build order"
 - [ ] Resolves `automation` and `workflow` through `resolve_config`
 
 ---

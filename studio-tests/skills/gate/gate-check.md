@@ -1,12 +1,12 @@
-# Skill Test Spec: /gate-check
+# Skill Test Spec: $ccgs-gate-check
 
 ## Skill Summary
 
-`/gate-check` validates whether the project is ready to advance to the next
+`$ccgs-gate-check` validates whether the project is ready to advance to the next
 development phase. It resolves artifact existence with
-`.claude/scripts/artifact-check.sh`, spot-reads the artifacts the verdict turns
+`.agents/studio/scripts/artifact-check.sh`, spot-reads the artifacts the verdict turns
 on, runs the target gate's quality checks (loaded from one file under
-`.claude/skills/gate-check/references/`), asks the user about unverifiable
+`.agents/skills-ccgs-gate-check/references/`), asks the user about unverifiable
 items, runs a director panel whose existence is set by `review_mode` and whose
 width is set by `workflow`, and produces a PASS / CONCERNS / NOT ASSESSED / FAIL
 verdict. On PASS with user confirmation it writes the new stage to
@@ -22,9 +22,9 @@ keys it depends on.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings (numbered Phase N or ## sections)
 - [ ] Contains verdict keywords: PASS, CONCERNS, NOT ASSESSED, FAIL
 - [ ] Contains "May I" write-approval language for the stage update
@@ -36,7 +36,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -54,13 +54,13 @@ Fixture defaults.
   reports those catalog steps (`required=true`) as ABSENT, but neither is an item
   in the Concept → Systems Design gate file, and the loaded gate file decides what
   this gate requires
-- No `/design-review` record for the concept
+- No `$ccgs-design-review` record for the concept
 
-**Input:** `/gate-check systems-design`
+**Input:** `$ccgs-gate-check systems-design`
 
 **Expected behavior:**
-1. Skill loads only `.claude/skills/gate-check/references/gate-systems-design.md`
-2. Skill runs `bash .claude/scripts/artifact-check.sh --phase concept` to resolve
+1. Skill loads only `.agents/skills-ccgs-gate-check/references/gate-systems-design.md`
+2. Skill runs `bash .agents/studio/scripts/artifact-check.sh --phase concept` to resolve
    existence, then spot-reads `design/gdd/game-concept.md` to confirm it has real
    content (not a template skeleton)
 3. Skill checks pillars, the Visual Identity Anchor, core loop and target audience
@@ -83,8 +83,8 @@ Fixture defaults.
 - [ ] Output includes `Chain-of-Verification: [N] questions checked — verdict [unchanged | revised from X to Y]`
 - [ ] Skill asks before writing, and writes BOTH `project.yaml` (`project.stage`) and `production/stage.txt` only after confirmation
 - [ ] After writing, skill re-reads both files and reports any divergence instead of continuing
-- [ ] The next-step recommendation is `/map-systems` (no systems index exists yet), not `/create-architecture`
-- [ ] Variant: with `design/gdd/systems-index.md` already written (the catalog orders `/map-systems` in Concept), option [A] is `/design-system` for the first system in its design order instead
+- [ ] The next-step recommendation is `$ccgs-map-systems` (no systems index exists yet), not `$ccgs-create-architecture`
+- [ ] Variant: with `design/gdd/systems-index.md` already written (the catalog orders `$ccgs-map-systems` in Concept), option [A] is `$ccgs-design-system` for the first system in its design order instead
 
 ---
 
@@ -96,21 +96,21 @@ Fixture defaults.
 - No game pillars document exists
 - `design/gdd/` directory is empty or absent
 
-**Input:** `/gate-check systems-design`
+**Input:** `$ccgs-gate-check systems-design`
 
 **Expected behavior:**
 1. `artifact-check.sh` reports the game-concept step `ABSENT`
 2. Skill marks the required artifact missing (a blocker at `full`)
 3. Skill outputs FAIL verdict
 4. Skill lists the missing concept document under Blockers
-5. Skill recommends `/brainstorm` to create one
+5. Skill recommends `$ccgs-brainstorm` to create one
 6. Skill does not create the missing file itself
 
 **Assertions:**
 - [ ] Verdict is FAIL (not PASS, CONCERNS or NOT ASSESSED) — FAIL is evaluated first in the precedence order
 - [ ] Output explicitly names `design/gdd/game-concept.md` as missing
 - [ ] Output includes a "Blockers" section with at least 1 item
-- [ ] Output recommends `/brainstorm` as the remediation action
+- [ ] Output recommends `$ccgs-brainstorm` as the remediation action
 - [ ] Skill does NOT write `project.yaml` or `production/stage.txt` when the verdict is FAIL
 - [ ] Skill does NOT create `design/gdd/game-concept.md` or any other missing artifact to manufacture a PASS
 
@@ -127,12 +127,12 @@ Fixture defaults.
 - `design/gdd/game-concept.md` exists with content
 - No systems index yet
 
-**Input:** `/gate-check` (no argument)
+**Input:** `$ccgs-gate-check` (no argument)
 
 **Expected behavior:**
 1. Skill takes the current stage from the resolved config block (legacy
    `production/stage.txt` mirror) / project-stage-detect heuristics
-2. Skill confirms with `AskUserQuestion`: "Detected stage: **Concept**. Running
+2. Skill confirms with `native user-input mechanism`: "Detected stage: **Concept**. Running
    gate for Concept → Systems Design transition. Is this correct?" with options
    `[A] Yes — run this gate` / `[B] No — pick a different gate`
 3. On `[A]`, skill runs the Concept → Systems Design checks
@@ -140,7 +140,7 @@ Fixture defaults.
 
 **Assertions:**
 - [ ] Current stage comes from `production/stage.txt` (via the resolved config block) or project-stage-detect heuristics
-- [ ] Skill confirms the detected transition with `AskUserQuestion` before running checks — this step is never skipped when no argument is given
+- [ ] Skill confirms the detected transition with `native user-input mechanism` before running checks — this step is never skipped when no argument is given
 - [ ] The full list of six gates is shown only if the user picks `[B] No — pick a different gate`
 - [ ] Output header names both phases: "Gate Check: Concept → Systems Design"
 
@@ -156,11 +156,11 @@ Fixture defaults.
   with a one-line visual rule and 2 supporting principles
 - No review record exists (the "Game concept has been reviewed" check cannot be auto-verified)
 
-**Input:** `/gate-check systems-design`
+**Input:** `$ccgs-gate-check systems-design`
 
 **Expected behavior:**
 1. Skill verifies all artifacts exist
-2. Skill reaches "Game concept has been reviewed (`/design-review` verdict not MAJOR REVISION NEEDED)"
+2. Skill reaches "Game concept has been reviewed (`$ccgs-design-review` verdict not MAJOR REVISION NEEDED)"
 3. No review record → item marked `[?] MANUAL CHECK NEEDED`
 4. Skill asks the user whether the concept has been reviewed
 
@@ -170,14 +170,14 @@ verdict is NOT ASSESSED, not PASS.
 **Case 4b — the user answers "Not yet":** the check has an answer — the concept
 was not reviewed — so it ran and failed. Nothing is unknown: the verdict is
 CONCERNS or FAIL (FAIL and CONCERNS are evaluated before NOT ASSESSED), with
-`/design-review` named as the fix.
+`$ccgs-design-review` named as the fix.
 
 **Assertions:**
 - [ ] Items that cannot be auto-verified are marked `[?] MANUAL CHECK NEEDED` rather than assumed PASS
 - [ ] Skill uses a question to the user for at least one unverifiable quality item
 - [ ] Skill does not mark unverifiable items as PASS by default
 - [ ] 4a: a `MANUAL CHECK NEEDED` item the user never resolved yields NOT ASSESSED (it outranks PASS), naming the item and why in the Blockers section
-- [ ] 4b: a "not yet" answer is a failed check, never an unknown — the verdict is CONCERNS or FAIL, not NOT ASSESSED and not PASS, and the output names `/design-review` (the one exception is the Production gate's play questions, where "not yet" means nobody has played it — Case 8)
+- [ ] 4b: a "not yet" answer is a failed check, never an unknown — the verdict is CONCERNS or FAIL, not NOT ASSESSED and not PASS, and the output names `$ccgs-design-review` (the one exception is the Production gate's play questions, where "not yet" means nobody has played it — Case 8)
 - [ ] Skill does not write the stage on a NOT ASSESSED or FAIL verdict, nor on CONCERNS unless the user explicitly accepts the listed risks (Case 7)
 
 ---
@@ -192,7 +192,7 @@ CONCERNS or FAIL (FAIL and CONCERNS are evaluated before NOT ASSESSED), with
 
 **Case 5a — full panel:** `modes.review_mode: full`, `modes.workflow: full`
 
-**Input:** `/gate-check systems-design`
+**Input:** `$ccgs-gate-check systems-design`
 
 **Expected behavior:**
 1. Skill takes `review_mode: full` and `workflow: full` from the resolved block
@@ -268,12 +268,12 @@ are what lean mode keeps); its width still follows `workflow`.
   `review_mode: lean`, so the panel is `technical-director` + `producer`
 - The engine is configured; `design/gdd/systems-index.md` enumerates 3 MVP
   systems, each with a GDD holding the 5 standard sections, each reviewed, and a
-  `/review-all-gdds` report with verdict PASS; the systems index maps
+  `$ccgs-review-all-gdds` report with verdict PASS; the systems index maps
   dependencies both ways and defines the MVP tier
 - No `docs/architecture/` at all (no architecture document, no ADRs), no
   `production/sprints/`, no stories
 
-**Input:** `/gate-check technical-setup`
+**Input:** `$ccgs-gate-check technical-setup`
 
 **Expected behavior:**
 1. Skill loads `gate-technical-setup.md` and applies its `standard` reduction
@@ -286,7 +286,7 @@ are what lean mode keeps); its width still follows `workflow`.
 4. Both directors return READY; every artifact and quality check passes; the
    verdict is PASS and the stage write is offered
 
-**Variant (ii):** the same project at `/gate-check pre-production` (target
+**Variant (ii):** the same project at `$ccgs-gate-check pre-production` (target
 Pre-Production, which requires the architecture document at `standard`) with
 the architecture document still absent: the TD context passes it as "none", a
 finding for the director (CONCERNS or NOT READY), and the verdict is not PASS.
@@ -307,7 +307,7 @@ finding for the director (CONCERNS or NOT READY), and the verdict is not PASS.
   user confirms it was reviewed; it has no pillars section and no Visual Identity
   Anchor — both recommended at `standard`, so absent → CONCERNS
 
-**Input:** `/gate-check systems-design`, then, after the CONCERNS verdict, the
+**Input:** `$ccgs-gate-check systems-design`, then, after the CONCERNS verdict, the
 user says "advance anyway"
 
 **Expected behavior:**
@@ -324,7 +324,7 @@ user says "advance anyway"
 **Variant (FAIL):** `design/gdd/game-concept.md` does not exist, the verdict is
 FAIL, and the user says "advance anyway": the skill does not write the stage —
 no override turns a FAIL into a stage change — and names the blockers and
-`/brainstorm` instead.
+`$ccgs-brainstorm` instead.
 
 **Assertions:**
 - [ ] On CONCERNS the stage is written only after the user explicitly accepts the listed risks, never by default
@@ -333,7 +333,7 @@ no override turns a FAIL into a stage change — and names the blockers and
 
 ---
 
-### Case 8: `/gate-check production` at `workflow: minimal` — the slice items drop
+### Case 8: `$ccgs-gate-check production` at `workflow: minimal` — the slice items drop
 
 **Fixture:**
 - `project.yaml` sets only `modes.rigor: minimal` → `workflow: minimal`,
@@ -342,7 +342,7 @@ no override turns a FAIL into a stage change — and names the blockers and
 - Three story files under `production/epics/core/`, one per feature
 - No `prototypes/`, no Vertical Slice, no sprint plan, no playtest report
 
-**Input:** `/gate-check production`; the user answers yes to both current-build
+**Input:** `$ccgs-gate-check production`; the user answers yes to both current-build
 questions (the core loop is fun; one start → challenge → resolution cycle runs
 end to end)
 
@@ -372,7 +372,7 @@ loop is fun" → NOT ASSESSED (nobody has played the build).
 **Fixture:** `project.yaml` sets `modes.rigor: minimal` and `modes.review_mode:
 lean` (so a panel would otherwise run); a filled `design/game-brief.md`; no GDDs
 
-**Input:** `/gate-check technical-setup`
+**Input:** `$ccgs-gate-check technical-setup`
 
 **Expected behavior:** the Systems Design → Technical Setup gate is not
 applicable at `minimal`: the verdict is PASS with the gate file's note ("No
@@ -387,7 +387,7 @@ before it is made.
 
 ---
 
-### Case 10: Minimal-tier closing route — a built game with no brief is sent to `/reverse-document`
+### Case 10: Minimal-tier closing route — a built game with no brief is sent to `$ccgs-reverse-document`
 
 **Fixture:**
 - `project.yaml` sets `modes.rigor: minimal` (so `workflow: minimal`) and
@@ -396,24 +396,24 @@ before it is made.
 - No `design/game-brief.md`, no `design/gdd/game-concept.md`, no GDDs
 - Variant: `src/` is empty (a new project)
 
-**Input:** `/gate-check systems-design`
+**Input:** `$ccgs-gate-check systems-design`
 
 **Expected behavior:**
 1. The target artifact at `minimal` is `design/game-brief.md`; it is missing, so
    the verdict is FAIL, naming the brief as the blocker
 2. The stage is not written
-3. The closing next-step widget skips the phase-ladder menus (`/map-systems`,
-   `/design-system`) because the minimal route is not the ladder, and offers the
+3. The closing next-step widget skips the phase-ladder menus (`$ccgs-map-systems`,
+   `$ccgs-design-system`) because the minimal route is not the ladder, and offers the
    first incomplete step of `paths.minimal`: the brief
 4. Because the code root already holds the game, that step is
-   `/reverse-document design src/` (it writes the brief from what is built), not
-   `/brainstorm`
-5. Variant (empty `src/`): the step is `/brainstorm`
+   `$ccgs-reverse-document design src/` (it writes the brief from what is built), not
+   `$ccgs-brainstorm`
+5. Variant (empty `src/`): the step is `$ccgs-brainstorm`
 
 **Assertions:**
-- [ ] The closing widget is built from the minimal route, with no `/map-systems` or `/design-system` option
-- [ ] With a built game and no brief, the first option is `/reverse-document design src/`, with the code root filled in, and `/brainstorm` is not offered as the way to get the brief
-- [ ] Variant — with an empty code root the first option is `/brainstorm`, not `/reverse-document`
+- [ ] The closing widget is built from the minimal route, with no `$ccgs-map-systems` or `$ccgs-design-system` option
+- [ ] With a built game and no brief, the first option is `$ccgs-reverse-document design src/`, with the code root filled in, and `$ccgs-brainstorm` is not offered as the way to get the brief
+- [ ] Variant — with an empty code root the first option is `$ccgs-brainstorm`, not `$ccgs-reverse-document`
 - [ ] The verdict is FAIL and the stage is not written, whatever the route offered
 
 ---
@@ -440,4 +440,4 @@ before it is made.
   `standard`/`full`) is not covered because it requires a playable build context
   that cannot be expressed as a document fixture; at `minimal` it drops (Case 8).
 - The `minimal` closing route is tested for the missing-brief step only (Case 10);
-  the later steps (`/create-stories`, `/dev-story`) are not separately tested.
+  the later steps (`$ccgs-create-stories`, `$ccgs-dev-story`) are not separately tested.

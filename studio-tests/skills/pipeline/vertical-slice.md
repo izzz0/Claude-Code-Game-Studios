@@ -1,8 +1,8 @@
-# Skill Test Spec: /vertical-slice
+# Skill Test Spec: $ccgs-vertical-slice
 
 ## Skill Summary
 
-`/vertical-slice [--review full|lean|solo]` is the Pre-Production validation
+`$ccgs-vertical-slice [--review full|lean|solo]` is the Pre-Production validation
 build: one complete [start → challenge → resolution] loop at near-production
 quality, answering a falsifiable question about player experience *and* build
 feasibility. It reads the concept (`design/gdd/game-concept.md`, or
@@ -15,15 +15,15 @@ and begin implementation?". Every slice file starts with a
 
 After a one-question-at-a-time debrief it writes
 `prototypes/[concept-name]-vertical-slice/REPORT.md` (from
-`.claude/docs/templates/vertical-slice-report.md`) and a `prototypes/index.md`
+`.agents/studio/docs/templates/vertical-slice-report.md`) and a `prototypes/index.md`
 row, one ask naming both. Verdicts are **PROCEED / PIVOT / KILL**, plus
 **NOT ASSESSED** when nobody has played the loop through from scratch — ranked
 above PROCEED and below PIVOT and KILL, and never recorded as PROCEED. The verdict
-feeds `/gate-check production`, which FAILs a built slice with any NO among its
+feeds `$ccgs-gate-check production`, which FAILs a built slice with any NO among its
 Vertical Slice Validation items, so PROCEED is not available after such a NO. The
 resolved `modes.workflow` shapes the PROCEED route: at `minimal` there are no
 sprints, so the velocity log feeds the brief's build order and the next steps are
-`/create-stories` then `/dev-story`; at `standard` and `full` they are the epics,
+`$ccgs-create-stories` then `$ccgs-dev-story`; at `standard` and `full` they are the epics,
 stories, sprint and gate list. In `full` review mode `creative-director` reviews the result via **CD-PLAYTEST**
 (APPROVE / CONCERNS / REJECT, or NOT ASSESSED): APPROVE keeps the recommendation;
 CONCERNS go to the user (Revise / Accept / Discuss); REJECT means PROCEED cannot
@@ -35,13 +35,13 @@ appends to `prototypes/GRAVEYARD.md`.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: PROCEED, PIVOT, KILL, NOT ASSESSED
 - [ ] Contains "May I" language before creating the slice directory and before writing REPORT.md, PIVOT-NOTE.md and GRAVEYARD.md
-- [ ] Has a next-step handoff per verdict (PROCEED → `/create-epics`, `/create-stories`, `/sprint-plan`, `/gate-check production`; PIVOT → `/design-system`, `/architecture-decision`, `/vertical-slice`; KILL → `/brainstorm` or `/prototype`)
+- [ ] Has a next-step handoff per verdict (PROCEED → `$ccgs-create-epics`, `$ccgs-create-stories`, `$ccgs-sprint-plan`, `$ccgs-gate-check production`; PIVOT → `$ccgs-design-system`, `$ccgs-architecture-decision`, `$ccgs-vertical-slice`; KILL → `$ccgs-brainstorm` or `$ccgs-prototype`)
 - [ ] Documents CD-PLAYTEST: spawned in `full`, skipped with a note in `lean`/`solo`
 
 ---
@@ -69,7 +69,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -81,7 +81,7 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml`: `engine.name: Godot`, `engine.language: GDScript`,
   `modes.review_mode: solo`, `modes.workflow: standard` (pinned: unset resolves
-  to minimal, which routes PROCEED to `/create-stories` and `/dev-story` instead
+  to minimal, which routes PROCEED to `$ccgs-create-stories` and `$ccgs-dev-story` instead
   of the step 7 list)
 - `design/gdd/game-concept.md` (core fantasy, pillars), `design/gdd/systems-index.md`,
   `docs/architecture/architecture.md` and `docs/architecture/control-manifest.md`
@@ -90,7 +90,7 @@ Fixture defaults.
   action in 40 seconds, felt the core fantasy and hit no fun blocker; the user
   answers PROCEED
 
-**Input:** `/vertical-slice`
+**Input:** `$ccgs-vertical-slice`
 
 **Expected behavior:**
 1. Reads the concept, systems index, architecture and manifest; states a
@@ -102,13 +102,13 @@ Fixture defaults.
    GDScript file it writes starts with `# VERTICAL SLICE - NOT FOR PRODUCTION`
 4. Iterates with the user until the loop is playable, then asks for the
    from-scratch playthrough and puts the six debrief questions one at a time
-5. Drafts the report from `.claude/docs/templates/vertical-slice-report.md` with a
+5. Drafts the report from `.agents/studio/docs/templates/vertical-slice-report.md` with a
    day-by-day velocity log; asks "May I write this report to
    `prototypes/ember-trail-vertical-slice/REPORT.md` and add its row to
    `prototypes/index.md`?"; writes both
 6. Notes "CD-PLAYTEST skipped — Solo mode."
-7. PROCEED routes to `/create-epics layer:foundation`, `/create-epics layer:core`,
-   `/create-stories`, `/sprint-plan` and `/gate-check production`
+7. PROCEED routes to `$ccgs-create-epics layer:foundation`, `$ccgs-create-epics layer:core`,
+   `$ccgs-create-stories`, `$ccgs-sprint-plan` and `$ccgs-gate-check production`
 
 **Assertions:**
 - [ ] The validation question has both a player-experience and a build-feasibility part
@@ -116,7 +116,7 @@ Fixture defaults.
 - [ ] The directory ask comes before any slice file; each GDScript file's header is a `#` comment, never `//`
 - [ ] The debrief questions are asked one at a time, after the from-scratch playthrough
 - [ ] REPORT.md and the `prototypes/index.md` row are written only after one ask naming both; the row records PROCEED
-- [ ] The formal stage step is `/gate-check production` (Pre-Production → Production), not `/gate-check pre-production`
+- [ ] The formal stage step is `$ccgs-gate-check production` (Pre-Production → Production), not `$ccgs-gate-check pre-production`
 
 ---
 
@@ -127,12 +127,12 @@ Fixture defaults.
   core action (question 1: no)
 - The user answers PROCEED anyway, then picks PIVOT when asked
 
-**Input:** `/vertical-slice`
+**Input:** `$ccgs-vertical-slice`
 
 **Expected behavior:**
-1. The skill does not record PROCEED: `/gate-check production` FAILs a built slice
+1. The skill does not record PROCEED: `$ccgs-gate-check production` FAILs a built slice
    with any NO among its Vertical Slice Validation items
-   (`.claude/skills/gate-check/references/gate-production.md`)
+   (`.agents/skills-ccgs-gate-check/references/gate-production.md`)
 2. It asks the user to choose PIVOT or KILL, naming question 1's answer as the reason
 3. The user picks PIVOT; REPORT.md is written, after its ask, with verdict PIVOT
    and the NO named
@@ -153,7 +153,7 @@ Fixture defaults.
 - A slice has been debriefed with a PROCEED recommendation and REPORT.md written
 - Run A: `modes.review_mode: full`; CD-PLAYTEST returns APPROVE
 - Run B: `modes.review_mode: lean`
-- Run C: `modes.review_mode: full`, input `/vertical-slice --review solo`
+- Run C: `modes.review_mode: full`, input `$ccgs-vertical-slice --review solo`
 
 **Expected behavior:**
 1. Run A: `creative-director` is spawned for CD-PLAYTEST after REPORT.md is
@@ -178,7 +178,7 @@ Fixture defaults.
   this session
 - `modes.review_mode: full`
 
-**Input:** `/vertical-slice`
+**Input:** `$ccgs-vertical-slice`
 
 **Expected behavior:**
 1. The Phase 5 playthrough does not happen, so the verdict is NOT ASSESSED, with
@@ -189,7 +189,7 @@ Fixture defaults.
    played yet."
 4. Next steps: finish the playthrough and debrief from the `active.md` checkpoint,
    then update REPORT.md after asking; the slice is not taken to
-   `/gate-check production` as if it had passed
+   `$ccgs-gate-check production` as if it had passed
 
 **Assertions:**
 - [ ] The verdict is NOT ASSESSED — never PROCEED — and its reason is stated
@@ -212,7 +212,7 @@ Fixture defaults.
 - Run C: CD-PLAYTEST returns NOT ASSESSED — the pillars were missing from the
   context it received
 
-**Input:** `/vertical-slice`
+**Input:** `$ccgs-vertical-slice`
 
 **Expected behavior:**
 1. Run A: the REJECT is read as the gate's word, not as a slice verdict. PROCEED
@@ -251,23 +251,23 @@ Fixture defaults.
   action in 40 seconds, felt the core fantasy and hit no fun blocker; the user
   answers PROCEED
 
-**Input:** `/vertical-slice`
+**Input:** `$ccgs-vertical-slice`
 
 **Expected behavior:**
 1. Reads the brief in place of the concept and builds as in Case 1
 2. The report's day-by-day velocity log is described as feeding the brief's build
    order, not sprint planning ("at `workflow: minimal`, which has no sprints, into
    the brief's build order")
-3. PROCEED prints the minimal route: `/create-stories` (from the brief), then
-   `/dev-story` on the first story. The skill states "the rest of this list is the
+3. PROCEED prints the minimal route: `$ccgs-create-stories` (from the brief), then
+   `$ccgs-dev-story` on the first story. The skill states "the rest of this list is the
    `standard`/`full` path"
-4. The `/create-epics layer:foundation`, `/create-epics layer:core` and `/sprint-plan`
+4. The `$ccgs-create-epics layer:foundation`, `$ccgs-create-epics layer:core` and `$ccgs-sprint-plan`
    steps are not offered as the next steps
 
 **Assertions:**
 - [ ] The workflow is resolved from `project.yaml` (`modes.workflow: minimal`), not assumed from the rigor preset alone
-- [ ] PROCEED's next steps are `/create-stories` then `/dev-story`
-- [ ] `/create-epics` and `/sprint-plan` are not recommended as next steps at `minimal`
+- [ ] PROCEED's next steps are `$ccgs-create-stories` then `$ccgs-dev-story`
+- [ ] `$ccgs-create-epics` and `$ccgs-sprint-plan` are not recommended as next steps at `minimal`
 - [ ] The velocity log is tied to the brief's build order, and no sprint plan is referenced or created
 - [ ] REPORT.md and the `prototypes/index.md` row still record PROCEED after one ask naming both
 

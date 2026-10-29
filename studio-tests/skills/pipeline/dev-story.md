@@ -1,15 +1,15 @@
-# Skill Test Spec: /dev-story
+# Skill Test Spec: $ccgs-dev-story
 
 ## Skill Summary
 
-`/dev-story` implements one story. It finds the story (argument, else the active
+`$ccgs-dev-story` implements one story. It finds the story (argument, else the active
 story in `production/session-state/active.md`), resolves the workflow tier for the
 story's system, verifies required inputs per tier (TR registry, governing ADR,
 control manifest), reads the ADR's `## Status`, `## Last Verified` and `## Date` in
 one grep — a `Proposed`, `Deprecated` or `Superseded` status blocks the story at
 every tier, while a story whose ADR field reads `N/A` references none — and checks ADR
 freshness by comparing the story's `ADR Version` with the ADR's current version
-(`Last Verified`, else `Date`, else `unversioned` — the rule `/create-stories`
+(`Last Verified`, else `Date`, else `unversioned` — the rule `$ccgs-create-stories`
 stamps with). It checks the story's `Manifest Version` and its dependencies, asks
 to mark the story `In Progress`, and routes implementation to a programmer agent
 plus the project's engine specialist. It does not write source code itself, and
@@ -20,10 +20,10 @@ names it; only the session-state checkpoint is written without one.
 After the agent returns it verifies the agent finished, runs the engine parse
 check, launches the build to observe anything player-visible (`Run result:`
 line), prints an "Implementation Complete" summary and overwrites the CHECKPOINT
-block in `active.md`, whose **Next step** follows the result: `/story-done` after
-Implementation Complete, `/dev-story` to resume after INCOMPLETE, the unblocking
-action after BLOCKED. It never closes the story it implements — `/story-done`
-does that; `/code-review` is recommended first at `standard`/`full`. At
+block in `active.md`, whose **Next step** follows the result: `$ccgs-story-done` after
+Implementation Complete, `$ccgs-dev-story` to resume after INCOMPLETE, the unblocking
+action after BLOCKED. It never closes the story it implements — `$ccgs-story-done`
+does that; `$ccgs-code-review` is recommended first at `standard`/`full`. At
 `qa.level: minimal` a Logic or Integration story's test requirement is waived and
 the waiver is printed; a UI or Visual/Feel story's screenshot is never waived, and
 the run-and-observe step runs at every level.
@@ -32,13 +32,13 @@ the run-and-observe step runs at every level.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains status keywords: BLOCKED, INCOMPLETE, In Progress, NOT VERIFIED
 - [ ] Contains "May I write" collaborative protocol language (its own asks for the files it writes; source and tests delegated to sub-agents)
-- [ ] Has a next-step handoff at the end (`/story-done`, with `/code-review` first at standard/full)
+- [ ] Has a next-step handoff at the end (`$ccgs-story-done`, with `$ccgs-code-review` first at standard/full)
 - [ ] Documents per-tier input requirements (`full` / `standard` / `minimal`)
 - [ ] Notes that implementation is delegated to specialist agents (not done directly)
 
@@ -46,9 +46,9 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 ## Director Gate Checks
 
-No director gates. `/dev-story` spawns implementation agents (a primary programmer
+No director gates. `$ccgs-dev-story` spawns implementation agents (a primary programmer
 and the engine specialist), not director review gates, and does not resolve
-`review_mode`. Code review is the separate `/code-review` skill, named as the next
+`review_mode`. Code review is the separate `$ccgs-code-review` skill, named as the next
 step at `standard`/`full`.
 
 ---
@@ -57,7 +57,7 @@ step at `standard`/`full`.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -78,7 +78,7 @@ Fixture defaults.
   Accepted; `docs/architecture/control-manifest.md` exists
 - `production/sprint-status.yaml` does not exist
 
-**Input:** `/dev-story production/epics/combat/story-001-damage-calc.md`
+**Input:** `$ccgs-dev-story production/epics/combat/story-001-damage-calc.md`
 
 **Expected behavior:**
 1. Reads the story and greps `id: TR-combat-001` from the registry
@@ -95,7 +95,7 @@ Fixture defaults.
    with the test requirement
 6. Confirms the agent finished, runs the Godot parse check and reports its exit code
 7. Prints "Implementation Complete: [title]" with files, test function count,
-   Verification and a `Run result:` line; next step `/code-review` then `/story-done`
+   Verification and a `Run result:` line; next step `$ccgs-code-review` then `$ccgs-story-done`
 8. Overwrites the `<!-- CHECKPOINT -->` block in `active.md`
 
 **Assertions:**
@@ -105,7 +105,7 @@ Fixture defaults.
 - [ ] The ADR guidance is passed inline, not as the ADR path
 - [ ] The brief names `tests/unit/combat/combat_damage_calc_test.gd` (`[system]_[feature]_test.gd`) and requires one test per acceptance criterion
 - [ ] The parse check's command and exit code are reported, and exactly one `Run result:` line appears
-- [ ] Story is NOT marked Complete; the handoff is `/code-review` then `/story-done`
+- [ ] Story is NOT marked Complete; the handoff is `$ccgs-code-review` then `$ccgs-story-done`
 - [ ] The CHECKPOINT block in `active.md` is overwritten, not appended to
 
 ---
@@ -117,21 +117,21 @@ Fixture defaults.
 - Story file with `Status: Ready` and `ADR Governing Implementation: ADR-0005`
 - `docs/architecture/adr-0005-*.md` exists with `## Status` Proposed
 
-**Input:** `/dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
 
 **Expected behavior:**
 1. Skill reads the story and resolves the `standard` tier
 2. Skill determines that the referenced ADR-0005 is Proposed
 3. Story is set BLOCKED in session state; no programmer agent is spawned
-4. Output names ADR-0005 and recommends `/architecture-decision accept ADR-0005`
+4. Output names ADR-0005 and recommends `$ccgs-architecture-decision accept ADR-0005`
 5. A partial report is produced; the story file's `Status:` is not changed
 
 **Assertions:**
 - [ ] The Proposed status is read from ADR-0005's `## Status` section, not inferred
 - [ ] No programmer or engine-specialist agent is spawned
-- [ ] Output names ADR-0005 and recommends `/architecture-decision`
+- [ ] Output names ADR-0005 and recommends `$ccgs-architecture-decision`
 - [ ] The story header stays `Status: Ready`, and no "May I mark this story In Progress?" ask is shown
-- [ ] BLOCKED is recorded in session state, and the checkpoint's **Next step** names `/architecture-decision accept ADR-0005` — not `/story-done`
+- [ ] BLOCKED is recorded in session state, and the checkpoint's **Next step** names `$ccgs-architecture-decision accept ADR-0005` — not `$ccgs-story-done`
 
 ---
 
@@ -147,12 +147,12 @@ The `full` column of the file-check table has its own STOP rule, so the
 - `docs/architecture/adr-0005-*.md` exists with `## Status` Proposed;
   `docs/architecture/tr-registry.yaml` and the control manifest exist
 
-**Input:** `/dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
 
 **Expected behavior:**
 1. Skill greps ADR-0005's `^## (Status|Last Verified|Date)` and reads `Proposed`
 2. It stops before the freshness comparison: "ADR [path] is still Proposed. Accept
-   it with `/architecture-decision accept ADR-0005` before implementing."
+   it with `$ccgs-architecture-decision accept ADR-0005` before implementing."
 3. Story is set BLOCKED in session state; no programmer agent is spawned
 
 **Assertions:**
@@ -175,12 +175,12 @@ The `full` column of the file-check table has its own STOP rule, so the
   exists
 - User picks `[A]` at the prompt
 
-**Input:** `/dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[epic-slug]/story-[NNN]-[slug].md`
 
 **Expected behavior:**
 1. `Grep "^## (Status|Last Verified|Date)"` on ADR-0004 reads Accepted and a
    `Last Verified` date different from the story's `ADR Version`
-2. `AskUserQuestion`: "Story was written against ADR v[story-date]. The ADR is now
+2. `native user-input mechanism`: "Story was written against ADR v[story-date]. The ADR is now
    v[current-date]. Its decision may have changed. How do you want to proceed?"
    with `[A] Re-read the changed ADR sections…` (naming the refresh of this story's
    ADR summary and ADR Version) / `[B] Implement from the story's summary…` /
@@ -199,7 +199,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 
 **Fixture (Date fallback):**
 - As above, but ADR-0004 has no `## Last Verified` section; its `## Date` equals the
-  story's `ADR Version` (the value `/create-stories` stamped from it)
+  story's `ADR Version` (the value `$ccgs-create-stories` stamped from it)
 
 **Expected behavior (Date fallback):**
 1. The same Grep finds no `Last Verified`, so the ADR's current version is its `## Date`
@@ -219,7 +219,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 - `production/session-state/active.md` references an active story file
 - That story file exists with `Status: In Progress`
 
-**Input:** `/dev-story` (no argument)
+**Input:** `$ccgs-dev-story` (no argument)
 
 **Expected behavior:**
 1. Skill detects no argument is provided
@@ -257,7 +257,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 - No TR registry, no ADRs, no control manifest
 - `docs/engine-reference/godot/VERSION.md` rates the pinned version HIGH risk
 
-**Input:** `/dev-story production/epics/[slug]/story-001-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-001-[slug].md`
 
 **Expected behavior:**
 1. Phase 2 does not stop or set BLOCKED for the absent registry, ADR or manifest
@@ -269,7 +269,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 5. Phase 5 is skipped; the summary prints "Test evidence: waived at
    `qa.level: minimal` — no test was required or written for this story."
 6. Run-and-observe still runs and prints one `Run result:` line
-7. Next step is `/story-done [story-path]` directly — no `/code-review`
+7. Next step is `$ccgs-story-done [story-path]` directly — no `$ccgs-code-review`
 
 **Assertions:**
 - [ ] No STOP or BLOCKED for the absent TR registry, ADR or manifest at `minimal`
@@ -277,7 +277,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 - [ ] The engine specialist is spawned because VERSION.md rates the risk HIGH
 - [ ] The test waiver is stated to the agent and printed in the summary; no tests row or "run your test suite" paragraph appears
 - [ ] A `Run result:` line is printed — run-and-observe is not waived
-- [ ] The handoff is `/story-done` with no `/code-review` step
+- [ ] The handoff is `$ccgs-story-done` with no `$ccgs-code-review` step
 
 ---
 
@@ -289,7 +289,7 @@ The `full` column of the file-check table has its own STOP rule, so the
   `N/A (minimal — no ADRs)`
 - No TR registry, no ADRs, no control manifest
 
-**Input:** `/dev-story production/epics/[slug]/story-002-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-002-[slug].md`
 
 **Expected behavior:**
 1. Spawns `ui-programmer`; the brief has no test item and no "Do not write a test
@@ -298,13 +298,13 @@ The `full` column of the file-check table has its own STOP rule, so the
    `production/qa/evidence/[story-slug]/` before this story can be closed…"
 3. Run-and-observe retains a screenshot under `production/qa/evidence/[story-slug]/`
    and prints `Run result: OBSERVED — …` with the path
-4. Next step is `/story-done [story-path]`
+4. Next step is `$ccgs-story-done [story-path]`
 
 **Assertions:**
 - [ ] The UI story is not told its evidence is waived — neither in the brief nor as a "Test evidence: waived" line in the summary
 - [ ] The screenshot-required line is printed at `qa.level: minimal`
 - [ ] `Run result: OBSERVED` names a retained screenshot; a `NOT VERIFIED` result would be reported as a blocker, not a note
-- [ ] The handoff is `/story-done` with no `/code-review` step
+- [ ] The handoff is `$ccgs-story-done` with no `$ccgs-code-review` step
 
 ---
 
@@ -319,7 +319,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 - The project has `Assets/` and no `src/`; no `ScreenshotOnArg.cs` exists under `Assets/`
 - `docs/engine-reference/unity/VERSION.md` rates the pinned version HIGH risk
 
-**Input:** `/dev-story production/epics/[slug]/story-003-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-003-[slug].md`
 
 **Expected behavior:**
 1. Spawns `ui-programmer` with `unity-specialist` (`specialists.code`) and
@@ -328,7 +328,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 3. Verification runs `commands.smoke` and reports its exit code
 4. Before launching, globs `Assets/**/ScreenshotOnArg.cs`, finds none and asks
    "May I write `Assets/Scripts/ScreenshotOnArg.cs`?"; on yes writes the script
-   verbatim from `.claude/docs/run-and-observe.md`
+   verbatim from `.agents/studio/docs/run-and-observe.md`
 5. Launches the built player with `--scene`/`--screenshot` and prints
    `Run result: OBSERVED — …` with the retained path
 
@@ -344,15 +344,15 @@ The `full` column of the file-check table has its own STOP rule, so the
 ### Case 7: Engine unset — the code root is unresolved, nothing is written
 
 **Fixture:**
-- `project.yaml` has no `engine` block; `.claude/docs/technical-preferences.md`
+- `project.yaml` has no `engine` block; `.agents/studio/docs/technical-preferences.md`
   reads `Engine: [TO BE CONFIGURED]`
 - The project has none of `src/`, `Assets/` or `Source/`
 - `modes.workflow: minimal`; the story is Type Logic
 
-**Input:** `/dev-story production/epics/[slug]/story-001-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-001-[slug].md`
 
 **Expected behavior:**
-1. The code root cannot be resolved (`.claude/docs/code-root-resolution.md`: no
+1. The code root cannot be resolved (`.agents/studio/docs/code-root-resolution.md`: no
    `engine.name`, no legacy `Engine:` value, no single unambiguous root in the tree)
 2. No source file is written, and the output says the code root is unresolved
 
@@ -371,7 +371,7 @@ The `full` column of the file-check table has its own STOP rule, so the
   `Status: In Progress`
 - At the dependency prompt the user picks `[C]`, then approves the update
 
-**Input:** `/dev-story production/epics/[slug]/story-003-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-003-[slug].md`
 
 **Expected behavior:**
 1. Reads story-002's `Status:` and asks: "Story '[story-003 title]' depends on
@@ -396,18 +396,18 @@ The `full` column of the file-check table has its own STOP rule, so the
 - The programmer agent reports that it hit its turn limit after adding
   `src/combat/damage.gd`, which calls a helper it never defined
 
-**Input:** `/dev-story production/epics/[slug]/story-001-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-001-[slug].md`
 
 **Expected behavior:**
 1. Phase 6 treats the story as INCOMPLETE: the headline says so, lists what exists,
    names the undefined helper, and offers to resume the agent
 2. "Implementation Complete" is not printed and the story's `Status:` is not advanced
-3. The checkpoint's **Next step** reads `/dev-story [story-path] — resume: [the
+3. The checkpoint's **Next step** reads `$ccgs-dev-story [story-path] — resume: [the
    undefined helper]`
 
 **Assertions:**
 - [ ] No "Implementation Complete" and no `Status:` change past `In Progress`
-- [ ] The checkpoint's **Next step** is `/dev-story [story-path]` to resume — never `/story-done`, which `/help` reads as "the work is written"
+- [ ] The checkpoint's **Next step** is `$ccgs-dev-story [story-path]` to resume — never `$ccgs-story-done`, which `$ccgs-help` reads as "the work is written"
 
 ---
 
@@ -416,11 +416,11 @@ The `full` column of the file-check table has its own STOP rule, so the
 **Fixture:**
 - `project.yaml`: `engine.name: Godot`, `modes.workflow: full`
 - Story `Status: Ready`, Type Logic, `ADR Governing Implementation: N/A — no
-  architectural pattern required` (what `/create-stories` writes for a
-  requirement `/create-epics` flagged as untraced)
+  architectural pattern required` (what `$ccgs-create-stories` writes for a
+  requirement `$ccgs-create-epics` flagged as untraced)
 - `docs/architecture/tr-registry.yaml` has the story's TR-ID; the control manifest exists
 
-**Input:** `/dev-story production/epics/[slug]/story-004-[slug].md`
+**Input:** `$ccgs-dev-story production/epics/[slug]/story-004-[slug].md`
 
 **Expected behavior:**
 1. Phase 2 reads the ADR field as `N/A`: the story references no ADR, so the `full`
@@ -431,7 +431,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 **Assertions:**
 - [ ] No STOP and no BLOCKED for the `N/A` ADR field at `full`
 - [ ] No ADR file is looked up for `N/A`
-- [ ] Variant — the story names `ADR-0006`, whose `## Status` reads `Superseded by ADR-0009`: the story is BLOCKED at every tier, naming ADR-0009 and saying to edit its ADR field (`/create-stories` never rewrites an existing story)
+- [ ] Variant — the story names `ADR-0006`, whose `## Status` reads `Superseded by ADR-0009`: the story is BLOCKED at every tier, naming ADR-0009 and saying to edit its ADR field (`$ccgs-create-stories` never rewrites an existing story)
 
 ---
 
@@ -447,7 +447,7 @@ The `full` column of the file-check table has its own STOP rule, so the
 - Story A: `Requirement: TR-combat-001`. Story B: `Requirement: TR-combat-0010`.
   Both `Status: Ready`, Type Logic, ADR governing field `N/A`, Dependencies None
 
-**Input:** `/dev-story production/epics/combat/story-A-[slug].md`, then the same for story B
+**Input:** `$ccgs-dev-story production/epics/combat/story-A-[slug].md`, then the same for story B
 
 **Expected behavior:**
 1. For story A the registry grep is anchored at the end of the line
@@ -470,13 +470,13 @@ The `full` column of the file-check table has its own STOP rule, so the
 
 - [ ] Does NOT write source code directly — delegates to specialist agents
 - [ ] Resolves the workflow tier and verifies required inputs before any agent is spawned
-- [ ] Mismatch and dependency prompts (`AskUserQuestion`) come before implementation
+- [ ] Mismatch and dependency prompts (`native user-input mechanism`) come before implementation
 - [ ] Every file the skill itself writes — story fields, `sprint-status.yaml`, a dependency's `Status`, a Config/Data file, `ScreenshotOnArg.cs` — follows an ask that names it; only the `active.md` checkpoint is written without one
 - [ ] Code is written only under the resolved code root; an unresolved root writes nothing
 - [ ] Skipped phases and dropped briefing items are announced in the output
 - [ ] Never emits "Implementation Complete" for an agent that stopped early (INCOMPLETE)
 - [ ] Overwrites the CHECKPOINT block in `production/session-state/active.md`
-- [ ] Ends with next-step handoff: `/story-done` (`/code-review` first at standard/full)
+- [ ] Ends with next-step handoff: `$ccgs-story-done` (`$ccgs-code-review` first at standard/full)
 
 ---
 

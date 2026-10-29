@@ -1,8 +1,8 @@
-# Skill Test Spec: /test-flakiness
+# Skill Test Spec: $ccgs-test-flakiness
 
 ## Skill Summary
 
-`/test-flakiness` finds flaky tests from the results of multiple CI or local
+`$ccgs-test-flakiness` finds flaky tests from the results of multiple CI or local
 test runs. It takes a log path, `scan` (all available result files — JUnit XML
 from gdUnit4 in `reports/` or saved into `test-results/`, NUnit XML from Unity in
 `test-results/`, Unreal automation logs in `Saved/Logs/`), or `registry` (remediation guidance for tests already in the
@@ -24,9 +24,9 @@ director gates are invoked. Verdicts: COMPLETE (report written) or BLOCKED
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED, and the flakiness tiers High / Moderate / Low
 - [ ] Contains "May I" write language for `tests/regression-suite.md` and `production/qa/flakiness-report-[date].md`
@@ -44,7 +44,7 @@ None. Flakiness detection is an advisory quality skill; no gates are invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -60,7 +60,7 @@ Fixture defaults.
 - `tests/unit/loot/loot_drop_test.gd` calls `randf()` with no seed
 - `tests/regression-suite.md` has a Quarantined Tests table with 1 existing entry
 
-**Input:** `/test-flakiness scan`
+**Input:** `$ccgs-test-flakiness scan`
 
 **Expected behavior:**
 1. Skill finds the XML files in `test-results/` and parses `<testcase name=` and `<failure` / `<error` entries
@@ -92,7 +92,7 @@ Fixture defaults.
 - `test_physics_bounce_height_matches_spec` fails in 3 of 20 runs (15%)
 - The test asserts `bounce_height == 0.5`
 
-**Input:** `/test-flakiness scan`
+**Input:** `$ccgs-test-flakiness scan`
 
 **Expected behavior:**
 1. Skill computes a 15% fail rate → **Moderate** flakiness
@@ -112,17 +112,17 @@ Fixture defaults.
 - No `test-results/` directory, no `.github/` directory, no `Saved/Logs/`
 - No log path is given
 
-**Input:** `/test-flakiness scan`
+**Input:** `$ccgs-test-flakiness scan`
 
 **Expected behavior:**
 1. Skill finds no CI or local result data
-2. Skill prints "No CI log data found…" with the three options: run the suite at least 3 times and collect logs; save a CI log to `test-results/`; run `/test-flakiness registry`
+2. Skill prints "No CI log data found…" with the three options: run the suite at least 3 times and collect logs; save a CI log to `test-results/`; run `$ccgs-test-flakiness registry`
 3. Skill stops and asks the user which option to pursue
 4. No flakiness table is produced and nothing is written
 
 **Assertions:**
 - [ ] Output states no CI log data was found
-- [ ] All three options are listed, including `/test-flakiness registry`
+- [ ] All three options are listed, including `$ccgs-test-flakiness registry`
 - [ ] Skill stops to ask instead of reporting a clean result
 - [ ] No files are written
 
@@ -135,7 +135,7 @@ Fixture defaults.
 - `test-results/` holds only 2 JUnit XML files, from 2 runs of the same commit
 - `test_save_roundtrip_preserves_inventory` passes in one run and fails in the other
 
-**Input:** `/test-flakiness scan`
+**Input:** `$ccgs-test-flakiness scan`
 
 **Expected behavior:**
 1. Skill parses both files and finds the test with both outcomes — a 50% fail rate
@@ -158,7 +158,7 @@ Fixture defaults.
 - `project.yaml`: `modes.review_mode: full`
 - `tests/regression-suite.md` Quarantined Tests table lists `test_ai_path_recalc_avoids_blocked_tile` (reason: timing) and `test_scene_load_spawns_player` (reason: scene not ready)
 
-**Input:** `/test-flakiness registry`
+**Input:** `$ccgs-test-flakiness registry`
 
 **Expected behavior:**
 1. Skill reads the quarantine section of `tests/regression-suite.md`

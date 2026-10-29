@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references Blueprint architecture and optimization)
 - [ ] `tools:` list matches the agent's role (Read/Write/Edit for Blueprint-facing files; no server or deployment tools, and Bash withheld via `disallowedTools:`)
-- [ ] Model tier is `sonnet` — frontmatter `model:` reads exactly `sonnet` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over C++ implementation decisions
 
 ---
@@ -76,4 +76,4 @@
 ## Coverage Notes
 - Case 3 (null pointer safety) is a safety-critical test — this is a common source of shipping crashes
 - Case 5 requires that project conventions include a stated node budget; if none is configured, the agent falls back to its own standard (maximum 20 nodes per function graph) and says so
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

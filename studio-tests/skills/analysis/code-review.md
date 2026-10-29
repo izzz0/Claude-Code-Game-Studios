@@ -1,8 +1,8 @@
-# Skill Test Spec: /code-review
+# Skill Test Spec: $ccgs-code-review
 
 ## Skill Summary
 
-`/code-review [file(s)] [story-path]` performs an architectural review of source
+`$ccgs-code-review [file(s)] [story-path]` performs an architectural review of source
 files. It reads the target files and the project coding standards (Phase 1),
 resolves the engine specialists from `project.yaml` (Phase 2), checks compliance
 with any referenced ADR by reading only its `## Decision` and `## Consequences`
@@ -15,16 +15,16 @@ match wins: CHANGES REQUIRED, NOT ASSESSED (nothing to review, the engine
 specialist review did not run, or a report section — such as ADR Compliance on a
 referenced ADR that could not be read — reads NOT ASSESSED), APPROVED WITH
 SUGGESTIONS, APPROVED. It grants only `git log` from Bash. Phase 9
-offers next steps via `AskUserQuestion`. The skill is read-only and invokes no
+offers next steps via `native user-input mechanism`. The skill is read-only and invokes no
 director gates.
 
 ---
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: APPROVED, APPROVED WITH SUGGESTIONS, CHANGES REQUIRED, NOT ASSESSED
 - [ ] Does NOT require "May I write" language (read-only; states that no files are written)
@@ -43,7 +43,7 @@ engine specialists and `qa-tester` as reviewers (Phase 7); those are not gates.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -64,7 +64,7 @@ Fixture defaults.
 - `docs/architecture/adr-0004-health.md` has `## Decision` and `## Consequences` sections, and the code follows the chosen approach
 - The specialist reports no issues; there is nothing to suggest
 
-**Input:** `/code-review src/gameplay/health_component.gd`
+**Input:** `$ccgs-code-review src/gameplay/health_component.gd`
 
 **Expected behavior:**
 1. Skill reads the source file and the coding standards
@@ -73,7 +73,7 @@ Fixture defaults.
 4. `godot-gdscript-specialist` is spawned via `Agent` for the `.gd` file; `shader: null` and `ui: null` are treated as unset and not spawned
 5. Report shows ADR Compliance: COMPLIANT, Standards Compliance: 6/6 passing, Engine Specialist Findings: CLEAN, Testability: `N/A — no story path given`, and a Positive Observations section
 6. Verdict is APPROVED
-7. Phase 9 `AskUserQuestion` offers [A] Run `/story-done` and [B] Stop here
+7. Phase 9 `native user-input mechanism` offers [A] Run `$ccgs-story-done` and [B] Stop here
 
 **Assertions:**
 - [ ] The ADR is read with a heading map and bounded reads of `## Decision` and `## Consequences`, not an unbounded full read
@@ -81,7 +81,7 @@ Fixture defaults.
 - [ ] Standards Compliance reads `6/6 passing` and ADR Compliance reads COMPLIANT
 - [ ] Testability reads `N/A — no story path given`; no `qa-tester` is spawned without a story
 - [ ] Positive Observations section is present
-- [ ] Verdict is APPROVED and Phase 9 offers `/story-done` or stop
+- [ ] Verdict is APPROVED and Phase 9 offers `$ccgs-story-done` or stop
 - [ ] No file is written or edited
 
 ---
@@ -97,15 +97,15 @@ Fixture defaults.
 - No ADR reference in the file header, and no commit touching it names an ADR
 - No story path is passed
 
-**Input:** `/code-review src/ui/inventory_ui.gd`
+**Input:** `$ccgs-code-review src/ui/inventory_ui.gd`
 
 **Expected behavior:**
 1. Skill searches the file header and `git log --oneline -- src/ui/inventory_ui.gd` for `ADR-NNNN` references and finds none
-2. Output notes: "No ADR references found — ADR compliance check skipped. For full ADR compliance review, provide the story path: `/code-review [files] [story-path]`."
+2. Output notes: "No ADR references found — ADR compliance check skipped. For full ADR compliance review, provide the story path: `$ccgs-code-review [files] [story-path]`."
 3. Standards Compliance shows 4/6 passing and lists the failures with line references: the two undocumented methods and the singleton at lines 42 and 87
 4. Required Changes lists the missing doc comments and the singleton, with dependency injection as the fix
 5. Verdict is CHANGES REQUIRED
-6. Phase 9 offers [A] Fix the issues and re-run `/code-review`, [B] Run `/story-done` anyway with noted exceptions, [C] Stop here
+6. Phase 9 offers [A] Fix the issues and re-run `$ccgs-code-review`, [B] Run `$ccgs-story-done` anyway with noted exceptions, [C] Stop here
 
 **Assertions:**
 - [ ] The "No ADR references found" note names the story-path form of the command
@@ -126,7 +126,7 @@ Fixture defaults.
 - `save_system.gd` writes save data with `FileAccess.open(..., FileAccess.WRITE)` directly at line 58
 - Code otherwise meets all six standards checks
 
-**Input:** `/code-review src/core/save_system.gd`
+**Input:** `$ccgs-code-review src/core/save_system.gd`
 
 **Expected behavior:**
 1. Skill reads only the Decision and Consequences sections of ADR-0010
@@ -134,14 +134,14 @@ Fixture defaults.
 3. ADR Compliance reads VIOLATION, listing ADR-0010, the result and the deviation with its severity
 4. The violation appears under Required Changes
 5. Verdict is CHANGES REQUIRED
-6. Next steps: fix the implementation to comply with `docs/architecture/adr-0010-save-format.md`, or — if the design has legitimately changed — run `/architecture-decision` to revise the existing ADR, not create a competing one
+6. Next steps: fix the implementation to comply with `docs/architecture/adr-0010-save-format.md`, or — if the design has legitimately changed — run `$ccgs-architecture-decision` to revise the existing ADR, not create a competing one
 
 **Assertions:**
 - [ ] The deviation is classified ARCHITECTURAL VIOLATION (BLOCKING), not ADR DRIFT or MINOR DEVIATION
 - [ ] ADR Compliance reads VIOLATION and names ADR-0010
 - [ ] The violation is listed under Required Changes
 - [ ] Verdict is CHANGES REQUIRED
-- [ ] Output says to comply with the existing ADR or revise it via `/architecture-decision`, never to write a competing ADR
+- [ ] Output says to comply with the existing ADR or revise it via `$ccgs-architecture-decision`, never to write a competing ADR
 
 ---
 
@@ -151,7 +151,7 @@ Fixture defaults.
 - `project.yaml`: `engine.name: godot`
 - `src/networking/` does not exist
 
-**Input:** `/code-review src/networking/`
+**Input:** `$ccgs-code-review src/networking/`
 
 **Expected behavior:**
 1. Skill records its inputs as FOUND / ABSENT; the target source files are ABSENT
@@ -171,10 +171,10 @@ Fixture defaults.
 ### Case 5: No Engine Configured — Skipped specialists announce themselves; no gate
 
 **Fixture:**
-- `project.yaml` has `modes.review_mode: full` and no `engine.name`; `.claude/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
+- `project.yaml` has `modes.review_mode: full` and no `engine.name`; `.agents/studio/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
 - `src/gameplay/loot_system.gd` hardcodes a drop rate `0.05` at line 31; everything else meets the standards
 
-**Input:** `/code-review src/gameplay/loot_system.gd`
+**Input:** `$ccgs-code-review src/gameplay/loot_system.gd`
 
 **Expected behavior:**
 1. Phase 2 finds no engine configured and skips the engine specialist steps
@@ -198,21 +198,21 @@ Fixture defaults.
 ### Case 5b: No Engine Configured, Clean File — NOT ASSESSED, never APPROVED
 
 **Fixture:**
-- `project.yaml` has no `engine.name`; `.claude/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
+- `project.yaml` has no `engine.name`; `.agents/studio/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`
 - `src/gameplay/loot_table.gd` meets all six Phase 4 checks and raises no architecture, SOLID or game-specific concern
 
-**Input:** `/code-review src/gameplay/loot_table.gd`
+**Input:** `$ccgs-code-review src/gameplay/loot_table.gd`
 
 **Expected behavior:**
 1. Phase 2 records `Engine validation: NOT ASSESSED — no engine configured`; no engine specialist is spawned
 2. Nothing is listed under Required Changes or Suggestions
 3. Verdict is NOT ASSESSED, naming the engine specialist review that did not run
-4. Phase 9 offers the NOT ASSESSED options, naming `/setup-engine` as the way to make the review complete
+4. Phase 9 offers the NOT ASSESSED options, naming `$ccgs-setup-engine` as the way to make the review complete
 
 **Assertions:**
 - [ ] Verdict is NOT ASSESSED, not APPROVED — a review that skipped the engine check has not approved the code
 - [ ] The verdict names the engine specialist review as what did not run
-- [ ] Phase 9 does not offer `/story-done`; it names `/setup-engine`
+- [ ] Phase 9 does not offer `$ccgs-story-done`; it names `$ccgs-setup-engine`
 
 ### Case 6: Referenced ADR missing — the section's NOT ASSESSED reaches the verdict
 
@@ -223,7 +223,7 @@ Fixture defaults.
 - Its header reads `# Implements ADR-0008 (docs/architecture/adr-0008-stamina.md)`,
   and no such file exists
 
-**Input:** `/code-review src/gameplay/stamina.gd`
+**Input:** `$ccgs-code-review src/gameplay/stamina.gd`
 
 **Expected behavior:**
 1. Phase 3 finds the `ADR-0008` reference but cannot read the ADR
@@ -246,7 +246,7 @@ Fixture defaults.
 - [ ] Does not edit any source files (read-only skill)
 - [ ] No director gates are invoked
 - [ ] Verdict, first match: CHANGES REQUIRED, NOT ASSESSED, APPROVED WITH SUGGESTIONS, APPROVED — never an approval when the engine specialist review did not run or any report section reads NOT ASSESSED
-- [ ] `allowed-tools` grants `Bash(git log *)` and the scoped `yaml-helper.sh resolve_config` pattern, not bare `Bash` — the skill is read-only: it runs `git log` and the config resolver, nothing else
+- [ ] `tool permissions` grants `Bash(git log *)` and the scoped `yaml-helper.sh resolve_config` pattern, not bare `Bash` — the skill is read-only: it runs `git log` and the config resolver, nothing else
 - [ ] Phase 9's prompt and option branches use the same verdict vocabulary as the Phase 8 report
 
 ---
@@ -257,4 +257,4 @@ Fixture defaults.
   file by file.
 - The `qa-tester` testability review (Logic and Integration stories, story path
   passed as the last argument) is not given its own case.
-- Test-file existence checks are the domain of `/test-evidence-review`.
+- Test-file existence checks are the domain of `$ccgs-test-evidence-review`.

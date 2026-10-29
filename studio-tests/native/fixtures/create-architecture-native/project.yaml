@@ -1,0 +1,11 @@
+schema_version: 1
+project:
+  name: Harbor Courier Architecture
+  stage: Pre-Production
+modes:
+  rigor: standard
+  automation: guided
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript

@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "part": "quality-release",
+  "cases": [
+    {
+      "id": "quality-021-ccgs-test-evidence-review",
+      "skill": "ccgs-test-evidence-review",
+      "fixture": "test-evidence-review",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-evidence-review on production/epics/courier/story-001-movement.md in English. Resolve standard/guided Godot configuration, inspect the supplied test file and its failed result, and audit all three wall-movement acceptance criteria. The test has zero assertions and the supplied result says passed: 0 and failed: 1, so report a concrete blocking MISSING or INCOMPLETE finding; do not call the story ADEQUATE or claim tests passed. This is a read-only evidence review: present findings only and do not write or self-approve an evidence report.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard",
+          "testing.strict": "true"
+        },
+        "files": [],
+        "response_contains": ["story-001-movement", "Logic", "zero assertions", "failed: 1", "BLOCKING", "INCOMPLETE"],
+        "response_not_contains": ["ADEQUATE", "all tests passed", "evidence report written", "self-approved"],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "quality-022-ccgs-regression-suite",
+      "skill": "ccgs-regression-suite",
+      "fixture": "regression-suite",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-regression-suite audit in English. Resolve minimal/guided Godot configuration with qa.level standard, use the supplied smoke report as the critical-path source, and inspect the movement and collection test files plus closed BUG-0001. Both supplied test files are stubs with constant-only assertions; do not treat them as covering the smoke paths or BUG-0001. Author tests/regression-suite.md with the ordered critical paths movement_wall first and collect_three_targets second, preserve the existing test paths as inspected candidates, explicitly record BUG-0001 as MISSING REGRESSION TEST, and suggest a real wall-boundary regression test. Do not invent tests, percentages, or current native execution results; the manifest is a coverage audit, not a PASS claim.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        },
+        "files": [{"path": "tests/regression-suite.md", "contains": ["movement_wall", "collect_three_targets", "tests/unit/movement/test_wall_boundary.gd", "tests/integration/collection/test_collect_three_targets.gd", "BUG-0001", "MISSING REGRESSION TEST", "ordered"], "not_contains": ["current native game passed", "100% coverage", "test invented", "BUG-0001 | HAS REGRESSION TEST", "BUG-0001 | COVERED"]}],
+        "response_contains": ["regression-suite.md", "movement_wall", "collect_three_targets", "BUG-0001", "MISSING REGRESSION TEST", "ordered"],
+        "response_not_contains": ["current native game PASS", "all regression tests passed", "invented test", "BUG-0001 has a regression test", "BUG-0001 is covered"],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "quality-023-ccgs-perf-profile",
+      "skill": "ccgs-perf-profile",
+      "fixture": "perf-profile",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-perf-profile full in English for Pocket Courier. Resolve minimal/guided Godot configuration, inspect src/game.gd for candidate hotspots, and check the project for committed performance budgets and actual profiler or runtime measurement data. The fixture intentionally has source code but no measurement artifact and no committed budget; report NOT ASSESSED — NO DATA for performance measurements and name the missing profiler source. You may identify the redraw loop as a static candidate, but do not estimate frame time, headroom, FPS, memory, or claim a native run. Keep this audit read-only and do not write a profile report.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        },
+        "files": [],
+        "response_contains": ["NOT ASSESSED", "NO DATA", "profiler", "no committed budget", "redraw", "no runtime measurement"],
+        "response_not_contains": ["16.67ms headroom", "60 FPS achieved", "performance profile generated", "native runtime passed"],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "quality-024-ccgs-release-checklist",
+      "skill": "ccgs-release-checklist",
+      "fixture": "release-checklist",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-release-checklist pc in English for the Release-stage Pocket Courier candidate. Resolve minimal/guided Godot configuration and inspect the supplied build manifest, source tree, QA evidence, and bugs area. The candidate has no independent run-package review, no test output, and no bug records; preserve those as NOT ASSESSED or blockers and do not declare Go / No-Go READY. This is a read-only checklist audit: report NOT READY or NOT ASSESSED with the missing run-package review named, and do not write a checklist or claim publication authorization.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard",
+          "platform.cert_tier": "none"
+        },
+        "files": [],
+        "response_contains": ["run package review", "NOT ASSESSED", "NOT READY", "test output", "bug records", "Go / No-Go"],
+        "response_not_contains": ["Go / No-Go: READY", "release approved", "published", "checklist written"],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

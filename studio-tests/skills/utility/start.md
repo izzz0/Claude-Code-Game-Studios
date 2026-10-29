@@ -1,25 +1,25 @@
-# Skill Test Spec: /start
+# Skill Test Spec: $ccgs-start
 
 ## Skill Summary
 
-`/start` is the first-time onboarding skill. Phase 1 reads the project with
+`$ccgs-start` is the first-time onboarding skill. Phase 1 reads the project with
 `project-state.sh` without printing it (engine, code root and source files,
 concept or brief, GDDs, ADRs, other work, and whether `origin` still points at
 the template repo); `source_files: unknown` is reported as an unknown code root,
 never as no code. Phase 2 asks where the user is with four options (A No idea
 yet, B Vague idea, C Clear concept, D Existing work); the engine is not asked
-here, `/setup-engine` chooses it.
+here, `$ccgs-setup-engine` chooses it.
 
 Phase 3 routes by answer and names only the immediate next step. Phase 4 works
 out the stage (A/B/C: `Concept`; D: from the GDD and ADR counts) and the rigor:
 kept when `modes.rigor` is set, otherwise inferred from what the user said
 (`settings-guidance.md` §3; no signal or no idea → `minimal`). It shows both on
-an assumptions card, which names `/settings` for later changes, and asks one
+an assumptions card, which names `$ccgs-settings` for later changes, and asks one
 question: `Save them` / `Don't save`. It asks no rigor question. Only an explicit
 yes writes: the stage through `set-stage.sh`
 (`project.yaml` and the legacy mirror `production/stage.txt`) and an inferred
 rigor through `config-set.sh`. Phase 5 asks the automation question unless the
-key is set, and writes the pick through `config-set.sh`. `/start` never writes
+key is set, and writes the pick through `config-set.sh`. `$ccgs-start` never writes
 any of the six knobs `modes.rigor` fronts (`modes.review_mode`,
 `modes.workflow`, `docs.density`, `qa.level`, `modes.story_granularity`,
 `team.size`) or `production/review-mode.txt`.
@@ -34,9 +34,9 @@ brief present) skips onboarding. No director gates apply. Verdict: COMPLETE.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec`, no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec`, no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keyword: COMPLETE
 - [ ] States the write rule for every write: the stage and an inferred rigor only after an explicit yes to the save question that names `project.yaml` and `production/stage.txt`; `modes.automation` from the user's pick, and never when the save was declined
@@ -46,7 +46,7 @@ Checked against the SKILL.md by `/skill-test spec`, no fixture needed.
 
 ## Director Gate Checks
 
-None. `/start` is a utility setup skill. No director agents exist yet at the
+None. `$ccgs-start` is a utility setup skill. No director agents exist yet at the
 point this skill runs.
 
 ---
@@ -55,7 +55,7 @@ point this skill runs.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -70,20 +70,20 @@ Fixture defaults.
 - No design documents, prototypes or source code; `origin` is the user's own repo
 - The user picks `A) No idea yet`, then `Save them`, then `Guided`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. Phase 1 runs `project-state.sh` without printing its rows
 2. Phase 2 offers exactly A–D; no engine question is asked
-3. Path A names only `/brainstorm open` as the next step and leaves the full path for later
+3. Path A names only `$ccgs-brainstorm open` as the next step and leaves the full path for later
 4. Phase 4 shows the card: stage `Concept`, rigor `minimal` with the reason (no
    concept yet), and asks to save them to `project.yaml` and the stage to
    `production/stage.txt`; it asks no rigor question
 5. After `Save them`, `set-stage.sh Concept` creates `project.yaml` and writes
    `production/stage.txt`, and `config-set.sh modes.rigor minimal` adds the rigor
 6. Phase 5 asks the automation question; `config-set.sh modes.automation guided` runs on the pick
-7. Phase 6 prints the minimal 4-step path (`/setup-engine`, `/brainstorm`,
-   `/create-stories`, `/dev-story`) and asks which step to take first
+7. Phase 6 prints the minimal 4-step path (`$ccgs-setup-engine`, `$ccgs-brainstorm`,
+   `$ccgs-create-stories`, `$ccgs-dev-story`) and asks which step to take first
 8. Phase 7 prints only "Type `[skill]` to begin."; verdict COMPLETE
 
 **Assertions:**
@@ -91,7 +91,7 @@ Fixture defaults.
 - [ ] No rigor question is asked; the inferred `minimal` is on the card with its reason
 - [ ] Nothing is written before the explicit `Save them`
 - [ ] `project.stage` and `production/stage.txt` are both `Concept`
-- [ ] `project.yaml` ends up holding only `project.stage`, `modes.rigor` and `modes.automation` from `/start`: none of the six rigor-fronted knobs, and no `production/review-mode.txt`
+- [ ] `project.yaml` ends up holding only `project.stage`, `modes.rigor` and `modes.automation` from `$ccgs-start`: none of the six rigor-fronted knobs, and no `production/review-mode.txt`
 - [ ] `project.yaml` has exactly one `modes:` block, holding `rigor` and `automation`
 - [ ] Phase 6 prints the minimal 4-step path
 - [ ] The next skill is not started; Verdict is COMPLETE
@@ -104,13 +104,13 @@ Fixture defaults.
 - `project.yaml` has `engine.name: Godot` and `modes.rigor: minimal`; no explicit `modes.review_mode`
 - `design/game-brief.md` exists
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. Phase 1 finds the engine set and the brief present
 2. The skill skips onboarding and names the engine (Godot) and the brief
 3. Review mode is reported as `solo` (from `modes.rigor: minimal`)
-4. The skill points to `/help`
+4. The skill points to `$ccgs-help`
 
 **Assertions:**
 - [ ] The A–D starting-point question is not asked
@@ -129,20 +129,20 @@ Fixture defaults.
   no `design/gdd/game-concept.md`, no `docs/architecture/`
 - The user picks `D) Existing work` and `Save them`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. Phase 1 resolves the code root as `Assets/` and finds source files there (it
    does not scan `src/` and conclude there is no code)
 2. Phase 3 D shares what it found (source files, 3 GDDs, engine Unity) and names
-   `/project-stage-detect` as the immediate step
+   `$ccgs-project-stage-detect` as the immediate step
 3. Phase 4's card shows stage `Systems Design` (GDDs, no ADRs) and rigor
    `standard` as already set
 4. After the yes, `set-stage.sh "Systems Design"` writes both files; no rigor write
 5. Phase 5 says "Automation is `collaborative`" and asks nothing
-6. Phase 6 prints the existing-work path at `standard`: `/project-stage-detect`,
-   `/adopt`, `/design-system retrofit`, `/architecture-decision retrofit`,
-   `/architecture-review`, `/gate-check`
+6. Phase 6 prints the existing-work path at `standard`: `$ccgs-project-stage-detect`,
+   `$ccgs-adopt`, `$ccgs-design-system retrofit`, `$ccgs-architecture-decision retrofit`,
+   `$ccgs-architecture-review`, `$ccgs-gate-check`
 
 **Assertions:**
 - [ ] Source files are found under `Assets/`, not reported as absent
@@ -161,11 +161,11 @@ Fixture defaults.
   `https://github.com/Donchitos/Claude-Code-Game-Studios.git`
 - The user picks `B) Vague idea` with the hint "a small weekend puzzler", then `Save them`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. `origin_url` matches the template repo case-insensitively
-2. Path B names `/brainstorm a small weekend puzzler` as the immediate step
+2. Path B names `$ccgs-brainstorm a small weekend puzzler` as the immediate step
 3. The card infers rigor `minimal` from "weekend" and "small"
 4. After the Phase 6 path, the skill adds once that `origin` still points at the
    CCGS template repo, suggests `git remote rename origin template` then
@@ -187,7 +187,7 @@ Fixture defaults.
 **Fixture:**
 - Fresh project and answers as in Case 1
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. The skill completes the onboarding flow through Phase 7
@@ -210,22 +210,22 @@ Fixture defaults.
 - The user picks `D) Existing work` and says "a commercial game for Steam with
   one clear core loop", then picks `Save them`, then `Collaborative`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
-1. Phase 3 D names `/project-stage-detect` as the immediate step and prints no tiered path yet
+1. Phase 3 D names `$ccgs-project-stage-detect` as the immediate step and prints no tiered path yet
 2. The card shows stage `Systems Design` and rigor `standard`, with the user's
-   words ("commercial", "Steam") as the reason, and the line naming `/settings`
+   words ("commercial", "Steam") as the reason, and the line naming `$ccgs-settings`
 3. The save question offers only `Save them` / `Don't save`; no rigor question
    is asked
 4. After `Save them`, `modes.rigor: standard` is written with the stage
 5. Phase 6 prints the existing-work path at `standard`, including
-   `/design-system retrofit`, `/architecture-decision retrofit` and
-   `/architecture-review`
+   `$ccgs-design-system retrofit`, `$ccgs-architecture-decision retrofit` and
+   `$ccgs-architecture-review`
 
 **Assertions:**
 - [ ] No tiered path is printed before the rigor is known
-- [ ] No rigor question is asked; the card names `/settings` as the way to change it
+- [ ] No rigor question is asked; the card names `$ccgs-settings` as the way to change it
 - [ ] The written rigor is the inferred `standard`
 - [ ] None of the six rigor-fronted knobs is written; the file holds one `modes:` block
 
@@ -241,7 +241,7 @@ Fixture defaults.
 - No `design/game-brief.md` and no concept, so this is not a returning user
 - The user picks `A) No idea yet`, `Save them`, then `Guided`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. `set-stage.sh Concept` adds the `project:` block to the existing file
@@ -251,7 +251,7 @@ Fixture defaults.
 
 **Assertions:**
 - [ ] The finished `project.yaml` has exactly one `modes:` key, holding `review_mode`, `rigor` and `automation`
-- [ ] The existing `review_mode: lean` is unchanged and `/start` writes none of the other rigor-fronted knobs
+- [ ] The existing `review_mode: lean` is unchanged and `$ccgs-start` writes none of the other rigor-fronted knobs
 - [ ] There is one save question for the stage and rigor, and the automation pick needs no further ask
 
 ---
@@ -266,22 +266,22 @@ Fixture defaults.
   `design/gdd/game-concept.md`
 - The user picks `D) Existing work` and `Save them`
 
-**Input:** `/start`
+**Input:** `$ccgs-start`
 
 **Expected behavior:**
 1. Phase 1 finds the engine set but no concept or brief, so the A–D question is asked
-2. Phase 3 D names `/project-stage-detect` as the immediate step
+2. Phase 3 D names `$ccgs-project-stage-detect` as the immediate step
 3. The card shows `Systems Design` and rigor `minimal` as already set; Phase 5 asks nothing
-4. Phase 6 prints the existing-work path at `minimal`: `/project-stage-detect`,
-   `/adopt`, then the brief's source, with no GDD, ADR or registry retrofit
+4. Phase 6 prints the existing-work path at `minimal`: `$ccgs-project-stage-detect`,
+   `$ccgs-adopt`, then the brief's source, with no GDD, ADR or registry retrofit
 5. With no brief and 10 or more source files, the brief's source is
-   `/reverse-document design src/`; `/brainstorm` is not offered as the source
+   `$ccgs-reverse-document design src/`; `$ccgs-brainstorm` is not offered as the source
 
 **Assertions:**
-- [ ] The minimal path lists `/project-stage-detect` and `/adopt`, and no `/design-system retrofit`, `/architecture-decision retrofit` or `/architecture-review`
-- [ ] With no `design/game-brief.md`, the path names `/reverse-document design src/` as the brief's source, with the code root filled in
-- [ ] `/brainstorm` is not named as the brief's source
-- [ ] Variant — `src/` holds only 4 source files: the brief's source is `/brainstorm`, and `/reverse-document` is not named
+- [ ] The minimal path lists `$ccgs-project-stage-detect` and `$ccgs-adopt`, and no `$ccgs-design-system retrofit`, `$ccgs-architecture-decision retrofit` or `$ccgs-architecture-review`
+- [ ] With no `design/game-brief.md`, the path names `$ccgs-reverse-document design src/` as the brief's source, with the code root filled in
+- [ ] `$ccgs-brainstorm` is not named as the brief's source
+- [ ] Variant — `src/` holds only 4 source files: the brief's source is `$ccgs-brainstorm`, and `$ccgs-reverse-document` is not named
 - [ ] Variant — `design/game-brief.md` exists: this is the returning-user skip
 
 ---
@@ -289,13 +289,13 @@ Fixture defaults.
 ## Protocol Compliance
 
 - [ ] Reads the project with `project-state.sh` before the first question, without printing it
-- [ ] Asks the starting-point question with options A–D; leaves the engine to `/setup-engine`
+- [ ] Asks the starting-point question with options A–D; leaves the engine to `$ccgs-setup-engine`
 - [ ] Never writes any of the six rigor-fronted knobs (`modes.review_mode`, `modes.workflow`, `docs.density`, `qa.level`, `modes.story_granularity`, `team.size`) or `production/review-mode.txt`
 - [ ] Shows the stage and rigor on a card and writes them only on an explicit yes; asks no rigor question
 - [ ] Skips the automation question when the key is set
 - [ ] Writes through `set-stage.sh` and `config-set.sh`, never by editing YAML by hand
 - [ ] Prints the existing-work path only in Phase 6, after the rigor is known
-- [ ] Never starts the next skill; a completed run (not the returning-user skip, which ends at its `/help` pointer) ends with "Type `[skill]` to begin." and Verdict COMPLETE
+- [ ] Never starts the next skill; a completed run (not the returning-user skip, which ends at its `$ccgs-help` pointer) ends with "Type `[skill]` to begin." and Verdict COMPLETE
 
 ---
 

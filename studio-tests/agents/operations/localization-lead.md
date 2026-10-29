@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references i18n, string extraction, locale pipeline, localization)
 - [ ] `tools:` reads `Read, Glob, Grep, Write, Edit, Bash` — Bash for string-extraction tooling; writing translations and narrative content is excluded by the body's "What This Agent Must NOT Do" list, not by the tool list
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over narrative content, game code implementation, or translation quality
 
 ---
@@ -78,4 +78,4 @@
 - Case 3 (plural forms) and Case 5 (RTL) are locale-correctness tests — these affect shipping quality in non-English markets
 - Case 4 (key naming conflict) is a pipeline hygiene test — duplicate keys cause ongoing translator confusion and cost
 - Case 5 requires the target locale list to be in context; if it is not provided, the agent should ask rather than choose — which languages to support is producer's decision
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

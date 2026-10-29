@@ -1,8 +1,8 @@
-# Skill Test Spec: /bug-report
+# Skill Test Spec: $ccgs-bug-report
 
 ## Skill Summary
 
-`/bug-report` has four modes, chosen from the argument: a plain description
+`$ccgs-bug-report` has four modes, chosen from the argument: a plain description
 (**Description Mode**), `analyze [path]` (**Analyze Mode** — read code and
 report potential bugs), `verify [BUG-ID]` (**Verify Mode**) and `close [BUG-ID]`
 (**Close Mode**). With no argument it asks for a bug description first.
@@ -11,7 +11,7 @@ Description Mode parses the description, searches the codebase with Grep/Glob
 for related files, and drafts the report template: Title, ID `BUG-[NNNN]`,
 Severity on the `S1-Critical / S2-High / S3-Medium / S4-Low` scale, Priority
 on the `P1-Fix this sprint / P2-Fix soon / P3-Backlog / P4-Won't fix` ladder
-(which must match `/bug-triage`), Status `Open`, Classification (Category,
+(which must match `$ccgs-bug-triage`), Status `Open`, Classification (Category,
 System, Frequency, Regression — for a bug spanning systems, `System` is the one
 whose code must change), Environment (Build, Platform, Scene/Level),
 Reproduction Steps with Expected and Actual Result, and Technical Context
@@ -19,8 +19,8 @@ Reproduction Steps with Expected and Actual Result, and Technical Context
 "May I write this to `production/qa/bugs/BUG-[NNNN].md`?" — `Verdict: **COMPLETE**`
 on write, `Verdict: **BLOCKED**` if declined. The ID is the highest existing
 number plus one; several reports in one run (Analyze Mode) take consecutive IDs,
-and one ask names every file. Next steps: `/bug-triage`, and
-`/hotfix [BUG-ID]` for S1/S2. No director gates are used.
+and one ask names every file. Next steps: `$ccgs-bug-triage`, and
+`$ccgs-hotfix [BUG-ID]` for S1/S2. No director gates are used.
 
 Verify and Close Mode find the bug file by its number, whatever its padding —
 an older three-digit file with a slug included. Verify runs a related test with
@@ -37,19 +37,19 @@ asks before it writes anything.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED (and VERIFIED FIXED / STILL PRESENT / CANNOT VERIFY for Verify Mode)
 - [ ] Contains "May I write" language before writing the report and "May I update" before changing an existing bug file
-- [ ] Has a next-step handoff (`/bug-triage`; `/hotfix [BUG-ID]` for S1/S2; `/bug-report verify` → `close`)
+- [ ] Has a next-step handoff (`$ccgs-bug-triage`; `$ccgs-hotfix [BUG-ID]` for S1/S2; `$ccgs-bug-report verify` → `close`)
 
 ---
 
 ## Director Gate Checks
 
-None. `/bug-report` is an operational documentation skill. No director gates apply.
+None. `$ccgs-bug-report` is an operational documentation skill. No director gates apply.
 
 ---
 
@@ -57,7 +57,7 @@ None. `/bug-report` is an operational documentation skill. No director gates app
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -70,7 +70,7 @@ Fixture defaults.
 - `production/qa/bugs/` does not exist yet
 - The code root contains a boss-arena scene script
 
-**Input:** `/bug-report The game crashes to desktop every time the player enters the boss arena — progress is blocked`
+**Input:** `$ccgs-bug-report The game crashes to desktop every time the player enters the boss arena — progress is blocked`
 
 **Expected behavior:**
 1. Description Mode (no keyword)
@@ -81,7 +81,7 @@ Fixture defaults.
 4. Globs `production/qa/bugs/BUG-*.md`, finds none, allocates `BUG-0001`, presents the
    report and asks "May I write this to `production/qa/bugs/BUG-0001.md`?"
 5. On approval writes the file, creating `production/qa/bugs/`; Verdict is COMPLETE
-6. Next steps: `/bug-triage`, and `/hotfix [BUG-ID]` because the bug is S1
+6. Next steps: `$ccgs-bug-triage`, and `$ccgs-hotfix [BUG-ID]` because the bug is S1
 
 **Assertions:**
 - [ ] Report contains Title, ID, Severity, Priority, Status, Category, System, Build, Reproduction Steps, Expected Result and Actual Result
@@ -91,7 +91,7 @@ Fixture defaults.
 - [ ] Variant — with `BUG-0001.md` and `BUG-0003.md` already present, the new ID is
       `BUG-0004`: the highest existing number plus one, not the file count plus one
 - [ ] Verdict is COMPLETE after the write
-- [ ] `/hotfix [BUG-ID]` is suggested because severity is S1
+- [ ] `$ccgs-hotfix [BUG-ID]` is suggested because severity is S1
 
 ---
 
@@ -100,7 +100,7 @@ Fixture defaults.
 **Fixture:**
 - No existing bug reports
 
-**Input:** `/bug-report`
+**Input:** `$ccgs-bug-report`
 
 **Expected behavior:**
 1. No argument → skill asks the user for a bug description before proceeding
@@ -122,17 +122,17 @@ Fixture defaults.
 **Fixture:**
 - `production/qa/bugs/BUG-0007.md` exists with `**Status**: Open`
 
-**Input:** `/bug-report close BUG-0007`
+**Input:** `$ccgs-bug-report close BUG-0007`
 
 **Expected behavior:**
 1. Close Mode reads `production/qa/bugs/BUG-0007.md`
 2. Status is not `Verified Fixed`, so the skill stops:
-   "Bug BUG-0007 must be Verified Fixed before it can be closed. Run `/bug-report verify BUG-0007` first."
+   "Bug BUG-0007 must be Verified Fixed before it can be closed. Run `$ccgs-bug-report verify BUG-0007` first."
 3. No Closure Record is appended and the Status field is not changed
 
 **Assertions:**
 - [ ] The "must be Verified Fixed before it can be closed" message is shown
-- [ ] `/bug-report verify BUG-0007` is named as the next step
+- [ ] `$ccgs-bug-report verify BUG-0007` is named as the next step
 - [ ] No Closure Record is written and `BUG-0007.md` is not edited
 - [ ] No "May I update" ask is issued (nothing to update)
 
@@ -144,7 +144,7 @@ Fixture defaults.
 - No existing reports
 - The code root has a save manager and a level-complete UI screen
 
-**Input:** `/bug-report After finishing a level, the save system freezes and the UI doesn't show the completion screen`
+**Input:** `$ccgs-bug-report After finishing a level, the save system freezes and the UI doesn't show the completion screen`
 
 **Expected behavior:**
 1. Description Mode drafts **one** report
@@ -169,7 +169,7 @@ Fixture defaults.
 - `src/save/save_manager.gd` exists and contains an unguarded null dereference and an unclosed file handle
 - `production/qa/bugs/` holds `BUG-0011.md` (the highest existing number)
 
-**Input:** `/bug-report analyze src/save/save_manager.gd`
+**Input:** `$ccgs-bug-report analyze src/save/save_manager.gd`
 
 **Expected behavior:**
 1. Analyze Mode reads the target file
@@ -199,7 +199,7 @@ Fixture defaults.
   `tests/` covers the save system, and the reproduction needs a console suspend
   that no automated check can drive
 
-**Input:** `/bug-report verify BUG-0042`
+**Input:** `$ccgs-bug-report verify BUG-0042`
 
 **Expected behavior:**
 1. Verify Mode globs `production/qa/bugs/BUG-*.md` and takes the file whose
@@ -207,14 +207,14 @@ Fixture defaults.
    missing `BUG-0042.md`
 2. It checks the root-cause code path (changed) and looks for a related test
    (none), then greps for the pattern recurring
-3. No test ran, so it asks via `AskUserQuestion` whether the user played the
+3. No test ran, so it asks via `native user-input mechanism` whether the user played the
    reproduction steps on a build with the fix — `[No longer occurs]` /
    `[Still occurs]` / `[Not played yet]`; the user answers `[Not played yet]`
 4. The verdict is **CANNOT VERIFY**: it names what is missing (no related test)
    and says that playing the reproduction steps settles it
 5. It asks "May I update `production/qa/bugs/[that file]` to set Status: … Cannot
    Verify?", naming the file it found
-6. It does not suggest `/bug-report close` — only a `Verified Fixed` bug can be
+6. It does not suggest `$ccgs-bug-report close` — only a `Verified Fixed` bug can be
    closed
 
 **Assertions:**
@@ -236,19 +236,19 @@ Fixture defaults.
   not update after healing", `**Status**: Fixed — Pending Verification`
 - No test in the engine's test root covers the HUD
 
-**Input:** `/bug-report verify BUG-0005`, then `/bug-report close BUG-0005`
+**Input:** `$ccgs-bug-report verify BUG-0005`, then `$ccgs-bug-report close BUG-0005`
 
 **Expected behavior:**
 1. Verify finds no related test and runs no runner line of its own — `commands.test`
    is unset, and it says so
-2. It asks via `AskUserQuestion` whether the user played the reproduction steps
+2. It asks via `native user-input mechanism` whether the user played the reproduction steps
    on a build with the fix, and which build — `[No longer occurs]` /
    `[Still occurs]` / `[Not played yet]`; the user answers `[No longer occurs]`,
    build `0.3.1`
 3. Verdict **VERIFIED FIXED**, a manual verification; it asks "May I update
    `production/qa/bugs/BUG-0005.md` to set Status: Verified Fixed …?" and, on
    yes, writes the Status with `**Verified by**: [user], manual, build 0.3.1`
-4. Next step: `/bug-report close BUG-0005`
+4. Next step: `$ccgs-bug-report close BUG-0005`
 5. Close reads `Verified Fixed`, shows the closure record (`Verified by` from the
    verify record, `Regression test: Manual verification`) and the Status change,
    and asks "May I update `production/qa/bugs/BUG-0005.md` to mark it Closed?"
@@ -261,14 +261,14 @@ Fixture defaults.
 - [ ] Verdict is VERIFIED FIXED, recorded as manual (`[user], manual, build 0.3.1`) — a bug no test covers can reach Verified Fixed
 - [ ] Close asks "May I update … to mark it Closed?" before the Closure Record is appended or the Status changed
 - [ ] The Closure Record's Regression test reads "Manual verification"
-- [ ] Variant — answering `[Still occurs]` gives STILL PRESENT (the bug is reopened and `/hotfix [BUG-ID]` suggested); answering `[Not played yet]` gives CANNOT VERIFY
+- [ ] Variant — answering `[Still occurs]` gives STILL PRESENT (the bug is reopened and `$ccgs-hotfix [BUG-ID]` suggested); answering `[Not played yet]` gives CANNOT VERIFY
 
 ---
 
 ## Protocol Compliance
 
 - [ ] Selects the mode from the argument; asks for a description when none is given
-- [ ] Uses the S1–S4 severity scale and the P1–P4 priority labels shared with `/bug-triage`
+- [ ] Uses the S1–S4 severity scale and the P1–P4 priority labels shared with `$ccgs-bug-triage`
 - [ ] Verify runs a related test with `commands.test` from `project.yaml`, never a runner line written from memory
 - [ ] Verify says VERIFIED FIXED only when every check that applies passed — the related tests ran and passed, or, with no test run (or for a Visual or UI bug), the user played the reproduction steps on a named build and it no longer occurs, recorded as a manual verification; "Not played yet" with nothing else to settle it is CANNOT VERIFY
 - [ ] The Reporter field never holds an email address or account ID taken from the session

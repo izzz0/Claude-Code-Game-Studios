@@ -1,0 +1,299 @@
+# Focused Cocos and nine-team acceptance
+
+Status: **NOT ASSESSED — one native PASS and three separately reassessed bounded team runs; five routes remain. Original game optimization has not started.**
+
+The bounded Cocos Web integration gate has an independent **PASS**. This is
+separate from the still-open nine-team gate below.
+
+The user paused Godot real runs and the exhaustive 74-skill campaign. The active
+gate is nine actual Cocos team workflows, then Cocos Web integration, then
+authorized full + guided optimization of the original game. Other skills may be
+used with validation as needed. This change does not establish full-port acceptance.
+
+## Fresh Cocos Web baseline
+
+Local evidence root: `.scratch/cocos-acceptance-20261028/`.
+The source manifest covers 861 authored files, SHA256
+`a28ea860155137381d3fea97f66e59ea0c4c5d1e05ee8b986904a6b7df204929`.
+All 861 original files and 861 copied files still matched that manifest after the
+browser runs. No original-game source, assets, meta files or configuration changed.
+
+| Scenario | Expected | Observed | Evidence | Status |
+|---|---|---|---|---|
+| Fresh dependencies and type checks | Install and both TS checks succeed | npm ci, server/core check and client check exit 0 | `evidence/baseline-report-portable.json`, `01-ci.log`, `02-run-typecheck.log`, `03-typecheck-client.log` | PASS |
+| Real Node game tests | Nonzero actual tests, no failure/skip/cancellation | 26 tests, 26 pass, all other counts zero | `evidence/04-test.log` | PASS |
+| Studio Cocos test adapter | Read actual TAP counts, not helper exit alone | Configured isolated full + guided project; dry-run and real `test-run.sh cocos` resolved the Node command and parsed26/26, recognized TAP, no timeout, result PASS | `evidence/adapter-live.json`, `adapter-live.tsv`, `game/production/qa/adapter-live.tap` | PASS |
+| Server and Creator Web build | Actual success code, fresh outputs | Server exit 0; Creator 3.8.8 exit 36 correctly mapped to wrapper 0; fresh Web assets | `evidence/05-build-server.log`, `06-build-client-web-mobile.log`, portable report per-file hashes | PASS |
+| Actual local Web start | Served package and backend respond | Browser loaded rendered game on loopback18089; backend18787 health returned success | `evidence/gui/01-lobby.png`, `gui-observations.json` | PASS |
+| Two-player room and readiness | Both roles in same room, actual countdown | Room637703 joined by two pages; ready/countdown and live synchronized race observed | `evidence/gui/04-two-player-room.png`, `gui-observations.json` | PASS |
+| Character preview/synchronization | Selected character appears in peer room | Thief chose 威龙; police page reflected it | `evidence/gui/05-character-preview.png`, `06-character-sync-peer.png` | PASS |
+| Committed Chinese text | Input affects actual score/state | Actual field input yielded 11-streak/100%; later police36-streak and capture | `evidence/gui-observations.json`; screenshots07,10,11 | PASS |
+| Actual Chinese IME | No pre-selection miscount or duplicate commit | User manually used their normal IME and reported no error | User response retained in `evidence/gui-observations.json` | PASS, human-reported |
+| Capture and timeout outcomes | Both peers agree with rules | Police won capture; thief won timeout, with corresponding peer defeats | `evidence/gui/08-thief-timeout-win.png` through `11-thief-capture-outcome.png` | PASS |
+| Another match after settlement | Reset and run new race | Returned from settlement, created956756, both joined/readied and played second race | `evidence/gui-observations.json` | PASS |
+| Real connection loss/recovery | Same running race resumes, input still works | Proxy connection2 dropped;3 opened503ms later; backend reconnects1, no forfeit; resumed input and eventual timeout settlement | `evidence/reconnect-events.jsonl`, screenshots12–16, GUI audit | PASS |
+| Multiple code roots and generated mirror guard | Four authored roots writable, generated mirrors protected | New integration regression caught nested shared mirror bypass; guard fixed, positive and negative paths pass | `studio-tests/codex/test_hooks.py` | PASS, protocol regression |
+
+Browser screenshots were saved and viewed. Their hashes and file timestamps are
+in `evidence/gui-observations.json`. IME is a human observation, not a recording
+of candidate-window/composition events. The brief disconnected intermediate
+frame was not captured; proxy timestamps, backend counters, resumed game state
+and subsequent input provide the reconnect proof. Viewport overrides and test
+server settings were restored. Browser error collection for the second page was empty.
+
+Original baseline logs using colon filenames were NTFS alternate streams.
+They were exported byte-for-byte to ordinary portable filenames; export hashes
+are in `baseline-report-portable.json`. That report is a derived archive index,
+not a new execution, and the originals remain retained.
+
+Independent reviewer `/root/review_cocos_baseline` opened eight key images and
+verified all861 source/copy hashes, all16 screenshot hashes and all198 build
+artifact hashes. The complete returned review is retained verbatim at
+`evidence/independent-cocos-review.md` with identity/hash metadata in the adjacent
+JSON file. Its PASS is limited to Cocos Web integration; it does not establish
+native team-role execution. IME remains explicitly human-reported.
+
+## Nine native Cocos teams
+
+Only these entries are selected; do not run `--all` for this focused campaign.
+The other65 authored cases and their historical records remain unchanged.
+All nine scenarios use Cocos3.8.8/TypeScript, current role contracts, actual child
+identities, same-task interruption/resume and a distinct read-only reviewer.
+The existing registered engine-programmer is explicitly configured as Cocos
+primary in each fixture; no Godot role is selected.
+
+| Team | Isolated scenario | Actual native status |
+|---|---|---|
+| combat | Existing chase/capture/timeout rule drafts | Native attempt `5d51dc254e44` completed all three evidence predicates; original FAIL retained for two redundant response literals. Revised offline assessment PASS for bounded documentation orchestration only; no new native execution |
+| UI | Chase HUD, connection warning,200% scale, restart | Native attempt `d26fc465ab13` completed4 actual profiles; original FAIL retained. Corrected offline evidence assessment PASS; UI quality/accessibility remain NOT ASSESSED |
+| QA | Failed Web entry smoke, read-only negative gate | PASS: actual QA-lead/tester/reviewer, same-child recovery, immutable inputs and correctly blocked smoke; attempt `1da44033ad16` |
+| audio | Countdown/capture/timeout cue draft | Attempt `fcc2ec4925f2` completed6 native roles plus independent QA; original8-finding FAIL retained, corrected offline bounded planning/orchestration assessment PASS |
+| level | City track and boundaries | NOT ASSESSED — not reached |
+| live-ops | Local event/config drafts only | NOT ASSESSED — not reached |
+| narrative | Help and settlement copy, consistency review | NOT ASSESSED — not reached |
+| polish | Feedback risks, actual-measurement requirements | NOT ASSESSED — not reached |
+| release | Missing local package/sign-off blocks release | NOT ASSESSED — not reached |
+
+Retained native evidence:
+`.scratch/full-acceptance-20261025/native-project/.scratch/cocos-team-acceptance/`.
+Combat attempts `4740a3e8cc14` and `9331286bf846` are original records, not overwritten
+or reassessed as PASS. The second did return a real child identity, but no completed
+required team/recovery/review evidence. `team-run.py init --id` is a local record
+slug; `event --agent-id` preserves the actual host path or UUID. A new regression
+executes that distinction without claiming real agent execution.
+
+Third attempt `ae97fc14b79c` retained native game-designer, gameplay-programmer,
+AI scope reviewer, technical-artist, engine-programmer, sound-designer, QA tester
+and independent QA-lead identities. Its manifest records seven completed tasks;
+the final reviewer did not complete. The native host returned `serverOverloaded`.
+Neither partial artifacts nor a model-capacity failure establish team PASS.
+
+That run also exposed an evaluator defect: implementation children were being
+considered reviewer candidates before review-manifest matching. The fix filters
+only the claimed actual reviewer identities and keeps write/role/parent checks.
+A separate review found that new deliverables were absent from the initial input
+bundle. The evaluator now binds the same reviewer to final expected output
+contents/hashes as well as supplied inputs, failing closed on missing/unreadable
+outputs. Counterexamples cover fixture-only review, unrelated writers, final
+output reads, legacy prompt binding and changes after review. Historical native
+records are unchanged; these evaluator fixes still need a new native execution.
+
+QA attempt `71c8d80d0366` subsequently exercised real QA-lead, QA-tester and
+independent engine-programmer children. Their full histories and original
+records are retained. The supplied failed smoke correctly stopped later QA
+phases. However, the reviewer also ran an unqualified `Get-FileHash | Format-List`
+pipeline whose host receipt was opaque; strict read-only proof therefore remains
+NOT ASSESSED. Updated Windows instructions keep hashing/configuration helpers
+with the coordinator and prescribe auditable literal reads for all read-only
+children. The verifier whitelist is unchanged. A redundant requirement that the
+answer literally say `read-only` was removed; actual protected-file hashes and
+all three native evidence predicates remain mandatory. A protocol regression
+proves the resulting answer cannot pass without evidence or after a protected
+write. Neither this fix nor the child's self-reported PASS reclassifies the
+original native NA. The next attempt `4b1e8cf63bf2` was interrupted by
+`item/fileChange/requestApproval` (`command failed; retry without sandbox?`)
+while the coordinator tried to retain the returned strategy inside the authorized
+observations directory. The driver did not approve it. Updated guidance uses
+bounded workspace file I/O/atomic retention instead, keeps the inherited sandbox,
+and stops if that bounded write is also denied. No permission/approval handler was
+weakened. Review retention additionally requires one complete verbatim artifact;
+valid hashes cannot legitimize a coordinator-added approval prefix or duplicate
+review artifacts. Its counterexamples passed with all49 evidence regressions.
+
+The next attempt `da3f28b52ad5` retained partial work but stopped with
+`usageLimitExceeded`; it remains NOT ASSESSED. After the reported reset, actual
+attempt `1da44033ad16` completed and passed all three native evidence predicates.
+Three actual completed children were QA-lead, QA-tester and engine-programmer.
+The tester was interrupted and resumed as the same child. The distinct designated
+reviewer was independently checked against all11 current input contents/hashes,
+the exact returned review and both completed dependencies. Protected inputs were
+byte-for-byte unchanged. Closing audit: `evidence/qa-native-closure.json`.
+This is a PASS for the QA team's orchestration/recovery/negative-smoke gate;
+the supplied fixture's missing Web entry still blocks its game QA cycle.
+All prior NA/FAIL attempts remain intact. The other eight routes continue.
+
+Combat attempt `5d51dc254e44` subsequently completed four actual children:
+game-designer, gameplay-programmer, engine-programmer and QA-tester. Its
+documentation-production task was interrupted and resumed as the same child;
+the two distinct read-only reviewers inspected the supplied inputs and final
+GDD. The native verifier passed identities, recovery and independent review.
+The original evaluator nevertheless failed because the final summary did not
+repeat `team-combat` and `300 ms`. The actual invocation/manifest establishes
+the team identity; the GDD and bound reviews establish24 units/300ms/60s and
+final-tick capture precedence. The revised case removes only those response
+literals, retaining configuration, artifact and native-evidence checks. A
+counterexample still fails when the GDD changes300ms to200ms even if the reply
+says300ms. Targeted tests and a distinct read-only review passed.
+
+`evidence/combat-offline-reassessment.json` separately binds the original
+result hash, revised case hash, evaluator hash and rechecked host receipts,
+protected files, observations and artifacts. Its offline PASS is limited to
+documentation orchestration/recovery/review. The original native FAIL remains
+unchanged, the campaign cache is unchanged, and no new execution is claimed.
+Gameplay implementation, runtime quality and later combat-production phases
+remain NOT ASSESSED. UI and the remaining independent routes follow this run.
+The subsequent combat fixture revision resolves its contradictory request for
+an implementation-task recovery while authorizing only rules drafts. Recovery
+now explicitly concerns a real assigned artifact-production task in that drafting
+scope, with the same native child, returned artifact and state checked. The three
+native evidence predicates are unchanged. This prompt revision was separately
+reviewed; it is not retroactive proof of a new native execution.
+
+UI attempt `d26fc465ab13` actually completed art-director, UI-programmer,
+accessibility-specialist and UX-designer children. The art director was interrupted
+and resumed with the same identity; the returned design preceded implementation,
+which preceded the two dependent read-only reviews. The final component and notes
+were frozen and both reviewers read them, the scenario, configuration and manifests.
+The original FAIL is retained: a team-name response literal, a hyphenated warning
+token and a verifier that did not recognize the reviewers' NOT ASSESSED verdicts.
+The revised artifact assertion still requires both connection and warning in the
+actual design; response wording cannot replace that artifact or native evidence.
+
+The independent-review verifier now recognizes explicit NOT ASSESSED conclusions
+without treating them as quality approval. Explicit labels/direct conclusions
+are required; source quotations, blockquotes, fenced examples, missing host data,
+bad hashes and reviewer writes cannot substitute for review execution. Four complete
+real reviews from UI, QA and combat are preserved as byte-identical regression
+samples. Independent framework review found no remaining scoped blocker.
+
+`evidence/ui-offline-reassessment.json` separately rechecks the original receipts,
+protected inputs, observation hashes, identities and both complete returned reviews.
+It also binds the actual component and implementation notes in addition to the
+required design. Its bounded orchestration/recovery/review assessment is PASS;
+this is not a new native execution and the original FAIL/cache remain unchanged.
+Compilation, scene integration, committed accessibility tier, actual input and
+rendered200% observations remain NOT ASSESSED for this synthetic UI project.
+Six independent team routes remain, and the original game is unchanged.
+
+Closing audit `evidence/completed-team-closure-ea4409f.json` rechecks all three
+completed runs with the current verifier and each designated independent reviewer
+individually. It binds final writer outputs, immutable raw receipts and original
+verdicts; it is not a new execution. Audio attempt `87dd3e753f71` stopped with
+`usageLimitExceeded` after partial real work. It remains NOT ASSESSED. The four
+documentation-only audio/level/polish/release recovery requests are now explicitly
+scoped to their actual authorized documents, with same-task/native-evidence
+requirements intact. A distinct review found no scoped blocker. Old attempts
+are retained. The replacement installed CLI path reports the same0.165.0-alpha.1.2
+version; preflight still discovers all10 trusted project Hooks without retrusting.
+
+The next audio attempt is retained separately as `fcc2ec4925f2`. Its Markdown
+titles use `Race-countdown`; its direction says `start once`, and its SFX plan
+specifies `Deduplicate countdown` rather than the literal `one-shot`. The evaluator
+now supports explicit per-file `case_sensitive: false` for prose and `any_contains`
+groups requiring a nonempty alternative in the actual file. Default code-token
+checks stay case-sensitive. The audio case alone opts its five documents into
+casefold matching and accepts the three explicit one-shot formulations. Required
+topics, forbidden claims, changed files, hashes and native proof remain required.
+Empty/malformed alternatives and a response without the actual file fail.
+This corrects assertion semantics; it does not establish native or audio-quality
+PASS. The active host copy remains unchanged until its current run finishes.
+
+Audio attempt `fcc2ec4925f2` has now completed. All six applicable roles returned
+work and a seventh distinct QA child read the supplied inputs and five frozen
+documents. Direction was interrupted while running and resumed as the same child.
+The complete returned review was retained verbatim. Original findings were seven
+prose-token mismatches and one unrecognized scoped verdict. The verifier now also
+recognizes the actual explicit `Bounded planning verdict` and `Game/runtime quality
+verdict` labels while retaining quotation/blockquote/fence protections. A complete
+byte-for-byte review sample and source-quotation counterexamples passed with all55
+evidence tests; independent review found no scoped blocker.
+`evidence/audio-offline-reassessment.json` separately verifies the original receipt,
+observation and artifact hashes and all three native evidence predicates. Its PASS
+is for bounded planning/orchestration only, not a new native execution. The original
+FAIL and quota-interrupted attempt are untouched. No playback, listening, rendered
+scene, audio API compatibility or measured audio quality is accepted from these
+documents. Five team routes remain.
+
+Level's actual drafts likewise title the scenario `City-track`, and describe the
+given finish/settlement resolution as `finish`. The remaining five teams' Markdown
+predicates now explicitly use the same prose casefold option. Level retains start,
+challenge and the case identifier, with `resolution`/`finish` alternatives matching
+the supplied scenario. All forbidden-claim, changed-file and native-evidence checks
+remain. A distinct review found no scoped blocker; six case-contract tests passed.
+This metadata clarification does not change the active run or establish game quality.
+
+Cases intentionally test orchestration and correct negative quality gates.
+Even nine case PASS results would not prove actual audio, measured performance
+or release-quality approval from fixtures without those inputs. Inspect each
+active role, dependency, owned artifact and independent verdict before closing
+the team gate; honest missing game-quality evidence remains NOT ASSESSED.
+
+## Framework checks and recovery
+
+- Source `735a5634452cec1c7fd175987634c8bef8d1d456` passed hosted Windows264/264
+  and Linux264/264, zero skips. Run `40817196624`, jobs `123260936082` and
+  `123260935724`; receipt `evidence/ci-735a563.json`.
+- Source `ef4a1420bf5440fc58881100abd16904de849632` passed local Windows263/263
+  (194.787s), exit0, zero skips, and both hosted platforms. Hosted run
+  `40816777159`, Windows job `123259579105`, Linux job `123259578600`.
+  The subsequent scoped-verdict sample has its separate55-test focused check.
+- Source `8b17c28da958f2e825386ca78e7acb649b1e3b38` passed hosted Windows261/261
+  and Linux261/261, zero skips. Run `40815065256`, jobs `123254091234` and
+  `123254091431`; receipt `evidence/ci-8b17c28.json`. This includes the four-team
+  recovery-scope regression and follows the independent review of those edits.
+- Source `ea4409fc77a776365be80d873621999a40bc6c2d` passed local Windows260/260
+  (188.834s) and Linux260/260 (51.230s), exit0, zero skips, and hosted260/260 on
+  both platforms. Hosted run `40784529441`, jobs `123154282891` and `123154282582`;
+  receipt `evidence/ci-ea4409f.json`. The subsequent four-team recovery wording
+  regression passed all6 Cocos case checks; it is separate from this frozen run.
+- Source `26446667eaa54d069295b1147004ad3b9e728903` passed hosted Windows254/254
+  and Linux254/254, zero skips. Run `40782553249`, jobs `123147598725` and
+  `123147598356`; receipt `evidence/ci-2644666.json`. This includes combat-summary
+  counterexamples and the scoped recovery-brief regression.
+- Preceding source `243d04dd0fb67675bec09fd48b3bf7b6fd5f4b73` passed local
+  Windows253/253 and Linux253/253, exit0, zero skips, and hosted253/253 on both
+  platforms. Hosted run `40782177771`, jobs `123146340069` and `123146339722`;
+  receipt `evidence/ci-243d04d.json`. Local logs are `.scratch/windows-253.log`
+  and `.scratch/linux-253.log`; the later recovery-scope edit has its own CI above.
+- A source snapshot including the generated-mirror fix and first four Cocos
+  scenario tests passed Windows244/244 and Linux244/244, zero skips.
+- Source `35b34ba54e59e39e9101ee437a15e1cb7ebd20f4` passed hosted Windows245/245
+  and Linux245/245, zero skips. Run `40706589644`, jobs `122880260925` and
+  `122880263049`; logs are retained as `evidence/ci-35b34ba-windows.log` and
+  `ci-35b34ba-linux.log`. Local Windows245 passed too; the local Linux suite
+  printed245/245 OK but its surrounding shell wrapper had an exit-argument error,
+  which is not presented as a successful wrapper run. Hosted Linux exited cleanly.
+- Reviewer-candidate/final-output binding source
+  `4c035202092f6535862b867a84242f8c829e89d1` passed250/250 on both local platforms
+  and hosted CI, zero skips. Hosted run `40711427344`, Windows job `122897442519`
+  and Linux job `122897442782`; receipt `evidence/ci-4c03520.json`. The earlier
+  local shell-wrapper error was corrected and this later local Linux run exited0.
+- Source `01cad7df8a17b222f91dfe385615a7a7906aa184` passed hosted Windows251/251
+  and Linux251/251, zero skips. Run `40716161377`, jobs `122914311474` and
+  `122914311989`; receipt `evidence/ci-01cad7d.json`.
+- Bounded-retention/verbatim source
+  `5a1b67af085b3b4ec5001b762ab5f0ac3b095301` passed hosted Windows252/252 and
+  Linux252/252, zero skips. Run `40720120519`, jobs `122928406242` and
+  `122928406767`; receipt `evidence/ci-5a1b67a.json`. Current production code is
+  frozen at that reviewed/tested source while native routes continue.
+- Independent review verified Cocos inputs, release negative gates, run labels,
+  claimed reviewer selection and final-output binding. An earlier follow-up quota
+  failure remains historical; subsequent read-only follow-ups completed without
+  additional actionable findings. They do not replace native acceptance.
+- Resume only the nine selectors with `--resume`, from the ordinary Git host,
+  preserving inherited model/provider/permissions and existing Hook trust.
+  No new Hook definition or global configuration is installed.
+
+Unity, Unreal, paused Godot work, unused skills and untested mini-game devices
+remain unverified. Original-game optimization is gated until required team and
+Cocos integration acceptance is complete. No merge or release is authorized.

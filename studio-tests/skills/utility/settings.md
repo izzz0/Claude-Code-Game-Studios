@@ -1,22 +1,22 @@
-# Skill Test Spec: /settings
+# Skill Test Spec: $ccgs-settings
 
 ## Skill Summary
 
-`/settings` shows and changes project configuration. It has four forms:
-`/settings` (view-all: every effective setting with its source), `/settings
-<key>` (view-one), `/settings <key>=<value>` (write to `project.yaml`) and
-`/settings --local <key>=<value>` (write a personal override to the gitignored
+`$ccgs-settings` shows and changes project configuration. It has four forms:
+`$ccgs-settings` (view-all: every effective setting with its source), `$ccgs-settings
+<key>` (view-one), `$ccgs-settings <key>=<value>` (write to `project.yaml`) and
+`$ccgs-settings --local <key>=<value>` (write a personal override to the gitignored
 `project.local.yaml`). Anything else, including an empty key or value, prints
-the usage block. It runs on the Sonnet model and reads every value through
+the usage block. It runs on the caller model model and reads every value through
 `yaml-helper.sh` (`resolve_setting`, `get_yaml_key`, `is_locally_overridable`,
 `validate_enum_value`), so a value the `modes.rigor` preset supplies is shown as
 `(derived from rigor: <level>)` rather than "(not set)".
 
 Every write is validated against the schema enums first, then confirmed with an
-`AskUserQuestion` approval gate (`[A] Yes, write` / `[B] No, cancel`). A
+`native user-input mechanism` approval gate (`[A] Yes, write` / `[B] No, cancel`). A
 `project.yaml` write is a `schema_changes` decision, so it is confirmed even in
 `autonomous` mode. `--local` refuses a key that is not on the local-override
-whitelist. A setting that `.claude/docs/effects-map.md` marks with a
+whitelist. A setting that `.agents/studio/docs/effects-map.md` marks with a
 `> ### RESERVED` banner is stored when asked, but every form says nothing reads
 it. The skill gives no verdict: it prints and writes configuration. No director
 gates apply.
@@ -25,20 +25,20 @@ gates apply.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
-- [ ] No verdict keyword is required: the output is configuration, not a judgement (`/skill-test static` Check 3 gives a WARN, never a FAIL, for this skill)
-- [ ] Both write phases ask for approval with `AskUserQuestion` before the `Edit` or `Write`
+- [ ] No verdict keyword is required: the output is configuration, not a judgement (`$ccgs-skill-test static` Check 3 gives a WARN, never a FAIL, for this skill)
+- [ ] Both write phases ask for approval with `native user-input mechanism` before the `Edit` or `Write`
 - [ ] The reserved set is derived from `effects-map.md`'s `> ### RESERVED` headings, not hardcoded
-- [ ] Points to `.claude/docs/settings-guidance.md` for which value to choose
+- [ ] Points to `.agents/studio/docs/settings-guidance.md` for which value to choose
 
 ---
 
 ## Director Gate Checks
 
-None. `/settings` is a configuration utility. No director gates apply.
+None. `$ccgs-settings` is a configuration utility. No director gates apply.
 
 ---
 
@@ -46,7 +46,7 @@ None. `/settings` is a configuration utility. No director gates apply.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -74,7 +74,7 @@ Fixture defaults.
     automation: autonomous
   ```
 
-**Input:** `/settings`
+**Input:** `$ccgs-settings`
 
 **Expected behavior:**
 1. Reports both files present and `Schema validation: ok`
@@ -105,11 +105,11 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml` sets `modes.rigor: standard` and no `qa.level`
 
-**Input:** `/settings qa.level`
+**Input:** `$ccgs-settings qa.level`
 
 **Expected behavior:**
 1. Prints `Effective value: standard` and `Source: derived from rigor: standard`
-2. Adds the line `Set explicitly with: /settings qa.level=<value>   (an explicit value wins over rigor)`
+2. Adds the line `Set explicitly with: $ccgs-settings qa.level=<value>   (an explicit value wins over rigor)`
 3. `Locally overridden: no`; the whitelist line reads `locked — project-wide`
 
 **Assertions:**
@@ -132,11 +132,11 @@ Fixture defaults.
   ```
 - The user answers `[A] Yes, write`
 
-**Input:** `/settings modes.rigor=standard`
+**Input:** `$ccgs-settings modes.rigor=standard`
 
 **Expected behavior:**
 1. `validate_enum_value modes.rigor standard` passes
-2. `AskUserQuestion` asks ``Set `modes.rigor=standard` in `project.yaml`?``
+2. `native user-input mechanism` asks ``Set `modes.rigor=standard` in `project.yaml`?``
    with `[A] Yes, write` / `[B] No, cancel`
 3. The `Edit` anchors on the `modes:` line plus the `rigor: minimal` line and
    changes only that value; no second `modes:` block is added
@@ -160,7 +160,7 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml` sets `modes.review_mode: lean`
 
-**Input:** `/settings modes.review_mode=chaotic`
+**Input:** `$ccgs-settings modes.review_mode=chaotic`
 
 **Expected behavior:**
 1. `validate_enum_value` returns 1; its message is shown verbatim:
@@ -169,7 +169,7 @@ Fixture defaults.
 
 **Assertions:**
 - [ ] The helper's error line is shown as it is, naming the allowed values
-- [ ] No `AskUserQuestion` is asked
+- [ ] No `native user-input mechanism` is asked
 - [ ] `project.yaml` is unchanged
 
 ---
@@ -179,15 +179,15 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml` sets `engine.name: Godot`; no `project.local.yaml`
 
-**Input:** `/settings --local engine.name=Unity`
+**Input:** `$ccgs-settings --local engine.name=Unity`
 
 **Expected behavior:**
 1. `is_locally_overridable engine.name` returns 1
-2. One line: ``engine.name cannot be locally overridden — it's a project-wide setting. Use `/settings engine.name=Unity` (no `--local`) to change it for the whole team.``
+2. One line: ``engine.name cannot be locally overridden — it's a project-wide setting. Use `$ccgs-settings engine.name=Unity` (no `--local`) to change it for the whole team.``
 3. The skill exits without writing
 
 **Assertions:**
-- [ ] The refusal names the `/settings <key>=<value>` route
+- [ ] The refusal names the `$ccgs-settings <key>=<value>` route
 - [ ] No approval question is asked
 - [ ] No `project.local.yaml` is created
 
@@ -200,11 +200,11 @@ Fixture defaults.
   `project.local.yaml`
 - The user answers `[A] Yes, write`
 
-**Input:** `/settings --local modes.automation=autonomous`
+**Input:** `$ccgs-settings --local modes.automation=autonomous`
 
 **Expected behavior:**
 1. The whitelist and enum checks pass
-2. `AskUserQuestion` asks ``Set `modes.automation=autonomous` in `project.local.yaml` (your personal override, gitignored)?``
+2. `native user-input mechanism` asks ``Set `modes.automation=autonomous` in `project.local.yaml` (your personal override, gitignored)?``
 3. `project.local.yaml` is created with the value inside its `modes:` parent
    block
 4. Confirms ``Set `modes.automation=autonomous` in `project.local.yaml` (your override).``
@@ -219,13 +219,13 @@ Fixture defaults.
 ### Case 7: Reserved setting — stored on request, flagged on every form
 
 **Fixture:**
-- `.claude/docs/effects-map.md` is the live file; pick a key whose section
+- `.agents/studio/docs/effects-map.md` is the live file; pick a key whose section
   carries the `> ### RESERVED` banner (`accessibility.target` when this spec
   was written — re-derive it with the skill's own grep)
 - `project.yaml` does not set that key; the user answers `[A] Yes, write`
 
-**Input:** `/settings accessibility.target=standard`, then `/settings`, then
-`/settings accessibility.target`
+**Input:** `$ccgs-settings accessibility.target=standard`, then `$ccgs-settings`, then
+`$ccgs-settings accessibility.target`
 
 **Expected behavior:**
 1. The write prints, before the approval question: "Note: `accessibility.target`
@@ -252,7 +252,7 @@ Fixture defaults.
 - `project.local.yaml` sets `modes.review_mode: solo`
 - The user answers `[A] Yes, write`
 
-**Input:** `/settings modes.review_mode=full`
+**Input:** `$ccgs-settings modes.review_mode=full`
 
 **Expected behavior:**
 1. Before the approval question: "Note: this setting is currently locally
@@ -275,8 +275,8 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml` exists
 
-**Input:** `/settings --local modes.automation=` (and, separately,
-`/settings =full`)
+**Input:** `$ccgs-settings --local modes.automation=` (and, separately,
+`$ccgs-settings =full`)
 
 **Expected behavior:**
 1. The empty value (or empty key) routes to Phase 6
@@ -291,7 +291,7 @@ Fixture defaults.
 
 ## Protocol Compliance
 
-- [ ] Every write is preceded by an `AskUserQuestion` approval gate; `[B] No, cancel` leaves both files unchanged
+- [ ] Every write is preceded by an `native user-input mechanism` approval gate; `[B] No, cancel` leaves both files unchanged
 - [ ] Values are validated with `validate_enum_value` before the approval question
 - [ ] Values are read with `resolve_setting`, so derived values show with their rigor source
 - [ ] `--local` writes only whitelisted keys, and never creates `project.local.yaml` without a `project.yaml`

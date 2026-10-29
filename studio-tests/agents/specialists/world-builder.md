@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references world lore, factions, history, world rules, ecology)
 - [ ] `tools:` reads Read, Glob, Grep, Write, Edit and `disallowedTools:` lists Bash — document authoring only, no shell or code execution
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over dialogue writing, mechanic design, or narrative arc structure
 
 ---
@@ -77,4 +77,4 @@
 - Case 3 (contradiction detection) requires existing lore to be in context — this is the most important consistency test
 - Case 4 (world rule/mechanic coordination) tests cross-domain awareness; verify the agent identifies the mechanic boundary without crossing it
 - Case 5 is the most important context-awareness test; the agent must use established facts, not creative alternatives
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

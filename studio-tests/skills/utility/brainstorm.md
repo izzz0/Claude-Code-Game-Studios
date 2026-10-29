@@ -1,8 +1,8 @@
-# Skill Test Spec: /brainstorm
+# Skill Test Spec: $ccgs-brainstorm
 
 ## Skill Summary
 
-`/brainstorm` facilitates guided game concept ideation. It branches on the
+`$ccgs-brainstorm` facilitates guided game concept ideation. It branches on the
 resolved `workflow` tier **first**:
 
 - **`minimal`** (the default — `modes.rigor` defaults to `minimal`) runs the
@@ -27,13 +27,13 @@ Both flows end with `Verdict: **COMPLETE**`.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keyword: COMPLETE (in both the Lean Brief flow and the full flow)
 - [ ] Contains "May I write" language for both `design/game-brief.md` and `design/gdd/game-concept.md`
-- [ ] Has a next-step handoff at the end (`/map-systems` in the full flow's design-first steps; `/create-stories` in the Lean Brief flow)
+- [ ] Has a next-step handoff at the end (`$ccgs-map-systems` in the full flow's design-first steps; `$ccgs-create-stories` in the Lean Brief flow)
 - [ ] Documents 4 director gates in full mode: CD-PILLARS, AD-CONCEPT-VISUAL, TD-FEASIBILITY, PR-SCOPE
 - [ ] Documents a named skip note for each gate in lean and solo modes
 
@@ -59,7 +59,7 @@ Full flow only (`workflow: standard` or `full`):
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -73,7 +73,7 @@ Fixture defaults.
 - No existing `design/gdd/game-concept.md`
 - CD-PILLARS returns APPROVE; TD-FEASIBILITY returns VIABLE and PR-SCOPE returns REALISTIC (each gate's own verdict words)
 
-**Input:** `/brainstorm`
+**Input:** `$ccgs-brainstorm`
 
 **Expected behavior:**
 1. Tier branch: `full` → full flow
@@ -86,7 +86,7 @@ Fixture defaults.
    TD-FEASIBILITY spawns after risks are identified, before scope tiers
 6. PR-SCOPE spawns after scope tiers are defined
 7. Skill asks "Game concept is ready. May I write it to `design/gdd/game-concept.md`?"
-8. Written after approval with a Visual Identity Anchor section; the design-first next steps include `/map-systems`
+8. Written after approval with a Visual Identity Anchor section; the design-first next steps include `$ccgs-map-systems`
 9. Verdict is COMPLETE
 
 **Assertions:**
@@ -95,7 +95,7 @@ Fixture defaults.
 - [ ] TD-FEASIBILITY spawns before scope tiers are defined; PR-SCOPE after
 - [ ] "May I write it to `design/gdd/game-concept.md`?" is asked before writing
 - [ ] The concept document includes a Visual Identity Anchor section
-- [ ] Next-step handoff lists `/map-systems`
+- [ ] Next-step handoff lists `$ccgs-map-systems`
 - [ ] Verdict is COMPLETE
 
 ---
@@ -108,7 +108,7 @@ Fixture defaults.
 - CD-PILLARS returns REJECT: "The pillars do not carry weight — none forces a design choice"
 - AD-CONCEPT-VISUAL returns 3 named visual directions
 
-**Input:** `/brainstorm`
+**Input:** `$ccgs-brainstorm`
 
 **Expected behavior:**
 1. Both gates were spawned in parallel; the skill collects both results
@@ -134,7 +134,7 @@ Fixture defaults.
 - `project.yaml` sets `modes.rigor: standard` (`workflow` → `standard`, `review_mode` → `lean`)
 - No existing game concept
 
-**Input:** `/brainstorm`
+**Input:** `$ccgs-brainstorm`
 
 **Expected behavior:**
 1. Tier branch: `standard` → full flow
@@ -159,7 +159,7 @@ Fixture defaults.
   defaults to `minimal`: `workflow` → `minimal`, `review_mode` → `solo`)
 - No `design/game-brief.md`, no `design/gdd/game-concept.md`
 
-**Input:** `/brainstorm roguelike`
+**Input:** `$ccgs-brainstorm roguelike`
 
 **Expected behavior:**
 1. Tier branch: `minimal` → Lean Brief flow; Phases 1–5 are skipped
@@ -168,7 +168,7 @@ Fixture defaults.
    state, MVP, out of scope, build order) and presents the brief for one confirmation
 4. Asks "Brief is ready. May I write it to `design/game-brief.md`?" with
    `[A] Yes — write it` / `[B] Revise a field first`
-5. Next steps: `/create-stories`, then `/dev-story`; `/setup-engine` is NOT listed
+5. Next steps: `$ccgs-create-stories`, then `$ccgs-dev-story`; `$ccgs-setup-engine` is NOT listed
    because `engine.name` is set
 6. Verdict is COMPLETE
 
@@ -176,7 +176,7 @@ Fixture defaults.
 - [ ] Output file is `design/game-brief.md`; `design/gdd/game-concept.md` is not written
 - [ ] 2–3 one-line concepts are proposed (not the full 9-field concept cards)
 - [ ] No director agent is spawned
-- [ ] Next steps list `/create-stories` and `/dev-story`, not `/map-systems` or `/setup-engine`
+- [ ] Next steps list `$ccgs-create-stories` and `$ccgs-dev-story`, not `$ccgs-map-systems` or `$ccgs-setup-engine`
 - [ ] Verdict is COMPLETE
 
 ---
@@ -190,7 +190,7 @@ Fixture defaults.
 - The user cuts the MVP to the adjusted tiers the skill offers, then answers
   `[A] Yes — write it` to the write ask
 
-**Input:** `/brainstorm`
+**Input:** `$ccgs-brainstorm`
 
 **Expected behavior:**
 1. PR-SCOPE spawns after scope tiers are defined
@@ -215,7 +215,7 @@ Fixture defaults.
 - `project.yaml` sets `modes.rigor: standard` (`workflow` → `standard`)
 - No existing game concept
 
-**Input:** `/brainstorm --review solo`
+**Input:** `$ccgs-brainstorm --review solo`
 
 **Expected behavior:**
 1. Tier branch: `standard` → full flow; `--review solo` overrides the resolved

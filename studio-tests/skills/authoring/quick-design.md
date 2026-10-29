@@ -1,14 +1,14 @@
-# Skill Test Spec: /quick-design
+# Skill Test Spec: $ccgs-quick-design
 
 ## Skill Summary
 
-`/quick-design [brief description of the change]` produces a lightweight Quick
+`$ccgs-quick-design [brief description of the change]` produces a lightweight Quick
 Design Spec for a change too small for a full GDD. It first classifies the
 change as **Tuning**, **Tweak**, **Addition** or **New Small System** and
-confirms the classification with an `AskUserQuestion` whose option `[F]`
-redirects to `/design-system`. A change that introduces a system with
+confirms the classification with an `native user-input mechanism` whose option `[F]`
+redirects to `$ccgs-design-system`. A change that introduces a system with
 significant cross-system dependencies, needs more than about a week of work, or
-alters a system's core rules is redirected to `/design-system` instead (verdict
+alters a system's core rules is redirected to `$ccgs-design-system` instead (verdict
 `REDIRECTED`).
 
 It then scans context (the relevant GDD in `design/gdd/`, the systems index if
@@ -21,28 +21,28 @@ Any GDD edit the spec requires is asked for separately, showing old vs. new
 text. It ends with a handoff block and verdict `COMPLETE`.
 
 The skill has no director gates and does not resolve `review_mode`; quick specs
-bypass `/design-review` and `/review-all-gdds` by design.
+bypass `$ccgs-design-review` and `$ccgs-review-all-gdds` by design.
 
 ---
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: `COMPLETE`, `REDIRECTED`
 - [ ] Contains "May I write" collaborative protocol language (for the quick spec file, and separately for any GDD update)
 - [ ] Has a next-step handoff at the end
-- [ ] States that quick specs bypass `/design-review` and `/review-all-gdds` by design, and lists when to redirect to the full pipeline
-- [ ] Documents the scope check that redirects oversized changes to `/design-system`
+- [ ] States that quick specs bypass `$ccgs-design-review` and `$ccgs-review-all-gdds` by design, and lists when to redirect to the full pipeline
+- [ ] Documents the scope check that redirects oversized changes to `$ccgs-design-system`
 
 ---
 
 ## Director Gate Checks
 
 None. The skill resolves only `automation` and `workflow` (not `review_mode`),
-has no `Agent` tool in `allowed-tools`, and spawns no director or specialist
+has no `Agent` tool in `tool permissions`, and spawns no director or specialist
 agent. The review mode setting has no effect on it.
 
 ---
@@ -51,7 +51,7 @@ agent. The review mode setting has no effect on it.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -65,19 +65,19 @@ Fixture defaults.
 - `design/gdd/systems-index.md` exists
 - `design/quick-specs/dash-cooldown-tuning-[earlier-date].md` tuned the dash cooldown in movement and does not touch invincibility
 
-**Input:** `/quick-design make dash invincible on frame 1`
+**Input:** `$ccgs-quick-design make dash invincible on frame 1`
 
 **Expected behavior:**
 1. The skill classifies the change as Tweak and asks "I've classified this as **Tweak** — [reason]. Is that correct?" with options `[A]`–`[F]`
 2. The context scan reads the relevant section of `design/gdd/movement.md`, the systems index and `design/quick-specs/`, and reports "Found GDD at `design/gdd/movement.md`. Relevant section: [section]. Prior quick specs for this system: `design/quick-specs/dash-cooldown-tuning-[earlier-date].md` — agrees."
 3. It drafts the Tweak/Addition format: Change Summary, Motivation, Design Delta (quoting the current GDD rule), New Rules / Values, Affected Systems, Acceptance Criteria, GDD Update Required?
-4. It presents the full draft, then asks with `[A] Approve — write it as shown` / `[B] Revise — I'll describe what to change` / `[C] This grew too large — redirect to /design-system instead`
+4. It presents the full draft, then asks with `[A] Approve — write it as shown` / `[B] Revise — I'll describe what to change` / `[C] This grew too large — redirect to $ccgs-design-system instead`
 5. On `[A]`: "May I write this Quick Design Spec to `design/quick-specs/dash-invincibility-tweak-[YYYY-MM-DD].md`?" — on yes, creates `design/quick-specs/` if needed and writes the file
 6. Because the spec changes a rule in `movement.md`, it then asks separately "May I update `design/gdd/movement.md` — specifically the [section] section?", showing old vs. new text first
 7. It prints the handoff block (path, type, system, GDD update status) and "Verdict: **COMPLETE**"
 
 **Assertions:**
-- [ ] The classification is confirmed via `AskUserQuestion` before any context scan or drafting
+- [ ] The classification is confirmed via `native user-input mechanism` before any context scan or drafting
 - [ ] The prior dash-cooldown spec is named in the context report even though it does not conflict
 - [ ] The draft uses the Tweak/Addition format, and its Design Delta quotes the current GDD text
 - [ ] The full draft is shown before the write approval is asked
@@ -87,24 +87,24 @@ Fixture defaults.
 
 ---
 
-### Case 2: Failure Path — Scope too large; redirected to /design-system
+### Case 2: Failure Path — Scope too large; redirected to $ccgs-design-system
 
 **Fixture:**
 - Scenario (a): the request is "redesign the entire combat system"
-- Scenario (b): a Tweak is drafted, and at the approval step the user picks `[C] This grew too large — redirect to /design-system instead`
+- Scenario (b): a Tweak is drafted, and at the approval step the user picks `[C] This grew too large — redirect to $ccgs-design-system instead`
 
-**Input:** (a) `/quick-design redesign the entire combat system` (b) `/quick-design allow combo to cancel into roll`
+**Input:** (a) `$ccgs-quick-design redesign the entire combat system` (b) `$ccgs-quick-design allow combo to cancel into roll`
 
 **Expected behavior:**
-1. (a) The change alters a system's core rules, so the skill stops before drafting and redirects to `/design-system` — directly, or via option `[F]` of the classification prompt
+1. (a) The change alters a system's core rules, so the skill stops before drafting and redirects to `$ccgs-design-system` — directly, or via option `[F]` of the classification prompt
 2. (b) The skill stops at the approval step
-3. In both scenarios: "Verdict: **REDIRECTED** — use `/design-system` for this change."
+3. In both scenarios: "Verdict: **REDIRECTED** — use `$ccgs-design-system` for this change."
 4. No file is written under `design/quick-specs/`
 
 **Assertions:**
 - [ ] (a) The scope excess is detected and the skill stops before drafting
 - [ ] (a) The verdict line is printed even when the skill stops before the classification widget, not only via `[F]`
-- [ ] The message names `/design-system` as the alternative
+- [ ] The message names `$ccgs-design-system` as the alternative
 - [ ] No quick spec file is written
 - [ ] The verdict is `REDIRECTED`, not `COMPLETE`
 
@@ -117,7 +117,7 @@ Fixture defaults.
 - `assets/data/player.json` holds `jump_height: 5`
 - An earlier quick spec, `design/quick-specs/jump-height-tuning-[earlier-date].md`, previously set `jump_height` to 5
 
-**Input:** `/quick-design increase jump height from 5 to 6 units`
+**Input:** `$ccgs-quick-design increase jump height from 5 to 6 units`
 
 **Expected behavior:**
 1. The skill classifies the change as Tuning and confirms it
@@ -140,7 +140,7 @@ Fixture defaults.
 - No `design/gdd/systems-index.md`
 - `design/quick-specs/` may or may not exist
 
-**Input:** `/quick-design` (no argument)
+**Input:** `$ccgs-quick-design` (no argument)
 
 **Expected behavior:**
 1. The skill asks the user to describe the change with a plain-text prompt
@@ -163,20 +163,20 @@ Fixture defaults.
 - `design/gdd/combat.md` exists (a GDD written voluntarily at this tier) and describes the block mechanic
 - `project.yaml` has `modes.review_mode: full` and `modes.workflow: minimal`
 
-**Input:** `/quick-design add a parry window to the block mechanic`
+**Input:** `$ccgs-quick-design add a parry window to the block mechanic`
 
 **Expected behavior:**
 1. The skill runs its normal flow; `review_mode` is not among the keys it resolves, and nothing branches on it
 2. No agent of any kind is spawned (the skill has no `Agent` tool)
 3. The spec is drafted, approved and written after "May I write"
-4. The Pipeline Notes state that quick specs bypass `/design-review` and `/review-all-gdds` by design, and list when to redirect to `/design-system`
-5. At `workflow: minimal`, the handoff says to go straight to `/dev-story` rather than `/story-readiness`
+4. The Pipeline Notes state that quick specs bypass `$ccgs-design-review` and `$ccgs-review-all-gdds` by design, and list when to redirect to `$ccgs-design-system`
+5. At `workflow: minimal`, the handoff says to go straight to `$ccgs-dev-story` rather than `$ccgs-story-readiness`
 
 **Assertions:**
 - [ ] No director gate or other agent is spawned
 - [ ] `modes.review_mode: full` does not change the skill's behavior
-- [ ] The output explains that quick specs bypass `/design-review` and `/review-all-gdds`, and names `/design-system` for larger changes
-- [ ] The handoff points to `/dev-story` directly at `workflow: minimal`
+- [ ] The output explains that quick specs bypass `$ccgs-design-review` and `$ccgs-review-all-gdds`, and names `$ccgs-design-system` for larger changes
+- [ ] The handoff points to `$ccgs-dev-story` directly at `workflow: minimal`
 
 ---
 
@@ -186,16 +186,16 @@ Fixture defaults.
 - `project.yaml` has `modes.rigor: minimal`; `design/gdd/` holds no system GDD
 - `design/game-brief.md` describes the jump; `production/epics/movement/story-002-jump.md` implements it with a jump height of 5
 
-**Input:** `/quick-design increase jump height from 5 to 6 units`
+**Input:** `$ccgs-quick-design increase jump height from 5 to 6 units`
 
 **Expected behavior:**
 1. Classified as Tuning and confirmed
 2. The context scan finds no GDD and reports "No GDD for movement — using the brief and `production/epics/movement/story-002-jump.md`"
 3. The spec is drafted with `design/game-brief.md` as its GDD Reference, shown, and written after "May I write"
-4. No GDD update is proposed (there is no GDD to update); the handoff goes to `/dev-story`
+4. No GDD update is proposed (there is no GDD to update); the handoff goes to `$ccgs-dev-story`
 
 **Assertions:**
-- [ ] The skill does not stop, and does not redirect to `/design-system`, because there is no GDD
+- [ ] The skill does not stop, and does not redirect to `$ccgs-design-system`, because there is no GDD
 - [ ] The report names the brief and the story it used in place of a GDD
 - [ ] The spec's GDD Reference is `design/game-brief.md`
 - [ ] Nothing is written before the "May I write" approval
@@ -204,13 +204,13 @@ Fixture defaults.
 
 ## Protocol Compliance
 
-- [ ] The change is classified and confirmed before drafting; oversized changes redirect to `/design-system`
+- [ ] The change is classified and confirmed before drafting; oversized changes redirect to `$ccgs-design-system`
 - [ ] The spec format matches the confirmed category (Tuning table; Tweak/Addition sections; New Small System trimmed GDD)
 - [ ] The full draft is shown before the "May I write" ask
 - [ ] "May I write this Quick Design Spec to `design/quick-specs/[kebab-case-title]-[YYYY-MM-DD].md`?" is asked before writing
 - [ ] GDD edits are asked for separately, with old vs. new text, and never made without approval
 - [ ] No director gates; review mode is not read
-- [ ] Ends with the handoff block and next steps (`/story-readiness`, or `/dev-story` at `minimal`)
+- [ ] Ends with the handoff block and next steps (`$ccgs-story-readiness`, or `$ccgs-dev-story` at `minimal`)
 
 ---
 

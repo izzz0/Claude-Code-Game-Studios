@@ -13,9 +13,9 @@ delegates vs. handles directly. Include which gates it triggers (if any).]
 
 ## Static Assertions (Structural)
 
-- [ ] Agent file exists at `.claude/agents/[name].md`
+- [ ] Agent file exists at `.codex/agents/ccgs-[name].md`
 - [ ] Frontmatter has `name`, `description`, `model`, `tools` fields
-- [ ] Model tier is `[opus | sonnet | haiku | inherit]` — frontmatter `model:` reads exactly that alias (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Domain clearly stated
 - [ ] Escalation path documented
 - [ ] Does not make decisions outside its domain

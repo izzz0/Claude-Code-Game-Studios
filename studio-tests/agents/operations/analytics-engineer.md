@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references telemetry, A/B testing, event tracking, analytics)
 - [ ] `tools:` reads `Read, Glob, Grep, Write, Edit, Bash, WebSearch` — Bash serves the data-pipeline work `description:` names; tracking in game code is excluded by the body's "What This Agent Must NOT Do" list, not by the tool list
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over game implementation, economy design, or live ops scheduling
 
 ---
@@ -91,4 +91,4 @@
 - Case 6 (mutual exclusion) is a data integrity test — overlapping tests produce unusable results; this must be caught
 - Case 4 (data vs. design intent) is a coordination test — verify the agent leaves the call to game-designer
 - Case 5 is the most important context-awareness test; naming convention drift across schemas causes dashboard breakage
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

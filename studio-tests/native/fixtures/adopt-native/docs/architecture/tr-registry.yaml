@@ -1,0 +1,4 @@
+tr:
+  - id: TR-DELIVERY-001
+    source: design/gdd/courier.md
+    requirement: Three distinct parcels complete the run once.

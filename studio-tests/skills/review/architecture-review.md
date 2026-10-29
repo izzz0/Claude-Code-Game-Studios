@@ -1,19 +1,19 @@
-# Skill Test Spec: /architecture-review
+# Skill Test Spec: $ccgs-architecture-review
 
 ## Skill Summary
 
-`/architecture-review` is an Opus-tier skill that checks whether the whole body
+`$ccgs-architecture-review` is an caller-model skill that checks whether the whole body
 of architectural decisions covers the game's design. It extracts technical
 requirements (TR-IDs) from every GDD, maps each one to the ADRs that cover it
 in a traceability matrix, detects cross-ADR conflicts, orders ADRs by
-dependency (via `.claude/scripts/adr-dep-graph.sh`), audits engine
+dependency (via `.agents/studio/scripts/adr-dep-graph.sh`), audits engine
 compatibility against `docs/engine-reference/`, consults the primary engine
 specialist, and checks `docs/architecture/architecture.md` coverage of the
 systems index. It produces a PASS / CONCERNS / NOT ASSESSED / FAIL verdict.
 
 It takes a focus argument (`full` by default, or `coverage`, `consistency`,
 `engine`, `single-gdd [path]`, `rtm`). After the report, it asks via
-`AskUserQuestion` before writing the review report
+`native user-input mechanism` before writing the review report
 (`docs/architecture/architecture-review-[date].md`), the traceability index and
 `docs/architecture/tr-registry.yaml`. It is the quality gate between Technical
 Setup and Pre-Production.
@@ -22,12 +22,12 @@ Setup and Pre-Production.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: PASS, CONCERNS, NOT ASSESSED, FAIL
-- [ ] `allowed-tools` includes Write, so write-approval language is present ("May I update the systems index?", "May I update `docs/architecture/tr-registry.yaml`…")
+- [ ] `tool permissions` includes Write, so write-approval language is present ("May I update the systems index?", "May I update `docs/architecture/tr-registry.yaml`…")
 - [ ] Has a next-step handoff at the end (Phase 9)
 - [ ] Documents the argument modes: `full`, `coverage`, `consistency`, `engine`, `single-gdd [path]`, `rtm`
 
@@ -38,7 +38,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 None. This skill resolves no `review_mode` (its config block requests only
 `automation` and `workflow`) and spawns no director gate. The only agent it
 spawns is the primary engine specialist in Phase 5. The architecture sign-off
-gates (TD-ARCHITECTURE, LP-FEASIBILITY) belong to `/create-architecture`, not to
+gates (TD-ARCHITECTURE, LP-FEASIBILITY) belong to `$ccgs-create-architecture`, not to
 this skill.
 
 ---
@@ -47,7 +47,7 @@ this skill.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -71,7 +71,7 @@ Fixture defaults.
   `.github/workflows/tests.yml`, `design/accessibility-requirements.md`,
   `design/ux/interaction-patterns.md`
 
-**Input:** `/architecture-review`
+**Input:** `$ccgs-architecture-review`
 
 **Expected behavior:**
 1. Freshness check prints `RECEIPT: NONE` → full review
@@ -79,10 +79,10 @@ Fixture defaults.
    targeted Greps rather than whole files, and reports
    "Loaded [N] GDDs, [M] ADRs, engine: Godot 4.6"
 3. Skill extracts TR-IDs (reusing any existing `tr-registry.yaml` IDs) and builds the matrix
-4. Skill runs `bash .claude/scripts/adr-dep-graph.sh` and prints the recommended implementation order from its `ORDER:` row
+4. Skill runs `bash .agents/studio/scripts/adr-dep-graph.sh` and prints the recommended implementation order from its `ORDER:` row
 5. Skill runs the engine audit and consults `godot-specialist`
 6. Report ends with `### Verdict: PASS`
-7. Phase 8 asks what to write; Phase 9 offers `/gate-check pre-production`
+7. Phase 8 asks what to write; Phase 9 offers `$ccgs-gate-check pre-production`
 
 **Assertions:**
 - [ ] Output reports "Loaded [N] GDDs, [M] ADRs, engine: [name + version]"
@@ -91,8 +91,8 @@ Fixture defaults.
 - [ ] Verdict is PASS only because all requirements are covered by **Accepted** ADRs, no conflicts exist, and engine references agree
 - [ ] The report header has `Mode: full` and `Workflow: full` lines
 - [ ] The report includes the `review-receipts.sh hash` lines for every review input (ADRs, GDDs, TR registry, engine reference, `project.yaml`, the skill's own files), taken after the TR registry is written
-- [ ] No file is written before the Phase 8 `AskUserQuestion` (`[A]` all three files / `[B]` report only at `docs/architecture/architecture-review-[date].md` / `[C]` nothing yet)
-- [ ] The closing widget offers `/gate-check pre-production`, because every pre-gate checklist item is ✅
+- [ ] No file is written before the Phase 8 `native user-input mechanism` (`[A]` all three files / `[B]` report only at `docs/architecture/architecture-review-[date].md` / `[C]` nothing yet)
+- [ ] The closing widget offers `$ccgs-gate-check pre-production`, because every pre-gate checklist item is ✅
 
 ---
 
@@ -105,22 +105,22 @@ Fixture defaults.
   - `adr-0002` and `adr-0004` are both Accepted and both claim authority over the
     player's health value
 
-**Input:** `/architecture-review`
+**Input:** `$ccgs-architecture-review`
 
 **Expected behavior:**
 1. The persistence requirement appears as a `❌ GAP` row
-2. The gap appears under "Coverage Gaps" with a suggested `/architecture-decision [title]`, Domain and Engine Risk
+2. The gap appears under "Coverage Gaps" with a suggested `$ccgs-architecture-decision [title]`, Domain and Engine Risk
 3. A conflict block `## Conflict: [ADR-0002] vs [ADR-0004]` is printed
 4. Verdict is FAIL; Blocking Issues list at least the Foundation gap
 5. Neither ADR is edited; the user decides the resolution
 
 **Assertions:**
 - [ ] Verdict is FAIL (a Foundation-layer requirement is uncovered)
-- [ ] The gap row names the TR-ID, GDD and requirement, with a suggested `/architecture-decision` command
+- [ ] The gap row names the TR-ID, GDD and requirement, with a suggested `$ccgs-architecture-decision` command
 - [ ] The conflict block names both ADR numbers, a Type (State / Data ownership), what each ADR claims, the Impact, and at least two resolution options
 - [ ] Skill does NOT auto-resolve the conflict or edit either ADR
 - [ ] If `docs/consistency-failures.md` exists, the Phase 8 `[A]` option names it ("…and append 1 conflict entry to `docs/consistency-failures.md`") and the entry is appended only when the user picks `[A]`; `[B]` (report only) writes the report and nothing else; if the file does not exist, it is not created
-- [ ] The closing widget does not offer `/gate-check`; it offers writing the missing ADR via `/architecture-decision [system]`
+- [ ] The closing widget does not offer `$ccgs-gate-check`; it offers writing the missing ADR via `$ccgs-architecture-decision [system]`
 
 ---
 
@@ -130,17 +130,17 @@ Fixture defaults.
 - As Case 1, except `adr-0003` (the only ADR covering `TR-inventory-001`) has `## Status: Proposed`
 - `adr-0004` (Accepted) has `**Depends On**: ADR-0003` in its `## ADR Dependencies` table
 
-**Input:** `/architecture-review`
+**Input:** `$ccgs-architecture-review`
 
 **Expected behavior:**
 1. `TR-inventory-001` is marked `🟡 Covered (Proposed)`, not ✅
 2. The dependency analysis flags "ADR-0004 depends on ADR-0003 — but ADR-0003 is still Proposed"
-3. Verdict is capped at CONCERNS and names the way out: `/architecture-decision accept ADR-0003`
+3. Verdict is capped at CONCERNS and names the way out: `$ccgs-architecture-decision accept ADR-0003`
 
 **Assertions:**
 - [ ] Skill reads each ADR's `## Status` before marking coverage; a Proposed ADR never yields ✅
 - [ ] Verdict is CONCERNS (not PASS) when coverage rests on a Proposed ADR
-- [ ] Output names `/architecture-decision accept ADR-0003` as the route to clear it
+- [ ] Output names `$ccgs-architecture-decision accept ADR-0003` as the route to clear it
 - [ ] The unresolved dependency on a Proposed ADR is flagged
 
 ---
@@ -162,7 +162,7 @@ Fixture defaults.
   `## ADR Dependencies`, `## Performance Implications`
 
 **Assertions (4b):**
-- [ ] Skill reports "[N] ADRs found, none carries a scannable section — run `/architecture-decision retrofit [file]` on each" (subcommand first — with the path first, `/architecture-decision` would start authoring a new ADR instead)
+- [ ] Skill reports "[N] ADRs found, none carries a scannable section — run `$ccgs-architecture-decision retrofit [file]` on each" (subcommand first — with the path first, `$ccgs-architecture-decision` would start authoring a new ADR instead)
 - [ ] Skill does NOT report zero coverage or a design failure — it is a format failure
 - [ ] Rows whose ADR has no `## Status` are `❓ Not assessed`, and the verdict is not PASS — nor FAIL on coverage grounds, since coverage is unknown rather than absent
 
@@ -195,11 +195,11 @@ Fixture defaults.
 ## Protocol Compliance
 
 - [ ] Shows the full traceability matrix before any write approval (the Phase 1a freshness question and Phase 2's ambiguous-requirement questions may come earlier)
-- [ ] Every write approval uses `AskUserQuestion` with labelled options, not a plain-text "May I?"
+- [ ] Every write approval uses `native user-input mechanism` with labelled options, not a plain-text "May I?"
 - [ ] Shows the content to be written (report, systems-index rows) before asking to write it
 - [ ] Never renumbers or deletes existing `tr-registry.yaml` entries; marking one deprecated is confirmed with the user
 - [ ] Verdict is one of exactly: PASS, CONCERNS, NOT ASSESSED, FAIL
-- [ ] Ends with a Phase 9 handoff via `AskUserQuestion`; `/gate-check` is not offered while any pre-gate item is ❌
+- [ ] Ends with a Phase 9 handoff via `native user-input mechanism`; `$ccgs-gate-check` is not offered while any pre-gate item is ❌
 
 ---
 

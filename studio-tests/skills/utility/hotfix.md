@@ -1,12 +1,12 @@
-# Skill Test Spec: /hotfix
+# Skill Test Spec: $ccgs-hotfix
 
 ## Skill Summary
 
-`/hotfix` runs an emergency fix outside the sprint process, with an audit trail.
+`$ccgs-hotfix` runs an emergency fix outside the sprint process, with an audit trail.
 It runs only when the user types it (`disable-model-invocation: true`). The flow:
 
-1. **Assess severity** (S1 Critical / S2 High / S3 or lower, on `/bug-triage`'s scale) and confirm it with
-   `AskUserQuestion`; S3 or lower stops with `Verdict: **REDIRECTED**`.
+1. **Assess severity** (S1 Critical / S2 High / S3 or lower, on `$ccgs-bug-triage`'s scale) and confirm it with
+   `native user-input mechanism`; S3 or lower stops with `Verdict: **REDIRECTED**`.
 2. **Hotfix record** — asks "May I write this to
    `production/hotfixes/hotfix-[date]-[short-name].md`?"
 3. **Branch** — checks for a git repo, then asks before running
@@ -18,38 +18,38 @@ It runs only when the user types it (`disable-model-invocation: true`). The flow
 5. **Approvals** — `lead-programmer`, `qa-tester` and `producer` spawned in
    parallel; all three must return APPROVE, and CONCERNS or REJECT blocks deployment.
 6. **QA re-entry gate** — `qa-lead` picks smoke check, targeted
-   `/team-qa feature: [system]`, or full QA; a smoke-check FAIL sends the fix
+   `$ccgs-team-qa feature: [system]`, or full QA; a smoke-check FAIL sends the fix
    back to Phase 4. A NOT ASSESSED result is not a pass: deploying anyway takes
    an explicit producer decision, logged in the hotfix record.
-7. **Deploy** — an unconditional `AskUserQuestion` before any merge, tag or deploy
+7. **Deploy** — an unconditional `native user-input mechanism` before any merge, tag or deploy
    (even in `autonomous` mode); merge to `main`, and to the release's
    `release/*` branch only if one exists; tag the patch release and verify the
    backport; ask before updating the bug file, then set it to
    `Fixed — Pending Verification`; print "Hotfix Deployed" (on `[B]`,
    "Hotfix Merged to main — release held", with no Tag); `[C]` stops with no
-   merge, tag or bug-file update; then `/bug-report verify` (a CANNOT VERIFY is
+   merge, tag or bug-file update; then `$ccgs-bug-report verify` (a CANNOT VERIFY is
    settled by playing the reproduction steps and answering its manual-play
    question) and a post-incident review (recorded with the incident-response
-   template — `/retrospective` has no incident mode).
+   template — `$ccgs-retrospective` has no incident mode).
 
 Targeted tests run with `commands.test` from `project.yaml`; when it is unset or
 no test covers the system, the hotfix record says `Tests: NOT RUN — [reason]`.
-A `/team-qa` pass that returns NOT APPROVED or BLOCKED is handled like a
-smoke-check FAIL. S1 is `/bug-triage`'s definition: crash, data loss, or
+A `$ccgs-team-qa` pass that returns NOT APPROVED or BLOCKED is handled like a
+smoke-check FAIL. S1 is `$ccgs-bug-triage`'s definition: crash, data loss, or
 complete feature failure.
 
 ---
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Frontmatter sets `disable-model-invocation: true`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: REDIRECTED, APPROVE / CONCERNS / REJECT (sign-offs), NOT ASSESSED (QA gate)
 - [ ] Contains "May I write" (hotfix record), "May I implement this fix?" (code) and "May I update" (bug file) language
-- [ ] Has a next-step handoff (`/bug-report verify [BUG-ID]`, a post-incident review)
+- [ ] Has a next-step handoff (`$ccgs-bug-report verify [BUG-ID]`, a post-incident review)
 
 ---
 
@@ -67,7 +67,7 @@ choose the QA scope.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -83,10 +83,10 @@ Fixture defaults.
   `production/qa/bugs/BUG-0031.md` exists with `**Status**: Open`
 - All three sign-offs return APPROVE; `qa-lead` picks a smoke check, which returns PASS
 
-**Input:** `/hotfix BUG-0031`
+**Input:** `$ccgs-hotfix BUG-0031`
 
 **Expected behavior:**
-1. Assesses S1 and confirms via `AskUserQuestion`; user picks `[A] S1 (Critical)`
+1. Assesses S1 and confirms via `native user-input mechanism`; user picks `[A] S1 (Critical)`
 2. Asks "May I write this to `production/hotfixes/hotfix-[date]-boss-arena-crash.md`?" and writes it
 3. Runs `git rev-parse --is-inside-work-tree`, asks "Ready to create hotfix branch
    'hotfix/boss-arena-crash' from v1.2.0?", and runs
@@ -99,7 +99,7 @@ Fixture defaults.
 8. Merges to `main`, tags `v1.2.1` on the fixed build, and confirms the fix is on `main`
 9. Asks "May I update `production/qa/bugs/BUG-0031.md` …?" before setting it to
    `Fixed — Pending Verification`, then prints "Hotfix Deployed: boss-arena-crash"
-   with `Tag: v1.2.1` and `Next: /bug-report verify`
+   with `Tag: v1.2.1` and `Next: $ccgs-bug-report verify`
 
 **Assertions:**
 - [ ] The hotfix record is written before the branch is created
@@ -122,7 +122,7 @@ Fixture defaults.
 - `qa-tester` returns REJECT: "Player health clamping regression detected";
   `lead-programmer` and `producer` return APPROVE
 
-**Input:** `/hotfix`
+**Input:** `$ccgs-hotfix`
 
 **Expected behavior:**
 1. Phase 5 collects all three responses
@@ -133,7 +133,7 @@ Fixture defaults.
 **Assertions:**
 - [ ] The qa-tester's REJECT and its regression are shown to the user
 - [ ] Skill does not proceed to deployment with a REJECT outstanding
-- [ ] The deploy `AskUserQuestion` is not issued while the REJECT stands
+- [ ] The deploy `native user-input mechanism` is not issued while the REJECT stands
 - [ ] No merge is performed
 
 ---
@@ -146,7 +146,7 @@ Fixture defaults.
   certification; the hotfix branch was started from `release/1.3`
 - An S2 fix has all three APPROVE sign-offs and a smoke check PASS
 
-**Input:** `/hotfix`
+**Input:** `$ccgs-hotfix`
 
 **Expected behavior:**
 1. Despite `autonomous`, Phase 6 asks "Hotfix validated and approved. Merge to `main`
@@ -171,7 +171,7 @@ Fixture defaults.
 **Fixture:**
 - User reports a typo on the credits screen
 
-**Input:** `/hotfix typo in the credits screen`
+**Input:** `$ccgs-hotfix typo in the credits screen`
 
 **Expected behavior:**
 1. Phase 1 assesses S4 (Low — cosmetic) and asks the user to confirm severity
@@ -179,7 +179,7 @@ Fixture defaults.
 3. Skill stops: Verdict REDIRECTED — use the normal bug fix workflow for S3 and below
 
 **Assertions:**
-- [ ] Severity is confirmed via `AskUserQuestion` with S1 / S2 / S3-or-lower options
+- [ ] Severity is confirmed via `native user-input mechanism` with S1 / S2 / S3-or-lower options
 - [ ] Verdict is REDIRECTED
 - [ ] No hotfix record is written and no branch is created
 - [ ] No code is modified and no agents are spawned
@@ -191,9 +191,9 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml`: `modes.rigor: standard` (so a project with no game tests gets NOT ASSESSED, not WAIVED)
 - S1 fix implemented; all three sign-offs APPROVE
-- `qa-lead` picks a smoke check; `/smoke-check` returns `NOT ASSESSED — no game tests found`
+- `qa-lead` picks a smoke check; `$ccgs-smoke-check` returns `NOT ASSESSED — no game tests found`
 
-**Input:** `/hotfix`
+**Input:** `$ccgs-hotfix`
 
 **Expected behavior:**
 1. `producer` is spawned as a blocking sign-off, not as a named director gate; no gate IDs appear
@@ -219,11 +219,11 @@ Fixture defaults.
 
 **Fixture:**
 - S1 fix implemented; all three sign-offs APPROVE; `qa-lead` picks a smoke check
-- `/smoke-check` returns FAIL: "Player health clamping regression detected"
+- `$ccgs-smoke-check` returns FAIL: "Player health clamping regression detected"
 - On the revised fix, `lead-programmer` returns CONCERNS ("the clamp now runs on
   the save path too"); `qa-tester` and `producer` return APPROVE
 
-**Input:** `/hotfix`
+**Input:** `$ccgs-hotfix`
 
 **Expected behavior:**
 1. The FAIL stops deployment: the skill returns to Phase 4 with the failing check,
@@ -252,7 +252,7 @@ Fixture defaults.
 - [ ] Asks before creating the branch
 - [ ] Asks "May I implement this fix?" before modifying code
 - [ ] Runs targeted tests with `commands.test`, never a runner line from memory; with the key unset (or no covering test) records `Tests: NOT RUN — [reason]`
-- [ ] Treats a `/team-qa` NOT APPROVED or BLOCKED like a smoke-check FAIL
+- [ ] Treats a `$ccgs-team-qa` NOT APPROVED or BLOCKED like a smoke-check FAIL
 - [ ] On the deploy question's `[C] Stop here`, merges, tags and updates nothing, and the record stays IN PROGRESS
 - [ ] Deploys only with all three APPROVE sign-offs and a QA gate that ran — or,
       when the QA gate was NOT ASSESSED, an explicit producer decision to deploy
@@ -268,9 +268,9 @@ Fixture defaults.
 
 - A non-git working directory ("Not a git repository — create the branch manually.")
   is not separately tested.
-- `qa-lead` choosing a targeted `/team-qa feature: [system]` pass (APPROVED /
+- `qa-lead` choosing a targeted `$ccgs-team-qa feature: [system]` pass (APPROVED /
   APPROVED WITH CONDITIONS) or full QA is not separately tested.
-- Phase 7 post-deploy verification (VERIFIED FIXED → `/bug-report close`; STILL
+- Phase 7 post-deploy verification (VERIFIED FIXED → `$ccgs-bug-report close`; STILL
   PRESENT → re-open and assess rollback; CANNOT VERIFY → the bug stays open until
   its reproduction steps are played in the deployed build and reported through
-  `/bug-report verify`'s manual-play question) is not separately tested.
+  `$ccgs-bug-report verify`'s manual-play question) is not separately tested.

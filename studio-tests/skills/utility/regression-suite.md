@@ -1,8 +1,8 @@
-# Skill Test Spec: /regression-suite
+# Skill Test Spec: $ccgs-regression-suite
 
 ## Skill Summary
 
-`/regression-suite [update | audit | report]` maintains `tests/regression-suite.md`,
+`$ccgs-regression-suite [update | audit | report]` maintains `tests/regression-suite.md`,
 a curated manifest of existing tests that guard critical paths and fixed bugs.
 `audit` maps each GDD acceptance criterion (scoped by workflow tier) to tests in
 `tests/unit/[system]/` and `tests/integration/[system]/` as COVERED / PARTIAL /
@@ -29,19 +29,19 @@ director gates apply.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED, NOT ASSESSED
 - [ ] Contains "May I write" language before writing `tests/regression-suite.md`
-- [ ] Has a next-step handoff (`/test-helpers` for HIGH gaps, `/regression-suite audit` on drift, `/test-flakiness` for quarantined tests)
+- [ ] Has a next-step handoff (`$ccgs-test-helpers` for HIGH gaps, `$ccgs-regression-suite audit` on drift, `$ccgs-test-flakiness` for quarantined tests)
 
 ---
 
 ## Director Gate Checks
 
-None. `/regression-suite` is a QA utility. It spawns no agents (`Agent` is not
+None. `$ccgs-regression-suite` is a QA utility. It spawns no agents (`Agent` is not
 in its allowed tools) and no director gates apply.
 
 ---
@@ -50,7 +50,7 @@ in its allowed tools) and no director gates apply.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -68,7 +68,7 @@ Fixture defaults.
   path only); nothing tests the damage formula
 - `tests/regression-suite.md` exists
 
-**Input:** `/regression-suite audit`
+**Input:** `$ccgs-regression-suite audit`
 
 **Expected behavior:**
 1. Skill reads the existing manifest, globs the test inventory and reads the
@@ -80,14 +80,14 @@ Fixture defaults.
 4. The report shows the per-system table and a non-exempt coverage rate
 5. Skill asks "May I write/update `tests/regression-suite.md` with the current
    regression suite manifest?"; on approval audit rewrites the full manifest
-6. Verdict is COMPLETE; for the HIGH gap it suggests `/test-helpers`
+6. Verdict is COMPLETE; for the HIGH gap it suggests `$ccgs-test-helpers`
 
 **Assertions:**
 - [ ] Each criterion gets one of COVERED / PARTIAL / MISSING / EXEMPT, matching the fixture
 - [ ] The HUD criterion is EXEMPT and excluded from the coverage rate
 - [ ] The damage-formula gap is HIGH PRIORITY with a `tests/unit/combat/` path
 - [ ] The manifest is written only after the "May I write/update" ask
-- [ ] Verdict is COMPLETE and `/test-helpers` is suggested
+- [ ] Verdict is COMPLETE and `$ccgs-test-helpers` is suggested
 
 ---
 
@@ -102,7 +102,7 @@ Fixture defaults.
   references BUG-0012 or its failure scenario
 - `tests/regression-suite.md` has 6 registered tests
 
-**Input:** `/regression-suite update`
+**Input:** `$ccgs-regression-suite update`
 
 **Expected behavior:**
 1. Skill reads the sprint plan's completed stories and the closed bugs
@@ -130,7 +130,7 @@ Fixture defaults.
 - `qa.level: minimal`
 - GDDs and test files exist
 
-**Input:** `/regression-suite audit`
+**Input:** `$ccgs-regression-suite audit`
 
 **Expected behavior:**
 1. The early `qa.level` guard fires before any scan
@@ -155,20 +155,20 @@ Fixture defaults.
 - `tests/unit/`, `tests/integration/` and `tests/regression/` contain no files
 - The user approves the manifest write
 
-**Input:** `/regression-suite audit`
+**Input:** `$ccgs-regression-suite audit`
 
 **Expected behavior:**
 1. The test globs return zero files
 2. Skill does not emit a coverage percentage
 3. It reports `Coverage: NOT ASSESSED — no test files found`, naming the empty
-   side and `/test-setup` as the skill that produces the test scaffold
+   side and `$ccgs-test-setup` as the skill that produces the test scaffold
 4. The manifest is written only after the "May I write/update" ask
 5. Verdict is NOT ASSESSED — the first match, even though the write happened
 
 **Assertions:**
 - [ ] No `0%` (or any percentage) coverage figure is reported
 - [ ] Coverage reads `NOT ASSESSED — no test files found`
-- [ ] `/test-setup` is named as the producing skill
+- [ ] `$ccgs-test-setup` is named as the producing skill
 - [ ] Any manifest write still requires the "May I write/update" ask
 - [ ] Verdict is NOT ASSESSED — never COMPLETE over a coverage figure that was not computed
 
@@ -181,7 +181,7 @@ Fixture defaults.
 - `tests/regression-suite.md`, tests and closed bugs exist
 - Any review mode
 
-**Input:** `/regression-suite report`
+**Input:** `$ccgs-regression-suite report`
 
 **Expected behavior:**
 1. Skill produces the Regression Suite Status report in conversation
@@ -204,19 +204,19 @@ Fixture defaults.
 - `production/qa/bugs/BUG-0012.md` has `Status: Closed`, system `inventory`; no test references it
 - `tests/regression-suite.md` exists with 6 registered tests and an old Last Updated date
 
-**Input:** `/regression-suite update`
+**Input:** `$ccgs-regression-suite update`
 
 **Expected behavior:**
 1. The `qa.level` guard does not fire (`standard`); `update` mode is tier-independent, so it reads the completed stories and closed bugs
 2. BUG-0012 is MISSING REGRESSION TEST; the completed inventory story with no test and the stale manifest are reported as coverage drift
-3. After the "May I write/update" ask and the write, the follow-up lines say "next story" where they would say "next sprint": the missing tests belong in the next story, and the drift line suggests running `/regression-suite audit` at the next story boundary
-4. The gaps are described as advisory; the skill does not say `/gate-check` needs the suite at this `qa.level`
+3. After the "May I write/update" ask and the write, the follow-up lines say "next story" where they would say "next sprint": the missing tests belong in the next story, and the drift line suggests running `$ccgs-regression-suite audit` at the next story boundary
+4. The gaps are described as advisory; the skill does not say `$ccgs-gate-check` needs the suite at this `qa.level`
 5. Verdict COMPLETE
 
 **Assertions:**
 - [ ] The bug-gap line and the drift line say "next story" (or "story boundary") and the word "sprint" is not used for scheduling them
 - [ ] The HIGH-priority line, when a HIGH gap exists, also says "next story", not "next sprint"
-- [ ] The gaps are presented as advisory; `/gate-check` is not said to require the suite at `qa.level: standard`
+- [ ] The gaps are presented as advisory; `$ccgs-gate-check` is not said to require the suite at `qa.level: standard`
 - [ ] No existing manifest entry is removed and the write follows the "May I write/update" ask
 - [ ] Verdict is COMPLETE
 

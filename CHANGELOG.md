@@ -1,3 +1,13 @@
+# Codex core edition — 1.2.0-codex.1
+
+- Replace Claude-specific entrypoints with nine repository-local Codex skills.
+- Support a minimal, guided route with resumable stories and explicit evidence.
+- Reuse configuration and observation helpers under .agents/studio/.
+- Add Windows/Linux framework CI; keep game and framework tests separate.
+- Remove unported agents, skills and lifecycle hooks; retain upstream history below.
+
+---
+
 # Changelog
 
 What's new in Claude Code Game Studios, written for the people using it.

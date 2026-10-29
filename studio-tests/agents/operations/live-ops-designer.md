@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references live ops, seasonal events, battle pass, retention)
 - [ ] `tools:` reads `Read, Glob, Grep, Write, Edit` and `disallowedTools:` names `Bash` — design documents only, no shell, code or analytics tooling
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over economy math, analytics pipelines, or narrative direction
 
 ---
@@ -77,4 +77,4 @@
 - Case 3 (monetization ethics) is a brand-safety test — failure here could result in harmful live ops designs shipping
 - Case 4 (escalation behavior) is a coordination test — verify the agent actually escalates rather than deciding independently
 - Case 5 is the most important context-awareness test; agent must target the specific drop-off point, not a generic solution
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

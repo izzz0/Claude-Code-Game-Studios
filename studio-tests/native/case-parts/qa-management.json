@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "part": "qa-management",
+  "cases": [
+    {
+      "id": "native-009-ccgs-qa-plan",
+      "skill": "ccgs-qa-plan",
+      "fixture": "qa-plan",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-qa-plan feature: courier in English. Resolve the standard/guided Godot configuration, read the three supplied stories and courier GDD, and build a new QA plan for the three named acceptance sets. Classify STORY-001 as Logic with movement/wall boundary checks, STORY-002 as Integration with persistence and three-collection checks, and STORY-003 as Visual/Feel with a two-second readable completion-banner check. Require runtime evidence where the criteria are visual or persistence-sensitive; do not fabricate coverage, test runs, screenshots, or playtest sign-off. After presenting the plan, use the authorized coordinator approval to write the dated plan output; do not edit story files.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/qa-plan-courier-2026-10-26.md",
+            "contains": [
+              "STORY-001",
+              "Logic",
+              "STORY-002",
+              "Integration",
+              "STORY-003",
+              "Visual/Feel",
+              "runtime evidence",
+              "two seconds"
+            ],
+            "not_contains": [
+              "coverage: complete",
+              "screenshot attached"
+            ]
+          }
+        ],
+        "response_contains": [
+          "STORY-001",
+          "Logic",
+          "STORY-002",
+          "Integration",
+          "STORY-003",
+          "Visual/Feel",
+          "runtime evidence",
+          "QA plan written"
+        ],
+        "response_not_contains": [
+          "fabricated coverage",
+          "all tests passed",
+          "screenshot captured"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "standard",
+        "modes.automation": "guided",
+        "qa.level": "standard"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-010-ccgs-bug-triage",
+      "skill": "ccgs-bug-triage",
+      "fixture": "bug-triage",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-bug-triage sprint in English. Re-evaluate the two open reports against Sprint 004 capacity: BUG-0001 is an S1 crash blocking the delivery scene and must be ordered P1 and assigned to the documented remaining sprint capacity; BUG-0002 is an S3 cosmetic sparkle issue and remains P3 backlog. Preserve BUG-0003 exactly as closed and exclude it from open counts. Produce the dated triage report with priority/order, sprint assignment or backlog disposition, and no invented bug fixes. Use the authorized report-write approval; do not edit the bug reports or sprint plan.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/bug-triage-2026-10-26.md",
+            "contains": [
+              "BUG-0001",
+              "P1",
+              "S1",
+              "Sprint 004",
+              "BUG-0002",
+              "P3",
+              "BUG-0003",
+              "Closed"
+            ],
+            "not_contains": [
+              "BUG-0003 | Open",
+              "BUG-0002 | P1"
+            ]
+          }
+        ],
+        "response_contains": [
+          "BUG-0001",
+          "S1",
+          "P1",
+          "Sprint 004",
+          "BUG-0002",
+          "S3",
+          "P3",
+          "BUG-0003",
+          "Closed"
+        ],
+        "response_not_contains": [
+          "all bugs closed",
+          "BUG-0003 assigned"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-011-ccgs-tech-debt",
+      "skill": "ccgs-tech-debt",
+      "fixture": "tech-debt",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-tech-debt scan in English on the Godot src/ code root. Find the concrete TODO in src/game.gd: per-frame string allocation for target lookup, with performance impact in the 60 FPS loop. The supplied docs/debt-acceptance-context.md states the accepted reason: this optimization was deferred until profiling can confirm its impact, avoiding a premature change to target lookup. Present a scoped Performance debt entry using that reason, effort M, impact High, and no automatic refactor. With the authorized register-write approval, append the next ID TD-002 to docs/tech-debt-register.md while preserving TD-001 byte-for-byte and all ten register columns. Do not edit src/game.gd.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/tech-debt-register.md",
+            "contains": [
+              "TD-001",
+              "TD-002",
+              "Performance",
+              "src/game.gd",
+              "deferred until profiling",
+              "M",
+              "High",
+              "Open"
+            ],
+            "not_contains": [
+              "TD-001 | Resolved",
+              "src/game.gd modified"
+            ]
+          }
+        ],
+        "response_contains": [
+          "TD-002",
+          "src/game.gd",
+          "Performance",
+          "string allocation",
+          "deferred until profiling",
+          "60 FPS",
+          "M",
+          "High",
+          "register"
+        ],
+        "response_not_contains": [
+          "refactor applied",
+          "TD-001 deleted",
+          "no debt indicators"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-012-ccgs-test-flakiness",
+      "skill": "ccgs-test-flakiness",
+      "fixture": "test-flakiness",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-flakiness scan in English. Use the five dated synthetic text result files under test-results/ for outcomes and test-results/history-provenance.md to confirm that all five runs used the same source revision with no code changes. Parse the supplied history, not the current Godot game: collect_three_targets fails in 2 of 5 runs (40.0%, High) while wall_collision is stable in 5 of 5 runs (0.0%, clean). Report the exact counts, identify the likely history-based flakiness, and state that no current-game execution was performed. Write the dated flakiness report only after authorized approval; do not quarantine or modify tests/regression-suite.md and do not claim PASS for the current game.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/flakiness-report-2026-10-26.md",
+            "contains": [
+              "collect_three_targets",
+              "2",
+              "5",
+              "40.0",
+              "fixture-revision-7f3a21c",
+              "High",
+              "wall_collision",
+              "clean",
+              "synthetic"
+            ],
+            "not_contains": [
+              "current game passed",
+              "quarantined"
+            ]
+          }
+        ],
+        "response_contains": [
+          "collect_three_targets",
+          "2",
+          "5",
+          "40.0",
+          "High",
+          "wall_collision",
+          "5",
+          "clean",
+          "synthetic",
+          "no current-game execution"
+        ],
+        "response_not_contains": [
+          "current game PASS",
+          "all tests stable",
+          "quarantine applied"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

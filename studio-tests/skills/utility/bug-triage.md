@@ -1,10 +1,10 @@
-# Skill Test Spec: /bug-triage
+# Skill Test Spec: $ccgs-bug-triage
 
 ## Skill Summary
 
-`/bug-triage` turns the open bug backlog into a prioritised, sprint-assigned
+`$ccgs-bug-triage` turns the open bug backlog into a prioritised, sprint-assigned
 action list and writes it to `production/qa/bug-triage-[date].md` after a
-"May I write" ask. It runs on the Sonnet model. Modes: `sprint` (assign fixable
+"May I write" ask. It runs on the caller model model. Modes: `sprint` (assign fixable
 bugs to the current sprint, defer the rest), `full` (P1 → current sprint, P2 →
 next sprint, P3+ → backlog), `trend` (trend analysis only, no assignment, from
 header fields alone); no argument runs `sprint` if a sprint file exists, else `full`.
@@ -25,19 +25,19 @@ next fixes, ahead of the next story in the brief's build order. No director gate
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: COMPLETE, BLOCKED
 - [ ] Contains "May I write" language before writing `production/qa/bug-triage-[date].md`
-- [ ] Has a next-step handoff (`/sprint-status` for unassigned S1s; `/smoke-check` after regressions)
+- [ ] Has a next-step handoff (`$ccgs-sprint-status` for unassigned S1s; `$ccgs-smoke-check` after regressions)
 
 ---
 
 ## Director Gate Checks
 
-None. `/bug-triage` is an operational triage skill. No director gates apply.
+None. `$ccgs-bug-triage` is an operational triage skill. No director gates apply.
 
 ---
 
@@ -45,7 +45,7 @@ None. `/bug-triage` is an operational triage skill. No director gates apply.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -63,7 +63,7 @@ Fixture defaults.
   - `BUG-0004.md` — S2, P2, VFX
   - `BUG-0005.md` — S4, P3, Tutorial
 
-**Input:** `/bug-triage`
+**Input:** `$ccgs-bug-triage`
 
 **Expected behavior:**
 1. No argument and a sprint file exists → `sprint` mode
@@ -89,7 +89,7 @@ Fixture defaults.
 - `production/qa/bugs/` does not exist
 - No `production/qa/bugs.md` and no `production/qa/qa-plan-*.md`
 
-**Input:** `/bug-triage`
+**Input:** `$ccgs-bug-triage`
 
 **Expected behavior:**
 1. Step 2a finds no bug source in any of its three locations
@@ -115,7 +115,7 @@ Fixture defaults.
   and 1 filed against `production/epics/core/story-003.md`, whose `Status: Complete`
 - The user approves the write when asked
 
-**Input:** `/bug-triage sprint`
+**Input:** `$ccgs-bug-triage sprint`
 
 **Expected behavior:**
 1. Classifies all 4 bugs
@@ -125,14 +125,14 @@ Fixture defaults.
 5. Asks "May I write this triage report to `production/qa/bug-triage-[date].md`?";
    the user approves and the report is written
 6. After writing, the skill adds: "Regressions found — consider re-opening the affected
-   stories in sprint tracking and running `/smoke-check` to re-gate." Verdict: COMPLETE
+   stories in sprint tracking and running `$ccgs-smoke-check` to re-gate." Verdict: COMPLETE
 
 **Assertions:**
 - [ ] Inventory is flagged as a potential quality issue (3+ bugs in one system)
 - [ ] The bug against the Complete story is flagged as a regression
 - [ ] Trend Analysis shows Inventory as the hot spot and "Regressions: 1"
 - [ ] The report is written only after the "May I write" ask is approved
-- [ ] The post-write message recommends `/smoke-check`, and the verdict is COMPLETE
+- [ ] The post-write message recommends `$ccgs-smoke-check`, and the verdict is COMPLETE
 
 ---
 
@@ -142,7 +142,7 @@ Fixture defaults.
 - `production/sprints/sprint-004.md` notes the sprint is at full capacity
 - `production/qa/bugs/` holds one S2/P1 bug and one S4 bug judged P4 (cosmetic, out of scope)
 
-**Input:** `/bug-triage sprint`
+**Input:** `$ccgs-bug-triage sprint`
 
 **Expected behavior:**
 1. The P1 bug is not auto-assigned to the full sprint; it is flagged
@@ -167,7 +167,7 @@ Fixture defaults.
 - No sprint file in `production/sprints/`
 - `production/qa/bugs/` holds two bugs, S3/P3 and S4/P3
 
-**Input:** `/bug-triage full`
+**Input:** `$ccgs-bug-triage full`
 
 **Expected behavior:**
 1. Notes "No sprint plan found — assigning to backlog only."
@@ -195,7 +195,7 @@ Fixture defaults.
 - `production/qa/bugs/` holds BUG-0001 (S1, P1, Audio), BUG-0002 (S3, P1, UI) and
   BUG-0003 (S4, P3, Tutorial)
 
-**Input:** `/bug-triage` (no argument; no sprint file, so `full` mode)
+**Input:** `$ccgs-bug-triage` (no argument; no sprint file, so `full` mode)
 
 **Expected behavior:**
 1. No sprint file exists, so `full` mode runs

@@ -1,8 +1,8 @@
-# Skill Test Spec: /security-audit
+# Skill Test Spec: $ccgs-security-audit
 
 ## Skill Summary
 
-`/security-audit` audits the codebase for common game security failures across
+`$ccgs-security-audit` audits the codebase for common game security failures across
 six categories: save/serialization, network/multiplayer, input validation, data
 exposure, cheat/anti-tamper vectors, and dependencies. It takes a scope
 (`full`, `network`, `save`, `input`, `quick`; no argument runs `full`), reads
@@ -30,13 +30,13 @@ report. No director gates are invoked.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: CLEAR TO SHIP, FIX BEFORE SHIPPING, DO NOT SHIP, NOT ASSESSED, and the severities CRITICAL / HIGH / MEDIUM / LOW
 - [ ] Contains "May I write" language naming `production/security/security-audit-[date]-[scope].md`
-- [ ] Has a next-step handoff (Phase 7: `/security-audit quick`, `/gate-check release`, `/launch-checklist`)
+- [ ] Has a next-step handoff (Phase 7: `$ccgs-security-audit quick`, `$ccgs-gate-check release`, `$ccgs-launch-checklist`)
 
 ---
 
@@ -52,7 +52,7 @@ any review mode.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -68,7 +68,7 @@ Fixture defaults.
 - No API keys, secrets, passwords or tokens anywhere in `src/` or `assets/`
 - `addons/gdUnit4/` is the only third-party dependency
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. No argument → `full` scope
@@ -78,7 +78,7 @@ Fixture defaults.
 5. Category 6 lists `addons/gdUnit4/` in the Dependency Inventory
 6. Executive Summary shows zero findings at every severity over 42 source files; Release recommendation: **CLEAR TO SHIP**
 7. Skill presents the summary, then asks "May I write the full security audit report to `production/security/security-audit-[date]-full.md`?"
-8. After writing: "✅ No blocking security findings. Report written to `production/security/`. Include this path when running `/gate-check release`."
+8. After writing: "✅ No blocking security findings. Report written to `production/security/`. Include this path when running `$ccgs-gate-check release`."
 
 **Assertions:**
 - [ ] `security-engineer` is spawned with the fixed brief template — scope, engine/language, the `platform.*` values and a source manifest rooted at `src/` — and the brief adds no severity and no remark on the game's type
@@ -97,21 +97,21 @@ Fixture defaults.
   checksum or bounds check, so an edited save file unlocks late-game progression
 - No other findings
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. The save finding is classified **HIGH** (save tampering that bypasses progression)
    and is **not** raised to CRITICAL, because `platform.multiplayer` is `false`
 2. Release recommendation: **FIX BEFORE SHIPPING** — an open HIGH, no CRITICAL
 3. After the write: "⚠️ 1 HIGH finding(s) are open. The Polish → Release gate's
-   security audit item requires none — fix them and re-run `/security-audit quick`
-   before `/gate-check release`."
+   security audit item requires none — fix them and re-run `$ccgs-security-audit quick`
+   before `$ccgs-gate-check release`."
 
 **Assertions:**
 - [ ] The brief sent to `security-engineer` is the fixed template: it does not call the save finding HIGH (or any severity), and does not say a single-player game lowers the bar — the agent rates it from its own table
 - [ ] The finding is HIGH, not CRITICAL, in a single-player game
 - [ ] Release recommendation is FIX BEFORE SHIPPING — never CLEAR TO SHIP with a HIGH open, and not DO NOT SHIP without a CRITICAL
-- [ ] The ⚠️ HIGH message names the release gate's security audit item as the requirement, and names `/security-audit quick` and `/gate-check release`
+- [ ] The ⚠️ HIGH message names the release gate's security audit item as the requirement, and names `$ccgs-security-audit quick` and `$ccgs-gate-check release`
 - [ ] Variant — at `modes.rigor: minimal` the recommendation is still FIX BEFORE SHIPPING, and the message says the `minimal` release gate does not read this report instead of naming the gate item
 
 ---
@@ -123,7 +123,7 @@ Fixture defaults.
 - `src/net/combat_sync.gd` line 42: `@rpc("any_peer") func apply_damage(target_id, amount)` applies `amount` with no sender or range validation
 - `src/online/leaderboard_client.gd` line 8: `const API_KEY = "sk_live_..."`
 
-**Input:** `/security-audit full`
+**Input:** `$ccgs-security-audit full`
 
 **Expected behavior:**
 1. Category 2 runs (multiplayer is `true`) with the Godot network patterns (`MultiplayerPeer`, `rpc`, `@rpc`, …)
@@ -132,14 +132,14 @@ Fixture defaults.
 4. Each finding is written as `SEC-NNN` with Category, File and line, Description, Attack scenario, Remediation and Effort
 5. Release recommendation is DO NOT SHIP — an open CRITICAL decides it
 6. Skill presents the executive summary and CRITICAL/HIGH findings, then asks "May I write"
-7. Phase 7: "⛔ CRITICAL security findings must be resolved before any public release. Do not proceed to `/launch-checklist` until these are addressed." and re-run `/security-audit quick` before `/gate-check release`
+7. Phase 7: "⛔ CRITICAL security findings must be resolved before any public release. Do not proceed to `$ccgs-launch-checklist` until these are addressed." and re-run `$ccgs-security-audit quick` before `$ccgs-gate-check release`
 
 **Assertions:**
 - [ ] The RPC finding cites `src/net/combat_sync.gd` with its line and an attack scenario
 - [ ] The hardcoded key is raised to CRITICAL in the multiplayer context
 - [ ] Every finding carries a specific remediation
 - [ ] Release recommendation is DO NOT SHIP (open CRITICAL findings) — never FIX BEFORE SHIPPING or CLEAR TO SHIP
-- [ ] The ⛔ message is shown and `/launch-checklist` is held back
+- [ ] The ⛔ message is shown and `$ccgs-launch-checklist` is held back
 
 ---
 
@@ -150,7 +150,7 @@ Fixture defaults.
 - `src/networking/lobby.gd` defines `@rpc` functions `join_lobby()` and `send_chat()`
 - `modes.automation` unset (collaborative)
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. Skill finds `platform.multiplayer` and `platform.online` absent
@@ -173,7 +173,7 @@ Fixture defaults.
 - `project.yaml`: `engine.name: godot`, `platform.multiplayer: false`, `platform.online: false`
 - `src/` exists but contains no source files; `assets/data/` is empty
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. The code root resolves to `src/`, but there is nothing in it to audit
@@ -199,7 +199,7 @@ Fixture defaults.
 - `Assets/Scripts/Net/PlayerNet.cs` has `[ServerRpc]` methods that validate their inputs
 - No findings in the categories that can run
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. The manifest passed to `security-engineer` is rooted at `Assets/`, not `src/`
@@ -228,7 +228,7 @@ Fixture defaults.
 - `Assets/Scripts/Analytics/Telemetry.cs` line 12: `const string ApiKey = "sk_live_...";`
 - No other findings
 
-**Input:** `/security-audit`
+**Input:** `$ccgs-security-audit`
 
 **Expected behavior:**
 1. Category 1 is `NOT SOURCEABLE` for Unity, so it is NOT ASSESSED; Category 2 is skipped (both platform keys `false`) and the skip is named

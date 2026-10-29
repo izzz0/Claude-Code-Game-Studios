@@ -1,8 +1,8 @@
-# Skill Test Spec: /content-audit
+# Skill Test Spec: $ccgs-content-audit
 
 ## Skill Summary
 
-`/content-audit [system-name | --summary]` compares the content counts the design
+`$ccgs-content-audit [system-name | --summary]` compares the content counts the design
 specifies against what has been built. It reads `design/gdd/systems-index.md`
 for systems and their MVP/priority tier, takes the planned named content from the
 `entities:` and `items:` sections of `design/registry/entities.yaml` when the
@@ -26,9 +26,9 @@ gap. No director gates are invoked.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains status and verdict keywords: COMPLETE, IN PROGRESS, EARLY, NOT STARTED, NOT ASSESSED
 - [ ] Contains "May I write" before the optional report write to `docs/content-audit-[YYYY-MM-DD].md`
@@ -46,7 +46,7 @@ None. Content audit is an analysis skill; no gates are invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -64,7 +64,7 @@ Fixture defaults.
 - `assets/data/enemies/` contains `grunt.json`, `sniper.json`, `tank.json`, `boss.json`
 - `assets/data/items/` contains 3 item `.json` files
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. Skill reads the systems index; the empty registry is skipped and the GDD scan is used
@@ -92,7 +92,7 @@ Fixture defaults.
 - `design/gdd/enemies.md` specifies "3 enemy types: Grunt, Sniper, Boss"
 - `assets/data/enemies/` contains only `grunt.json`
 
-**Input:** `/content-audit enemies`
+**Input:** `$ccgs-content-audit enemies`
 
 **Expected behavior:**
 1. Single-system audit: skill skips the pre-scan and full-reads `design/gdd/enemies.md`
@@ -100,14 +100,14 @@ Fixture defaults.
 3. Gap table row: Enemies — Specified 3, Found 1, Gap 2, Status EARLY (33%)
 4. Enemies is flagged HIGH PRIORITY: status EARLY and MVP-tagged
 5. Skill asks "May I write the full report to `docs/content-audit-[YYYY-MM-DD].md`?"; on yes, the report's HIGH PRIORITY Gaps section lists Enemies with its rationale
-6. Next steps include "Run `/create-stories [epic-slug]` for each HIGH PRIORITY gap."
+6. Next steps include "Run `$ccgs-create-stories [epic-slug]` for each HIGH PRIORITY gap."
 
 **Assertions:**
 - [ ] Specified (3), Found (1) and Gap (2) are all shown
 - [ ] Status is EARLY for 1 of 3 (33%), not IN PROGRESS or NOT STARTED
 - [ ] Enemies is flagged HIGH PRIORITY because it is EARLY and MVP-tagged
 - [ ] Skill flags the gap now; it does not assume the content will be added later
-- [ ] Next steps point to `/create-stories` for the HIGH PRIORITY gap
+- [ ] Next steps point to `$ccgs-create-stories` for the HIGH PRIORITY gap
 
 ---
 
@@ -119,12 +119,12 @@ Fixture defaults.
 - `design/gdd/` contains no GDDs
 - `design/registry/entities.yaml` has no entries
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. Skill records its inputs as FOUND / ABSENT; the systems index, GDDs and registry entries are all ABSENT
 2. Every required input is ABSENT, so the skill stops
-3. Output reports `NOT ASSESSED — NO DATA`, naming the missing systems index and GDDs and the skills that produce them (`/map-systems`, `/design-system`)
+3. Output reports `NOT ASSESSED — NO DATA`, naming the missing systems index and GDDs and the skills that produce them (`$ccgs-map-systems`, `$ccgs-design-system`)
 4. No gap table and no gap percentage are produced (no division by zero)
 5. No report write is offered and no file is written
 
@@ -144,18 +144,18 @@ Fixture defaults.
 - `design/gdd/core-loop.md` has a `## Summary` and describes mechanics only — no content count, no named list
 - `design/registry/entities.yaml` has no entries
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. The systems index and the GDD are FOUND, so the skill does not stop at the insufficient-input check
 2. Scan (b) matches nothing; `core-loop.md` has a Summary, so it is noted "No auditable content counts" without a full read
 3. No row carries a Specified count, so no Gap, Status or overall gap percentage is computed (Specified is 0)
-4. The run closes `Verdict: NOT ASSESSED — NO DATA`, saying no GDD gives a count and naming `/design-system` to add counts
+4. The run closes `Verdict: NOT ASSESSED — NO DATA`, saying no GDD gives a count and naming `$ccgs-design-system` to add counts
 
 **Assertions:**
 - [ ] No overall gap percentage is computed and no row is marked COMPLETE
 - [ ] Verdict is `NOT ASSESSED — NO DATA`, never COMPLETE over an empty gap table
-- [ ] Output says no GDD gives a count and names `/design-system`
+- [ ] Output says no GDD gives a count and names `$ccgs-design-system`
 
 ---
 
@@ -168,7 +168,7 @@ Fixture defaults.
 - `design/gdd/quests.md` has no `## Summary` section and says the game has "a handful of side quests" with no number or named list
 - User answers yes to the report write
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. Skill globs `design/gdd/*.md` for the denominator: N = 3, since the glob also counts `systems-index.md` (read in step 1; it has no `## Summary`); the Summary grep matches only `enemies.md`; the content-count grep matches only `enemies.md`
@@ -193,7 +193,7 @@ Fixture defaults.
 - `project.yaml`: `modes.workflow: full`, `modes.review_mode: full`
 - GDDs specify 10 content items; 9 are found in the implementation directories
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. Skill reads the design inputs and scans the implementation; produces the gap table
@@ -218,7 +218,7 @@ Fixture defaults.
 - `design/gdd/enemies.md` `## Detailed Design` specifies "3 enemy types: Grunt, Sniper, Boss"; its `## Tuning Knobs` section mentions "2 elite variants"
 - `assets/data/enemies/` contains `grunt.json`, `sniper.json`, `boss.json`
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. The count in `## Detailed Design`, a required section at `standard`, is audited: Enemies — Specified 3, Found 3, Gap 0, COMPLETE
@@ -238,16 +238,16 @@ Fixture defaults.
 - `project.yaml`: `modes.rigor: minimal` (`workflow` resolves to `minimal`)
 - `design/game-brief.md` exists; `design/gdd/systems-index.md` does not
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. The systems index is ABSENT, as it normally is at `minimal`
-2. Output reports `NOT ASSESSED — NO DATA`, naming the missing systems index and `/map-systems`, which creates it
+2. Output reports `NOT ASSESSED — NO DATA`, naming the missing systems index and `$ccgs-map-systems`, which creates it
 3. No gap table, no gap percentage and no report write
 
 **Assertions:**
 - [ ] Verdict is `NOT ASSESSED — NO DATA`, not COMPLETE
-- [ ] Output names `design/gdd/systems-index.md` as missing and `/map-systems` as the skill that produces it
+- [ ] Output names `design/gdd/systems-index.md` as missing and `$ccgs-map-systems` as the skill that produces it
 - [ ] No gap percentage is computed and no file is written
 
 ---
@@ -256,12 +256,12 @@ Fixture defaults.
 
 **Fixture:**
 - `modes.workflow` resolves to `full`
-- `project.yaml` has no `engine.name`; `.claude/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`; both `src/` and `Source/` exist, so the tree does not decide the root
+- `project.yaml` has no `engine.name`; `.agents/studio/docs/technical-preferences.md` reads `[TO BE CONFIGURED]`; both `src/` and `Source/` exist, so the tree does not decide the root
 - `design/gdd/systems-index.md` lists Levels (MVP) and Enemies (MVP)
 - `design/gdd/levels.md` specifies "6 levels"; `design/gdd/enemies.md` specifies "3 enemy types: Grunt, Sniper, Boss"
 - `assets/data/enemies/` contains 3 enemy files; no scene files exist under `assets/`
 
-**Input:** `/content-audit`
+**Input:** `$ccgs-content-audit`
 
 **Expected behavior:**
 1. Enemies is audited from `assets/data/`: Specified 3, Found 3, COMPLETE
@@ -293,11 +293,11 @@ Fixture defaults.
 ## Coverage Notes
 
 - `--summary` mode (prints the table, writes nothing, ends with "Run
-  `/content-audit` without `--summary` to write the full report.") is not given
+  `$ccgs-content-audit` without `--summary` to write the full report.") is not given
   its own case.
 - Unity levels are found under the code root (`Assets/`, `*.unity`) and the
   other content types under `Assets/` (asserted in Protocol Compliance); Unreal
   levels under `Content/` (`*.umap`, with data assets as `*.uasset`); neither
   engine has its own case.
-- Asset naming, size and format compliance is `/asset-audit`'s job, not this
+- Asset naming, size and format compliance is `$ccgs-asset-audit`'s job, not this
   skill's.

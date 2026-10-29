@@ -9,11 +9,11 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.claude/agents/technical-director.md` frontmatter:
+Verified by reading the agent's `.codex/agents/ccgs-technical-director.toml` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references architecture, feasibility, ADR — not generic)
 - [ ] `tools:` reads Read, Glob, Grep, Write, Edit, Bash, WebSearch
-- [ ] Model tier is `opus` — frontmatter `model:` reads exactly `opus` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over game design decisions or creative direction
 
 ---
@@ -73,7 +73,7 @@ Verified by reading the agent's `.claude/agents/technical-director.md` frontmatt
 - [ ] Does not reconstruct a requirement list from the architecture document itself and judge coverage against it
 
 ### Case 7: Phase gate — judged against the phase being entered
-**Scenario:** `/gate-check technical-setup` at `workflow: standard` spawns TD-PHASE-GATE. The context gives the target phase (Technical Setup), the tier, and the gate's required and recommended artifacts at that tier: a systems index enumerating the MVP systems, each MVP GDD at the 5 standard sections and reviewed, and — recommended — a cross-GDD review report. All are present; the systems index gives each system's dependencies and data flow both ways. The engine reference path is `docs/engine-reference/godot/VERSION.md`. The architecture document and the ADR list are passed as "not expected before Pre-Production".
+**Scenario:** `$ccgs-gate-check technical-setup` at `workflow: standard` spawns TD-PHASE-GATE. The context gives the target phase (Technical Setup), the tier, and the gate's required and recommended artifacts at that tier: a systems index enumerating the MVP systems, each MVP GDD at the 5 standard sections and reviewed, and — recommended — a cross-GDD review report. All are present; the systems index gives each system's dependencies and data flow both ways. The engine reference path is `docs/engine-reference/godot/VERSION.md`. The architecture document and the ADR list are passed as "not expected before Pre-Production".
 **Expected:** Returns `TD-PHASE-GATE: READY` — the systems and GDDs give enough to architect from, which is what entering Technical Setup requires. The absent architecture document and ADRs are the work of the phase being entered, not a gap in it.
 **Variant:** the same project at target Pre-Production, where the architecture document is required and is passed as "none" → `TD-PHASE-GATE: NOT READY` or `CONCERNS`, naming the missing architecture document.
 **Assertions:**

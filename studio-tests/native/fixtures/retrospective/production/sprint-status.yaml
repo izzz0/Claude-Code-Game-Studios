@@ -1,0 +1,25 @@
+sprint: 007
+project: Dockside Relay
+stories:
+  - id: story-021-route-preview
+    status: done
+    points: 3
+  - id: story-022-dock-handoff
+    status: done
+    points: 5
+  - id: story-023-parcel-combo
+    status: done
+    points: 3
+  - id: story-024-save-resume
+    status: carried_over
+    points: 5
+    blocker: save schema review was not available
+  - id: story-025-controller-prompts
+    status: done
+    points: 2
+bugs:
+  found: 2
+  fixed: 1
+  open:
+    - BUG-0042
+commits: 9

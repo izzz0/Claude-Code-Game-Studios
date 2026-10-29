@@ -11,7 +11,7 @@
 
 - [ ] `description:` field is present and domain-specific (references UMG, widget hierarchy, CommonUI)
 - [ ] `tools:` reads Read, Glob, Grep, Write, Edit, Bash — no `Agent` tool
-- [ ] Model tier is `sonnet` — frontmatter `model:` reads exactly `sonnet` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over UX flow, navigation architecture, or gameplay data logic
 
 ---
@@ -76,4 +76,4 @@
 - Case 3 (CommonUI input routing) requires project to have CommonUI configured; test is skipped if project does not use CommonUI
 - Case 4 (performance) is a high-impact failure mode — 300ms hitches are shipping-blocking; prioritize this test case
 - Case 5 is the most important context-awareness test for UI pipeline consistency
-- No automated runner; review manually or via `/skill-test`
+- No automated runner; review manually or via `$ccgs-skill-test`

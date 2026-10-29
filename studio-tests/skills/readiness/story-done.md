@@ -1,22 +1,22 @@
-# Skill Test Spec: /story-done
+# Skill Test Spec: $ccgs-story-done
 
 ## Skill Summary
 
-`/story-done` closes the loop between design and implementation. Run at the
+`$ccgs-story-done` closes the loop between design and implementation. Run at the
 end of implementing a story, it reads the story file, re-reads the current
 requirement text from `docs/architecture/tr-registry.yaml` (never the story's
 quoted copy) and the governing ADR's `## Decision` / `## Consequences`, verifies
-each acceptance criterion (automatically, by batched `AskUserQuestion`, or as
+each acceptance criterion (automatically, by batched `native user-input mechanism`, or as
 `DEFERRED — requires playtest session`), builds a criterion-to-test
 traceability table, checks test evidence, and checks GDD/ADR/manifest/scope
 deviations (categorised BLOCKING / ADVISORY / OUT OF SCOPE). Review mode then
 decides the QA coverage gate (QL-TEST-COVERAGE) and the code review step
-(LP-CODE-REVIEW in `full`, a `/code-review` question in `lean`, a noted skip in
+(LP-CODE-REVIEW in `full`, a `$ccgs-code-review` question in `lean`, a noted skip in
 `solo`). It produces a COMPLETE / COMPLETE WITH NOTES / NOT ASSESSED / BLOCKED
-verdict and, only after an `AskUserQuestion` choice, updates the story file,
+verdict and, only after an `native user-input mechanism` choice, updates the story file,
 optionally appends to `docs/tech-debt-register.md`, and surfaces the next story —
-with no sprint plan, from `bash .claude/scripts/story-status.sh`, the list `/help`
-and `/sprint-status` read, run after the story file is written. It says what a
+with no sprint plan, from `bash .agents/studio/scripts/story-status.sh`, the list `$ccgs-help`
+and `$ccgs-sprint-status` read, run after the story file is written. It says what a
 screenshot shows only after opening it, and asks about behaviour criteria rather
 than reading them off the code.
 
@@ -24,12 +24,12 @@ than reading them off the code.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥5 phase headings (complex multi-phase skill)
 - [ ] Contains verdict keywords: COMPLETE, COMPLETE WITH NOTES, NOT ASSESSED, BLOCKED
-- [ ] `allowed-tools` includes Write/Edit, so ask-before-write language is present ("Use `AskUserQuestion` before writing anything" — covering the story file and the tech-debt register)
+- [ ] `tool permissions` includes Write/Edit, so ask-before-write language is present ("Use `native user-input mechanism` before writing anything" — covering the story file and the tech-debt register)
 - [ ] Has a next-step handoff (surfaces next story from sprint)
 
 ---
@@ -38,7 +38,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -63,14 +63,14 @@ Fixture defaults.
     `test_pickup_refused_at_limit`, `test_pickup_removes_world_light` — so every
     criterion maps to a test
   - `Status: In Progress`
-- The `/dev-story` checkpoint in `production/session-state/active.md` names this
+- The `$ccgs-dev-story` checkpoint in `production/session-state/active.md` names this
   story as **Current task** and carries `Run result: OBSERVED — the light leaves
   the floor and the inventory count rises —
   production/qa/evidence/story-light-pickup/01-pickup.png`; that image exists
 - Implementation files listed in the story exist in the code root
 - A sprint plan in `production/sprints/` has other READY / NOT STARTED Must Have stories
 
-**Input:** `/story-done production/epics/core/story-light-pickup.md`
+**Input:** `$ccgs-story-done production/epics/core/story-light-pickup.md`
 
 **Expected behavior:**
 1. Skill reads the story and extracts its fields
@@ -83,9 +83,9 @@ Fixture defaults.
    retained path
 6. No deviations
 7. Phase 4b notes "QL-TEST-COVERAGE skipped — Lean mode."
-8. Phase 5 (lean) asks "Code review is skipped in lean mode. Did you run `/code-review` on the implemented files?"
+8. Phase 5 (lean) asks "Code review is skipped in lean mode. Did you run `$ccgs-code-review` on the implemented files?"
 9. Completion report with verdict COMPLETE
-10. `AskUserQuestion` "Verification complete. How do you want to proceed?"; on "Close the story", the file is updated
+10. `native user-input mechanism` "Verification complete. How do you want to proceed?"; on "Close the story", the file is updated
 11. Skill surfaces the next ready stories from the sprint
 
 **Assertions:**
@@ -93,12 +93,12 @@ Fixture defaults.
 - [ ] Skill reads only the ADR's `## Decision` and `## Consequences` spans, not the whole file
 - [ ] Each criterion is listed with its status (`auto-verified` / `confirmed` / `FAILS` / `DEFERRED`) and appears in a Criterion | Test | Status traceability table
 - [ ] Test evidence is reported as present, without claiming the tests pass
-- [ ] In `lean` mode the skill asks whether `/code-review` was run, and records the answer in the Completion Notes `Code Review:` line
+- [ ] In `lean` mode the skill asks whether `$ccgs-code-review` was run, and records the answer in the Completion Notes `Code Review:` line
 - [ ] The traceability table maps each of AC-1..AC-3 to its test function, with no UNTESTED row
 - [ ] The `Run result:` line is read from the checkpoint (whose **Current task** names this story) and noted with its retained path
 - [ ] Verdict is COMPLETE — every criterion maps to a test, the run was observed and retained, and no deviations exist
-- [ ] No file is edited before the Phase 7 `AskUserQuestion`; on "Close the story" the story gets `Status: Complete`, a `Last Updated:` date and a `## Completion Notes` section
-- [ ] After completion, skill surfaces the next READY / NOT STARTED Must Have or Should Have story from `production/sprints/` and suggests `/story-readiness [path]`
+- [ ] No file is edited before the Phase 7 `native user-input mechanism`; on "Close the story" the story gets `Status: Complete`, a `Last Updated:` date and a `## Completion Notes` section
+- [ ] After completion, skill surfaces the next READY / NOT STARTED Must Have or Should Have story from `production/sprints/` and suggests `$ccgs-story-readiness [path]`
 
 ---
 
@@ -111,11 +111,11 @@ Fixture defaults.
   - (b) "Pickup state persists across a full level run" — needs a full game build
 - 1 of the 5 criteria ends up with no covering test
 
-**Input:** `/story-done production/epics/core/story-light-pickup.md`
+**Input:** `$ccgs-story-done production/epics/core/story-light-pickup.md`
 
 **Expected behavior:**
 1. Criterion (a) is a subjective/gameplay criterion → skill asks via a batched
-   `AskUserQuestion` ("Does [criterion]?" — `Yes — passes` / `No — fails` / `Not tested yet`)
+   `native user-input mechanism` ("Does [criterion]?" — `Yes — passes` / `No — fails` / `Not tested yet`)
 2. The user answers `Yes — passes`. The retained frame is the observation the
    evidence rule requires; the answer covers the motion a still cannot show, and
    counts as the manual test
@@ -125,13 +125,13 @@ Fixture defaults.
 
 **Assertions:**
 - [ ] Skill asks the user about the unverifiable criterion rather than assuming it passes, batching up to 4 such questions per call — a behaviour criterion is never marked verified from reading the code
-- [ ] Before the report says what `02-pickup-anim.png` shows, the image is opened with `Read`; the checkpoint's `Run result:` text is quoted as `/dev-story`'s description, never restated as the skill's own observation
+- [ ] Before the report says what `02-pickup-anim.png` shows, the image is opened with `Read`; the checkpoint's `Run result:` text is quoted as `$ccgs-dev-story`'s description, never restated as the skill's own observation
 - [ ] The playtest-only criterion is marked `DEFERRED — requires playtest session`
 - [ ] Verdict is COMPLETE WITH NOTES, and the report lists the DEFERRED criterion — neither BLOCKED nor NOT ASSESSED, since a DEFERRED criterion does not block and does not fire the NOT ASSESSED trigger
 - [ ] The deferred criterion is named in the Completion Notes `Criteria:` line, with the untested-criteria recommendation
 - [ ] Variant — if the user answers `No — fails` for (a), the criterion is `FAILS`, the verdict is BLOCKED, and the skill does not proceed to Phase 7 on its own
 - [ ] Variant — no image for this story is retained under `production/qa/evidence/` and the checkpoint carries no `Run result:` line: the user's `Yes — passes` for (a) is an assertion, not evidence, so the missing observation is flagged at the Logic gate level (BLOCKING by default) and the verdict is BLOCKED — never COMPLETE WITH NOTES on the confirmation alone
-- [ ] Skill still asks via `AskUserQuestion` before updating the story file
+- [ ] Skill still asks via `native user-input mechanism` before updating the story file
 
 ---
 
@@ -142,7 +142,7 @@ Fixture defaults.
 - The current `tr-registry.yaml` text for the story's TR-ID: "Player can carry max 3 light sources"
 - Implementation in the code root has `MAX_CARRIED_LIGHTS = 5` in gameplay code
 
-**Input:** `/story-done production/epics/core/story-light-pickup.md`
+**Input:** `$ccgs-story-done production/epics/core/story-light-pickup.md`
 
 **Expected behavior:**
 1. The GDD rules check (against the current registry text) finds the implementation contradicts "max 3"
@@ -155,7 +155,7 @@ Fixture defaults.
 - [ ] Skill detects the mismatch between the current requirement text and the implemented value
 - [ ] The deviation is reported neutrally as BLOCKING with the GDD/TR reference — the skill does not edit code or the GDD to reconcile it
 - [ ] Verdict is BLOCKED, and Phase 7 is not entered unless the user explicitly asks to close anyway
-- [ ] Closing a BLOCKED story goes through the Phase 7 `AskUserQuestion` regardless of automation mode
+- [ ] Closing a BLOCKED story goes through the Phase 7 `native user-input mechanism` regardless of automation mode
 - [ ] If closed via "Accept deviations as-is and close anyway", the deviation is recorded in the Completion Notes `Deviations:` line
 
 ---
@@ -166,7 +166,7 @@ Fixture defaults.
 - `production/session-state/active.md` names `production/epics/core/story-oxygen-drain.md` as the active story
 - That story file exists with `Status: In Progress`
 
-**Input:** `/story-done` (no argument)
+**Input:** `$ccgs-story-done` (no argument)
 
 **Expected behavior:**
 1. Skill reads `production/session-state/active.md` and takes the active story
@@ -178,7 +178,7 @@ Fixture defaults.
 **Assertions:**
 - [ ] Skill reads `production/session-state/active.md` first when no argument is given
 - [ ] The report's `**Story**:` line names the auto-detected story file
-- [ ] With several in-progress stories in the sprint, skill asks which one via `AskUserQuestion` instead of picking one
+- [ ] With several in-progress stories in the sprint, skill asks which one via `native user-input mechanism` instead of picking one
 - [ ] If no story is found anywhere, skill asks the user to provide a path
 
 ---
@@ -193,14 +193,14 @@ Fixture defaults.
   and Case 1's run evidence (the `Run result: OBSERVED` checkpoint and its retained image)
 - Review mode comes from `modes.review_mode` (legacy mirror `production/review-mode.txt`) or `--review`
 
-**Case 5a — full mode:** `/story-done production/epics/core/story-light-pickup.md --review full`
+**Case 5a — full mode:** `$ccgs-story-done production/epics/core/story-light-pickup.md --review full`
 
 **Expected behavior:**
 1. After Phases 3–4, skill spawns `qa-lead` with gate QL-TEST-COVERAGE (unless `qa.level: minimal` or a Config/Data story)
 2. Skill spawns `lead-programmer` with gate LP-CODE-REVIEW, passing the
    implementation file paths, story path, relevant GDD section and governing ADR
 3. The verdict (APPROVE / CONCERNS / REJECT) is presented to the user
-4. CONCERNS → `AskUserQuestion`: `Revise flagged issues` / `Accept and proceed` / `Discuss further`
+4. CONCERNS → `native user-input mechanism`: `Revise flagged issues` / `Accept and proceed` / `Discuss further`
 5. REJECT → no Phase 6 verdict until the issues are resolved
 6. NOT ASSESSED (a gate input was missing) → the skill names the missing input and
    never reads it as APPROVE: the input is supplied and the gate re-run, or the
@@ -210,15 +210,15 @@ Fixture defaults.
 - [ ] Skill uses the resolved review mode before deciding whether to spawn LP-CODE-REVIEW
 - [ ] LP-CODE-REVIEW is spawned in full mode after the implementation checks, with the four context items
 - [ ] A REJECT verdict prevents the story from reaching a COMPLETE verdict until resolved
-- [ ] A CONCERNS verdict produces the three-option `AskUserQuestion`
+- [ ] A CONCERNS verdict produces the three-option `native user-input mechanism`
 - [ ] A NOT ASSESSED answer from either gate is never treated as APPROVE / ADEQUATE: unless the missing input is supplied and the gate re-run, the verdict is NOT ASSESSED, not COMPLETE
-- [ ] Skill still asks via the Phase 7 `AskUserQuestion` before updating story status, even after APPROVE
+- [ ] Skill still asks via the Phase 7 `native user-input mechanism` before updating story status, even after APPROVE
 
 **Case 5b — lean mode:** `--review lean`
 
 **Assertions (5b):**
 - [ ] LP-CODE-REVIEW does NOT spawn
-- [ ] Skill asks "Did you run `/code-review` on the implemented files?" with the three listed options; all three proceed
+- [ ] Skill asks "Did you run `$ccgs-code-review` on the implemented files?" with the three listed options; all three proceed
 - [ ] "QL-TEST-COVERAGE skipped — Lean mode." is noted
 
 **Case 5c — solo mode:** `--review solo`
@@ -226,7 +226,7 @@ Fixture defaults.
 **Assertions (5c):**
 - [ ] Neither LP-CODE-REVIEW nor QL-TEST-COVERAGE spawns, and no code-review question is asked
 - [ ] Output notes "LP-CODE-REVIEW skipped — Solo mode." and "QL-TEST-COVERAGE skipped — Solo mode."
-- [ ] Skill still requires the Phase 7 `AskUserQuestion` before marking the story Complete
+- [ ] Skill still requires the Phase 7 `native user-input mechanism` before marking the story Complete
 
 ---
 
@@ -244,7 +244,7 @@ Fixture defaults.
   both; the checkpoint carries `Run result: OBSERVED` with that path; there is no
   evidence doc and no sign-off
 
-**Input:** `/story-done production/epics/mvp/story-002-shop-panel.md`
+**Input:** `$ccgs-story-done production/epics/mvp/story-002-shop-panel.md`
 
 **Expected behavior:**
 1. At `qa.level: minimal` the Logic, Integration and Config/Data evidence checks,
@@ -254,16 +254,16 @@ Fixture defaults.
 3. Phase 4 runs the manifest, hardcoded-value and scope checks only (no GDD/ADR
    traceability at `minimal`); Phase 5 notes "LP-CODE-REVIEW skipped — Solo mode."
 4. Verdict COMPLETE; after the Phase 7 approval the story is marked Complete
-5. Phase 8 takes the no-sprint branch: it runs `bash .claude/scripts/story-status.sh`
+5. Phase 8 takes the no-sprint branch: it runs `bash .agents/studio/scripts/story-status.sh`
    after the story file is written; `story-003` is on its first `TODO` line →
-   "Run `/dev-story [path]`"
+   "Run `$ccgs-dev-story [path]`"
 
 **Assertions:**
 - [ ] The UI screenshot check runs at `qa.level: minimal` and is satisfied by the retained image alone — no evidence doc or sign-off is required for a UI story
 - [ ] Verdict is COMPLETE, not BLOCKED for a missing sign-off
-- [ ] Phase 8 names `story-003` and recommends `/dev-story` directly — no `/story-readiness` line at `minimal`, and no Sprint Close-Out Sequence
-- [ ] The next story comes from `bash .claude/scripts/story-status.sh`, run after this story's `Status: Complete` is written — not from a grep of one epic folder
-- [ ] Variant — `production/epics/combat/story-001-arena.md` reads `**Status:** In Review`: it is Next Up (the script lists `IN_REVIEW` first, across every epic folder), and the Next Up line recommends `/story-done [path]` to close it, not `/dev-story`
+- [ ] Phase 8 names `story-003` and recommends `$ccgs-dev-story` directly — no `$ccgs-story-readiness` line at `minimal`, and no Sprint Close-Out Sequence
+- [ ] The next story comes from `bash .agents/studio/scripts/story-status.sh`, run after this story's `Status: Complete` is written — not from a grep of one epic folder
+- [ ] Variant — `production/epics/combat/story-001-arena.md` reads `**Status:** In Review`: it is Next Up (the script lists `IN_REVIEW` first, across every epic folder), and the Next Up line recommends `$ccgs-story-done [path]` to close it, not `$ccgs-dev-story`
 - [ ] Variant — no image under `production/qa/evidence/` and no `Run result:` line: the UI gate is still BLOCKING at `qa.level: minimal`, so the verdict is BLOCKED
 - [ ] Variant — `story-003` is `Blocked`, naming its blocker, and no other story is unfinished: Phase 8 prints no Next Up, names `story-003` with its blocker, suggests clearing it, and never says the build order is done
 
@@ -275,7 +275,7 @@ Fixture defaults.
 - As Case 1, plus a fourth criterion, AC-4: "The pickup code is robust" — it
   names no observable outcome, so no test, run or playtest could settle it
 
-**Input:** `/story-done production/epics/core/story-light-pickup.md`
+**Input:** `$ccgs-story-done production/epics/core/story-light-pickup.md`
 
 **Expected behavior:**
 1. AC-1..AC-3 verify as in Case 1
@@ -301,25 +301,25 @@ Fixture defaults.
 - The skill folder holds `references/review-gates.md`, `references/sprint-next.md` and `references/tech-debt-row.md`
 - Variant: `modes.review_mode: full`, a sprint plan listing one more story after this one, and one advisory deviation (Case 3's fixture, downgraded to advisory)
 
-**Input:** `/story-done production/epics/core/story-light-pickup.md`
+**Input:** `$ccgs-story-done production/epics/core/story-light-pickup.md`
 
 **Expected behavior:**
 1. The main path is in `SKILL.md`. At `lean` with no sprint plan and no advisory deviation, none of the three reference files applies, and the run reads none of them
-2. Phase 6 asks the lean `/code-review` question without loading `references/review-gates.md`
+2. Phase 6 asks the lean `$ccgs-code-review` question without loading `references/review-gates.md`
 3. Variant: at `full`, the run reads `references/review-gates.md` at Phase 6, before either gate agent starts; on "Close and log as tech debt" it reads `references/tech-debt-row.md` before writing the row; with the sprint plan, it reads `references/sprint-next.md` at Phase 8, before naming Next Up
 
 **Assertions:**
 - [ ] Lean, no sprint plan: the transcript shows no read of any `references/*.md` file
 - [ ] Variant: each reference file is read before the step it holds begins, never at the start of the run
-- [ ] The resolved settings (`review_mode`, `workflow`, `qa.level`, `automation`) still govern every step: lean still asks the `/code-review` question, and Phase 7 still asks before editing the story file
+- [ ] The resolved settings (`review_mode`, `workflow`, `qa.level`, `automation`) still govern every step: lean still asks the `$ccgs-code-review` question, and Phase 7 still asks before editing the story file
 
 ---
 
 ## Protocol Compliance
 
 - [ ] Reads a `references/*.md` file only on the branch that needs it, before that branch's step begins
-- [ ] Asks via `AskUserQuestion` before updating the story file
-- [ ] Appends to `docs/tech-debt-register.md` only when the user picks "Close and log advisory deviations as tech debt", as rows of `/tech-debt`'s register table with an `Added` date — never as free bullets
+- [ ] Asks via `native user-input mechanism` before updating the story file
+- [ ] Appends to `docs/tech-debt-register.md` only when the user picks "Close and log advisory deviations as tech debt", as rows of `$ccgs-tech-debt`'s register table with an `Added` date — never as free bullets
 - [ ] Presents the complete report (criteria, traceability, test evidence, deviations, scope) before asking
 - [ ] Ends by surfacing the next ready story (sprint plan) or the next story in the epic folder (no sprint plan)
 - [ ] Never closes a BLOCKED or NOT ASSESSED story on its own — only on the user's explicit request, through Phase 7

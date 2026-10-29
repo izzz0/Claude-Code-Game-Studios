@@ -9,11 +9,11 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.claude/agents/creative-director.md` frontmatter:
+Verified by reading the agent's `.codex/agents/ccgs-creative-director.toml` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references creative vision, pillars, GDD alignment — not generic)
 - [ ] `tools:` reads Read, Glob, Grep, Write, Edit, WebSearch and `disallowedTools:` lists Bash
-- [ ] Model tier is `opus` — frontmatter `model:` reads exactly `opus` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over technical architecture or production scheduling
 
 ---
@@ -87,6 +87,6 @@ Verified by reading the agent's `.claude/agents/creative-director.md` frontmatte
 
 ## Coverage Notes
 - Multi-gate scenario (e.g., single submission triggering both CD-PILLARS and CD-GDD-ALIGN) is not covered here — deferred to integration tests.
-- CD-PHASE-GATE (the creative director's own readiness review, which `/gate-check` runs at `workflow: full`) has no case yet.
-- CD-PLAYTEST (review of a `/playtest-report` report) has no case yet.
+- CD-PHASE-GATE (the creative director's own readiness review, which `$ccgs-gate-check` runs at `workflow: full`) has no case yet.
+- CD-PLAYTEST (review of a `$ccgs-playtest-report` report) has no case yet.
 - Interaction with art-director on visual-pillar alignment is not covered.

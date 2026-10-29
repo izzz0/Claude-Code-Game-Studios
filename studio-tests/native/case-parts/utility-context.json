@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "part": "utility-context",
+  "cases": [
+    {
+      "id": "utility-028-ccgs-settings",
+      "skill": "ccgs-settings",
+      "fixture": "settings",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-settings with no arguments in English against the supplied Pocket Courier configuration. Use the actual yaml-helper.sh calls and display effective values, including the legal project.local.yaml overrides and their project.yaml shadowed values. Preserve every file and report the resolved source/precedence for modes.automation and testing.strict.logic; do not write configuration or claim a setting changed.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "collaborative"
+        },
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Pocket Courier Settings",
+              "automation: collaborative",
+              "preserve_me: keep-this-value"
+            ],
+            "changed": false
+          },
+          {
+            "path": "project.local.yaml",
+            "contains": [
+              "automation: autonomous",
+              "logic: false",
+              "review_mode: full"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "project.local.yaml",
+          "project.yaml",
+          "collaborative",
+          "autonomous",
+          "testing.strict.logic",
+          "false"
+        ],
+        "response_not_contains": [
+          "configuration changed",
+          "updated project.yaml",
+          "wrote project.local.yaml",
+          "setting saved"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true,
+      "scope": "Read-only effective local-override precedence and preserved configuration."
+    },
+    {
+      "id": "utility-029-ccgs-onboard",
+      "skill": "ccgs-onboard",
+      "fixture": "onboard",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-onboard programmer in English using the actual tools and supplied Velocity Courier project. Resolve the schema-1 Godot 4.6.1 standard/guided configuration, read AGENTS.md and the real programmer role, inspect the concrete GDScript under src/gameplay/delivery.gd and src/ui/hud.gd, the courier brief, and the current Story 004. Write the onboarding document at production/onboarding/onboard-programmer-2026-10-26.md. Ground the architecture, current state, dependencies, conventions, and first tasks in those real paths and Story 004's parcel-combo objective; do not invent a generic Target Alpha project or modify source, story, or QA files.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        },
+        "files": [
+          {
+            "path": "production/onboarding/onboard-programmer-2026-10-26.md",
+            "contains": [
+              "Onboarding",
+              "Velocity Courier",
+              "src/gameplay/delivery.gd",
+              "src/ui/hud.gd",
+              "story-004-parcel-combo.md",
+              "Godot",
+              "First Tasks"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/courier/story-004-parcel-combo.md",
+            "contains": [
+              "Story 004",
+              "parcel combo",
+              "Status: In Progress"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/gameplay/delivery.gd",
+            "contains": [
+              "class_name DeliverySystem"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/ui/hud.gd",
+            "contains": [
+              "show_parcel_combo"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "onboard-programmer-2026-10-26.md",
+          "programmer",
+          "delivery.gd",
+          "Story 004",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "Target Alpha",
+          "story rewritten",
+          "source code changed",
+          "QA evidence created"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "utility-030-ccgs-retrospective",
+      "skill": "ccgs-retrospective",
+      "fixture": "retrospective",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-retrospective sprint-007 in English using the supplied project, completed sprint records and authoritative sprint-status.yaml. Ground the report in actual recorded story/bug outcomes; distinguish supplied commit totals from any independent Git verification. Do not invent missing history, hours, estimates or prior action items. Write production/retrospectives/retro-sprint-007-2026-10-26.md and preserve its input records.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full",
+          "modes.automation": "guided"
+        },
+        "files": [
+          {
+            "path": "production/retrospectives/retro-sprint-007-2026-10-26.md",
+            "contains": [
+              "Retrospective",
+              "Sprint 007",
+              "80%",
+              "Dockside Relay",
+              "NOT ASSESSED — NO DATA"
+            ],
+            "not_contains": [
+              "Actual hours: 32",
+              "Trend: Increasing"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/sprint-status.yaml",
+            "contains": [
+              "sprint: 007",
+              "done",
+              "carried_over",
+              "BUG-0042"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "retro-sprint-007-2026-10-26.md",
+          "4",
+          "5",
+          "80%",
+          "NOT ASSESSED",
+          "NO DATA",
+          "velocity",
+          "estimation"
+        ],
+        "response_not_contains": [
+          "all five completed"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "utility-031-ccgs-project-stage-detect",
+      "skill": "ccgs-project-stage-detect",
+      "fixture": "project-stage-detect",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-project-stage-detect in English with actual tools on Dockside Relay. Compare configured stage with independently observed artifact heuristics, run the deterministic artifact check, and identify concrete engine/project-dependency gaps. Preserve every existing file and the configured stage; do not claim a runtime check that did not occur.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "project.stage": "Production"
+        },
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Dockside Relay",
+              "stage: Production",
+              "engine:"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/game-brief.md",
+            "contains": [
+              "Dockside Relay",
+              "three docks"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Production",
+          "Pre-Production",
+          "CONCERNS",
+          "project.godot",
+          "engine"
+        ],
+        "response_not_contains": [
+          "stage updated",
+          "Godot project passed",
+          "report written",
+          "QA checkpoint updated"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

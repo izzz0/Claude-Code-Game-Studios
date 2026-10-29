@@ -1,9 +1,12 @@
 # Unity Engine — Version Reference
 
+> Inherited reference snapshot, not an installation or new-project pin.
+> Resolve the actual engine/version from project.yaml and verify with its editor.
+
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Unity 6.3 LTS |
-| **Installed at pin time** | NOT DETERMINED — `/setup-engine` §3 probes the installed editor and records the result here. |
+| **Installed at pin time** | NOT DETERMINED — `$ccgs-setup-engine` §3 probes the installed editor and records the result here. |
 | **Release Date** | December 2025 |
 | **Latest editor on the pinned line** | 6000.3.26f1 (Oct 8, 2026) |
 | **Project Pinned** | 2026-02-13 |
@@ -20,7 +23,7 @@ before suggesting Unity API calls.
 ## Installed-Version Gap Warning
 
 The warning above is one-directional — it covers the **model** knowing less than
-this pin. The reverse gap is real and `/setup-engine` §3 creates it deliberately
+this pin. The reverse gap is real and `$ccgs-setup-engine` §3 creates it deliberately
 ("pin the newer one and upgrade later"): this reference can sit **ahead of the
 installed editor**, and an agent citing it correctly then emits APIs that do not
 compile locally. **Check `Installed at pin time` above before trusting a
@@ -61,7 +64,7 @@ supported "until the next release - in this case 6.7 - arrives" and that it
 come from Unity's release API
 https://services.api.unity.com/unity/editor/release/v1/releases (6.3 LTS first
 editor 6000.3.0f1 on Dec 3, 2025; latest 6000.3.26f1 on Oct 8, 2026). Upgrading
-the pin is a decision for when 6.7 LTS ships and `/setup-engine` re-pins; until
+the pin is a decision for when 6.7 LTS ships and `$ccgs-setup-engine` re-pins; until
 then new projects stay on 6.3 LTS.
 
 ## Unity 6 Releases Before the Cutoff

@@ -1,8 +1,8 @@
-# Skill Test Spec: /test-helpers
+# Skill Test Spec: $ccgs-test-helpers
 
 ## Skill Summary
 
-`/test-helpers [system-name | all | scaffold]` generates test helper files in
+`$ccgs-test-helpers [system-name | all | scaffold]` generates test helper files in
 the engine's **helper root** — the only place its test runner compiles them:
 `tests/helpers/` on Godot, `Assets/Tests/EditMode/Helpers/` on Unity (inside the
 `EditModeTests` assembly), `Source/<Module>/Private/Tests/Helpers/` on Unreal. It
@@ -26,19 +26,19 @@ are created.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keyword: COMPLETE
 - [ ] Contains "May I write" collaborative protocol language before writing helpers
-- [ ] Has a next-step handoff (Next Steps: `/test-setup`, `/dev-story`, `/skill-test`)
+- [ ] Has a next-step handoff (Next Steps: `$ccgs-test-setup`, `$ccgs-dev-story`, `$ccgs-skill-test`)
 
 ---
 
 ## Director Gate Checks
 
-None. `/test-helpers` is a scaffolding utility. No director gates apply.
+None. `$ccgs-test-helpers` is a scaffolding utility. No director gates apply.
 
 ---
 
@@ -46,7 +46,7 @@ None. `/test-helpers` is a scaffolding utility. No director gates apply.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -63,7 +63,7 @@ Fixture defaults.
 - `design/gdd/player.md` has a Formulas section bounding health to 0–100
 - No existing files in `tests/helpers/`; the user approves the write
 
-**Input:** `/test-helpers player`
+**Input:** `$ccgs-test-helpers player`
 
 **Expected behavior:**
 1. Skill reads engine, language and framework; samples the existing test file
@@ -87,22 +87,22 @@ Fixture defaults.
 
 ---
 
-### Case 2: Engine Not Configured — Stops with /setup-engine
+### Case 2: Engine Not Configured — Stops with $ccgs-setup-engine
 
 **Fixture:**
 - `project.yaml` has no `engine` block; `technical-preferences.md` shows
   `[TO BE CONFIGURED]` for Engine
 
-**Input:** `/test-helpers player`
+**Input:** `$ccgs-test-helpers player`
 
 **Expected behavior:**
 1. Skill checks `project.yaml`, then `technical-preferences.md` — no engine in either
-2. Skill outputs: "Engine not configured. Run `/setup-engine` first."
+2. Skill outputs: "Engine not configured. Run `$ccgs-setup-engine` first."
 3. Skill stops — no test scan, no draft, no write
 
 **Assertions:**
 - [ ] The message states the engine is not configured
-- [ ] `/setup-engine` is named as the prerequisite
+- [ ] `$ccgs-setup-engine` is named as the prerequisite
 - [ ] No write tool is called
 - [ ] Verdict is not COMPLETE (nothing was created)
 
@@ -116,7 +116,7 @@ Fixture defaults.
 - `tests/helpers/game_factory.gd` and `tests/helpers/scene_runner_helper.gd` do
   not exist; the user approves the write
 
-**Input:** `/test-helpers scaffold`
+**Input:** `$ccgs-test-helpers scaffold`
 
 **Expected behavior:**
 1. Skill drafts the Godot base helpers only — `game_assertions.gd`,
@@ -144,7 +144,7 @@ Fixture defaults.
   `testing.framework` is absent and `technical-preferences.md` shows no Framework
 - No `addons/gdUnit4/` and no existing test files to learn the API from
 
-**Input:** `/test-helpers scaffold`
+**Input:** `$ccgs-test-helpers scaffold`
 
 **Expected behavior:**
 1. Skill cannot confirm which assertion call registers a failure with the runner
@@ -165,7 +165,7 @@ Fixture defaults.
 **Fixture:**
 - Engine and framework configured as in Case 1, no existing helpers
 
-**Input:** `/test-helpers player`
+**Input:** `$ccgs-test-helpers player`
 
 **Expected behavior:**
 1. Skill generates and writes the helper file
@@ -186,10 +186,10 @@ Fixture defaults.
   `testing.framework: NUnit`; `com.unity.test-framework` is in
   `Packages/manifest.json`, so NUnit's assertion API can be confirmed from the
   installed package
-- `/test-setup` has created `Assets/Tests/EditMode/EditModeTests.asmdef`
+- `$ccgs-test-setup` has created `Assets/Tests/EditMode/EditModeTests.asmdef`
 - No helpers exist yet; the user approves the write
 
-**Input:** `/test-helpers scaffold`
+**Input:** `$ccgs-test-helpers scaffold`
 
 **Expected behavior:**
 1. The helper root is `Assets/Tests/EditMode/Helpers/` — inside the

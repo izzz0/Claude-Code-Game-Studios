@@ -1,10 +1,10 @@
-# Skill Test Spec: /prototype
+# Skill Test Spec: $ccgs-prototype
 
 ## Skill Summary
 
-`/prototype [concept] [--path html|engine|paper] [--review full|lean|solo]
+`$ccgs-prototype [concept] [--path html|engine|paper] [--review full|lean|solo]
 [--spike]` runs a throwaway concept prototype before GDDs are written. It first
-confirms intent with `AskUserQuestion` (Prototype this concept / Skip — concept
+confirms intent with `native user-input mechanism` (Prototype this concept / Skip — concept
 already proven / Mid-production spike), forms a falsifiable hypothesis ("If the
 player [does X], they will feel [Y] — we will know this is true if [Z]") and asks
 for the riskiest assumption. It picks an HTML, Engine or Paper path (genre table,
@@ -17,7 +17,7 @@ JavaScript, `<!-- -->` in HTML and Markdown), and standards are intentionally
 relaxed.
 
 After a one-question-at-a-time debrief, it fills
-`.claude/docs/templates/prototype-report.md`, asks to write
+`.agents/studio/docs/templates/prototype-report.md`, asks to write
 `prototypes/[concept-name]-concept/REPORT.md` and add its row to
 `prototypes/index.md` (one ask naming both). Verdicts are **PROCEED / PIVOT / KILL**. PIVOT writes a
 `PIVOT-NOTE.md`; KILL runs a five-item soundness check and appends to
@@ -35,13 +35,13 @@ no CD gate and no PROCEED/PIVOT/KILL.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: PROCEED, PIVOT, KILL, NOT ASSESSED (a prototype nobody has played)
 - [ ] Contains "May I create" / "May I write" language before creating the prototype directory and the report
-- [ ] Has a next-step handoff per verdict (PROCEED → `/design-review`, `/gate-check`, `/map-systems`, `/design-system`; PIVOT → `/prototype` or `/brainstorm`; KILL → `/brainstorm`)
+- [ ] Has a next-step handoff per verdict (PROCEED → `$ccgs-design-review`, `$ccgs-gate-check`, `$ccgs-map-systems`, `$ccgs-design-system`; PIVOT → `$ccgs-prototype` or `$ccgs-brainstorm`; KILL → `$ccgs-brainstorm`)
 
 ---
 
@@ -68,7 +68,7 @@ Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -82,14 +82,14 @@ Fixture defaults.
   `engine.name: Godot` and `engine.language: GDScript`
 - `prototypes/` has no `grapple-hook-concept/`
 - Review mode: `solo`; `modes.workflow: standard` (pinned: unset resolves to
-  minimal, which routes PROCEED to `/create-stories` and `/dev-story` instead of
+  minimal, which routes PROCEED to `$ccgs-create-stories` and `$ccgs-dev-story` instead of
   the step 7 list — Case 6 covers that route)
 - In the debrief the user reports the hypothesis CONFIRMED and answers PROCEED
 
-**Input:** `/prototype grapple-hook traversal`
+**Input:** `$ccgs-prototype grapple-hook traversal`
 
 **Expected behavior:**
-1. `AskUserQuestion` confirms intent; user picks "Prototype this concept"
+1. `native user-input mechanism` confirms intent; user picks "Prototype this concept"
 2. Skill states a falsifiable hypothesis in the If / feel / know-if form and asks
    for the riskiest assumption
 3. Path widget pre-states an Engine recommendation (traversal feel is the
@@ -101,11 +101,11 @@ Fixture defaults.
    file it writes starts with `# PROTOTYPE - NOT FOR PRODUCTION` (GDScript
    comments use `#`; a `//` header would not parse)
 6. Debrief questions are asked one at a time; report drafted from
-   `.claude/docs/templates/prototype-report.md`; "May I write this report to
+   `.agents/studio/docs/templates/prototype-report.md`; "May I write this report to
    `prototypes/grapple-hook-concept/REPORT.md` and add its row to
    `prototypes/index.md`?"; a row is appended to `prototypes/index.md`
-7. Note "CD-PLAYTEST skipped — Solo mode."; PROCEED routes to `/design-review`,
-   `/gate-check`, `/art-bible`, `/map-systems`, `/design-system`, `/review-all-gdds`
+7. Note "CD-PLAYTEST skipped — Solo mode."; PROCEED routes to `$ccgs-design-review`,
+   `$ccgs-gate-check`, `$ccgs-art-bible`, `$ccgs-map-systems`, `$ccgs-design-system`, `$ccgs-review-all-gdds`
 
 **Assertions:**
 - [ ] The hypothesis is falsifiable, with a measurable signal
@@ -113,7 +113,7 @@ Fixture defaults.
 - [ ] The directory ask names `prototypes/grapple-hook-concept/` and comes before any prototype file is written
 - [ ] Every prototype script carries the `PROTOTYPE - NOT FOR PRODUCTION` header as a `#` comment, never `//`; no file is written under the code root
 - [ ] REPORT.md is written only after its ask, that ask also names `prototypes/index.md`, and the index gains a row with verdict PROCEED
-- [ ] PROCEED next steps include `/map-systems` and `/design-system`
+- [ ] PROCEED next steps include `$ccgs-map-systems` and `$ccgs-design-system`
 
 ---
 
@@ -124,7 +124,7 @@ Fixture defaults.
 - User answers PIVOT: the route planning was engaging, the upkeep maths was not
 - Review mode: `solo`
 
-**Input:** `/prototype trade-routes --path paper`
+**Input:** `$ccgs-prototype trade-routes --path paper`
 
 **Expected behavior:**
 1. Paper path writes `prototypes/trade-routes-concept/rules.md` and
@@ -134,15 +134,15 @@ Fixture defaults.
    we should preserve…?" and "What is the single most important thing to change?"
 4. Skill asks "May I write this to `prototypes/trade-routes-concept/PIVOT-NOTE.md`?"
 5. The note holds the original hypothesis, what to keep, what to change and the
-   revised hypothesis; next steps are `/prototype [revised-concept]` or
-   `/brainstorm [hint]`
+   revised hypothesis; next steps are `$ccgs-prototype [revised-concept]` or
+   `$ccgs-brainstorm [hint]`
 
 **Assertions:**
 - [ ] `--path paper` is honoured and produces `rules.md` and `play-log.md`
 - [ ] The two carry-forward questions are asked separately
 - [ ] "May I write" names `PIVOT-NOTE.md` before it is written
 - [ ] The note contains a revised hypothesis
-- [ ] Next steps offer `/prototype` for the revised concept or `/brainstorm`
+- [ ] Next steps offer `$ccgs-prototype` for the revised concept or `$ccgs-brainstorm`
 
 ---
 
@@ -154,7 +154,7 @@ Fixture defaults.
   action after 2 playtests, no fun moment was observed, and the concept only
   worked when the developer explained it
 
-**Input:** `/prototype procedural-dialogue --path html`
+**Input:** `$ccgs-prototype procedural-dialogue --path html`
 
 **Expected behavior:**
 1. REPORT.md is written after its ask with verdict KILL
@@ -162,13 +162,13 @@ Fixture defaults.
 3. Skill asks "May I append this concept to `prototypes/GRAVEYARD.md`?"
 4. The entry has Kill reason, What worked, What failed and Next time, with a
    specific kill reason (not "it was boring")
-5. Next step: `/brainstorm open` or `/brainstorm [new-hint]`
+5. Next step: `$ccgs-brainstorm open` or `$ccgs-brainstorm [new-hint]`
 
 **Assertions:**
 - [ ] The KILL checklist is applied, with the 2+ rule deciding soundness
 - [ ] "May I append" names `prototypes/GRAVEYARD.md` before writing
 - [ ] The graveyard entry has all four fields and a specific kill reason
-- [ ] Next steps route to `/brainstorm`
+- [ ] Next steps route to `$ccgs-brainstorm`
 
 ---
 
@@ -180,7 +180,7 @@ Fixture defaults.
   whose spike note and `active.md` wording Case 7 covers)
 - `production/sprints/sprint-004.md` is the current sprint and `active.md` shows it
 
-**Input:** `/prototype rope-physics --spike`
+**Input:** `$ccgs-prototype rope-physics --spike`
 
 **Expected behavior:**
 1. Skill skips Phases 1–9 and runs Spike Mode
@@ -218,7 +218,7 @@ Fixture defaults.
 - Run B: `--review full`, neither `game-concept.md` nor `design/game-brief.md` exists
 - Run C: `--review lean`
 
-**Input:** `/prototype [concept] --review [mode]`
+**Input:** `$ccgs-prototype [concept] --review [mode]`
 
 **Expected behavior:**
 1. Run A: `creative-director` is spawned for CD-PLAYTEST with the REPORT.md
@@ -248,19 +248,19 @@ Fixture defaults.
 - Run A: the prototype was built this session but nobody has played it yet
 - Run B: a PROCEED recommendation, `project.yaml` has `modes.workflow: minimal`
 
-**Input:** `/prototype [concept]`
+**Input:** `$ccgs-prototype [concept]`
 
 **Expected behavior:**
 1. Run A: with no fun evidence yet, PROCEED/PIVOT/KILL are all unreachable; the
    skill reports NOT ASSESSED and stops rather than guessing, naming "play it,
-   then run `/prototype [same concept]` again" as the next step
-2. Run B: Phase 9's PROCEED route offers `/create-stories` (from the brief) then
-   `/dev-story` on the first story, not the GDD/`/map-systems`/`/art-bible` path
+   then run `$ccgs-prototype [same concept]` again" as the next step
+2. Run B: Phase 9's PROCEED route offers `$ccgs-create-stories` (from the brief) then
+   `$ccgs-dev-story` on the first story, not the GDD/`$ccgs-map-systems`/`$ccgs-art-bible` path
 
 **Assertions:**
 - [ ] Run A's verdict is NOT ASSESSED, not a guessed PROCEED/PIVOT/KILL
 - [ ] Run A's report and `prototypes/index.md` row both read NOT ASSESSED until a playtest happens
-- [ ] Run B's recommended path is the `workflow: minimal` route (`/create-stories`, `/dev-story`), not the `standard`/`full` GDD pipeline
+- [ ] Run B's recommended path is the `workflow: minimal` route (`$ccgs-create-stories`, `$ccgs-dev-story`), not the `standard`/`full` GDD pipeline
 
 ---
 
@@ -274,7 +274,7 @@ Fixture defaults.
   and `production/session-state/active.md` names it as the current task
 - The user answers YES to the spike question
 
-**Input:** `/prototype rope-physics --spike`
+**Input:** `$ccgs-prototype rope-physics --spike`
 
 **Expected behavior:**
 1. The spike runs as in Case 4, with the same asks: the spike folder, then one ask
@@ -297,7 +297,7 @@ Fixture defaults.
 
 ## Protocol Compliance
 
-- [ ] Confirms intent with `AskUserQuestion` before building (unless `--spike`)
+- [ ] Confirms intent with `native user-input mechanism` before building (unless `--spike`)
 - [ ] Forms a falsifiable hypothesis and stops if the concept is too vague to form one
 - [ ] Presents the plan and gets confirmation before building
 - [ ] Asks before creating `prototypes/[concept-name]-concept/` and before writing REPORT.md (with its `prototypes/index.md` row), PIVOT-NOTE.md or GRAVEYARD.md
@@ -310,8 +310,8 @@ Fixture defaults.
 
 ## Coverage Notes
 
-- "Skip — concept already proven" (records the evidence, suggests `/map-systems`
-  or `/design-system`, and stops) is not tested.
+- "Skip — concept already proven" (records the evidence, suggests `$ccgs-map-systems`
+  or `$ccgs-design-system`, and stops) is not tested.
 - A concept too vague to form a hypothesis (skill stops and asks the user to
   narrow it) is covered only by protocol compliance.
 - Reading a prior `PIVOT-NOTE.md` on the next run to seed the revised hypothesis

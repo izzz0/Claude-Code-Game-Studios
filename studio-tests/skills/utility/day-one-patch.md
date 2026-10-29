@@ -1,8 +1,8 @@
-# Skill Test Spec: /day-one-patch
+# Skill Test Spec: $ccgs-day-one-patch
 
 ## Skill Summary
 
-`/day-one-patch` runs a fix-only mini-sprint for known issues found after the
+`$ccgs-day-one-patch` runs a fix-only mini-sprint for known issues found after the
 gold master: scope → rollback plan → fixes → lightweight QA gate → patch record.
 It runs only when the user types it (`disable-model-invocation: true`).
 
@@ -24,7 +24,7 @@ fixes? [BUG-ID → files]" — before any code changes, and `qa-tester` verifies
 fix. Targeted and broader tests run with `commands.test` from `project.yaml`
 (unset → `Tests: NOT RUN` per fix, and the broader regression NOT ASSESSED).
 Config/data fixes are made directly, after a "May I edit" ask naming the file and
-the value change. `qa-lead` decides the QA scope (`/smoke-check`, or the affected
+the value change. `qa-lead` decides the QA scope (`$ccgs-smoke-check`, or the affected
 systems' tests in the engine's test root); the patch QA verdict must be PASS or PASS WITH WARNINGS to
 proceed — FAIL defers the fix to 1.1 and NOT ASSESSED is never a pass. The patch
 record is written to `production/releases/day-one-patch-[version].md` after a
@@ -34,14 +34,14 @@ record is written to `production/releases/day-one-patch-[version].md` after a
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Frontmatter sets `disable-model-invocation: true`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: PASS, PASS WITH WARNINGS, NOT ASSESSED, FAIL
 - [ ] Contains "May I write" language for both the rollback plan and the patch record, and "May I edit" for a direct config/data fix
-- [ ] Has a next-step handoff (`/patch-notes`, `/bug-report verify`, `/retrospective [milestone-name]` for the launch milestone)
+- [ ] Has a next-step handoff (`$ccgs-patch-notes`, `$ccgs-bug-report verify`, `$ccgs-retrospective [milestone-name]` for the launch milestone)
 
 ---
 
@@ -51,7 +51,7 @@ None of the director-tier agents (creative-director, technical-director,
 producer, art-director) is spawned. The skill spawns working agents —
 `release-manager` (rollback plan), `lead-programmer` and `qa-tester` (fixes),
 `qa-lead` (patch QA scope) — and checks the existing release-gate record in
-`production/gate-checks/`; it does not run `/gate-check` itself.
+`production/gate-checks/`; it does not run `$ccgs-gate-check` itself.
 
 ---
 
@@ -59,7 +59,7 @@ producer, art-director) is spawned. The skill spawns working agents —
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -76,12 +76,12 @@ Fixture defaults.
   - `BUG-0011` — S3, a one-value config/data fix
   - `BUG-0012` — S2, fix requires an architecture change
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. Phase 1 confirms Release stage and a passing release gate
 2. Phase 2 proposes including BUG-0010 and BUG-0011 and deferring BUG-0012
-   ("Fix requires architecture change — defer to 1.1"); `AskUserQuestion` offers
+   ("Fix requires architecture change — defer to 1.1"); `native user-input mechanism` offers
    Approve / Adjust / No day-one patch needed
 3. After approval, `release-manager` drafts the rollback plan and the skill asks
    "May I write this rollback plan to `production/releases/rollback-plan-[version].md`?"
@@ -95,17 +95,17 @@ Fixture defaults.
 5. `qa-lead` sets the QA scope; the QA verdict is PASS
 6. Skill asks "May I write this patch record to `production/releases/day-one-patch-[version].md`?"
 7. Record lists BUG-0010 and BUG-0011 under Bugs Fixed and BUG-0012 under Deferred to 1.1 with its reason
-8. Next steps offer `/patch-notes`
+8. Next steps offer `$ccgs-patch-notes`
 
 **Assertions:**
 - [ ] BUG-0012 is deferred to 1.1 because it needs an architecture change
-- [ ] Scope is approved via `AskUserQuestion` before any work
+- [ ] Scope is approved via `native user-input mechanism` before any work
 - [ ] The rollback plan is written before any fix is attempted
 - [ ] No code file changes before the one "May I apply these fixes?" ask is approved, and `lead-programmer` writes nothing while proposing
 - [ ] BUG-0011 is fixed without spawning `lead-programmer`
 - [ ] The config file is not edited before a "May I edit" ask naming the file and the value change is approved
 - [ ] "May I write" names `production/releases/day-one-patch-[version].md`
-- [ ] Next steps include `/patch-notes`
+- [ ] Next steps include `$ccgs-patch-notes`
 
 ---
 
@@ -116,7 +116,7 @@ Fixture defaults.
 - `production/qa/bugs/` holds `BUG-0020` — S1 (save-file data loss) whose fix needs
   an architecture change — and `BUG-0021` — S2, P1, 1-hour fix
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. BUG-0020 is S1 but its fix requires an architecture change, so it is proposed
@@ -141,19 +141,19 @@ Fixture defaults.
 - `production/gate-checks/` is empty (no release-gate record)
 - Open bugs exist in `production/qa/bugs/`
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. Phase 1 finds no release-gate record
 2. Reports `Release gate: NOT ASSESSED — no gate-check record found`
 3. States that the reduced QA scope depends on a gate nobody can find
-4. Asks whether to run `/gate-check` first or proceed with a full QA pass instead
+4. Asks whether to run `$ccgs-gate-check` first or proceed with a full QA pass instead
 5. Does not proceed silently to scoping or fixes
 
 **Assertions:**
 - [ ] `Release gate: NOT ASSESSED — no gate-check record found` is reported
 - [ ] `project.stage: Release` alone is not treated as proof the gate passed
-- [ ] User is offered `/gate-check` first or a full QA pass
+- [ ] User is offered `$ccgs-gate-check` first or a full QA pass
 - [ ] No rollback plan, fix or patch record is produced before the user answers
 
 ---
@@ -164,17 +164,17 @@ Fixture defaults.
 - Release stage; release-gate PASS on record
 - `production/qa/bugs/` holds only two S4 cosmetic bugs that need code changes
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. Both S4 bugs are proposed for deferral (S3/S4 only if a trivial config fix)
 2. Scope question is asked; user selects `[C] No day-one patch needed`
-3. Skill outputs "No day-one patch required. Proceed to `/launch-checklist`." and stops
+3. Skill outputs "No day-one patch required. Proceed to `$ccgs-launch-checklist`." and stops
 4. No rollback plan, no agents, no patch record
 
 **Assertions:**
 - [ ] Both S4 bugs are listed as deferred, not included
-- [ ] On `[C]`, "No day-one patch required. Proceed to `/launch-checklist`." is shown
+- [ ] On `[C]`, "No day-one patch required. Proceed to `$ccgs-launch-checklist`." is shown
 - [ ] Skill stops without writing any file
 - [ ] No `release-manager`, `lead-programmer` or `qa-lead` is spawned
 
@@ -185,16 +185,16 @@ Fixture defaults.
 **Fixture:**
 - `project.yaml`: `modes.rigor: standard` (so a project with no game tests gets NOT ASSESSED, not WAIVED)
 - Release stage; release-gate PASS on record; one included S2/P1 fix implemented
-- `qa-lead` chooses a targeted smoke check; `/smoke-check` returns
+- `qa-lead` chooses a targeted smoke check; `$ccgs-smoke-check` returns
   `NOT ASSESSED — no game tests found`
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. The skill does not treat NOT ASSESSED as PASS or PASS WITH WARNINGS
 2. It either obtains a real result (following what the verdict says would make it
    runnable) or defers the fix to 1.1
-3. No director-tier agent is spawned at any point and `/gate-check` is not run
+3. No director-tier agent is spawned at any point and `$ccgs-gate-check` is not run
 4. The patch record, if written, shows the QA verdict and fills "Not assessed" with what could not be checked and why
 
 **Assertions:**
@@ -213,16 +213,16 @@ Fixture defaults.
 - No `production/sprints/` folder; `design/game-brief.md` exists with a build order
 - `production/qa/bugs/` holds `BUG-0030` — S2, P1, 1-hour fix — and `BUG-0031` — S2, fix requires an architecture change
 
-**Input:** `/day-one-patch`
+**Input:** `$ccgs-day-one-patch`
 
 **Expected behavior:**
 1. BUG-0030 is included and BUG-0031 is deferred to 1.1; the user approves the scope and the patch runs to the record
 2. The patch record lists BUG-0031 in its "Deferred to 1.1" table
-3. The skill tells the user to run `/bug-triage` to schedule the deferred bugs and, because the project has no sprint plan, to put them in the brief's build order rather than a 1.1 sprint
+3. The skill tells the user to run `$ccgs-bug-triage` to schedule the deferred bugs and, because the project has no sprint plan, to put them in the brief's build order rather than a 1.1 sprint
 
 **Assertions:**
 - [ ] Every deferred bug is in the record's "Deferred to 1.1" table
-- [ ] The skill points to `/bug-triage` for scheduling the deferred bugs
+- [ ] The skill points to `$ccgs-bug-triage` for scheduling the deferred bugs
 - [ ] With no sprint plan, the destination named is the brief's build order, not a 1.1 sprint
 - [ ] No sprint file is created or required
 

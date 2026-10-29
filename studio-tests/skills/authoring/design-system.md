@@ -1,8 +1,8 @@
-# Skill Test Spec: /design-system
+# Skill Test Spec: $ccgs-design-system
 
 ## Skill Summary
 
-`/design-system <system-name>` authors a Game Design Document for one system at
+`$ccgs-design-system <system-name>` authors a Game Design Document for one system at
 `design/gdd/[system-name].md`. Which sections are required depends on the
 resolved `workflow` tier (a `system_overrides` row wins for that system): all 8
 at `full` (Overview, Player Fantasy, Detailed Design, Formulas, Edge Cases,
@@ -25,16 +25,16 @@ checks.
 
 After all sections are written, the CD-GDD-ALIGN gate runs once in `full` mode
 only. `retrofit <path>` fills only the missing or placeholder sections of an
-existing GDD. The skill never offers `/design-review` inline — it directs the
+existing GDD. The skill never offers `$ccgs-design-review` inline — it directs the
 user to a fresh session.
 
 ---
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: `APPROVED`, `CONCERNS`, `BLOCKED`
 - [ ] Contains "May I write" / "May I create" collaborative protocol language (skeleton and per-section approval)
@@ -76,7 +76,7 @@ Review manually before production."
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -91,10 +91,10 @@ Fixture defaults.
 - `project.yaml` has `engine.name: Godot`, `modes.review_mode: full`, `modes.workflow: full`, `modes.automation: collaborative`; `docs/engine-reference/godot/` has `VERSION.md` and `modules/physics.md` (combat maps to the Physics domain)
 - CD-GDD-ALIGN returns APPROVE
 
-**Input:** `/design-system combat`
+**Input:** `$ccgs-design-system combat`
 
 **Expected behavior:**
-1. Phase 2 reads the concept, systems index, entity registry (if present) and dependency GDD sections before asking anything, then presents the "Designing: Combat" context summary and the Technical Feasibility Brief with its `AskUserQuestion`
+1. Phase 2 reads the concept, systems index, entity registry (if present) and dependency GDD sections before asking anything, then presents the "Designing: Combat" context summary and the Technical Feasibility Brief with its `native user-input mechanism`
 2. "Ready to start designing combat?" is asked
 3. "May I create the skeleton file at `design/gdd/combat.md`?" — on yes, the skeleton is written with all 8 required sections plus the template's other sections, each holding `[To be designed]`; `production/session-state/active.md` is updated
 4. Sections A–H are walked in order; each draft is followed in the same response by "Approve the [Section Name] section?" with `[A] Approve — write it to file` / `[B] Make changes — describe what to fix` / `[C] Start over`
@@ -103,7 +103,7 @@ Fixture defaults.
 7. Visual/Audio and Game Feel are treated as required (Gameplay category) — not offered as skippable
 8. `## Summary` is authored after the other sections; Step 5a reads the GDD back from file
 9. CD-GDD-ALIGN spawns once and returns APPROVE; the Status header records `APPROVED [date]`
-10. The completion summary directs the user to run `/design-review design/gdd/combat.md` in a fresh session
+10. The completion summary directs the user to run `$ccgs-design-review design/gdd/combat.md` in a fresh session
 
 **Assertions:**
 - [ ] The skeleton is written only after the "May I create the skeleton file" approval, and contains all 8 required section headers
@@ -112,7 +112,7 @@ Fixture defaults.
 - [ ] Section C's specialists come from the routing table's Combat row and are spawned in parallel before drafting
 - [ ] CD-GDD-ALIGN spawns once, after all sections and the Summary are written — not per section
 - [ ] The verdict is recorded as `> **Creative Director Review (CD-GDD-ALIGN)**: APPROVED [date]`
-- [ ] `/design-review` is directed to a fresh session and never offered inline
+- [ ] `$ccgs-design-review` is directed to a fresh session and never offered inline
 
 ---
 
@@ -126,7 +126,7 @@ Fixture defaults.
 - `## Edge Cases` and `## Acceptance Criteria` contain only `[To be designed]`; `## Dependencies` has an empty body
 - The file has no Player Fantasy or Tuning Knobs section
 
-**Input:** `/design-system retrofit design/gdd/inventory.md`
+**Input:** `$ccgs-design-system retrofit design/gdd/inventory.md`
 
 **Expected behavior:**
 1. The skill reads the existing GDD and identifies which sections are present, placeholder-only or empty
@@ -157,11 +157,11 @@ Fixture defaults.
 - Scenario (b): CD-GDD-ALIGN returns REJECT: "stamina exhaustion strands the player mid-exploration, which the 'Fearless Exploration' pillar rules out"
 - Scenario (c): CD-GDD-ALIGN returns NOT ASSESSED — no MDA aesthetics target was available to check the GDD against
 
-**Input:** `/design-system stamina` (reaching Step 5a-bis)
+**Input:** `$ccgs-design-system stamina` (reaching Step 5a-bis)
 
 **Expected behavior:**
 1. `creative-director` is spawned with gate CD-GDD-ALIGN and passed the GDD path, the game pillars, the MDA aesthetics target and the GDD's Player Fantasy section
-2. (a) The CONCERNS are surfaced via `AskUserQuestion` with the standard options: `Revise flagged items` / `Accept and proceed` / `Discuss further`
+2. (a) The CONCERNS are surfaced via `native user-input mechanism` with the standard options: `Revise flagged items` / `Accept and proceed` / `Discuss further`
 3. (a) If "Revise flagged items": Detailed Design runs its section cycle again — its specialists consulted first — and is approved through "Approve the Detailed Design section?" before it is written; the Status header records `REVISED [date]`
 4. (a) If "Accept and proceed": the Status header records `CONCERNS (accepted) [date]`
 5. (b) The blockers are shown; the flagged section is re-drafted and re-approved the same way before anything else is written, and the Status header records `REVISED [date]`, never `APPROVED`
@@ -187,7 +187,7 @@ Fixture defaults.
 - Scenario (a): `modes.review_mode: lean`
 - Scenario (b): `modes.review_mode: solo`
 
-**Input:** `/design-system stamina`
+**Input:** `$ccgs-design-system stamina`
 
 **Expected behavior:**
 1. (a) Sections B, C, E and G are drafted without specialist spawns, and each prints its note with the mode, e.g. "`creative-director` not consulted — Lean mode. Review manually before production."
@@ -210,22 +210,22 @@ Fixture defaults.
 ### Case 5: Missing Input and Declined Skeleton
 
 **Fixture:**
-- `project.yaml` has `modes.workflow: standard` in every scenario — the systems index is required at this tier, so pointing at `/map-systems` is correct
+- `project.yaml` has `modes.workflow: standard` in every scenario — the systems index is required at this tier, so pointing at `$ccgs-map-systems` is correct
 - Scenario (a): no argument; `design/gdd/systems-index.md` lists `stamina` as the highest-priority "Not Started" system (MVP, Core layer)
 - Scenario (b): no argument; no systems index
-- Scenario (c): `/design-system stamina` with concept and index present; the user declines the skeleton
+- Scenario (c): `$ccgs-design-system stamina` with concept and index present; the user declines the skeleton
 
-**Input:** (a) `/design-system` (b) `/design-system` (c) `/design-system stamina`
+**Input:** (a) `$ccgs-design-system` (b) `$ccgs-design-system` (c) `$ccgs-design-system stamina`
 
 **Expected behavior:**
-1. (a) `AskUserQuestion`: "The next system in your design order is **stamina** (MVP | Core). Start designing it?" with `[A] Yes — design stamina` / `[B] Pick a different system` / `[C] Stop here`
-2. (b) The skill stops with the usage message ("Usage: `/design-system <system-name>` …"), the retrofit example, and "No systems index found. Run `/map-systems` first to map your systems and get the design order."
+1. (a) `native user-input mechanism`: "The next system in your design order is **stamina** (MVP | Core). Start designing it?" with `[A] Yes — design stamina` / `[B] Pick a different system` / `[C] Stop here`
+2. (b) The skill stops with the usage message ("Usage: `$ccgs-design-system <system-name>` …"), the retrofit example, and "No systems index found. Run `$ccgs-map-systems` first to map your systems and get the design order."
 3. (c) The skill stops with: "Verdict: **BLOCKED** — skeleton creation declined. …" and does not proceed to Section A
 4. In none of the three scenarios is a GDD file written before an approval
 
 **Assertions:**
 - [ ] (a) The next system is proposed from the systems index with the three options
-- [ ] (b) The usage message and the `/map-systems` pointer are printed; nothing is written
+- [ ] (b) The usage message and the `$ccgs-map-systems` pointer are printed; nothing is written
 - [ ] (c) Declining the skeleton produces the BLOCKED verdict and stops before Section A
 - [ ] No GDD file is created without an approval
 
@@ -238,7 +238,7 @@ Fixture defaults.
 - `design/game-brief.md` exists; its MVP features describe combat (a damage rule and a stagger threshold), and its build order lists combat first
 - No `design/gdd/game-concept.md`, no `design/gdd/systems-index.md`, no `design/gdd/combat.md`
 
-**Input:** `/design-system combat`
+**Input:** `$ccgs-design-system combat`
 
 **Expected behavior:**
 1. The effective tier for combat is `standard` (the override); the project tier is `minimal`
@@ -264,7 +264,7 @@ Fixture defaults.
 - The skill folder holds `references/1-parse-arguments.md` through `references/5-post-design.md`
 - Mid-run, while Section D (Formulas) is being drafted, the conversation is compacted; the user then replies to the open question and the run continues
 
-**Input:** `/design-system stamina`
+**Input:** `$ccgs-design-system stamina`
 
 **Expected behavior:**
 1. SKILL.md carries no phase steps itself; before starting each phase the run reads that phase's file: `references/1-parse-arguments.md`, then `2-gather-context.md`, then `3-file-skeleton.md`, then `4-section-design.md`, then `5-post-design.md`
@@ -293,7 +293,7 @@ Fixture defaults.
 - `design/gdd/combat.md` exists with numbered headings: `## 1. Overview`, `## 3. Detailed Design`, `## 4. Formulas`, `## 5. Edge Cases`, `## 6. Dependencies`, `## 7. Tuning Knobs`; its Formulas section uses `stagger_threshold` and its Tuning Knobs section lists it
 - No `design/gdd/stamina.md`
 
-**Input:** `/design-system stamina`
+**Input:** `$ccgs-design-system stamina`
 
 **Expected behavior:**
 1. Registry lookups use two greps: one for `source: design/gdd/stamina.md` with trailing context (`-A 6`) and one for `design/gdd/stamina.md` with leading context (`-B 8`); the `-B 8` match reaches the owning entry above the `referenced_by` path, so `stamina_cost_dodge` is found as owned by stamina and `stagger_threshold` as a fact stamina must respect
@@ -313,15 +313,15 @@ Fixture defaults.
 
 ## Protocol Compliance
 
-- [ ] Reads context before asking anything; stops with the `/brainstorm` or `/map-systems` message when the game concept or systems index is missing on a `standard`/`full` project (a `minimal` project reads the brief instead, even for a system `system_overrides` raises)
+- [ ] Reads context before asking anything; stops with the `$ccgs-brainstorm` or `$ccgs-map-systems` message when the game concept or systems index is missing on a `standard`/`full` project (a `minimal` project reads the brief instead, even for a system `system_overrides` raises)
 - [ ] The skeleton is created only after "May I create the skeleton file at `design/gdd/[system-name].md`?"
 - [ ] In collaborative mode every section draft is followed by its approval widget, and no section is written without approval
 - [ ] Sections are written incrementally, and `production/session-state/active.md` is updated after each
 - [ ] Specialist spawns follow the per-section review-mode checks; every skipped spawn leaves a "not consulted" note naming the agent and the mode, in lean as in solo
 - [ ] CD-GDD-ALIGN runs once in full mode after all sections; lean and solo print a skip note naming the gate and mode
-- [ ] `/design-review` is directed to a fresh session and never run or offered inline
+- [ ] `$ccgs-design-review` is directed to a fresh session and never run or offered inline
 - [ ] Reads each phase's `references/N-*.md` file before doing that phase, and again after a compaction or resume during it
-- [ ] Ends with a next-step `AskUserQuestion` and Recommended Next Steps (`/consistency-check`, `/map-systems next`, `/design-review` in a fresh session)
+- [ ] Ends with a next-step `native user-input mechanism` and Recommended Next Steps (`$ccgs-consistency-check`, `$ccgs-map-systems next`, `$ccgs-design-review` in a fresh session)
 
 ---
 

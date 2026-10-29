@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "part": "design-quality",
+  "cases": [
+    {
+      "id": "native-005-ccgs-bug-report",
+      "skill": "ccgs-bug-report",
+      "fixture": "bug-report",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-bug-report with this English description: 'The third parcel cannot be collected. On the one-screen courier scene, after the player reaches the third target at index 2, collection is rejected every time. Expected: the third target is recorded as delivered. Actual: the guard returns false.' Inspect src/game.gd and create the new Description Mode report. Use severity S2-High and priority P1-Fix this sprint, include concrete reproduction steps, expected/actual results, affected file, and the author’s explicit approval to write the first report. Do not patch source code.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/bugs/BUG-0001.md",
+            "contains": [
+              "**ID**: BUG-0001",
+              "**Severity**: S2-High",
+              "**Priority**: P1-Fix this sprint",
+              "**Status**: Open",
+              "## Reproduction Steps",
+              "**Expected Result**:",
+              "**Actual Result**:",
+              "src/game.gd"
+            ],
+            "not_contains": [
+              "**Status**: Closed",
+              "Status: Closed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "src/game.gd",
+            "contains": [
+              "target_index >= 2",
+              "return false"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "BUG-0001",
+          "S2-High",
+          "P1-Fix this sprint"
+        ],
+        "any_output_contains": [
+          {"text": "$ccgs-bug-triage", "files": ["production/qa/bugs/BUG-0001.md"]}
+        ],
+        "response_not_contains": [
+          "source code fixed",
+          "Status: Closed",
+          "$ccgs-settings"
+        ],
+        "required_tools": true,
+        "counts": [
+          {"glob": "production/qa/bugs/BUG-*.md", "count": 1}
+        ]
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "expected_outputs": [
+        {
+          "path": "production/qa/bugs/BUG-0001.md",
+          "contains": ["**ID**: BUG-0001", "**Severity**: S2-High", "**Priority**: P1-Fix this sprint", "**Status**: Open", "## Reproduction Steps", "**Expected Result**:", "**Actual Result**:"]
+        }
+      ],
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-006-ccgs-architecture-decision",
+      "skill": "ccgs-architecture-decision",
+      "fixture": "architecture-decision",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-architecture-decision delivery-state-ownership in English. Use the existing architecture-decision template, the Godot engine context, the valid empty TR registry fixture, the architecture layer map, and the delivery-system GDD. The user has already chosen and explicitly approved the baseline option: a DeliveryService in the Feature layer of the Gameplay Domain owns delivery state and emits delivery-recorded; scene adapters call the service, and neither scenes nor persistence own delivery state. The alternatives are scene-owned state and persistence-owned state. Present the context, alternatives, decision, consequences, and implementation constraints, then use the explicit approval in this case to write the new ADR. Authoring must leave the ADR status Proposed (never silently Accepted); identify delivery-state ownership and delivery-recorded as registry candidates, report that registry publication is pending separate approval, and do not modify the registry or ask for an optional registry decision. Mention the accept route. Do not alter the GDD or story.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/adr-0001-delivery-state-ownership.md",
+            "contains": [
+              "## Status",
+              "Proposed",
+              "## Context",
+              "## Decision",
+              "DeliveryService",
+              "**Layer**",
+              "Feature",
+              "## Alternatives Considered",
+              "## Consequences"
+            ],
+            "not_contains": [
+              "Status: Accepted"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery-system.md",
+            "contains": ["Delivery state must survive scene transitions"],
+            "changed": false
+          },
+          {
+            "path": "production/epics/courier/story-001-delivery.md",
+            "contains": ["id: STORY-001", "Blocked pending the delivery-state ADR"],
+            "changed": false
+          },
+          {
+            "path": "docs/registry/architecture.yaml",
+            "contains": ["architecture: []"],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "ADR-0001",
+          "Proposed",
+          "DeliveryService",
+          "Feature",
+          "Gameplay Domain",
+          "Alternatives",
+          "Consequences",
+          "registry",
+          "pending",
+          "$ccgs-architecture-review",
+          "accept ADR-0001"
+        ],
+        "response_not_contains": [
+          "Status: Accepted without confirmation",
+          "GDD modified"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "standard",
+        "modes.automation": "guided"
+      },
+      "expected_outputs": [
+        {
+          "path": "docs/architecture/adr-0001-delivery-state-ownership.md",
+          "contains": ["## Decision", "DeliveryService", "**Layer**", "Feature", "## Consequences"]
+        }
+      ],
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-007-ccgs-scope-check",
+      "skill": "ccgs-scope-check",
+      "fixture": "scope-check",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-scope-check velocity-courier in English and remain read-only. Compare design/gdd/velocity-courier.md's original three-item scope (keyboard movement, three-target delivery, local completion score) with the current files. Identify the concrete additions: src/networking/network_client.gd for online synchronization and src/leaderboard.gd for online leaderboard publishing. Produce the canonical quantified scope report and FAIL verdict; do not write configuration, plans, or scope documents.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/velocity-courier.md",
+            "contains": [
+              "Original Scope",
+              "Keyboard movement",
+              "Networking",
+              "leaderboards"
+            ],
+            "not_contains": [
+              "scope check wrote"
+            ]
+          }
+        ],
+        "response_contains": [
+          "Scope Check",
+          "Original items: 3",
+          "networking",
+          "leaderboard",
+          "FAIL",
+          "scope"
+        ],
+        "response_not_contains": [
+          "project.yaml written",
+          "CONCERNS",
+          "PASS — On Track"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-008-ccgs-consistency-check",
+      "skill": "ccgs-consistency-check",
+      "fixture": "consistency-check",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Treat design/gdd/player.md as authoritative because it is the registry source and states 120 HP, matching the registry. Compare it with design/gdd/combat.md, which says 80 HP. Report the conflict with both values and paths, classify it as CONFLICT, and propose updating combat.md from 80 HP to 120 HP; ask only whether to apply that correction as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/registry/entities.yaml",
+            "contains": [
+              "name: Player",
+              "health: 120",
+              "source: design/gdd/player.md"
+            ],
+            "not_contains": [
+              "health: 80"
+            ]
+          },
+          {
+            "path": "design/gdd/combat.md",
+            "contains": [
+              "Player",
+              "80 HP"
+            ],
+            "not_contains": [
+              "health corrected"
+            ]
+          }
+        ],
+        "response_contains": [
+          "Player",
+          "120",
+          "80",
+          "design/gdd/player.md",
+          "design/gdd/combat.md",
+          "120 HP",
+          "update",
+          "CONFLICT"
+        ],
+        "response_not_contains": [
+          "registry updated",
+          "GDD corrected",
+          "PASS with no conflicts"
+        ],
+        "required_tools": true
+      },
+      "config": {
+        "engine.name": "Godot",
+        "modes.rigor": "minimal",
+        "modes.automation": "guided"
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}

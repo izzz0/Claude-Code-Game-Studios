@@ -11,7 +11,7 @@ No gate IDs assigned.
 
 - [ ] `description:` field is present and domain-specific (references profiling / bottleneck analysis / performance metrics)
 - [ ] `tools:` list includes Read, Write, Edit, Bash, Glob, Grep
-- [ ] Model tier is `inherit` — frontmatter `model:` reads exactly `inherit` (tiers: `.claude/docs/model-tiers.md`)
+- [ ] Model and effort inherit from the caller; no fixed model is required.
 - [ ] Agent definition does not claim authority over implementing any optimization — explicitly identifies itself as analysis/recommendation only
 
 ---
@@ -76,6 +76,6 @@ No gate IDs assigned.
 ---
 
 ## Coverage Notes
-- Frame time analysis (Case 1) output follows the agent's Performance Report Format; when run under `/perf-profile` or `/team-polish`, the report is written to `production/polish/`
+- Frame time analysis (Case 1) output follows the agent's Performance Report Format; when run under `$ccgs-perf-profile` or `$ccgs-team-polish`, the report is written to `production/polish/`
 - Regression case (Case 3) confirms the agent localizes the cause from profiles across builds, not just measures symptoms or guesses from diffs
 - Code quality trade-off (Case 4) verifies the agent does not recommend optimizations that violate coding standards without flagging the conflict

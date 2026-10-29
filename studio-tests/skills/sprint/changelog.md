@@ -1,8 +1,8 @@
-# Skill Test Spec: /changelog
+# Skill Test Spec: $ccgs-changelog
 
 ## Skill Summary
 
-`/changelog` is a Sonnet-tier skill that generates two changelogs — an internal
+`$ccgs-changelog` is a caller-model skill that generates two changelogs — an internal
 one and a player-facing one — from the git commits since the last release tag.
 Before using the injected history it classifies every commit as Game or
 Framework / maintenance (Unclear counts as Framework), uses only the Game
@@ -23,13 +23,13 @@ BLOCKED when there is no history or none of it is the game's.
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: CHANGELOG WRITTEN, COMPLETE, BLOCKED
 - [ ] Contains "May I write" language (skill writes changelog)
-- [ ] Has a next-step handoff (`/patch-notes` for a player-facing release, `/release-checklist`)
+- [ ] Has a next-step handoff (`$ccgs-patch-notes` for a player-facing release, `$ccgs-release-checklist`)
 
 ---
 
@@ -43,7 +43,7 @@ None. Changelog generation is a fast compilation task; no gates are invoked.
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -60,7 +60,7 @@ Fixture defaults.
   stories whose task IDs appear in the commit messages
 - `docs/CHANGELOG.md` does not yet exist
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill classifies the injected commits as Game or Framework / maintenance and
@@ -92,7 +92,7 @@ Fixture defaults.
 - The injected tag list is empty
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill finds no tag to anchor the range
@@ -121,7 +121,7 @@ Fixture defaults.
   "fix player clipping through ledge", "add footstep sounds", "level tweaks",
   "combat cleanup"
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill categorizes every commit by what it changed, whether or not it has a
@@ -150,7 +150,7 @@ Fixture defaults.
 - `docs/CHANGELOG.md` already exists with sections for `v0.2.0` and `v0.3.0`
 - New Game commits exist since the `v0.3.0` tag
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill compiles new entries for the period since `v0.3.0`
@@ -175,7 +175,7 @@ Fixture defaults.
 - Git history has Game commits since the last tag
 - `project.yaml` sets `modes.review_mode: full`
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill compiles both changelogs; no director gate is spawned (the skill
@@ -200,7 +200,7 @@ Fixture defaults.
   runner" — and none names a game system in `design/` or the code root
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. Skill classifies every injected commit: 0 Game, 30 Framework / maintenance
@@ -223,7 +223,7 @@ Fixture defaults.
   blocks are empty
 - `docs/CHANGELOG.md` does not exist
 
-**Input:** `/changelog`
+**Input:** `$ccgs-changelog`
 
 **Expected behavior:**
 1. The injected commit list is empty, so the provenance check is skipped —
@@ -247,7 +247,7 @@ Fixture defaults.
 - [ ] Always asks "May I write" before writing the changelog
 - [ ] No director gates are invoked
 - [ ] Verdict is CHANGELOG WRITTEN after a write, COMPLETE when the write is declined, and BLOCKED when there is no history or no Game commit
-- [ ] Declares `model: sonnet` — it writes player-facing copy
+- [ ] Declares `no fixed model/effort binding` — it writes player-facing copy
 
 ---
 
@@ -259,5 +259,5 @@ Fixture defaults.
   instead of widening the range) is not tested.
 - Merge commits vs. squash commits are not explicitly differentiated in
   these tests; implementation detail of the git log parsing phase.
-- The `/patch-notes` skill should be run after `/changelog` for player-facing
+- The `$ccgs-patch-notes` skill should be run after `$ccgs-changelog` for player-facing
   output; that handoff is verified in the patch-notes spec.

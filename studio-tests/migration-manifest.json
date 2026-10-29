@@ -1,0 +1,918 @@
+{
+  "source_revision": "05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418",
+  "core_revision": "bcc5607c6ad437129a4437860af950cd09fedb88",
+  "source_root": "git:05ad7c8a5b8aa2aa86bbd3439ae7cf7295cac418",
+  "provenance_contract": {
+    "static": "path and content inventory only",
+    "protocol": "fixture or adapter protocol evidence, not host trust",
+    "native": "native handler/helper mapping; execution still requires evidence",
+    "game": "real engine/game runtime evidence only",
+    "unsupported": "no native equivalent or unresolved host capability"
+  },
+  "skills": [
+    {
+      "source": ".claude/skills/adopt/SKILL.md",
+      "name": "ccgs-adopt",
+      "entrypoint": ".agents/skills/ccgs-adopt/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/architecture-decision/SKILL.md",
+      "name": "ccgs-architecture-decision",
+      "entrypoint": ".agents/skills/ccgs-architecture-decision/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/architecture-review/SKILL.md",
+      "name": "ccgs-architecture-review",
+      "entrypoint": ".agents/skills/ccgs-architecture-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/art-bible/SKILL.md",
+      "name": "ccgs-art-bible",
+      "entrypoint": ".agents/skills/ccgs-art-bible/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/asset-audit/SKILL.md",
+      "name": "ccgs-asset-audit",
+      "entrypoint": ".agents/skills/ccgs-asset-audit/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/asset-spec/SKILL.md",
+      "name": "ccgs-asset-spec",
+      "entrypoint": ".agents/skills/ccgs-asset-spec/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/balance-check/SKILL.md",
+      "name": "ccgs-balance-check",
+      "entrypoint": ".agents/skills/ccgs-balance-check/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/brainstorm/SKILL.md",
+      "name": "ccgs-brainstorm",
+      "entrypoint": ".agents/skills/ccgs-brainstorm/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/bug-report/SKILL.md",
+      "name": "ccgs-bug-report",
+      "entrypoint": ".agents/skills/ccgs-bug-report/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/bug-triage/SKILL.md",
+      "name": "ccgs-bug-triage",
+      "entrypoint": ".agents/skills/ccgs-bug-triage/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/changelog/SKILL.md",
+      "name": "ccgs-changelog",
+      "entrypoint": ".agents/skills/ccgs-changelog/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/code-review/SKILL.md",
+      "name": "ccgs-code-review",
+      "entrypoint": ".agents/skills/ccgs-code-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/consistency-check/SKILL.md",
+      "name": "ccgs-consistency-check",
+      "entrypoint": ".agents/skills/ccgs-consistency-check/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/content-audit/SKILL.md",
+      "name": "ccgs-content-audit",
+      "entrypoint": ".agents/skills/ccgs-content-audit/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/create-architecture/SKILL.md",
+      "name": "ccgs-create-architecture",
+      "entrypoint": ".agents/skills/ccgs-create-architecture/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/create-control-manifest/SKILL.md",
+      "name": "ccgs-create-control-manifest",
+      "entrypoint": ".agents/skills/ccgs-create-control-manifest/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/create-epics/SKILL.md",
+      "name": "ccgs-create-epics",
+      "entrypoint": ".agents/skills/ccgs-create-epics/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/create-stories/SKILL.md",
+      "name": "ccgs-create-stories",
+      "entrypoint": ".agents/skills/ccgs-create-stories/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/day-one-patch/SKILL.md",
+      "name": "ccgs-day-one-patch",
+      "entrypoint": ".agents/skills/ccgs-day-one-patch/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/design-review/SKILL.md",
+      "name": "ccgs-design-review",
+      "entrypoint": ".agents/skills/ccgs-design-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/design-system/SKILL.md",
+      "name": "ccgs-design-system",
+      "entrypoint": ".agents/skills/ccgs-design-system/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/dev-story/SKILL.md",
+      "name": "ccgs-dev-story",
+      "entrypoint": ".agents/skills/ccgs-dev-story/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/estimate/SKILL.md",
+      "name": "ccgs-estimate",
+      "entrypoint": ".agents/skills/ccgs-estimate/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/gate-check/SKILL.md",
+      "name": "ccgs-gate-check",
+      "entrypoint": ".agents/skills/ccgs-gate-check/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/help/SKILL.md",
+      "name": "ccgs-help",
+      "entrypoint": ".agents/skills/ccgs-help/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/hotfix/SKILL.md",
+      "name": "ccgs-hotfix",
+      "entrypoint": ".agents/skills/ccgs-hotfix/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/launch-checklist/SKILL.md",
+      "name": "ccgs-launch-checklist",
+      "entrypoint": ".agents/skills/ccgs-launch-checklist/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/localize/SKILL.md",
+      "name": "ccgs-localize",
+      "entrypoint": ".agents/skills/ccgs-localize/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/map-systems/SKILL.md",
+      "name": "ccgs-map-systems",
+      "entrypoint": ".agents/skills/ccgs-map-systems/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/milestone-review/SKILL.md",
+      "name": "ccgs-milestone-review",
+      "entrypoint": ".agents/skills/ccgs-milestone-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/onboard/SKILL.md",
+      "name": "ccgs-onboard",
+      "entrypoint": ".agents/skills/ccgs-onboard/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/patch-notes/SKILL.md",
+      "name": "ccgs-patch-notes",
+      "entrypoint": ".agents/skills/ccgs-patch-notes/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/perf-profile/SKILL.md",
+      "name": "ccgs-perf-profile",
+      "entrypoint": ".agents/skills/ccgs-perf-profile/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/playtest-report/SKILL.md",
+      "name": "ccgs-playtest-report",
+      "entrypoint": ".agents/skills/ccgs-playtest-report/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/project-stage-detect/SKILL.md",
+      "name": "ccgs-project-stage-detect",
+      "entrypoint": ".agents/skills/ccgs-project-stage-detect/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/propagate-design-change/SKILL.md",
+      "name": "ccgs-propagate-design-change",
+      "entrypoint": ".agents/skills/ccgs-propagate-design-change/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/prototype/SKILL.md",
+      "name": "ccgs-prototype",
+      "entrypoint": ".agents/skills/ccgs-prototype/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/qa-plan/SKILL.md",
+      "name": "ccgs-qa-plan",
+      "entrypoint": ".agents/skills/ccgs-qa-plan/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/quick-design/SKILL.md",
+      "name": "ccgs-quick-design",
+      "entrypoint": ".agents/skills/ccgs-quick-design/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/regression-suite/SKILL.md",
+      "name": "ccgs-regression-suite",
+      "entrypoint": ".agents/skills/ccgs-regression-suite/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/release-checklist/SKILL.md",
+      "name": "ccgs-release-checklist",
+      "entrypoint": ".agents/skills/ccgs-release-checklist/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/retrospective/SKILL.md",
+      "name": "ccgs-retrospective",
+      "entrypoint": ".agents/skills/ccgs-retrospective/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/reverse-document/SKILL.md",
+      "name": "ccgs-reverse-document",
+      "entrypoint": ".agents/skills/ccgs-reverse-document/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/review-all-gdds/SKILL.md",
+      "name": "ccgs-review-all-gdds",
+      "entrypoint": ".agents/skills/ccgs-review-all-gdds/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/scope-check/SKILL.md",
+      "name": "ccgs-scope-check",
+      "entrypoint": ".agents/skills/ccgs-scope-check/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/security-audit/SKILL.md",
+      "name": "ccgs-security-audit",
+      "entrypoint": ".agents/skills/ccgs-security-audit/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/settings/SKILL.md",
+      "name": "ccgs-settings",
+      "entrypoint": ".agents/skills/ccgs-settings/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/setup-engine/SKILL.md",
+      "name": "ccgs-setup-engine",
+      "entrypoint": ".agents/skills/ccgs-setup-engine/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/skill-improve/SKILL.md",
+      "name": "ccgs-skill-improve",
+      "entrypoint": ".agents/skills/ccgs-skill-improve/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/skill-test/SKILL.md",
+      "name": "ccgs-skill-test",
+      "entrypoint": ".agents/skills/ccgs-skill-test/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/smoke-check/SKILL.md",
+      "name": "ccgs-smoke-check",
+      "entrypoint": ".agents/skills/ccgs-smoke-check/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/soak-test/SKILL.md",
+      "name": "ccgs-soak-test",
+      "entrypoint": ".agents/skills/ccgs-soak-test/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/sprint-plan/SKILL.md",
+      "name": "ccgs-sprint-plan",
+      "entrypoint": ".agents/skills/ccgs-sprint-plan/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/sprint-status/SKILL.md",
+      "name": "ccgs-sprint-status",
+      "entrypoint": ".agents/skills/ccgs-sprint-status/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/start/SKILL.md",
+      "name": "ccgs-start",
+      "entrypoint": ".agents/skills/ccgs-start/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/story-done/SKILL.md",
+      "name": "ccgs-story-done",
+      "entrypoint": ".agents/skills/ccgs-story-done/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/story-readiness/SKILL.md",
+      "name": "ccgs-story-readiness",
+      "entrypoint": ".agents/skills/ccgs-story-readiness/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-audio/SKILL.md",
+      "name": "ccgs-team-audio",
+      "entrypoint": ".agents/skills/ccgs-team-audio/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-combat/SKILL.md",
+      "name": "ccgs-team-combat",
+      "entrypoint": ".agents/skills/ccgs-team-combat/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-level/SKILL.md",
+      "name": "ccgs-team-level",
+      "entrypoint": ".agents/skills/ccgs-team-level/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-live-ops/SKILL.md",
+      "name": "ccgs-team-live-ops",
+      "entrypoint": ".agents/skills/ccgs-team-live-ops/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-narrative/SKILL.md",
+      "name": "ccgs-team-narrative",
+      "entrypoint": ".agents/skills/ccgs-team-narrative/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-polish/SKILL.md",
+      "name": "ccgs-team-polish",
+      "entrypoint": ".agents/skills/ccgs-team-polish/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-qa/SKILL.md",
+      "name": "ccgs-team-qa",
+      "entrypoint": ".agents/skills/ccgs-team-qa/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-release/SKILL.md",
+      "name": "ccgs-team-release",
+      "entrypoint": ".agents/skills/ccgs-team-release/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/team-ui/SKILL.md",
+      "name": "ccgs-team-ui",
+      "entrypoint": ".agents/skills/ccgs-team-ui/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/tech-debt/SKILL.md",
+      "name": "ccgs-tech-debt",
+      "entrypoint": ".agents/skills/ccgs-tech-debt/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/test-evidence-review/SKILL.md",
+      "name": "ccgs-test-evidence-review",
+      "entrypoint": ".agents/skills/ccgs-test-evidence-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/test-flakiness/SKILL.md",
+      "name": "ccgs-test-flakiness",
+      "entrypoint": ".agents/skills/ccgs-test-flakiness/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/test-helpers/SKILL.md",
+      "name": "ccgs-test-helpers",
+      "entrypoint": ".agents/skills/ccgs-test-helpers/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/test-setup/SKILL.md",
+      "name": "ccgs-test-setup",
+      "entrypoint": ".agents/skills/ccgs-test-setup/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/ux-design/SKILL.md",
+      "name": "ccgs-ux-design",
+      "entrypoint": ".agents/skills/ccgs-ux-design/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/ux-review/SKILL.md",
+      "name": "ccgs-ux-review",
+      "entrypoint": ".agents/skills/ccgs-ux-review/SKILL.md",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/skills/vertical-slice/SKILL.md",
+      "name": "ccgs-vertical-slice",
+      "entrypoint": ".agents/skills/ccgs-vertical-slice/SKILL.md",
+      "validation": "NOT ASSESSED"
+    }
+  ],
+  "roles": [
+    {
+      "source": ".claude/agents/accessibility-specialist.md",
+      "name": "ccgs-accessibility-specialist",
+      "entrypoint": ".codex/agents/ccgs-accessibility-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ai-programmer.md",
+      "name": "ccgs-ai-programmer",
+      "entrypoint": ".codex/agents/ccgs-ai-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/analytics-engineer.md",
+      "name": "ccgs-analytics-engineer",
+      "entrypoint": ".codex/agents/ccgs-analytics-engineer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/art-director.md",
+      "name": "ccgs-art-director",
+      "entrypoint": ".codex/agents/ccgs-art-director.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/audio-director.md",
+      "name": "ccgs-audio-director",
+      "entrypoint": ".codex/agents/ccgs-audio-director.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/community-manager.md",
+      "name": "ccgs-community-manager",
+      "entrypoint": ".codex/agents/ccgs-community-manager.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/creative-director.md",
+      "name": "ccgs-creative-director",
+      "entrypoint": ".codex/agents/ccgs-creative-director.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/devops-engineer.md",
+      "name": "ccgs-devops-engineer",
+      "entrypoint": ".codex/agents/ccgs-devops-engineer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/economy-designer.md",
+      "name": "ccgs-economy-designer",
+      "entrypoint": ".codex/agents/ccgs-economy-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/engine-programmer.md",
+      "name": "ccgs-engine-programmer",
+      "entrypoint": ".codex/agents/ccgs-engine-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/game-designer.md",
+      "name": "ccgs-game-designer",
+      "entrypoint": ".codex/agents/ccgs-game-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/gameplay-programmer.md",
+      "name": "ccgs-gameplay-programmer",
+      "entrypoint": ".codex/agents/ccgs-gameplay-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/godot-csharp-specialist.md",
+      "name": "ccgs-godot-csharp-specialist",
+      "entrypoint": ".codex/agents/ccgs-godot-csharp-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/godot-gdextension-specialist.md",
+      "name": "ccgs-godot-gdextension-specialist",
+      "entrypoint": ".codex/agents/ccgs-godot-gdextension-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/godot-gdscript-specialist.md",
+      "name": "ccgs-godot-gdscript-specialist",
+      "entrypoint": ".codex/agents/ccgs-godot-gdscript-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/godot-shader-specialist.md",
+      "name": "ccgs-godot-shader-specialist",
+      "entrypoint": ".codex/agents/ccgs-godot-shader-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/godot-specialist.md",
+      "name": "ccgs-godot-specialist",
+      "entrypoint": ".codex/agents/ccgs-godot-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/lead-programmer.md",
+      "name": "ccgs-lead-programmer",
+      "entrypoint": ".codex/agents/ccgs-lead-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/level-designer.md",
+      "name": "ccgs-level-designer",
+      "entrypoint": ".codex/agents/ccgs-level-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/live-ops-designer.md",
+      "name": "ccgs-live-ops-designer",
+      "entrypoint": ".codex/agents/ccgs-live-ops-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/localization-lead.md",
+      "name": "ccgs-localization-lead",
+      "entrypoint": ".codex/agents/ccgs-localization-lead.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/narrative-director.md",
+      "name": "ccgs-narrative-director",
+      "entrypoint": ".codex/agents/ccgs-narrative-director.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/network-programmer.md",
+      "name": "ccgs-network-programmer",
+      "entrypoint": ".codex/agents/ccgs-network-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/performance-analyst.md",
+      "name": "ccgs-performance-analyst",
+      "entrypoint": ".codex/agents/ccgs-performance-analyst.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/producer.md",
+      "name": "ccgs-producer",
+      "entrypoint": ".codex/agents/ccgs-producer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/prototyper.md",
+      "name": "ccgs-prototyper",
+      "entrypoint": ".codex/agents/ccgs-prototyper.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/qa-lead.md",
+      "name": "ccgs-qa-lead",
+      "entrypoint": ".codex/agents/ccgs-qa-lead.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/qa-tester.md",
+      "name": "ccgs-qa-tester",
+      "entrypoint": ".codex/agents/ccgs-qa-tester.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/release-manager.md",
+      "name": "ccgs-release-manager",
+      "entrypoint": ".codex/agents/ccgs-release-manager.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/security-engineer.md",
+      "name": "ccgs-security-engineer",
+      "entrypoint": ".codex/agents/ccgs-security-engineer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/sound-designer.md",
+      "name": "ccgs-sound-designer",
+      "entrypoint": ".codex/agents/ccgs-sound-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/systems-designer.md",
+      "name": "ccgs-systems-designer",
+      "entrypoint": ".codex/agents/ccgs-systems-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/technical-artist.md",
+      "name": "ccgs-technical-artist",
+      "entrypoint": ".codex/agents/ccgs-technical-artist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/technical-director.md",
+      "name": "ccgs-technical-director",
+      "entrypoint": ".codex/agents/ccgs-technical-director.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/tools-programmer.md",
+      "name": "ccgs-tools-programmer",
+      "entrypoint": ".codex/agents/ccgs-tools-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ue-blueprint-specialist.md",
+      "name": "ccgs-ue-blueprint-specialist",
+      "entrypoint": ".codex/agents/ccgs-ue-blueprint-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ue-gas-specialist.md",
+      "name": "ccgs-ue-gas-specialist",
+      "entrypoint": ".codex/agents/ccgs-ue-gas-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ue-replication-specialist.md",
+      "name": "ccgs-ue-replication-specialist",
+      "entrypoint": ".codex/agents/ccgs-ue-replication-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ue-umg-specialist.md",
+      "name": "ccgs-ue-umg-specialist",
+      "entrypoint": ".codex/agents/ccgs-ue-umg-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ui-programmer.md",
+      "name": "ccgs-ui-programmer",
+      "entrypoint": ".codex/agents/ccgs-ui-programmer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unity-addressables-specialist.md",
+      "name": "ccgs-unity-addressables-specialist",
+      "entrypoint": ".codex/agents/ccgs-unity-addressables-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unity-dots-specialist.md",
+      "name": "ccgs-unity-dots-specialist",
+      "entrypoint": ".codex/agents/ccgs-unity-dots-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unity-shader-specialist.md",
+      "name": "ccgs-unity-shader-specialist",
+      "entrypoint": ".codex/agents/ccgs-unity-shader-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unity-specialist.md",
+      "name": "ccgs-unity-specialist",
+      "entrypoint": ".codex/agents/ccgs-unity-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unity-ui-specialist.md",
+      "name": "ccgs-unity-ui-specialist",
+      "entrypoint": ".codex/agents/ccgs-unity-ui-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/unreal-specialist.md",
+      "name": "ccgs-unreal-specialist",
+      "entrypoint": ".codex/agents/ccgs-unreal-specialist.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/ux-designer.md",
+      "name": "ccgs-ux-designer",
+      "entrypoint": ".codex/agents/ccgs-ux-designer.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/world-builder.md",
+      "name": "ccgs-world-builder",
+      "entrypoint": ".codex/agents/ccgs-world-builder.toml",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/agents/writer.md",
+      "name": "ccgs-writer",
+      "entrypoint": ".codex/agents/ccgs-writer.toml",
+      "validation": "NOT ASSESSED"
+    }
+  ],
+  "hooks": [
+    {
+      "source": ".claude/hooks/detect-gaps.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "SessionStart",
+      "responsibility": "observe missing design/code context and emit guidance",
+      "adaptation": "native event receipt; no automatic document writes",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/log-agent-stop.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "SubagentStop",
+      "responsibility": "record bounded native subagent completion observation",
+      "adaptation": "identity receipt only; coordinator validates returned work",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/log-agent.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "SubagentStart",
+      "responsibility": "record native subagent start observation",
+      "adaptation": "identity receipt only; no shell agent launcher",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/log-instructions.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "InstructionsLoaded (unsupported)",
+      "responsibility": "retain source instruction-load intent for audit",
+      "adaptation": "no equivalent native event is claimed",
+      "provenance": "unsupported",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/notify.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "Notification (unsupported)",
+      "responsibility": "retain source notification intent",
+      "adaptation": "no Windows toast or notification service is installed",
+      "provenance": "unsupported",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/pre-compact.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "PreCompact/PostCompact",
+      "responsibility": "record compaction observation and recovery guidance",
+      "adaptation": "receipt only; never mutates the developmental checkpoint",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/session-start.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "SessionStart/SessionEnd",
+      "responsibility": "observe session lifecycle and recovery location",
+      "adaptation": "native receipts replace source session log writers",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/session-stop.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "SessionEnd/Interrupt",
+      "responsibility": "record bounded session termination observation",
+      "adaptation": "three-second bounded receipt; no continuation",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/update-check.sh",
+      "replacement": ".agents/studio/runtime/updates.py",
+      "event": "SessionStart",
+      "responsibility": "perform optional daily release notice check",
+      "adaptation": "ignored cache; respects CI/offline and never auto-upgrades",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-agent-artifact.sh",
+      "replacement": ".agents/studio/runtime/checks/business.py",
+      "event": "PostToolUse",
+      "responsibility": "observe agent artifact contract violations",
+      "adaptation": "business observations are advisory until coordinator evidence",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-assets.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "PostToolUse",
+      "responsibility": "observe asset JSON and naming checks",
+      "adaptation": "actual asset roots only; no automatic asset mutation",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-commit.sh",
+      "replacement": ".agents/studio/runtime/checks/validate-commit.sh",
+      "event": "PreToolUse (commit command)",
+      "responsibility": "validate pending commit metadata and protected records",
+      "adaptation": "canonical native commit path; malformed data may deny",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-push.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "PreToolUse",
+      "responsibility": "observe force-push risk and native tool boundaries",
+      "adaptation": "force-push is denied; ordinary push is not a source hook",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-read.sh",
+      "replacement": ".agents/studio/runtime/hooks.py; .agents/studio/scripts/read-guard.sh",
+      "event": "PreToolUse (Read)",
+      "responsibility": "guard oversized whole-file native Read requests",
+      "adaptation": "explicit Read/CLI coverage; not arbitrary Bash security",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-registry.sh",
+      "replacement": ".agents/studio/runtime/checks/business.py",
+      "event": "PreToolUse/PostToolUse",
+      "responsibility": "observe registry append-only/status invariants",
+      "adaptation": "coordinator/helper checks remain required outside hook coverage",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-skill-change.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "PostToolUse",
+      "responsibility": "remind when a native skill file changes",
+      "adaptation": "advisory reminder; does not launch tests automatically",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/validate-write.sh",
+      "replacement": ".agents/studio/runtime/hooks.py",
+      "event": "PreToolUse",
+      "responsibility": "observe protected write destinations and engine roots",
+      "adaptation": "native patch/write path checks; coordinator owns checkpoints",
+      "provenance": "native",
+      "validation": "NOT ASSESSED"
+    },
+    {
+      "source": ".claude/hooks/yaml-helper.sh",
+      "replacement": ".agents/studio/hooks/yaml-helper.sh",
+      "event": "explicit helper call",
+      "responsibility": "preserve schema-1 YAML subset and per-key resolution",
+      "adaptation": "helper remains the parser; no second runtime config system",
+      "provenance": "static",
+      "validation": "NOT ASSESSED"
+    }
+  ]
+}

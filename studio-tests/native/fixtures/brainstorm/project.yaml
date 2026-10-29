@@ -1,0 +1,13 @@
+schema_version: 1
+framework:
+  version: 1.2.0-codex.2
+project:
+  name: Pocket Courier
+  stage: Concept
+modes:
+  rigor: minimal
+  automation: guided
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript

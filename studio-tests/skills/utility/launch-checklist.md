@@ -1,8 +1,8 @@
-# Skill Test Spec: /launch-checklist
+# Skill Test Spec: $ccgs-launch-checklist
 
 ## Skill Summary
 
-`/launch-checklist` generates a launch-readiness checklist across code, content,
+`$ccgs-launch-checklist` generates a launch-readiness checklist across code, content,
 QA, store, legal, infrastructure, community and operations, scoped to the
 project. It is handed the resolved `rigor`, `project.stage`, `platform.cert_tier`
 and `automation`, and scopes by them: out-of-reach phases are declared out of
@@ -12,14 +12,14 @@ Certification section is emitted **only** for the `cert_tier` value
 licence to emit every track; if it cannot be determined the section is marked
 `NOT ASSESSED — cert tier unknown`.
 
-Phase 2 reads `CLAUDE.md`, the latest milestone, any existing checklist in
+Phase 2 reads `AGENTS.md`, the latest milestone, any existing checklist in
 `production/releases/` and the content calendar. Phase 3 scans the code root for
 TODO/FIXME/HACK, debug output, placeholder assets and hardcoded dev values, and
 reports every scan with its denominator (`scanned [N] files, [M] hits`) or
 `NOT ASSESSED — [reason]`; an unassessable item is written `- [?]` with a legend,
 never a bare box or tick. The bug rows follow `workflow`: S1 and S2 (or a
 documented exception), and at `full` S1–S3 with no exceptions. Phase 4b asks one
-`AskUserQuestion` per section about the items no scan or file settled, each
+`native user-input mechanism` per section about the items no scan or file settled, each
 answered yes / no / not yet / N/A: yes ticks it, no or not yet is a failed item
 (Blocking, or Conditional with a workaround or accepted risk), N/A leaves it out;
 it is skipped, and says so, in `dry-run` and in `autonomous` mode. The checklist
@@ -31,32 +31,32 @@ Status** is computed from them, first match wins: `NOT READY` (any blocking item
 named) → `CONDITIONAL` (any conditional item) → `READY`. Unless the argument is
 `dry-run`, it asks "May I write this to
 `production/releases/launch-checklist-[date].md`?" and creates nothing — not
-even the directory — before the answer. Next steps: `/gate-check release` first
+even the directory — before the answer. Next steps: `$ccgs-gate-check release` first
 if `project.stage` is not `Release` (`Polish`, an earlier stage, or unset), then
-`/team-release`. No director gates are spawned.
+`$ccgs-team-release`. No director gates are spawned.
 
 ---
 
 ## Static Assertions (Structural)
 
-Checked against the SKILL.md by `/skill-test spec` — no fixture needed.
+Checked against the SKILL.md by `$ccgs-skill-test spec` — no fixture needed.
 
-- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `allowed-tools`
+- [ ] Has required frontmatter fields: `name`, `description`, `argument-hint`, `user-invocable`, `tool permissions`
 - [ ] Frontmatter sets `disable-model-invocation: true`: it runs only when the user types it, set in frontmatter rather than asked for in prose
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keywords: READY, CONDITIONAL, NOT ASSESSED, NOT READY (Overall Status, first match NOT READY → NOT ASSESSED → CONDITIONAL → READY), and NOT ASSESSED for unassessable scans and cert tier
 - [ ] Contains "May I write" language before writing the checklist, and creates no file or directory before the answer
-- [ ] Has a Phase 4b that asks one `AskUserQuestion` per section, answers yes / no / not yet / N/A, with no / not yet a failed item and N/A excluded
-- [ ] Has a next-step handoff (`/gate-check release` only when `project.stage` is not `Release`, and `/team-release`)
+- [ ] Has a Phase 4b that asks one `native user-input mechanism` per section, answers yes / no / not yet / N/A, with no / not yet a failed item and N/A excluded
+- [ ] Has a next-step handoff (`$ccgs-gate-check release` only when `project.stage` is not `Release`, and `$ccgs-team-release`)
 
 ---
 
 ## Director Gate Checks
 
-None. `/launch-checklist` has no `Agent` tool and spawns no director. The
+None. `$ccgs-launch-checklist` has no `Agent` tool and spawns no director. The
 "Sign-Offs Required" list (Creative Director, Technical Director, QA Lead,
 Producer, Release Manager) is checklist text for humans, coordinated later via
-`/team-release`; the formal gate verdict comes from `/gate-check`.
+`$ccgs-team-release`; the formal gate verdict comes from `$ccgs-gate-check`.
 
 ---
 
@@ -64,7 +64,7 @@ Producer, Release Manager) is checklist text for humans, coordinated later via
 
 Every case's `project.yaml` sets `modes.rigor: minimal` and
 `modes.automation: collaborative`, with no `project.local.yaml`, unless its own
-Fixture says otherwise. Rules: `studio-tests/CLAUDE.md` §
+Fixture says otherwise. Rules: `studio-tests/AGENTS.md` §
 Fixture defaults.
 
 ---
@@ -83,16 +83,16 @@ Fixture defaults.
   Infrastructure question, where `Some differ` gives each Servers item N/A and
   every Analytics and Monitoring item yes
 
-**Input:** `/launch-checklist 2026-11-01`
+**Input:** `$ccgs-launch-checklist 2026-11-01`
 
 **Expected behavior:**
 1. Target Launch reads 2026-11-01
 2. Phase 3 reports each scan as `scanned [N] files, 0 hits`
 3. Platform Certification contains only the Steam block (Steamworks SDK, store page,
    depot build, achievements, common content rules) plus the every-tier accessibility row
-4. The soak-test item asks for the longest soak `/soak-test` runs (or a longer
-   one run by hand), not a fixed duration `/soak-test` cannot produce
-5. Phase 4b asks one `AskUserQuestion` per section, listing only the items no
+4. The soak-test item asks for the longest soak `$ccgs-soak-test` runs (or a longer
+   one run by hand), not a fixed duration `$ccgs-soak-test` cannot produce
+5. Phase 4b asks one `native user-input mechanism` per section, listing only the items no
    scan or file settled (not the Phase 3 counts), each answered yes / no /
    not yet / N/A
 6. The confirmed items are ticked `(confirmed by the user)`; the Servers items are
@@ -102,18 +102,18 @@ Fixture defaults.
    count, conditional count, not-assessed count, departments with incomplete sections)
 8. Asks "May I write this to `production/releases/launch-checklist-[date].md`?";
    `production/releases/` is not created before the answer
-9. Next steps: `/team-release` — the stage already reads `Release`, so `/gate-check`
+9. Next steps: `$ccgs-team-release` — the stage already reads `Release`, so `$ccgs-gate-check`
    is not offered
 
 **Assertions:**
 - [ ] Every Phase 3 scan line shows its denominator (`scanned [N] files, [M] hits`)
 - [ ] No console (TRC/Lotcheck) or itch.io items appear
-- [ ] The soak-test item does not require a soak longer than `/soak-test` offers
+- [ ] The soak-test item does not require a soak longer than `$ccgs-soak-test` offers
 - [ ] Phase 4b asks at most one question per section, and no Phase 3 count is asked about
 - [ ] Overall Status is READY — every item is ticked on evidence or on a Phase 4b answer, or marked N/A
 - [ ] The summary gives total, blocking, conditional and not-assessed counts
 - [ ] "May I write" names `production/releases/launch-checklist-[date].md`, and no directory exists before the user answers it
-- [ ] Next steps name `/team-release` and do not offer `/gate-check`
+- [ ] Next steps name `$ccgs-team-release` and do not offer `$ccgs-gate-check`
 
 ---
 
@@ -123,7 +123,7 @@ Fixture defaults.
 - As Case 1, but `src/` contains 3 `FIXME` comments and one `print()` debug call in production code
 - `src/` also has one `HACK` comment whose justification is documented beside it
 
-**Input:** `/launch-checklist 2026-11-01`
+**Input:** `$ccgs-launch-checklist 2026-11-01`
 
 **Expected behavior:**
 1. Phase 3 counts the FIXMEs with their locations and finds the debug output
@@ -148,7 +148,7 @@ Fixture defaults.
 - `project.yaml`: `project.stage: Release`, `modes.rigor: standard`, no `platform.cert_tier`
 - Config block shows `platform.cert_tier: (unset -- ask which platforms are in scope)`
 
-**Input:** `/launch-checklist 2026-11-01`
+**Input:** `$ccgs-launch-checklist 2026-11-01`
 
 **Expected behavior:**
 1. Skill asks which platforms are in scope instead of emitting all certification tracks
@@ -170,7 +170,7 @@ Fixture defaults.
 - `project.yaml`: `project.stage: Release`, `platform.cert_tier: itch`, engine Godot
 - `src/` exists but is empty; no `assets/` directory
 
-**Input:** `/launch-checklist 2026-11-01`
+**Input:** `$ccgs-launch-checklist 2026-11-01`
 
 **Expected behavior:**
 1. Phase 3 reports the code scans as `NOT ASSESSED — no source files` (or
@@ -199,7 +199,7 @@ Fixture defaults.
 - `project.yaml`: `project.stage: Release`, `platform.cert_tier: none`
 - Code root with source files
 
-**Input:** `/launch-checklist dry-run`
+**Input:** `$ccgs-launch-checklist dry-run`
 
 **Expected behavior:**
 1. Target Launch reads DRY RUN
@@ -209,14 +209,14 @@ Fixture defaults.
    unconfirmed, so the Overall Status is NOT ASSESSED
 4. The checklist is presented but no "May I write" ask is made and no file is written
 5. No director or other agent is spawned; no gate IDs appear
-6. Next steps name `/team-release`; the stage reads `Release`, so `/gate-check` is not offered
+6. Next steps name `$ccgs-team-release`; the stage reads `Release`, so `$ccgs-gate-check` is not offered
 
 **Assertions:**
 - [ ] The "omitted — cert_tier is 'none'" line appears and no certification rows are emitted
 - [ ] No Phase 4b question is asked in dry-run, the skip is stated, and the Overall Status is NOT ASSESSED
 - [ ] No "May I write" ask and no file written in dry-run mode
 - [ ] No director gate is invoked and no gate skip messages appear
-- [ ] Next steps name `/team-release` and do not offer `/gate-check`
+- [ ] Next steps name `$ccgs-team-release` and do not offer `$ccgs-gate-check`
 
 ---
 
@@ -230,7 +230,7 @@ Fixture defaults.
   all of them` (Servers N/A as in Case 1)
 - Variant B: as Variant A, but the user leaves the Legal question unanswered
 
-**Input:** `/launch-checklist 2026-11-01`
+**Input:** `$ccgs-launch-checklist 2026-11-01`
 
 **Expected behavior:**
 1. The Testing bug rows are the `workflow: full` ones: zero S1, and zero S2 and S3
@@ -240,15 +240,15 @@ Fixture defaults.
    unconfirmed; Overall Status is CONDITIONAL
 3. Variant B: the Legal items stay unconfirmed and are named; Overall Status is
    NOT ASSESSED (it outranks CONDITIONAL)
-4. Next steps: run `/gate-check release` first — the stage still reads `Polish` —
-   then `/team-release`
+4. Next steps: run `$ccgs-gate-check release` first — the stage still reads `Polish` —
+   then `$ccgs-team-release`
 
 **Assertions:**
 - [ ] A `not yet` answer is never ticked; with an accepted risk it is listed under Conditional Items
 - [ ] Variant A's Overall Status is CONDITIONAL
 - [ ] Variant B's Overall Status is NOT ASSESSED and names the unanswered Legal items
 - [ ] No "documented exception" is offered for an S2 or S3 at `workflow: full`
-- [ ] Next steps name `/gate-check release` before `/team-release`
+- [ ] Next steps name `$ccgs-gate-check release` before `$ccgs-team-release`
 
 ---
 
@@ -260,7 +260,7 @@ Fixture defaults.
 - [ ] Writes unassessable items as `- [?]` with the legend
 - [ ] Asks "May I write" before saving (skipped entirely in dry-run), and creates no file or directory before the answer
 - [ ] Asks one Phase 4b question per section for the items only a person can confirm, never answering them itself; skips Phase 4b, and says so, in `dry-run` and `autonomous` mode
-- [ ] Names `/gate-check release` in next steps whenever `project.stage` is not `Release`
+- [ ] Names `$ccgs-gate-check release` in next steps whenever `project.stage` is not `Release`
 - [ ] Puts findings with no workaround or accepted risk under Blocking Items, and shortfalls with a documented workaround or accepted risk under Conditional Items
 - [ ] Overall Status is READY, CONDITIONAL, NOT ASSESSED or NOT READY, first match NOT READY → NOT ASSESSED → CONDITIONAL → READY
 

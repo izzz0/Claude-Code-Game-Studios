@@ -1,0 +1,6 @@
+modes:
+  automation: autonomous
+  review_mode: full
+testing:
+  strict:
+    logic: false

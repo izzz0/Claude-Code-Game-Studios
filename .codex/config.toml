@@ -1,0 +1,5 @@
+# Project capabilities only; model/provider/permissions remain inherited.
+# Host review/trust is still required for the exact hook definitions.
+[features]
+hooks = true
+multi_agent = true

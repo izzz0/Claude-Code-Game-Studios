@@ -1,0 +1,14 @@
+schema_version: 1
+project:
+  name: Harbor Courier UX
+  stage: Pre-Production
+modes:
+  rigor: standard
+  automation: guided
+platform:
+  targets: [PC]
+  gamepad_support: Full
+engine:
+  name: Godot
+  version: 4.6.1
+  language: GDScript

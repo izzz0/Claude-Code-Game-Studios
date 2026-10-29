@@ -1,0 +1,4227 @@
+{
+  "version": 2,
+  "coverage": {
+    "authored_cases": 74,
+    "unauthored_manifest_skills": 0,
+    "manifest_source": "studio-tests/migration-manifest.json",
+    "note": "Seventy-four substantive cases are authored; native execution and engine/team/workflow evidence are accounted separately."
+  },
+  "cases": [
+    {
+      "id": "native-001-ccgs-help",
+      "skill": "ccgs-help",
+      "fixture": "help",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-help in the supplied Velocity Courier Concept fixture. Read actual project configuration, state and artifact layout, then explain the single actionable next step in English and why it is next. This is read-only; do not start the next skill or claim unobserved setup/runtime results. Outside any Also installed inventory, name only the single recommended native workflow command.",
+      "expected": {
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "schema_version: 1",
+              "rigor: minimal",
+              "automation: guided"
+            ],
+            "not_contains": [
+              "engine:"
+            ]
+          }
+        ],
+        "response_contains": [
+          "minimal",
+          "guided",
+          "Concept",
+          "ABSENT",
+          "$ccgs-setup-engine",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "engine configured",
+          "created project.yaml"
+        ],
+        "required_tools": true,
+        "counts": [
+          {
+            "glob": ".agents/skills/ccgs-*/SKILL.md",
+            "count": 74
+          }
+        ],
+        "response_commands": [
+          "ccgs-setup-engine"
+        ]
+      },
+      "expected_native_until_run": true,
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "scope": "Minimal navigation, prerequisite state and read-only behavior; skill-file count checks fixture availability, not actual catalog enumeration."
+    },
+    {
+      "id": "native-002-ccgs-start",
+      "skill": "ccgs-start",
+      "fixture": "start",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-start for this returning-user Velocity Courier fixture. Inspect the actual configuration, brief and story state, preserve its choices, and answer in English with the immediate next action. Do not start that action or change configuration, stage, stories, QA evidence or checkpoints during this read-only returning-user check.",
+      "expected": {
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Velocity Courier Start",
+              "rigor: minimal",
+              "automation: guided"
+            ],
+            "not_contains": [
+              "engine:"
+            ]
+          }
+        ],
+        "response_contains": [
+          "$ccgs-setup-engine",
+          "minimal",
+          "guided",
+          "Concept",
+          "unset"
+        ],
+        "response_not_contains": [
+          "project.yaml was written",
+          "engine selected"
+        ],
+        "required_tools": true,
+        "config": {
+          "project.name": "Velocity Courier Start",
+          "project.stage": "Concept",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        },
+        "response_commands": [
+          "ccgs-setup-engine"
+        ]
+      },
+      "expected_native_until_run": true,
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "scope": "Returning-user navigation and preserved project identity/settings via original parser; no mandatory project-name presentation literal."
+    },
+    {
+      "id": "native-003-ccgs-setup-engine",
+      "skill": "ccgs-setup-engine",
+      "fixture": "setup-engine",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-setup-engine godot 4.6.1 in English. The user requests Godot 4.6.1 with GDScript for the Velocity Courier brief and authorizes the corresponding setup edits. Configure engine, language, specialists, naming and commands through the existing helpers while preserving unrelated project settings. Report actual readback values, tool availability and the next minimal-path action. Do not invent an installed runtime if probing cannot verify it.",
+      "expected": {
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Preserve This Project Name",
+              "rigor: minimal",
+              "automation: guided",
+              "name: Godot",
+              "version: 4.6.1",
+              "language: GDScript",
+              "godot-gdscript-specialist"
+            ],
+            "not_contains": [
+              "name: Changed Project"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "Godot",
+          "4.6.1",
+          "GDScript"
+        ],
+        "response_not_contains": [
+          "project name changed",
+          "NOT ASSESSED — no engine request"
+        ],
+        "required_tools": true,
+        "config": {
+          "project.name": "Preserve This Project Name",
+          "project.stage": "Concept",
+          "notes.owner": "native-smoke",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript"
+        }
+      },
+      "expected_native_until_run": true,
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "scope": "Engine configuration and exact preserved identity/settings via original parser; runtime availability is reported independently, without mandatory project-name repetition in prose."
+    },
+    {
+      "id": "native-004-ccgs-code-review",
+      "skill": "ccgs-code-review",
+      "fixture": "code-review",
+      "readonly": true,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-code-review src/gameplay/delivery.gd production/epics/courier/story-001-delivery.md in English. Use the configured Godot/GDScript specialist and inspect actual implementation, story acceptance criteria and QA evidence. Return concrete findings with file/line evidence, affected criteria and the appropriate skill verdict. This is read-only: do not edit source, stories, QA evidence, configuration or checkpoints. Do not treat a self-review draft as independent review evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "src/gameplay/delivery.gd",
+            "contains": [
+              "target_index >= 2",
+              "Target Gamma"
+            ],
+            "not_contains": [
+              "target_index > 2",
+              "FIXED_BY_REVIEW"
+            ]
+          },
+          {
+            "path": "production/epics/courier/story-001-delivery.md",
+            "contains": [
+              "AC-3",
+              "index 2"
+            ],
+            "not_contains": [
+              "status: done"
+            ]
+          }
+        ],
+        "response_contains": [
+          "delivery.gd",
+          "AC-3"
+        ],
+        "response_verdict_any": [
+          "FAIL"
+        ],
+        "response_any_contains": [
+          [
+            "index 2",
+            "index `2`",
+            "target_index == 2",
+            "Target Gamma",
+            "third target"
+          ]
+        ],
+        "response_not_contains": [
+          "source file edited",
+          "status: done"
+        ],
+        "required_tools": true
+      },
+      "expected_native_until_run": true,
+      "fixture_stdout": null,
+      "actual_result_stub": null
+    },
+    {
+      "id": "native-005-ccgs-bug-report",
+      "skill": "ccgs-bug-report",
+      "fixture": "bug-report",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-bug-report with this English description: 'The third parcel cannot be collected. On the one-screen courier scene, after the player reaches the third target at index 2, collection is rejected every time. Expected: the third target is recorded as delivered. Actual: the guard returns false.' Inspect src/game.gd and create the new Description Mode report. Use severity S2-High and priority P1-Fix this sprint, include concrete reproduction steps, expected/actual results, affected file, and the author’s explicit approval to write the first report. Do not patch source code.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/bugs/BUG-0001.md",
+            "contains": [
+              "**ID**: BUG-0001",
+              "**Severity**: S2-High",
+              "**Priority**: P1-Fix this sprint",
+              "**Status**: Open",
+              "## Reproduction Steps",
+              "**Expected Result**:",
+              "**Actual Result**:",
+              "src/game.gd"
+            ],
+            "not_contains": [
+              "**Status**: Closed",
+              "Status: Closed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "src/game.gd",
+            "contains": [
+              "target_index >= 2",
+              "return false"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "BUG-0001",
+          "S2-High",
+          "P1-Fix this sprint"
+        ],
+        "any_output_contains": [
+          {"text": "$ccgs-bug-triage", "files": ["production/qa/bugs/BUG-0001.md"]}
+        ],
+        "response_not_contains": [
+          "source code fixed",
+          "Status: Closed",
+          "$ccgs-settings"
+        ],
+        "required_tools": true,
+        "counts": [
+          {"glob": "production/qa/bugs/BUG-*.md", "count": 1}
+        ],
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-006-ccgs-architecture-decision",
+      "skill": "ccgs-architecture-decision",
+      "fixture": "architecture-decision",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-architecture-decision delivery-state-ownership in English. Use the existing architecture-decision template, the Godot engine context, the valid empty TR registry fixture, the architecture layer map, and the delivery-system GDD. The user has already chosen and explicitly approved the baseline option: a DeliveryService in the Feature layer of the Gameplay Domain owns delivery state and emits delivery-recorded; scene adapters call the service, and neither scenes nor persistence own delivery state. The alternatives are scene-owned state and persistence-owned state. Present the context, alternatives, decision, consequences, and implementation constraints, then use the explicit approval in this case to write the new ADR. Authoring must leave the ADR status Proposed (never silently Accepted); identify delivery-state ownership and delivery-recorded as registry candidates, report that registry publication is pending separate approval, and do not modify the registry or ask for an optional registry decision. Mention the accept route. Do not alter the GDD or story.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/adr-0001-delivery-state-ownership.md",
+            "contains": [
+              "## Status",
+              "Proposed",
+              "## Context",
+              "## Decision",
+              "DeliveryService",
+              "**Layer**",
+              "Feature",
+              "## Alternatives Considered",
+              "## Consequences"
+            ],
+            "not_contains": [
+              "Status: Accepted"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery-system.md",
+            "contains": ["Delivery state must survive scene transitions"],
+            "changed": false
+          },
+          {
+            "path": "production/epics/courier/story-001-delivery.md",
+            "contains": ["id: STORY-001", "Blocked pending the delivery-state ADR"],
+            "changed": false
+          },
+          {
+            "path": "docs/registry/architecture.yaml",
+            "contains": ["architecture: []"],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "ADR-0001",
+          "Proposed",
+          "DeliveryService",
+          "Feature",
+          "Gameplay Domain",
+          "Alternatives",
+          "Consequences",
+          "registry",
+          "pending",
+          "$ccgs-architecture-review",
+          "accept ADR-0001"
+        ],
+        "response_not_contains": [
+          "Status: Accepted without confirmation",
+          "GDD modified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-007-ccgs-scope-check",
+      "skill": "ccgs-scope-check",
+      "fixture": "scope-check",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-scope-check velocity-courier in English and remain read-only. Compare design/gdd/velocity-courier.md's original three-item scope (keyboard movement, three-target delivery, local completion score) with the current files. Identify the concrete additions: src/networking/network_client.gd for online synchronization and src/leaderboard.gd for online leaderboard publishing. Produce the canonical quantified scope report and FAIL verdict; do not write configuration, plans, or scope documents.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/velocity-courier.md",
+            "contains": [
+              "Original Scope",
+              "Keyboard movement",
+              "Networking",
+              "leaderboards"
+            ],
+            "not_contains": [
+              "scope check wrote"
+            ]
+          }
+        ],
+        "response_contains": [
+          "Scope Check",
+          "Original items: 3",
+          "networking",
+          "leaderboard",
+          "FAIL",
+          "scope"
+        ],
+        "response_not_contains": [
+          "project.yaml written",
+          "CONCERNS",
+          "PASS — On Track"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-008-ccgs-consistency-check",
+      "skill": "ccgs-consistency-check",
+      "fixture": "consistency-check",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-consistency-check in English with the supplied entity registry and two system GDDs. Treat design/gdd/player.md as authoritative because it is the registry source and states 120 HP, matching the registry. Compare it with design/gdd/combat.md, which says 80 HP. Report the conflict with both values and paths, classify it as CONFLICT, and propose updating combat.md from 80 HP to 120 HP; ask only whether to apply that correction as a follow-up. Do not edit the registry, either GDD, configuration, or checkpoints.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/registry/entities.yaml",
+            "contains": [
+              "name: Player",
+              "health: 120",
+              "source: design/gdd/player.md"
+            ],
+            "not_contains": [
+              "health: 80"
+            ]
+          },
+          {
+            "path": "design/gdd/combat.md",
+            "contains": [
+              "Player",
+              "80 HP"
+            ],
+            "not_contains": [
+              "health corrected"
+            ]
+          }
+        ],
+        "response_contains": [
+          "Player",
+          "120",
+          "80",
+          "design/gdd/player.md",
+          "design/gdd/combat.md",
+          "120 HP",
+          "update",
+          "CONFLICT"
+        ],
+        "response_not_contains": [
+          "registry updated",
+          "GDD corrected",
+          "PASS with no conflicts"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-009-ccgs-qa-plan",
+      "skill": "ccgs-qa-plan",
+      "fixture": "qa-plan",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-qa-plan feature: courier in English. Resolve the standard/guided Godot configuration, read the three supplied stories and courier GDD, and build a new QA plan for the three named acceptance sets. Classify STORY-001 as Logic with movement/wall boundary checks, STORY-002 as Integration with persistence and three-collection checks, and STORY-003 as Visual/Feel with a two-second readable completion-banner check. Require runtime evidence where the criteria are visual or persistence-sensitive; do not fabricate coverage, test runs, screenshots, or playtest sign-off. After presenting the plan, use the authorized coordinator approval to write the dated plan output; do not edit story files. Write the explicitly requested output path(s): production/qa/qa-plan-courier-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/qa-plan-courier-2026-10-26.md",
+            "contains": [
+              "STORY-001",
+              "Logic",
+              "STORY-002",
+              "Integration",
+              "STORY-003",
+              "Visual/Feel",
+              "runtime evidence",
+              "two seconds"
+            ],
+            "not_contains": [
+              "coverage: complete",
+              "screenshot attached"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "STORY-001",
+          "Logic",
+          "STORY-002",
+          "Integration",
+          "STORY-003",
+          "Visual/Feel",
+          "runtime evidence",
+          "QA plan written"
+        ],
+        "response_not_contains": [
+          "fabricated coverage",
+          "all tests passed",
+          "screenshot captured"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-010-ccgs-bug-triage",
+      "skill": "ccgs-bug-triage",
+      "fixture": "bug-triage",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-bug-triage sprint in English. Re-evaluate the two open reports against Sprint 004 capacity: BUG-0001 is an S1 crash blocking the delivery scene and must be ordered P1 and assigned to the documented remaining sprint capacity; BUG-0002 is an S3 cosmetic sparkle issue and remains P3 backlog. Preserve BUG-0003 exactly as closed and exclude it from open counts. Produce the dated triage report with priority/order, sprint assignment or backlog disposition, and no invented bug fixes. Use the authorized report-write approval; do not edit the bug reports or sprint plan. Write the explicitly requested output path(s): production/qa/bug-triage-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/bug-triage-2026-10-26.md",
+            "contains": [
+              "BUG-0001",
+              "P1",
+              "S1",
+              "Sprint 004",
+              "BUG-0002",
+              "P3",
+              "BUG-0003",
+              "Closed"
+            ],
+            "not_contains": [
+              "BUG-0003 | Open",
+              "BUG-0002 | P1"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "BUG-0001",
+          "S1",
+          "P1",
+          "Sprint 004",
+          "BUG-0002",
+          "S3",
+          "P3",
+          "BUG-0003",
+          "Closed"
+        ],
+        "response_not_contains": [
+          "all bugs closed",
+          "BUG-0003 assigned"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-011-ccgs-tech-debt",
+      "skill": "ccgs-tech-debt",
+      "fixture": "tech-debt",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-tech-debt scan in English on the Godot src/ code root. Find the concrete TODO in src/game.gd: per-frame string allocation for target lookup, with performance impact in the 60 FPS loop. The supplied docs/debt-acceptance-context.md states the accepted reason: this optimization was deferred until profiling can confirm its impact, avoiding a premature change to target lookup. Present a scoped Performance debt entry using that reason, effort M, impact High, and no automatic refactor. With the authorized register-write approval, append the next ID TD-002 to docs/tech-debt-register.md while preserving TD-001 byte-for-byte and all ten register columns. Do not edit src/game.gd. Write the explicitly requested output path(s): docs/tech-debt-register.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/tech-debt-register.md",
+            "contains": [
+              "TD-001",
+              "TD-002",
+              "Performance",
+              "src/game.gd",
+              "deferred until profiling",
+              "M",
+              "High",
+              "Open"
+            ],
+            "not_contains": [
+              "TD-001 | Resolved",
+              "src/game.gd modified"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "TD-002",
+          "src/game.gd",
+          "Performance",
+          "string allocation",
+          "deferred until profiling",
+          "60 FPS",
+          "M",
+          "High",
+          "register"
+        ],
+        "response_not_contains": [
+          "refactor applied",
+          "TD-001 deleted",
+          "no debt indicators"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-012-ccgs-test-flakiness",
+      "skill": "ccgs-test-flakiness",
+      "fixture": "test-flakiness",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-flakiness scan in English. Use the five dated synthetic text result files under test-results/ for outcomes and test-results/history-provenance.md to confirm that all five runs used the same source revision with no code changes. Parse the supplied history, not the current Godot game: collect_three_targets fails in 2 of 5 runs (40.0%, High) while wall_collision is stable in 5 of 5 runs (0.0%, clean). Report the exact counts, identify the likely history-based flakiness, and state that no current-game execution was performed. Write the dated flakiness report only after authorized approval; do not quarantine or modify tests/regression-suite.md and do not claim PASS for the current game. Write the explicitly requested output path(s): production/qa/flakiness-report-2026-10-26.md. Any date in these filenames is the fixed scenario date, not a claim about the current run timestamp.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/flakiness-report-2026-10-26.md",
+            "contains": [
+              "collect_three_targets",
+              "2",
+              "5",
+              "40.0",
+              "fixture-revision-7f3a21c",
+              "High",
+              "wall_collision",
+              "clean",
+              "synthetic"
+            ],
+            "not_contains": [
+              "current game passed",
+              "quarantined"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "collect_three_targets",
+          "2",
+          "5",
+          "40.0",
+          "High",
+          "wall_collision",
+          "5",
+          "clean",
+          "synthetic",
+          "no current-game execution"
+        ],
+        "response_not_contains": [
+          "current game PASS",
+          "all tests stable",
+          "quarantine applied"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-013-ccgs-create-stories",
+      "skill": "ccgs-create-stories",
+      "fixture": "create-stories",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-stories courier in English using the actual tools. Resolve the schema-1 Godot 4.6.1 minimal/guided project and read the brief. The MVP has exactly two features: keyboard movement with wall boundaries, then collecting three targets and restarting the run; the second feature depends on the first. An existing Story 001 already covers movement and wall boundaries. Present the complete list, then use the user's explicit approval to write the stories. Invoke the creation step twice to prove idempotency. Preserve Story 001 byte-for-byte and create only the next stable Story 002 with detailed, testable acceptance criteria and a dependency on Story 001. Do not modify the brief or configuration.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/epics/courier/story-001-movement-wall.md",
+            "contains": [
+              "Story 001",
+              "wall",
+              "A/D",
+              "Status: Ready"
+            ],
+            "changed": false
+          },
+          {
+            "path": "production/epics/courier/story-002-collect-three-restart.md",
+            "contains": [
+              "Story 002",
+              "collect three",
+              "restart",
+              "Story 001",
+              "AC-1",
+              "AC-2"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/courier/EPIC.md",
+            "contains": [
+              "Story 001",
+              "Story 002"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "Story 001",
+          "Story 002",
+          "idempotent",
+          "Story 001",
+          "dependency"
+        ],
+        "response_not_contains": [
+          "Story 001 rewritten",
+          "duplicate Story 002",
+          "configuration changed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        },
+        "counts": [
+          {
+            "glob": "production/epics/courier/story-*.md",
+            "count": 2
+          }
+        ]
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-014-ccgs-story-readiness",
+      "skill": "ccgs-story-readiness",
+      "fixture": "story-readiness",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-story-readiness production/epics/courier/story-002-collect-three-restart.md in English with the actual tools. Resolve the schema-1 Godot 4.6.1 minimal/guided project and evaluate the supplied story read-only. Story 002 explicitly depends on named Story 001, whose status is Incomplete. Return BLOCKED, name that exact dependency and reason, and do not write story status, code, evidence, or configuration.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/epics/courier/story-001-movement-wall.md",
+            "contains": [
+              "Status: Incomplete",
+              "Story 001"
+            ]
+          },
+          {
+            "path": "production/epics/courier/story-002-collect-three-restart.md",
+            "contains": [
+              "Status: Ready",
+              "Story 001",
+              "## Dependencies"
+            ]
+          }
+        ],
+        "response_contains": [
+          "BLOCKED",
+          "Story 001",
+          "Incomplete",
+          "dependency"
+        ],
+        "response_not_contains": [
+          "Status: Complete",
+          "READY",
+          "implementation started",
+          "evidence written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-015-ccgs-dev-story",
+      "skill": "ccgs-dev-story",
+      "fixture": "dev-story",
+      "readonly": false,
+      "required_tools": true,
+      "required_evidence": [
+        "engine_tests"
+      ],
+      "prompt": "Run $ccgs-dev-story production/epics/health/story-001-clamp-health.md in English with the actual tools. Resolve the schema-1 Godot 4.6.1 minimal/guided project, implement the genuine pure-logic story, and preserve its scope. Add a clamp_health(value) API where -5 returns 0 and values above 100 return 100; test both boundaries meaningfully in the declared Godot unit test. Do not create a fake gdUnit runner, fabricate engine evidence, or call any extra model API. If Godot is unavailable, report engine tests as NOT VERIFIED/NOT ASSESSED and keep the required evidence as engine_tests rather than waiving it as pass. The real runner is provided when resources are available. When actual tests pass, leave the implementation In Review for independent review; never mark it Complete in this skill.",
+      "expected": {
+        "files": [
+          {
+            "path": "src/health.gd",
+            "contains": [
+              "clamp_health",
+              "0",
+              "100"
+            ],
+            "changed": true
+          },
+          {
+            "path": "tests/unit/health_test.gd",
+            "contains": [
+              "clamp_health",
+              "-5",
+              "100"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/health/story-001-clamp-health.md",
+            "contains": [
+              "Status: In Review"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Status: Complete"
+            ]
+          }
+        ],
+        "response_contains": [
+          "clamp_health",
+          "-5",
+          "100",
+          "engine_tests"
+        ],
+        "response_not_contains": [
+          "Test result: WAIVED",
+          "Story status: Complete"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true,
+      "engine_test": "godot"
+    },
+    {
+      "id": "native-016-ccgs-story-done",
+      "skill": "ccgs-story-done",
+      "fixture": "story-done",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-story-done production/epics/health/story-001-clamp-health.md in English with the actual tools. Evaluate closure read-only: implementation exists, but the story remains In Review with no required QA evidence screenshot and no independent code-review receipt. Report the negative gate as BLOCKED or NOT ASSESSED, name both missing requirements, refuse any status or checkpoint update, and leave every file unchanged.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/epics/health/story-001-clamp-health.md",
+            "contains": [
+              "Status: In Review",
+              "## Acceptance Criteria",
+              "## Test Evidence"
+            ]
+          },
+          {
+            "path": "src/health.gd",
+            "contains": [
+              "clamp_health",
+              "return"
+            ]
+          }
+        ],
+        "response_contains": [
+          "In Review",
+          "screenshot",
+          "review",
+          "QA",
+          "BLOCKED"
+        ],
+        "response_not_contains": [
+          "Status: Complete",
+          "checkpoint updated",
+          "closure approved"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-017-ccgs-brainstorm",
+      "skill": "ccgs-brainstorm",
+      "fixture": "brainstorm",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-brainstorm in English for the already-approved Pocket Courier toy-game MVP. Requirements are complete, so do not ask a creative follow-up: one small Godot game supports left/right movement, wall collision, collecting exactly three targets, and restart after a run; explicitly exclude online play and networking. Use minimal rigor with guided automation and write design/game-brief.md. Its Build order must be actionable for these behaviors and Out of Scope must preserve the no-online boundary. Do not claim a playable run, screenshot, or implementation was tested.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/game-brief.md",
+            "contains": [
+              "Pocket Courier",
+              "Core Loop",
+              "movement",
+              "wall",
+              "three",
+              "restart",
+              "Out of Scope",
+              "online",
+              "Build Order"
+            ],
+            "not_contains": [
+              "playtest passed",
+              "screenshot attached"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/game-brief.md",
+          "movement",
+          "three",
+          "online",
+          "Build order",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "creative question",
+          "playable run passed",
+          "native execution PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-018-ccgs-map-systems",
+      "skill": "ccgs-map-systems",
+      "fixture": "map-systems",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-map-systems in English against the approved design/gdd/game-concept.md for Pocket Courier. Resolve standard/guided Godot configuration, preserve the accepted scope, and write design/gdd/systems-index.md with exactly two MVP systems: Movement as Foundation and Collection as Core depending on Movement. Do not infer UI, networking, persistence, or any other systems; online play is out of scope. Use the fixed systems-index table and valid registry layout, report dependency order and registry validation, and do not claim runtime execution.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/systems-index.md",
+            "contains": [
+              "Movement",
+              "Collection",
+              "Foundation",
+              "Core",
+              "Depends On",
+              "MVP",
+              "design/gdd/game-concept.md"
+            ],
+            "not_contains": [
+              "Networking",
+              "UI System",
+              "20 systems",
+              "native runtime passed"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "systems-index.md",
+          "Movement",
+          "Collection",
+          "depends on",
+          "registry",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "invented systems",
+          "networking system",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-019-ccgs-create-epics",
+      "skill": "ccgs-create-epics",
+      "fixture": "create-epics",
+      "readonly": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-epics in English for accepted Pocket Courier design. Resolve standard/guided Godot configuration, read approved Movement and Collection GDDs, architecture modules, accepted ADR-0001, and valid TR registry. Create exactly two epics at production/epics/movement/EPIC.md and production/epics/collection/EPIC.md plus their index rows. Preserve TR-MOVEMENT-001 and TR-COLLECTION-001 coverage, name the correct modules and accepted ADR, and do not invent stories or systems. The user approved writing these epics; do not claim implementation or runtime validation.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/epics/movement/EPIC.md",
+            "contains": [
+              "Movement",
+              "Foundation",
+              "design/gdd/movement.md",
+              "ADR-0001",
+              "TR-MOVEMENT-001",
+              "Status**: Ready"
+            ],
+            "not_contains": [
+              "Stories created",
+              "Networking"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/collection/EPIC.md",
+            "contains": [
+              "Collection",
+              "Core",
+              "design/gdd/collection.md",
+              "ADR-0001",
+              "TR-COLLECTION-001",
+              "Status**: Ready"
+            ],
+            "not_contains": [
+              "Stories created",
+              "Networking"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/index.md",
+            "contains": [
+              "Movement",
+              "Collection",
+              "movement/EPIC.md",
+              "collection/EPIC.md"
+            ],
+            "not_contains": [
+              "Networking"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "2 epics",
+          "movement",
+          "collection",
+          "ADR-0001",
+          "TR-MOVEMENT-001",
+          "TR-COLLECTION-001",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "runtime PASS",
+          "stories written",
+          "invented module"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-020-ccgs-sprint-plan",
+      "skill": "ccgs-sprint-plan",
+      "fixture": "sprint-plan",
+      "readonly": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-sprint-plan new in English for Pocket Courier. Use the supplied stories, dependencies, existing statuses and user-approved capacity of 10 days. Return the dependency-ordered sprint 001 plan and proposed sprint-status.yaml as read-only drafts, with estimates, included and deferred scope, and the actual producer review result or NOT ASSESSED if unavailable. Do not invent velocity or game execution and do not write plans, code, stories, QA or checkpoints.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "10",
+          "1-1",
+          "1-2",
+          "1-3",
+          "blocked",
+          "sprint-status.yaml",
+          "PR-SPRINT"
+        ],
+        "response_not_contains": [
+          "1-4 planned",
+          "velocity proven",
+          "current game PASS",
+          "Sprint plan written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-021-ccgs-test-evidence-review",
+      "skill": "ccgs-test-evidence-review",
+      "fixture": "test-evidence-review",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-evidence-review on production/epics/courier/story-001-movement.md in English. Resolve standard/guided Godot configuration, inspect the supplied test file and its failed result, and audit all three wall-movement acceptance criteria. The test has zero assertions and the supplied result says passed: 0 and failed: 1, so report a concrete blocking MISSING or INCOMPLETE finding; do not call the story ADEQUATE or claim tests passed. This is a read-only evidence review: present findings only and do not write or self-approve an evidence report.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard",
+          "testing.strict": "true"
+        },
+        "files": [],
+        "response_contains": [
+          "story-001-movement",
+          "Logic",
+          "zero assertions",
+          "failed: 1",
+          "BLOCKING",
+          "INCOMPLETE"
+        ],
+        "response_not_contains": [
+          "Verdict: ADEQUATE",
+          "all tests passed",
+          "evidence report written",
+          "self-approved"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-022-ccgs-regression-suite",
+      "skill": "ccgs-regression-suite",
+      "fixture": "regression-suite",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-regression-suite audit in English. Resolve minimal/guided Godot configuration with qa.level standard, use the supplied smoke report as the critical-path source, and inspect the movement and collection test files plus closed BUG-0001. Both supplied test files are stubs with constant-only assertions; do not treat them as covering the smoke paths or BUG-0001. Author tests/regression-suite.md with the ordered critical paths movement_wall first and collect_three_targets second, preserve the existing test paths as inspected candidates, explicitly record BUG-0001 as MISSING REGRESSION TEST, and suggest a real wall-boundary regression test. Do not invent tests, percentages, or current native execution results; the manifest is a coverage audit, not a PASS claim.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        },
+        "files": [
+          {
+            "path": "tests/regression-suite.md",
+            "contains": [
+              "movement_wall",
+              "collect_three_targets",
+              "tests/unit/movement/test_wall_boundary.gd",
+              "tests/integration/collection/test_collect_three_targets.gd",
+              "BUG-0001",
+              "MISSING REGRESSION TEST",
+              "ordered"
+            ],
+            "not_contains": [
+              "current native game passed",
+              "100% coverage",
+              "test invented",
+              "BUG-0001 | HAS REGRESSION TEST",
+              "BUG-0001 | COVERED"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "regression-suite.md",
+          "movement_wall",
+          "collect_three_targets",
+          "BUG-0001",
+          "MISSING REGRESSION TEST",
+          "ordered"
+        ],
+        "response_not_contains": [
+          "current native game PASS",
+          "all regression tests passed",
+          "invented test",
+          "BUG-0001 has a regression test",
+          "BUG-0001 is covered"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-023-ccgs-perf-profile",
+      "skill": "ccgs-perf-profile",
+      "fixture": "perf-profile",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-perf-profile full in English for Pocket Courier. Resolve minimal/guided Godot configuration, inspect src/game.gd for candidate hotspots, and check the project for committed performance budgets and actual profiler or runtime measurement data. The fixture intentionally has source code but no measurement artifact and no committed budget; report NOT ASSESSED — NO DATA for performance measurements and name the missing profiler source. You may identify the redraw loop as a static candidate, but do not estimate frame time, headroom, FPS, memory, or claim a native run. Keep this audit read-only and do not write a profile report.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        },
+        "files": [],
+        "response_contains": [
+          "NOT ASSESSED",
+          "NO DATA",
+          "profiler",
+          "no committed budget",
+          "redraw",
+          "no runtime measurement"
+        ],
+        "response_not_contains": [
+          "16.67ms headroom",
+          "60 FPS achieved",
+          "performance profile generated",
+          "native runtime passed"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-024-ccgs-release-checklist",
+      "skill": "ccgs-release-checklist",
+      "fixture": "release-checklist",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-release-checklist pc in English for the Release-stage Pocket Courier candidate. Resolve minimal/guided Godot configuration and inspect the supplied build manifest, source tree, QA evidence, and bugs area. The candidate has no independent run-package review, no test output, and no bug records; preserve those as NOT ASSESSED or blockers and do not declare Go / No-Go READY. This is a read-only checklist audit: report NOT READY or NOT ASSESSED with the missing run-package review named, and do not write a checklist or claim publication authorization.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "qa.level": "standard",
+          "platform.cert_tier": "none"
+        },
+        "files": [],
+        "response_contains": [
+          "run package review",
+          "NOT ASSESSED",
+          "NOT READY",
+          "test output",
+          "bug records",
+          "Go / No-Go"
+        ],
+        "response_not_contains": [
+          "Go / No-Go: READY",
+          "release approved",
+          "published",
+          "checklist written"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-025-ccgs-team-combat",
+      "skill": "ccgs-team-combat",
+      "fixture": "team-combat",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-combat chase capture in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Use the native team profile and inherited model/permission context; do not simulate roles in one response. The approved rules are a police chase: capture within 24 units for 300 ms, a 60-second timeout awards the thief, and capture takes precedence on the final tick. Read the supplied TypeScript contract and produce a rules draft, not an added combat feature. Initialize team-run.py with a fresh local run label, assign actual native roles with ownership, and retain the combat design draft at production/combat/chase-capture-gdd-draft.md. Exercise the supplied recovery brief: deliberately interrupt or fail one real assigned artifact-production task within this rules-drafting scope once, record its returned agent/task IDs, resume that exact task, and verify the resumed artifact before advancing. If any required native agent, returned ID, artifact, or recovery evidence is unavailable, stop with NOT ASSESSED/BLOCKED and do not claim COMPLETE, implementation, runtime validation, or a fabricated ID. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "engine.language": "TypeScript"
+        },
+        "files": [
+          {
+            "path": "production/combat/chase-capture-gdd-draft.md",
+            "contains": [
+              "300 ms",
+              "capture",
+              "timeout",
+              "24 units"
+            ],
+            "not_contains": [
+              "networked multiplayer",
+              "native runtime passed",
+              "fake-agent"
+            ]
+          }
+        ],
+        "response_contains": [
+          "capture",
+          "NOT ASSESSED"
+        ],
+        "response_not_contains": [
+          "COMPLETE — combat feature designed, implemented, and validated",
+          "invented agent ID",
+          "runtime PASS"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-026-ccgs-team-ui",
+      "skill": "ccgs-team-ui",
+      "fixture": "team-ui",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-ui courier-hud in English with the supplied minimal/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Use native ccgs profiles with inherited model and permission context. The concrete HUD requirements are Time 60s in the upper-left, a post-settlement restart affordance, and a high-contrast connection-warning label readable at 200% scale; UI must not own authoritative race state. Initialize team-run.py with a fresh local run label and actual child identities and follow the skill phases: assign ccgs-art-director to produce production/ui/courier-hud/visual-design.md, then assign the UI implementation task, followed by a dependent read-only ccgs-accessibility-specialist review. Interrupt or fail the real art-direction task that owns visual-design.md, resume that exact returned task, and validate the returned artifact; do not attribute the design file to implementation. An unavailable native agent, missing real ID, missing artifact, or missing recovery evidence requires NOT ASSESSED/BLOCKED; do not invent completion, screenshots, or runtime findings. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "team.size": "small",
+          "engine.language": "TypeScript"
+        },
+        "files": [
+          {
+            "path": "production/ui/courier-hud/visual-design.md",
+            "contains": [
+              "Time 60s",
+              "200%",
+              "connection",
+            "warning",
+              "restart"
+            ],
+            "not_contains": [
+              "authoritative race state owned by UI",
+              "screenshot captured",
+              "fake-agent"
+            ]
+          }
+        ],
+        "response_contains": [
+          "courier-hud",
+          "200%",
+          "accessibility",
+          "NOT ASSESSED"
+        ],
+        "response_not_contains": [
+          "UI owns game state",
+          "visual review passed",
+          "invented agent ID",
+          "runtime PASS"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-027-ccgs-team-qa",
+      "skill": "ccgs-team-qa",
+      "fixture": "team-qa",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-qa sprint-001 in English as a read-only QA cycle with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Use the real sprint stories and the supplied smoke report: the Cocos Web page failed to launch because its Web entry index.html is missing. Native QA roles must inherit the current model/permissions, receive real IDs, and return actual ownership. Do not proceed past the failed smoke strategy. Exercise the recovery brief only with a real team task: interrupt or fail one returned task once, resume that exact task using team-run.py, and retain the returned recovery state; if native agents or IDs are unavailable, report NOT ASSESSED/BLOCKED. Preserve read-only scope: do not write QA plans, test cases, bugs, evidence, sign-off, checkpoint, or status files, and do not claim a QA approval or fabricated bug ID. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "small",
+          "qa.level": "standard",
+          "engine.language": "TypeScript"
+        },
+        "files": [
+          {
+            "path": "production/qa/smoke-2026-10-26.md",
+            "contains": [
+              "FAIL",
+              "Web entry index.html is missing"
+            ],
+            "not_contains": [
+              "PASS",
+              "QA approved"
+            ]
+          }
+        ],
+        "response_contains": [
+          "smoke",
+          "FAIL",
+          "index.html",
+          "NOT ASSESSED",
+          "recovery"
+        ],
+        "response_not_contains": [
+          "APPROVED",
+          "QA cycle finished",
+          "bug filed",
+          "checkpoint updated",
+          "invented agent ID"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-028-ccgs-settings",
+      "skill": "ccgs-settings",
+      "fixture": "settings",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-settings with no arguments in English against the supplied Pocket Courier configuration. Use the actual yaml-helper.sh calls and display effective values, including the legal project.local.yaml overrides and their project.yaml shadowed values. Preserve every file and report the resolved source/precedence for modes.automation and testing.strict.logic; do not write configuration or claim a setting changed.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "collaborative"
+        },
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Pocket Courier Settings",
+              "automation: collaborative",
+              "preserve_me: keep-this-value"
+            ],
+            "changed": false
+          },
+          {
+            "path": "project.local.yaml",
+            "contains": [
+              "automation: autonomous",
+              "logic: false",
+              "review_mode: full"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "project.local.yaml",
+          "project.yaml",
+          "collaborative",
+          "autonomous",
+          "testing.strict.logic",
+          "false"
+        ],
+        "response_not_contains": [
+          "configuration changed",
+          "updated project.yaml",
+          "wrote project.local.yaml",
+          "setting saved"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true,
+      "scope": "Read-only effective local-override precedence and preserved configuration."
+    },
+    {
+      "id": "native-029-ccgs-onboard",
+      "skill": "ccgs-onboard",
+      "fixture": "onboard",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-onboard programmer in English using the actual tools and supplied Velocity Courier project. Resolve the schema-1 Godot 4.6.1 standard/guided configuration, read AGENTS.md and the real programmer role, inspect the concrete GDScript under src/gameplay/delivery.gd and src/ui/hud.gd, the courier brief, and the current Story 004. Write the onboarding document at production/onboarding/onboard-programmer-2026-10-26.md. Ground the architecture, current state, dependencies, conventions, and first tasks in those real paths and Story 004's parcel-combo objective; do not invent a generic Target Alpha project or modify source, story, or QA files.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        },
+        "files": [
+          {
+            "path": "production/onboarding/onboard-programmer-2026-10-26.md",
+            "contains": [
+              "Onboarding",
+              "Velocity Courier",
+              "src/gameplay/delivery.gd",
+              "src/ui/hud.gd",
+              "story-004-parcel-combo.md",
+              "Godot",
+              "First Tasks"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/epics/courier/story-004-parcel-combo.md",
+            "contains": [
+              "Story 004",
+              "parcel combo",
+              "Status: In Progress"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/gameplay/delivery.gd",
+            "contains": [
+              "class_name DeliverySystem"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/ui/hud.gd",
+            "contains": [
+              "show_parcel_combo"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "onboard-programmer-2026-10-26.md",
+          "programmer",
+          "delivery.gd",
+          "Story 004",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "Target Alpha",
+          "story rewritten",
+          "source code changed",
+          "QA evidence created"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-030-ccgs-retrospective",
+      "skill": "ccgs-retrospective",
+      "fixture": "retrospective",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-retrospective sprint-007 in English using the supplied project, completed sprint records and authoritative sprint-status.yaml. Ground the report in actual recorded story/bug outcomes; distinguish supplied commit totals from any independent Git verification. Do not invent missing history, hours, estimates or prior action items. Write production/retrospectives/retro-sprint-007-2026-10-26.md and preserve its input records.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full",
+          "modes.automation": "guided"
+        },
+        "files": [
+          {
+            "path": "production/retrospectives/retro-sprint-007-2026-10-26.md",
+            "contains": [
+              "Retrospective",
+              "Sprint 007",
+              "80%",
+              "Dockside Relay",
+              "NOT ASSESSED — NO DATA"
+            ],
+            "not_contains": [
+              "Actual hours: 32",
+              "Trend: Increasing"
+            ],
+            "changed": true
+          },
+          {
+            "path": "production/sprint-status.yaml",
+            "contains": [
+              "sprint: 007",
+              "done",
+              "carried_over",
+              "BUG-0042"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "retro-sprint-007-2026-10-26.md",
+          "4",
+          "5",
+          "80%",
+          "NOT ASSESSED",
+          "NO DATA",
+          "velocity",
+          "estimation"
+        ],
+        "response_not_contains": [
+          "all five completed"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-031-ccgs-project-stage-detect",
+      "skill": "ccgs-project-stage-detect",
+      "fixture": "project-stage-detect",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-project-stage-detect in English with actual tools on Dockside Relay. Compare configured stage with independently observed artifact heuristics, run the deterministic artifact check, and identify concrete engine/project-dependency gaps. Preserve every existing file and the configured stage; do not claim a runtime check that did not occur.",
+      "expected": {
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "project.stage": "Production"
+        },
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Dockside Relay",
+              "stage: Production",
+              "engine:"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/game-brief.md",
+            "contains": [
+              "Dockside Relay",
+              "three docks"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Production",
+          "Pre-Production",
+          "CONCERNS",
+          "project.godot",
+          "engine"
+        ],
+        "response_not_contains": [
+          "stage updated",
+          "Godot project passed",
+          "report written",
+          "QA checkpoint updated"
+        ],
+        "required_tools": true
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-032-ccgs-adopt",
+      "skill": "ccgs-adopt",
+      "fixture": "adopt-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-adopt in English for this existing Godot 4.6.1 project. Audit the full workflow artifacts for template compliance, report the concrete counts and any gaps, and after the guided write approval create docs/adoption-plan-2026-10-26.md. Preserve project.yaml, design/gdd/courier.md, docs/architecture/adr-0001-delivery.md, docs/architecture/tr-registry.yaml, docs/architecture/control-manifest.md, and docs/engine-reference/godot/VERSION.md; do not claim runtime evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/adoption-plan-2026-10-26.md",
+            "contains": [
+              "courier.md",
+              "adr-0001-delivery.md",
+              "migration"
+            ],
+            "changed": true
+          },
+          {
+            "path": "project.yaml",
+            "contains": [
+              "Harbor Courier Adoption",
+              "4.6.1"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/courier.md",
+            "contains": [
+              "delivery_count = 3",
+              "Acceptance Criteria"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "GDD",
+          "ADR",
+          "BLOCKING",
+          "HIGH",
+          "adoption-plan-2026-10-26.md",
+          "migration"
+        ],
+        "response_not_contains": [
+          "runtime passed",
+          "review-mode.txt written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-033-ccgs-architecture-review",
+      "skill": "ccgs-architecture-review",
+      "fixture": "architecture-review-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-architecture-review in English on the supplied Harbor Courier GDDs, ADRs, architecture document, TR registry, and Godot 4.6.1 reference. Produce the traceability findings without changing any files. Report both TR-MOVEMENT-001 and TR-DELIVERY-001, their Accepted ADR coverage, dependency order, engine validation, and an honest PASS/CONCERNS/FAIL verdict.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/architecture.md",
+            "contains": [
+              "MovementController",
+              "DeliveryService"
+            ],
+            "changed": false
+          },
+          {
+            "path": "docs/architecture/tr-registry.yaml",
+            "contains": [
+              "TR-MOVEMENT-001",
+              "TR-DELIVERY-001"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "TR-MOVEMENT-001",
+          "TR-DELIVERY-001",
+          "Accepted",
+          "Godot 4.6.1"
+        ],
+        "response_not_contains": [
+          "registry updated",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-034-ccgs-art-bible",
+      "skill": "ccgs-art-bible",
+      "fixture": "art-bible-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-art-bible in English for Harbor Courier. Use the supplied concept's pitch, two pillars, teal/coral visual identity anchor, PC platform, and 256MB texture budget. Author the approved standard-scope art bible section by section at design/art/art-bible.md; preserve the concept and do not assert a rendered playtest.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/art/art-bible.md",
+            "contains": [
+              "Harbor Courier",
+              "Shape Language",
+              "Color System",
+              "Asset Standards"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/art/art-bible.md",
+          "teal",
+          "coral",
+          "Asset Standards",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "playtest passed",
+          "runtime verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-035-ccgs-asset-audit",
+      "skill": "ccgs-asset-audit",
+      "fixture": "asset-audit-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-asset-audit in English. Inspect the Godot asset root, the supplied art-bible standards, and src/asset_refs.gd. The files named char_courier_idle_512.png and sfx_parcel_pickup_01.ogg are deliberately corrupt media fixtures whose contents do not contain valid PNG/OGG magic bytes. Audit them without writing a report or changing any asset. Use actual file/magic/decoder evidence and report NON-COMPLIANT; never infer dimensions or duration from filenames or prose.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/art/art-bible.md",
+            "contains": [
+              "PNG",
+              "OGG",
+              "2MB"
+            ],
+            "changed": false
+          },
+          {
+            "path": "src/asset_refs.gd",
+            "contains": [
+              "char_courier_idle_512.png",
+              "sfx_parcel_pickup_01.ogg"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "char_courier_idle_512.png",
+          "sfx_parcel_pickup_01.ogg",
+          "magic",
+          "decoder",
+          "CORRUPT",
+          "NON-COMPLIANT"
+        ],
+        "response_not_contains": [
+          "asset files modified",
+          "all dimensions verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-036-ccgs-asset-spec",
+      "skill": "ccgs-asset-spec",
+      "fixture": "asset-spec-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-asset-spec character:courier in English. Read the actual art bible and courier character brief, identify a bounded set of idle/walk sprite sheets and a portrait, then after approval write design/assets/specs/courier-assets.md and update design/assets/asset-manifest.md. Include ASSET IDs, 512px PNG constraints, visual descriptions, art-bible anchors, generation prompts, and Status: Needed. Do not invent runtime assets.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/assets/specs/courier-assets.md",
+            "contains": [
+              "ASSET-001",
+              "courier",
+              "512",
+              "Art Bible Anchors",
+              "Generation Prompt",
+              "Status: Needed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/assets/asset-manifest.md",
+            "contains": [
+              "ASSET-001",
+              "Progress Summary",
+              "courier-assets.md"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "courier-assets.md",
+          "asset-manifest.md",
+          "ASSET-001",
+          "technical-artist",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "sprite sheet created",
+          "runtime imported"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-037-ccgs-content-audit",
+      "skill": "ccgs-content-audit",
+      "fixture": "content-audit-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-content-audit in English for the standard Harbor Courier project. Use the systems index and the two concrete GDD counts, inspect the resolved Godot content roots, and after the write approval create docs/content-audit-2026-10-26.md. Preserve project.yaml, design/gdd/systems-index.md, design/gdd/enemies.md, and design/gdd/items.md. Report the explicit enemy and item counts and distinguish scanned from not-assessed categories; do not invent missing content.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/content-audit-2026-10-26.md",
+            "contains": [
+              "Enemies",
+              "Items",
+              "2 enemy types",
+              "3 items"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/systems-index.md",
+            "contains": [
+              "Enemies",
+              "Items"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/enemies.md",
+            "contains": [
+              "2 enemy types",
+              "1 boss"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/items.md",
+            "contains": [
+              "3 items",
+              "2 equipment slots"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Enemies",
+          "Items",
+          "2 enemy types",
+          "3 items",
+          "content audit"
+        ],
+        "response_not_contains": [
+          "all content implemented",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-038-ccgs-create-architecture",
+      "skill": "ccgs-create-architecture",
+      "fixture": "create-architecture-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-architecture in English for Harbor Courier. Build the architecture from the actual concept, systems index, Movement and Delivery requirements, and Godot 4.6.1 reference. After the section approvals write docs/architecture/architecture.md with module ownership, boundaries, TR-MOVEMENT and TR-DELIVERY requirements, and honest review status. Do not claim engine runtime execution.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/architecture.md",
+            "contains": [
+              "Movement",
+              "Delivery",
+              "ownership",
+              "boundary"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "architecture.md",
+          "Movement",
+          "Delivery",
+          "TR-",
+          "$ccgs-architecture-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "runtime tested",
+          "all ADRs accepted"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-039-ccgs-create-control-manifest",
+      "skill": "ccgs-create-control-manifest",
+      "fixture": "create-control-manifest-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-create-control-manifest in English. Read the four Accepted ADRs and derive a concise control manifest with required patterns and forbidden approaches for input, delivery, save, and HUD ownership. Every rule must cite its ADR. After the preview approval write docs/architecture/control-manifest.md; do not alter ADRs or claim runtime validation.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/control-manifest.md",
+            "contains": [
+              "ADRs Covered",
+              "ADR-0001",
+              "ADR-0002",
+              "ADR-0003",
+              "ADR-0004",
+              "Required Patterns",
+              "Forbidden Approaches",
+              "source: ADR-0001"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "4 Accepted ADRs",
+          "control-manifest.md",
+          "ADR-0001",
+          "ADR-0004",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "ADR-0001 changed",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-040-ccgs-design-review",
+      "skill": "ccgs-design-review",
+      "fixture": "design-review-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-design-review design/gdd/delivery.md --review lean in English. Inspect the complete eight-section GDD, verify its Movement and HUD dependency paths, formula, and three measurable acceptance criteria. Remain read-only and return a concrete verdict with completeness, dependency graph, required-before-implementation, and recommended revisions; do not write tracking records.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Formulas",
+              "delivery_count = 3",
+              "AC-1"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "delivery.md",
+          "movement.md",
+          "hud.md",
+          "formula",
+          "acceptance criteria"
+        ],
+        "response_not_contains": [
+          "GDD updated",
+          "implementation complete"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-041-ccgs-design-system",
+      "skill": "ccgs-design-system",
+      "fixture": "design-system-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-design-system delivery in English. Use the actual Harbor Courier concept, systems index, standard Godot configuration, and engine reference. Author a substantive delivery GDD at design/gdd/delivery.md with Overview, Detailed Design, Formulas, Edge Cases, Dependencies, Acceptance Criteria, Summary, and a clear ownership rule for three parcel completion. Do not claim implementation or playtest evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Overview",
+              "## Detailed Design",
+              "## Formulas",
+              "## Edge Cases",
+              "## Dependencies",
+              "## Acceptance Criteria",
+              "three",
+              "parcel"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/gdd/delivery.md",
+          "Detailed Design",
+          "Acceptance Criteria",
+          "$ccgs-design-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "runtime passed",
+          "implementation verified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-042-ccgs-propagate-design-change",
+      "skill": "ccgs-propagate-design-change",
+      "fixture": "propagate-design-change-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "history": {
+        "baseline": {
+          "design/gdd/delivery.md": "# Delivery\n## Formulas\nscore = delivered * 100 - elapsed_seconds.\n## Detailed Rules\nDeliveryService owns parcel state.\n"
+        }
+      },
+      "prompt": "Run $ccgs-propagate-design-change design/gdd/delivery.md in English. The actual changed GDD is backed by the isolated case history. Use exactly `git --git-dir .scratch/case-history.git --work-tree . diff HEAD -- design/gdd/delivery.md` (no global git settings), classify the score-formula impact from that diff, and after the separate approvals write docs/architecture/change-impact-2026-10-26-delivery.md. Preserve design/gdd/delivery.md and docs/architecture/adr-0001-score.md unless the user explicitly selects a status resolution; do not claim runtime execution.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/architecture/change-impact-2026-10-26-delivery.md",
+            "contains": [
+              "delivery.md",
+              "score",
+              "ADR-0001",
+              "Needs Review"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "score = delivered * 125 - elapsed_seconds",
+              "elapsed_seconds"
+            ],
+            "changed": false
+          },
+          {
+            "path": "docs/architecture/adr-0001-score.md",
+            "contains": [
+              "ADR-0001",
+              "GDD Requirements Addressed"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "score",
+          "ADR-0001",
+          "change-impact-2026-10-26-delivery.md"
+        ],
+        "response_not_contains": [
+          "GDD rewritten",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-043-ccgs-quick-design",
+      "skill": "ccgs-quick-design",
+      "fixture": "quick-design-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-quick-design make dash invincible on frame 1 in English. Classify this as a bounded tweak, use the current dash rule and prior cooldown spec, draft the Tweak format with old/new rule, affected system, acceptance criteria, and separate GDD update approval, then write design/quick-specs/dash-invincibility-tweak-2026-10-26.md. Preserve design/gdd/delivery.md, design/gdd/systems-index.md, and design/quick-specs/dash-cooldown-tuning-2026-10-20.md unless the separate GDD update is explicitly selected. Do not modify unrelated systems or claim playtest evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/quick-specs/dash-invincibility-tweak-2026-10-26.md",
+            "contains": [
+              "Tweak",
+              "dash",
+              "invincible",
+              "Acceptance Criteria"
+            ],
+            "changed": true
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "dash_cooldown = 2.0",
+              "dash_distance = 120"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/quick-specs/dash-cooldown-tuning-2026-10-20.md",
+            "contains": [
+              "dash_cooldown",
+              "2.0 seconds"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Tweak",
+          "dash",
+          "invincible",
+          "dash-cooldown-tuning-2026-10-20"
+        ],
+        "response_not_contains": [
+          "entire combat system",
+          "runtime passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-044-ccgs-reverse-document",
+      "skill": "ccgs-reverse-document",
+      "fixture": "reverse-document-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-reverse-document design src/gameplay/health_system.gd in English. Read the actual Godot script, present its mechanics and intent questions, then after approval write the full eight-section design GDD at design/gdd/health-system.md. Preserve the discovered clamp formula and max_health = 100, include the reverse-document provenance banner, and do not claim runtime behavior.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/health-system.md",
+            "contains": [
+              "Reverse-documented",
+              "## Formulas",
+              "clamp",
+              "max_health = 100",
+              "## Acceptance Criteria"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "health-system.md",
+          "clamp",
+          "max_health",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "health script tested",
+          "playtest passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-045-ccgs-review-all-gdds",
+      "skill": "ccgs-review-all-gdds",
+      "fixture": "review-all-gdds-native",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "required_evidence": [
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-review-all-gdds in English over the supplied Movement, Delivery, and HUD GDDs. Read their actual summaries, dependencies, cross-references, pillars, and anti-pillar; walk the concrete delivery scenario. Remain read-only, report the reviewed set and any consistency or holistic findings, and do not write the cross-review file.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/gdd/movement.md",
+            "contains": [
+              "## Summary",
+              "## Cross-References"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/delivery.md",
+            "contains": [
+              "## Summary",
+              "movement.md"
+            ],
+            "changed": false
+          },
+          {
+            "path": "design/gdd/hud.md",
+            "contains": [
+              "## Summary",
+              "Targets 0/3"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "Movement",
+          "Delivery",
+          "HUD",
+          "scenario",
+          "consistency"
+        ],
+        "response_not_contains": [
+          "GDDs modified",
+          "cross-review written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-046-ccgs-ux-design",
+      "skill": "ccgs-ux-design",
+      "fixture": "ux-design-native",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-ux-design hud in English. Use the actual delivery UI requirement, Harbor Courier concept, player journey, and platform block (PC, full gamepad support). Author design/ux/hud.md section by section with Targets 0/3, completion feedback, keyboard/mouse and gamepad adaptation, readable hierarchy, and acceptance criteria. Preserve the GDD and do not claim a playtest; end with the $ccgs-ux-review handoff.",
+      "expected": {
+        "files": [
+          {
+            "path": "design/ux/hud.md",
+            "contains": [
+              "HUD Philosophy",
+              "Information Architecture",
+              "Layout Zones",
+              "Targets 0/3",
+              "Platform Adaptation",
+              "Acceptance Criteria"
+            ],
+            "changed": true
+          }
+        ],
+        "response_contains": [
+          "design/ux/hud.md",
+          "Targets 0/3",
+          "gamepad",
+          "$ccgs-ux-review",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "playtest passed",
+          "GDD modified"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-047-ccgs-balance-check",
+      "skill": "ccgs-balance-check",
+      "fixture": "balance-check",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-balance-check combat in English. Resolve standard/guided Godot 4.6.1 and inspect assets/data/combat.json, design/registry/entities.yaml, and design/gdd/combat.md. Compare parcel_blaster damage 140 to the registry target 90-110, calculate DPS for both weapons, and report the outlier and dominant option as CONCERNS or CRITICAL ISSUES. Keep the review read-only; do not estimate missing runtime metrics or write a balance report.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "assets/data/combat.json",
+          "design/registry/entities.yaml",
+          "140",
+          "90-110",
+          "parcel_blaster",
+          "DPS",
+          "outlier"
+        ],
+        "response_not_contains": [
+          "balance report written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-048-ccgs-changelog",
+      "skill": "ccgs-changelog",
+      "fixture": "changelog",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-changelog v0.1.0 in English. Resolve minimal/guided Godot configuration, inspect the supplied sprint and GDD, and run the bounded history checks against the case history only: `git --git-dir .scratch/case-history.git --work-tree . log -20 --format=%h:%s` and the corresponding bounded diff/tag checks, never the framework repository Git root. This fixture's separate case history is empty, so stop with the skill's BLOCKED/no-game-history result instead of inventing commits, release changes, owners, or metrics. Do not write docs/CHANGELOG.md.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "BLOCKED",
+          "no game commit history",
+          "cannot generate",
+          "changelog"
+        ],
+        "response_not_contains": [
+          "Changelog status: WRITTEN",
+          "Status: PUBLISHED"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "history": {
+        "baseline": {}
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-049-ccgs-day-one-patch",
+      "skill": "ccgs-day-one-patch",
+      "fixture": "day-one-patch",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-day-one-patch v0.1.1 in English as a read-only preparation audit. Confirm Release stage, the PASS release gate, BUG-0007 as an S2/P1 two-hour candidate, and the shipped sprint. The fixture intentionally lacks rollback-plan evidence, role identities, and executed QA; report those factual blockers as NOT ASSESSED and do not create a patch record, claim scope approval, or claim deployment approval. Never patch source code or fabricate QA.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "BUG-0007",
+          "rollback",
+          "QA",
+          "NOT ASSESSED",
+          "cannot proceed"
+        ],
+        "response_not_contains": [
+          "Patch record: WRITTEN",
+          "Status: DEPLOYED",
+          "QA: PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-050-ccgs-estimate",
+      "skill": "ccgs-estimate",
+      "fixture": "estimate",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-estimate for STORY-004 route preview in English. Read the story and src/gameplay/route.gd, identify the affected file and concrete acceptance work, and produce the read-only estimate with complexity, effort range, confidence, dependencies, risks, and a suggested breakdown. Do not write or claim implementation.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Task Estimate",
+          "STORY-004",
+          "route.gd",
+          "Complexity",
+          "Effort Estimate",
+          "Confidence",
+          "Dependencies",
+          "Suggested Breakdown",
+          "COMPLETE"
+        ],
+        "response_not_contains": [
+          "implemented",
+          "file written",
+          "tests passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-051-ccgs-gate-check",
+      "skill": "ccgs-gate-check",
+      "fixture": "gate-check",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-gate-check pre-production in English as a read-only audit. Resolve standard/guided Godot configuration and inspect the current Pre-Production project, which only contains a minimal game brief and no required sprint, UX, accessibility, architecture, or independent review evidence. Report the correct NOT ASSESSED or FAIL verdict and name missing artifacts; do not update project.stage or production/stage.txt.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Pre-Production",
+          "missing",
+          "project.stage",
+          "production/stage.txt"
+        ],
+        "response_contains_any": [
+          [
+            "FAIL",
+            "NOT ASSESSED"
+          ]
+        ],
+        "response_not_contains": [
+          "stage updated",
+          "advanced to Production"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-052-ccgs-hotfix",
+      "skill": "ccgs-hotfix",
+      "fixture": "hotfix",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-hotfix BUG-0008 in English. Assess the supplied depot-return crash as S1, present the required severity confirmation and draft a minimal hotfix record with the problem, empty root-cause/fix/testing fields, approvals, and rollback plan. With authorized write approval, write it to production/qa/hotfix-BUG-0008.md; do not create a branch, merge, tag, deploy, or claim QA/native approvals that did not run.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/hotfix-BUG-0008.md",
+            "contains": [
+              "BUG-0008",
+              "S1",
+              "IN PROGRESS",
+              "Root Cause",
+              "Testing",
+              "Rollback Plan"
+            ],
+            "not_contains": [
+              "Status: DEPLOYED",
+              "Regression test passed"
+            ]
+          }
+        ],
+        "response_contains": [
+          "S1",
+          "BUG-0008",
+          "IN PROGRESS",
+          "rollback",
+          "approval"
+        ],
+        "response_not_contains": [
+          "Status: MERGED",
+          "Tag: v0.1.1",
+          "Status: DEPLOYED",
+          "QA approval: APPROVED"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-053-ccgs-launch-checklist",
+      "skill": "ccgs-launch-checklist",
+      "fixture": "launch-checklist",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-launch-checklist for the Pocket Courier 0.1.0 candidate in English. Inspect the build manifest and resolve standard/guided Godot configuration. After the required questions, save the checklist specifically to production/releases/launch-checklist-0.1.0.md; preserve missing smoke, localization, security, bug, and run-package evidence as NOT ASSESSED, and never call the candidate READY or published without actual checks.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/releases/launch-checklist-0.1.0.md",
+            "contains": [
+              "0.1.0",
+              "build/pocket-courier.zip",
+              "NOT ASSESSED",
+              "Go / No-Go"
+            ],
+            "not_contains": [
+              "Status: PUBLISHED"
+            ]
+          }
+        ],
+        "response_contains": [
+          "launch checklist",
+          "0.1.0",
+          "NOT ASSESSED",
+          "Go / No-Go"
+        ],
+        "response_not_contains": [
+          "Release status: APPROVED",
+          "Status: PUBLISHED"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-054-ccgs-localize",
+      "skill": "ccgs-localize",
+      "fixture": "localize",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-localize scan in English. Resolve the Godot code root and inspect src/ui/hud.gd for hardcoded player-facing text. Report the exact file and line, classify it as a localization finding, and remain read-only; do not extract strings or write a string table.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "src/ui/hud.gd",
+          "Deliver parcel",
+          "hardcoded",
+          "localization",
+          "scan"
+        ],
+        "response_not_contains": [
+          "strings-en.json written",
+          "Extraction result: PASS",
+          "Finding count: 0"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-055-ccgs-milestone-review",
+      "skill": "ccgs-milestone-review",
+      "fixture": "milestone-review",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-milestone-review milestone-001 in English. Resolve full/guided Godot configuration, inspect the milestone definition and STORY-001, and produce a read-only review. Treat absent QA metrics, bug inventory, risk register, playtest, and independent review as NOT ASSESSED — NO DATA rather than zero or GO; do not write production/milestones or alter story status.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Milestone Review",
+          "milestone-001",
+          "STORY-001",
+          "NOT ASSESSED",
+          "NO DATA",
+          "Go/No-Go",
+          "read-only"
+        ],
+        "response_not_contains": [
+          "all metrics healthy",
+          "story completed",
+          "review written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "full",
+          "modes.automation": "guided",
+          "qa.level": "full"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-056-ccgs-patch-notes",
+      "skill": "ccgs-patch-notes",
+      "fixture": "patch-notes",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-patch-notes v0.1.1 in English. Inspect the supplied fixed BUG-0009 and sprint context, distinguish player-visible bug fixes from internal maintenance, and draft internal and player-facing notes without inventing commits, metrics, or publish approval. With authorized write approval, write the primary notes to docs/PATCH_NOTES.md and do not publish externally.",
+      "expected": {
+        "files": [
+          {
+            "path": "docs/PATCH_NOTES.md",
+            "contains": [
+              "0.1.1",
+              "BUG-0009",
+              "third parcel",
+              "player-facing"
+            ],
+            "not_contains": [
+              "Status: PUBLISHED",
+              "Tests: PASS"
+            ]
+          }
+        ],
+        "response_contains": [
+          "BUG-0009",
+          "0.1.1",
+          "player-facing",
+          "patch notes"
+        ],
+        "response_not_contains": [
+          "Status: PUBLISHED",
+          "External publication: APPROVED",
+          "Commit: abc123"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-057-ccgs-playtest-report",
+      "skill": "ccgs-playtest-report",
+      "fixture": "playtest-report",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-playtest-report analyze in English using production/qa/playtests/session-001.md, with tester name codex. Preserve that only a partial session note exists and no runtime capture or quantitative data is supplied. Draft a report with session context, flow, pain/confusion points, bugs versus feel issues, and an explicit NOT ASSESSED limitation; with authorized write approval save it specifically to production/qa/playtests/playtest-2026-10-26-codex.md without claiming a complete playtest or creative-director approval.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/playtests/playtest-2026-10-26-codex.md",
+            "contains": [
+              "Session Info",
+              "First Impressions",
+              "NOT ASSESSED",
+              "no runtime capture"
+            ],
+            "not_contains": [
+              "Session completeness: COMPLETE",
+              "Director status: APPROVED",
+              "Player sample: ALL"
+            ]
+          }
+        ],
+        "response_contains": [
+          "playtest",
+          "NOT ASSESSED",
+          "partial",
+          "runtime",
+          "report"
+        ],
+        "response_not_contains": [
+          "full playtest passed",
+          "director APPROVE",
+          "quantitative data collected"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-058-ccgs-security-audit",
+      "skill": "ccgs-security-audit",
+      "fixture": "security-audit",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-security-audit full in English as a read-only audit. Resolve full/guided Godot 4.6.1, note single-player scope from project.yaml, and inspect src/save/save_data.gd. Report the unsafe unvalidated JSON load as a concrete save/serialization finding, and mark any categories lacking a sourceable Godot pattern or independent security-engineer run as NOT ASSESSED. Do not write production/security or claim CLEAR TO SHIP.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Security Audit",
+          "save",
+          "JSON",
+          "NOT ASSESSED",
+          "src/save/save_data.gd"
+        ],
+        "response_not_contains": [
+          "CLEAR TO SHIP",
+          "security audit written",
+          "verified safe"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "full",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-059-ccgs-soak-test",
+      "skill": "ccgs-soak-test",
+      "fixture": "soak-test",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-soak-test in English against the Godot fixture. Inspect src/game.gd but do not infer duration, memory, FPS, leak, or stability metrics from source alone; no soak log or runtime measurement exists. Return NOT ASSESSED with the missing measurement source and required environment/duration, and do not write a soak report or claim PASS.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Soak Test",
+          "NOT ASSESSED",
+          "measurement",
+          "duration",
+          "runtime"
+        ],
+        "response_not_contains": [
+          "memory stable",
+          "60 FPS",
+          "soak report written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-060-ccgs-sprint-status",
+      "skill": "ccgs-sprint-status",
+      "fixture": "sprint-status",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-sprint-status sprint-006 in English. Read the supplied sprint plan and STORY-010, calculate status only from the observed files, note the one Must Have IN PROGRESS story and its stale last-updated date, and report the bounded burndown without inventing missing stories or tests. This skill is read-only; do not edit sprint files.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "Sprint 006",
+          "STORY-010",
+          "IN PROGRESS",
+          "Must Have",
+          "stale",
+          "Burndown"
+        ],
+        "response_not_contains": [
+          "story completed",
+          "sprint plan updated",
+          "all Must Haves complete"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-061-ccgs-ux-review",
+      "skill": "ccgs-ux-review",
+      "fixture": "ux-review",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-ux-review design/ux/hud.md in English as a read-only review. Resolve standard/guided Godot configuration and PC keyboard platform context. Classify the file as HUD Design, report the sparse spec's missing HUD states, information architecture, accessibility tier, input focus, localization, and testable acceptance criteria as NEEDS REVISION or NOT ASSESSED, and do not edit the UX document.",
+      "expected": {
+        "files": [],
+        "response_contains": [
+          "HUD Design",
+          "error state",
+          "accessibility-requirements.md"
+        ],
+        "response_contains_any": [
+          [
+            "NEEDS REVISION",
+            "NOT ASSESSED"
+          ]
+        ],
+        "response_not_contains": [
+          "implementation-ready",
+          "UX document written"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "engine.language": "GDScript",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-062-ccgs-prototype",
+      "skill": "ccgs-prototype",
+      "fixture": "prototype",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-prototype parcel-loop in English with the supplied minimal/guided Godot 4.6.1 GDScript project. Resolve config, read the brief and engine reference, and keep the throwaway project isolated under prototypes/parcel-loop-concept/; do not modify src/ or promote prototype code. The hypothesis is that a courier can collect one parcel and reach the dock within 60 seconds. Produce prototypes/parcel-loop-concept/REPORT.md with the actual decision or, when the engine/render input is unavailable, a concrete NOT ASSESSED limitation report; retain a screenshot under production/qa/evidence/parcel-loop/ only when one was actually captured. This fixture intentionally lacks a usable Godot project/render result: do not claim PROCEED/PIVOT/KILL, leave project.stage unchanged rather than advancing it, and do not fabricate runtime, screenshot, or checkpoint evidence.",
+      "expected": {
+        "files": [
+          {
+            "path": "prototypes/parcel-loop-concept/REPORT.md",
+            "contains": [
+              "NOT ASSESSED",
+              "60 seconds",
+              "render",
+              "project.stage unchanged"
+            ],
+            "not_contains": [
+              "Recommendation: PROCEED",
+              "Recommendation: PIVOT",
+              "Recommendation: KILL",
+              "screenshot captured",
+              "runtime passed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "project.yaml",
+            "contains": [
+              "stage: Pre-Production",
+              "name: Velocity Courier Prototype"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "NOT ASSESSED",
+          "60 seconds",
+          "prototypes/parcel-loop",
+          "missing",
+          "stage",
+          "render"
+        ],
+        "response_not_contains": [
+          "Decision: PROCEED",
+          "Decision: PIVOT",
+          "Decision: KILL",
+          "runtime passed",
+          "screenshot captured",
+          "stage advanced"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided",
+          "project.stage": "Pre-Production"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-063-ccgs-skill-improve",
+      "skill": "ccgs-skill-improve",
+      "fixture": "skill-improve",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-skill-improve ccgs-skill-test in English as a read-only audit. Resolve the supplied standard/guided Godot 4.6.1 configuration, inspect the real skill and references, report static baseline and category baseline separately, and diagnose only concrete gaps. Do not edit the skill, do not self-approve, and do not claim a retest or score improvement without a real before/after run.",
+      "expected": {
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "stage: Production",
+              "testing:",
+              "strict: true"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "baseline",
+          "static",
+          "category",
+          "read-only",
+          "no changes",
+          "NOT ASSESSED"
+        ],
+        "response_not_contains": [
+          "skill improved",
+          "changes kept",
+          "retest passed",
+          "wrote SKILL.md"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "testing.strict": "true"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-064-ccgs-skill-test",
+      "skill": "ccgs-skill-test",
+      "fixture": "skill-test",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-skill-test ccgs-test-helpers spec in English. Resolve standard/guided Godot 4.6.1, read the complete implementation and source contract, and evaluate structural and behavioral assertions separately. Treat missing native execution or unavailable fixtures as NOT ASSESSED, not PASS. Preserve the project and skill files; do not edit or self-approve.",
+      "expected": {
+        "files": [
+          {
+            "path": "project.yaml",
+            "contains": [
+              "name: Skill Test Evidence",
+              "stage: Production",
+              "engine:"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "ccgs-test-helpers",
+          "spec",
+          "NOT ASSESSED",
+          "read-only",
+          "native"
+        ],
+        "response_not_contains": [
+          "skill file edited",
+          "behavior PASS",
+          "self-approved"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-065-ccgs-smoke-check",
+      "skill": "ccgs-smoke-check",
+      "fixture": "smoke-check",
+      "readonly": true,
+      "files_changed": false,
+      "required_tools": true,
+      "prompt": "Run $ccgs-smoke-check delivery in English on the supplied standard/guided Godot 4.6.1 project. Resolve config, keep import, automated tests, and rendered runtime evidence separate, and inspect the supplied failed smoke record: the main scene is missing and no test result exists. Return NOT ASSESSED or FAIL as supported, retain Run result: NOT VERIFIED, and do not edit implementation, tests, QA, or handoff state.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/qa/smoke-2026-10-26.md",
+            "contains": [
+              "main scene is missing",
+              "Run result: NOT VERIFIED"
+            ],
+            "not_contains": [
+              "QA-ready"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "main scene",
+          "no test result",
+          "NOT VERIFIED",
+          "read-only"
+        ],
+        "response_not_contains": [
+          "QA-ready",
+          "tests passed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "qa.level": "standard"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-066-ccgs-team-audio",
+      "skill": "ccgs-team-audio",
+      "fixture": "team-audio",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-audio race-countdown in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Use native ccgs profiles with inherited model, provider, permissions and tools; do not simulate roles in one response. Assign actual audio-director, sound-designer, accessibility-specialist, technical-artist, gameplay-programmer and engine-programmer ownership through team-run.py, preserve dependencies, and retain the concrete artifacts under production/audio/race-countdown/ (direction.md, sfx-spec.md, accessibility.md, integration-plan.md, engine-notes.md). Deliberately interrupt or fail the real task writing one audio planning artifact, then resume that same returned task and verify its document. Missing native agent, real ID, returned output, or recovery evidence requires NOT ASSESSED/BLOCKED; do not claim runtime audio was heard or fabricate IDs. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/audio/race-countdown/direction.md",
+            "contains": [
+              "race-countdown",
+              "countdown"
+            ],
+            "not_contains": [
+              "audio heard",
+              "runtime passed",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "one-shot",
+                "start once",
+                "deduplicate countdown"
+              ]
+            ]
+          },
+          {
+            "path": "production/audio/race-countdown/sfx-spec.md",
+            "contains": [
+              "race-countdown"
+            ],
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "one-shot",
+                "start once",
+                "deduplicate countdown"
+              ]
+            ]
+          },
+          {
+            "path": "production/audio/race-countdown/accessibility.md",
+            "contains": [
+              "accessibility",
+              "race-countdown"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/audio/race-countdown/integration-plan.md",
+            "contains": [
+              "integration",
+              "race-countdown"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/audio/race-countdown/engine-notes.md",
+            "contains": [
+              "Cocos",
+              "race-countdown"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "race-countdown"
+        ],
+        "response_not_contains": [
+          "audio heard",
+          "audio runtime passed",
+          "invented agent ID",
+          "COMPLETE — audio heard"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "engine.language": "TypeScript"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-067-ccgs-team-level",
+      "skill": "ccgs-team-level",
+      "fixture": "team-level",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-level city-track in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch native level-designer, systems-designer, art-director, QA tester, narrative-director, world-builder and accessibility-specialist profiles with inherited context, real IDs, ownership and dependency ordering via team-run.py. Produce the bounded drafts under production/levels/city-track/ and have the coordinator synthesize the final design at design/levels/city-track.md plus QA cases at production/qa/test-cases/city-track-cases.md. Interrupt or fail one real task producing a level design or QA artifact once, resume that same returned task, and verify its design draft or QA cases before aggregation. Missing native/recovery evidence means NOT ASSESSED/BLOCKED; do not claim gameplay screenshots or runtime validation. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/levels/city-track/layout.md",
+            "contains": [
+              "city-track",
+              "start",
+              "challenge"
+            ],
+            "not_contains": [
+              "screenshot captured",
+              "runtime passed",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "resolution",
+                "finish"
+              ]
+            ]
+          },
+          {
+            "path": "production/levels/city-track/systems.md",
+            "contains": [
+              "city-track",
+              "system"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/levels/city-track/visual-direction.md",
+            "contains": [
+              "city-track",
+              "visual"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/levels/city-track/narrative.md",
+            "contains": [
+              "city-track",
+              "narrative"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/levels/city-track/lore.md",
+            "contains": [
+              "city-track",
+              "lore"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/levels/city-track/accessibility.md",
+            "contains": [
+              "city-track",
+              "accessibility"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/levels/city-track/production-concepts.md",
+            "contains": [
+              "city-track",
+              "production"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "design/levels/city-track.md",
+            "contains": [
+              "city-track",
+              "start",
+              "challenge"
+            ],
+            "changed": true,
+            "case_sensitive": false,
+            "any_contains": [
+              [
+                "resolution",
+                "finish"
+              ]
+            ]
+          },
+          {
+            "path": "production/qa/test-cases/city-track-cases.md",
+            "contains": [
+              "city-track",
+              "acceptance"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "city-track",
+          "layout",
+          "design/levels/city-track.md"
+        ],
+        "response_not_contains": [
+          "level runtime PASS",
+          "invented agent ID",
+          "screenshots captured"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "engine.language": "TypeScript"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-068-ccgs-team-live-ops",
+      "skill": "ccgs-team-live-ops",
+      "fixture": "team-live-ops",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-live-ops chase-week in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch native live-ops-designer, economy-designer, analytics-engineer, community-manager, writer and narrative-director profiles with inherited model/permissions, actual IDs, dependencies and one writer per artifact through team-run.py. Author the bounded seasonal brief, economy, telemetry, narrative text, copy and comms under production/live-ops/chase-week/. Force one real task failure/interruption, resume that exact task, validate returned outputs, and aggregate only observed results. Missing role/ID/artifact/recovery evidence requires NOT ASSESSED/BLOCKED; do not claim live publication, telemetry collection, or economy balance. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/live-ops/chase-week/brief.md",
+            "contains": [
+              "chase-week",
+              "cadence"
+            ],
+            "not_contains": [
+              "published",
+              "telemetry collected",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/narrative.md",
+            "contains": [
+              "chase-week",
+              "narrative"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/economy.md",
+            "contains": [
+              "chase-week",
+              "economy"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/analytics.md",
+            "contains": [
+              "chase-week",
+              "telemetry"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/narrative-text.md",
+            "contains": [
+              "chase-week",
+              "narrative"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/copy.md",
+            "contains": [
+              "chase-week",
+              "copy"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/live-ops/chase-week/comms.md",
+            "contains": [
+              "chase-week",
+              "comms"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "chase-week",
+          "economy",
+          "telemetry"
+        ],
+        "response_not_contains": [
+          "event published",
+          "live metrics collected",
+          "invented agent ID"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "engine.language": "TypeScript"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-069-ccgs-team-narrative",
+      "skill": "ccgs-team-narrative",
+      "fixture": "team-narrative",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-narrative chase-copy in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size small. Dispatch the native narrative-director and writer roles, plus localization/world-builder only when the skill's review-mode contract requires them, inheriting model and permissions. Use team-run.py init/assign --depends-on/event/show/resume with actual IDs, fixed ownership and aggregation. Author the brief, topic-specific rules-help draft, scene-specific settlement draft, localization review and level integration under production/narrative/chase-copy/, then retain the final design documents at the documented design/narrative paths. At small, register the distinct read-only ND-CONSISTENCY review and report its actual verdict; it must not write design files. Interrupt or fail one real writing task and resume the exact task before reporting. Missing native or recovery evidence requires NOT ASSESSED/BLOCKED; retain the exact independent consistency verdict and do not claim runtime dialogue playback. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/narrative/chase-copy/brief.md",
+            "contains": [
+              "chase-copy",
+              "canon"
+            ],
+            "not_contains": [
+              "consistency approved",
+              "dialogue played",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/narrative/chase-copy/rules-help.md",
+            "contains": [
+              "chase-copy",
+              "timeout",
+              "rules"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/narrative/chase-copy/settlement.md",
+            "contains": [
+              "chase-copy",
+              "capture",
+              "settlement"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/narrative/chase-copy/i18n-review.md",
+            "contains": [
+              "chase-copy",
+              "localization"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/narrative/chase-copy/level-integration.md",
+            "contains": [
+              "chase-copy",
+              "level"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "design/narrative/chase-copy-brief.md",
+            "contains": [
+              "chase-copy",
+              "brief"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "design/narrative/rules/help.md",
+            "contains": [
+              "chase-copy",
+              "timeout",
+              "rules"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "design/narrative/copy/settlement.md",
+            "contains": [
+              "chase-copy",
+              "capture",
+              "settlement"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "chase-copy",
+          "brief",
+          "localization",
+          "ND-CONSISTENCY"
+        ],
+        "response_not_contains": [
+          "independent review approved",
+          "runtime dialogue passed",
+          "invented agent ID"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "small",
+          "engine.language": "TypeScript"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-070-ccgs-team-polish",
+      "skill": "ccgs-team-polish",
+      "fixture": "team-polish",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-polish chase-feedback in English with the supplied standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Dispatch performance-analyst, technical-artist, sound-designer, QA tester, engine-programmer, tools-programmer when traced, and adversarial QA according to the native profile; inherit model/permissions and use team-run.py with real IDs, dependencies, ownership, event/show and resume. Produce dated bounded reports under production/polish/ (including chase-feedback-report-2026-10-26.md and the role-specific render/audio/verification notes) and keep claims tied to actual measurements. Interrupt or fail one real task producing a polish analysis report, resume that same returned task, verify its bounded analysis report, and aggregate only validated outputs. Missing runtime/profiler/screenshots or native recovery evidence stays NOT ASSESSED; do not invent FPS, timings, or pass. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/polish/chase-feedback-report-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "profiler"
+            ],
+            "not_contains": [
+              "60 FPS achieved",
+              "runtime passed",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/polish/chase-feedback-render-notes-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "render"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/polish/chase-feedback-engine-fixes-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "engine"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/polish/chase-feedback-tool-fixes-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "tool"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/polish/chase-feedback-audio-notes-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "audio"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/polish/chase-feedback-verification-2026-10-26.md",
+            "contains": [
+              "chase-feedback",
+              "verification"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "chase-feedback",
+          "performance",
+          "adversarial"
+        ],
+        "response_not_contains": [
+          "60 FPS achieved",
+          "invented agent ID",
+          "polish PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "engine.language": "TypeScript"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-071-ccgs-team-release",
+      "skill": "ccgs-team-release",
+      "fixture": "team-release",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "required_evidence": [
+        "native_agents",
+        "team_recovery",
+        "independent_review"
+      ],
+      "prompt": "Run $ccgs-team-release 0.9.0 in English with the supplied Release-stage standard/guided Cocos Creator 3.8.8 / TypeScript project and team.size studio. Read the supplied release gate and local build inputs; dispatch native producer, release-manager, QA lead, devops, security, localization, performance, analytics and conditional network roles with inherited model/permissions and actual team-run.py IDs. Preserve one writer per fixed production/releases artifact, dependencies, failures and resume; interrupt or fail one real task producing a local release gate document and resume that same returned task before verifying the local gate document and aggregating. Stop at a locally runnable package; absent build/test/sign-off/runtime evidence must remain NOT ASSESSED and no publication or invented ID is allowed. This is an isolated team-orchestration and missing-evidence gate scenario, not a runtime acceptance of the original game. Read design/scenario.md and client/assets/scripts/chase-contract.ts. Preserve those inputs and generated shared code. Return each required artifact with its concrete requested filename and retain the exact complete independent review response separately. Report team orchestration observations separately from game quality verdicts; supplied missing runtime evidence must stay NOT ASSESSED. Do not invoke a Godot runner or Godot specialist. At aggregation, obtain a distinct non-implementing read-only review of the bounded team deliverables and supplied scenario, with actual input reads and verbatim returned findings. Register that reviewer with team-run.py --root .scratch/team-observations assign --read-only; retain its exact complete returned response only after it finishes, under that observation root, and bind its real identity and artifact hash. Do not report an orchestration PASS from only self-reported IDs or a coordinator-authored review. Final quality verdict must be NOT ASSESSED. Each QA/build/security/localization/performance/analytics/go-no-go gate document must explicitly retain NOT ASSESSED, not an approved sign-off, because the required release inputs are absent. The current agent is the coordinator. team-run.py init --id takes a fresh local record slug such as chase-01, not a host identity; do not spawn an extra coordinator merely to obtain this label. event --agent-id takes the actual returned child UUID or exact host agent path such as /root/chase_designer; paths are accepted there without stripping or inventing IDs. Include every child in the primary team manifest. If a separate read-only review manifest under .scratch/team-observations is used, also register that review task in the primary manifest so the complete child set is crossmatched; for the read-only QA case keep the whole manifest in .scratch/team-observations.",
+      "expected": {
+        "files": [
+          {
+            "path": "production/releases/release-plan-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "local"
+            ],
+            "not_contains": [
+              "published",
+              "Go / No-Go: READY",
+              "fake-agent"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/release-checklist-0.9.0.md",
+            "contains": [
+              "0.9.0"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/qa-gate-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/build-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/security-signoff-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/localization-signoff-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/performance-signoff-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/analytics-signoff-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/go-no-go-0.9.0.md",
+            "contains": [
+              "0.9.0",
+              "NOT ASSESSED"
+            ],
+            "changed": true,
+            "not_contains": [
+              "Verdict: PASS",
+              "Status: PASS",
+              "Go / No-Go: READY"
+            ],
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/announcement-0.9.0.md",
+            "contains": [
+              "0.9.0"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          },
+          {
+            "path": "production/releases/release-report-0.9.0.md",
+            "contains": [
+              "0.9.0"
+            ],
+            "changed": true,
+            "case_sensitive": false
+          }
+        ],
+        "response_contains": [
+          "0.9.0",
+          "build",
+          "sign-off",
+          "NOT ASSESSED"
+        ],
+        "response_not_contains": [
+          "published",
+          "Go / No-Go: READY",
+          "invented agent ID",
+          "release approved"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Cocos",
+          "engine.version": "3.8.8",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "team.size": "studio",
+          "project.stage": "Release",
+          "engine.language": "TypeScript"
+        },
+        "response_verdict_any": [
+          "NOT ASSESSED"
+        ]
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-072-ccgs-test-helpers",
+      "skill": "ccgs-test-helpers",
+      "fixture": "test-helpers",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-helpers movement in English on the supplied minimal/guided Godot 4.6.1 GDScript project. Resolve config and engine conventions, inspect the existing test folder and movement contract, then author only engine-specific helper code under tests/helpers/ plus a concise README. Helpers must cover assertions, a courier factory, and a wall-boundary fixture without changing production src or claiming a test run. Retain missing runner/results as NOT ASSESSED.",
+      "expected": {
+        "files": [
+          {
+            "path": "tests/helpers/movement_helpers.gd",
+            "contains": [
+              "extends RefCounted",
+              "assert_wall_boundary",
+              "make_courier"
+            ],
+            "not_contains": [
+              "runtime passed",
+              "fake test result"
+            ],
+            "changed": true
+          },
+          {
+            "path": "src/movement.gd",
+            "contains": [
+              "class_name CourierMovement",
+              "WALL_X"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "movement_helpers.gd",
+          "assert_wall_boundary",
+          "make_courier",
+          "NOT ASSESSED",
+          "production source preserved"
+        ],
+        "response_not_contains": [
+          "tests passed",
+          "src/movement.gd changed",
+          "runtime PASS"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "minimal",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-073-ccgs-test-setup",
+      "skill": "ccgs-test-setup",
+      "fixture": "test-setup",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-test-setup in English for the supplied standard/guided Godot 4.6.1 GDScript project. Resolve configuration and inspect the engine reference. Author the documented test layout, tests/README.md, unit/integration placeholders, smoke seed and .github/workflows/tests.yml with the real GdUnit4 command; do not write a custom runner, change src, or claim CI/test execution. If GdUnit4 or the Godot runner is absent, name that as NOT ASSESSED rather than passing setup.",
+      "expected": {
+        "files": [
+          {
+            "path": "tests/README.md",
+            "contains": [
+              "Godot 4.6.1",
+              "GdUnit4",
+              "tests/unit",
+              "production/qa/evidence"
+            ],
+            "not_contains": [
+              "custom runner",
+              "tests passed"
+            ],
+            "changed": true
+          },
+          {
+            "path": ".github/workflows/tests.yml",
+            "contains": [
+              "godot-gdunit-labs/gdUnit4-action",
+              "godot-version",
+              "paths:"
+            ],
+            "changed": true
+          },
+          {
+            "path": "src/game.gd",
+            "contains": [
+              "class_name CourierGame"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "tests/README.md",
+          "GdUnit4",
+          "workflow",
+          "NOT ASSESSED",
+          "runner"
+        ],
+        "response_not_contains": [
+          "CI passed",
+          "tests passed",
+          "src changed",
+          "custom runner"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    },
+    {
+      "id": "native-074-ccgs-vertical-slice",
+      "skill": "ccgs-vertical-slice",
+      "fixture": "vertical-slice",
+      "readonly": false,
+      "files_changed": true,
+      "required_tools": true,
+      "prompt": "Run $ccgs-vertical-slice dock-run in English on the supplied Pre-Production standard/guided Godot 4.6.1 project. Resolve config and read the brief, GDD/architecture inputs and vertical-slice report template. Scope one 3–5 minute start-to-challenge-to-resolution loop under prototypes/dock-run-vertical-slice/, preserve the production source tree, and do not pretend a playtest occurred. This fixture lacks a usable engine project, retained screenshots, and playtest answers: author a NOT ASSESSED report/checkpoint note naming those missing inputs, leave project.stage unchanged, and do not route to production or claim PROCEED/PIVOT/KILL.",
+      "expected": {
+        "files": [
+          {
+            "path": "prototypes/dock-run-vertical-slice/REPORT.md",
+            "contains": [
+              "NOT ASSESSED",
+              "3–5 minutes",
+              "missing",
+              "screenshot",
+              "playtest"
+            ],
+            "not_contains": [
+              "Recommendation: PROCEED",
+              "Recommendation: PIVOT",
+              "Recommendation: KILL",
+              "player completed"
+            ],
+            "changed": true
+          },
+          {
+            "path": "project.yaml",
+            "contains": [
+              "stage: Pre-Production",
+              "name: Dock Run"
+            ],
+            "changed": false
+          }
+        ],
+        "response_contains": [
+          "NOT ASSESSED",
+          "REPORT.md",
+          "playtest",
+          "screenshot",
+          "stage unchanged",
+          "missing"
+        ],
+        "response_not_contains": [
+          "Recommendation: PROCEED",
+          "Recommendation: PIVOT",
+          "Recommendation: KILL",
+          "production ready",
+          "player completed"
+        ],
+        "required_tools": true,
+        "config": {
+          "engine.name": "Godot",
+          "engine.version": "4.6.1",
+          "modes.rigor": "standard",
+          "modes.automation": "guided",
+          "project.stage": "Pre-Production"
+        }
+      },
+      "fixture_stdout": null,
+      "actual_result_stub": null,
+      "expected_native_until_run": true
+    }
+  ]
+}
